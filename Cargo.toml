@@ -1,0 +1,16 @@
+[package]
+name = "hebrew_accents"
+version = "0.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["Roest Dev <github.ebook242@passinbox.com>"]
+description = "A library for working with Hebrew accents, addressing there complexities."
+documentation = "https://docs.rs/crate/hebrew_accents/"
+repository = "https://github.com/Roestdev/hebrew_accents/"
+keywords = ["hebrew-accents", "unicode-characters", "unicode-text", "utf-8", "no-std"]
+categories = ["text-processing"]
+readme = "README.md"
+#rust-version = "1.56.1"
+
+[dependencies]
+# hebrew_unicode_script = "2.0.0"
