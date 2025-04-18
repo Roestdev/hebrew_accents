@@ -1,7 +1,7 @@
 # hebrew_accents
 Handling Hebrew accents
 
-</br>
+<br>
 
 ## Project Status 
 
@@ -13,7 +13,7 @@ Handling Hebrew accents
 This README file provides a general overview of what to expect from this library.
 ```
 
-</br>
+<br>
 
 ## Description
  
