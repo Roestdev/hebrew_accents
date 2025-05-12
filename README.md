@@ -128,10 +128,11 @@ be dual licensed as above, without any additional terms or conditions.
  - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) written by Wickes.
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
+ 
+ - [Hebrew_Cantillation on wiki](https://en.wikipedia.org/wiki/Hebrew_cantillation)
 
 #### Notes
- - Accents are sometimes called *Hebrew Cantilationmarks*
+ - Accents are sometimes called *Hebrew Cantilationmarks* or taʿamei ha-mikra (טעמי המקרא) or just teʿamim (טעמים).
 
 # todo
-
 - secondary accents (mayella, meteg)
