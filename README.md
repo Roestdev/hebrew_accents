@@ -53,7 +53,7 @@ Several factors contribute to the complexity of Hebrew accents in the Tanach, in
 
 - Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
 
-- Additionally, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents,pendingding of the context.
+- Additionally, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
 
 For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
 
@@ -64,13 +64,11 @@ For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicod
 - Provide an option to display the identified accents.
 - Supply statistical information regarding the usage of the accents.
 
-
 ### Non-Goals
 
 - Detect errors in the text related to accentuation rules.
 - Determine the type of text based on the identified accents.
 - Achieve absolute accuracy (100% correctness).
-
 
 ## Examples
 
@@ -119,12 +117,21 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [Unicode Block Hebrew - chapter 9.1 - section: meteg](https://www.unicode.org/charts/PDF/U0590.pdf).
   
- - [Basics of HEBREW ACCENTS](https://zondervanacademic.com/products/basics-of-hebrew-accents), written by Mark D. Futato, Sr.
+ - [Basics of Hebrew Accents](https://zondervanacademic.com/products/basics-of-hebrew-accents), written by Mark D. Futato, Sr.
 
- - [Hebrew Cantillation Marks And Their Encoding](https://mechon-mamre.org/c/hr/index.htm) by Helmut Richter.
+ - [Hebrew Cantillation Marks And Their Encoding](https://mechon-mamre.org/c/hr/index.htm) written by Helmut Richter.
   
  - [Gesenius Hebrew Grammar - §15. The Accents.](https://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents)
 
+ - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](https://archive.org/details/treatiseonaccent00wickuoft) written by Wickes.
+
+ - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) written by Wickes.
+
+ - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
 
 #### Notes
  - Accents are sometimes called *Hebrew Cantilationmarks*
+
+# todo
+
+- secondary accents (mayella, meteg)
