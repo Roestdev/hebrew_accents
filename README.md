@@ -1,5 +1,6 @@
 # hebrew_accents
-Handling Hebrew accents
+
+Handling Masoretic Hebrew Accents
 
 </br>
 
@@ -17,34 +18,34 @@ This README file provides a general overview of what to expect from this library
 
 ## Description
  
-This crate is going to be a library to find, filter, show Hebrew accents.
+This crate is going to be a library to find, filter, show Masoretic Hebrew accents.
 
 ### Brief overview in the accents in the Tanach
  
 The accents used in the Tanach have been the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed in the Tanach is complex and nuanced, presenting a challenging area of study for scholars and researchers.
 
 Several factors contribute to the complexity of Hebrew accents in the Tanach, including:
+
 -  In the Tanach, there are two main systems of accents used: one for the majority of the books, known as the "Twenty-One Books" (which includes all the books except for the three poetic books), and another for the three poetic books of Psalms, Proverbs, and Job, known as "Three Books".
 
-- There are two major categories of Masoretic accents:
+- Within the main system there are two major categories of Masoretic accents:
   - the disjunctive accents and
   - the conjunctive accents.
 
-- All disjunctive accents are ordered and are divided in groups
+- All disjunctive accents are ordered and are divided in groups.
 
-- Accents can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books"
+- The same (UTF-8) accent can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books".
   
-- Accents have three role at the same time:
+- Accents have three roles at the same time:
   - To indicate of stressed syllables, but not always.
   - To indicate the syntactic relation in a sentence.
   - Intonation of the words, used for singing the sentence.
 
 - It is possible that one Unicode code-point can be mapped to different Hebrew accents.
 
-
 ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
-- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. The affected marks are:
+- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:
 
    -  The Yetiv mark
    -  The Tevir mark
