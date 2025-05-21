@@ -18,7 +18,7 @@ This README file provides a general overview of what to expect from this library
 
 ## Description
  
-This crate is going to be a library to find, filter, show Masoretic Hebrew accents.
+This crate is going to be a library to find, filter and show Masoretic Hebrew accents.
 
 ### Brief overview in the accents in the Tanach
  
@@ -132,7 +132,3 @@ be dual licensed as above, without any additional terms or conditions.
 
 #### Notes
  - Accents are sometimes called *Hebrew Cantilationmarks*
-
-# todo
-
-- secondary accents (mayella, meteg)
