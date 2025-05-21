@@ -25,21 +25,24 @@ This crate is going to be a library to find, filter and show Masoretic Hebrew ac
 The accents used in the Tanach have been the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed in the Tanach is complex and nuanced, presenting a challenging area of study for scholars and researchers.
 
 Several factors contribute to the complexity of Hebrew accents in the Tanach, including:
-
--  In the Tanach, there are two main systems of accents used: one for the majority of the books, known as the "Twenty-One Books" (which includes all the books except for the three poetic books), and another for the three poetic books of Psalms, Proverbs, and Job, known as "Three Books".
-
-- Within the main system there are two major categories of Masoretic accents:
-  - the disjunctive accents and
-  - the conjunctive accents.
-
-- All disjunctive accents are ordered and are divided in groups.
-
-- The same (UTF-8) accent can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books".
-  
 - Accents have three roles at the same time:
   - To indicate of stressed syllables, but not always.
   - To indicate the syntactic relation in a sentence.
   - Intonation of the words, used for singing the sentence.
+
+-  In the Tanach, there are two main systems of accents used: one for the majority of the books, known as the "Twenty-One Books" (which includes all the books except for the three poetic books), and another for the three poetic books of Psalms, Proverbs, and Job, known as "Three Books".
+
+- Within the main system there are two major categories of Masoretic accents:
+  - Disjunctive accents
+  - Conjunctive accents
+
+- All disjunctive accents are ordered according their relative importance.m
+  
+- All disjunctive accents are systematically organized into distinct groups. 
+
+- In the "Twenty-One Books," there are four groups of disjunctive accents, while the "Three Books" contain three groups.
+
+- The same (UTF-8) accent can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books".
 
 - It is possible that one Unicode code-point can be mapped to different Hebrew accents.
 
@@ -130,5 +133,10 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
 
+ - [Tabula Accentum of the BHS](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf)
+
+ - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
+- 
+
 #### Notes
- - Accents are sometimes called *Hebrew Cantilationmarks*
+ - Accents are sometimes called *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים)
