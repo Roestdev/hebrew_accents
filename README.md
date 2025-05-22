@@ -1,6 +1,6 @@
 # hebrew_accents
 
-Handling Masoretic Hebrew Accents
+Managing Masoretic Hebrew Accents
 
 </br>
 
@@ -18,11 +18,11 @@ This README file provides a general overview of what to expect from this library
 
 ## Description
  
-This crate is going to be a library to find, filter and show Masoretic Hebrew accents.
+This crate is going to be a library to find, filter and show Masoretic Hebrew accents. 
 
 ### Brief overview in the accents in the Tanach
  
-The accents used in the Tanach have been the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed in the Tanach is complex and nuanced, presenting a challenging area of study for scholars and researchers.
+The accents used in the Tanach have been (are) the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed in the Tanach is complex and nuanced, presenting a challenging area of study for scholars and researchers.
 
 Several factors contribute to the complexity of Hebrew accents in the Tanach, including:
 - Accents have three roles at the same time:
@@ -61,8 +61,11 @@ Several factors contribute to the complexity of Hebrew accents in the Tanach, in
 
 For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
 
-### Goals
- 
+### Goal
+
+The main goal is to write a library that can be used to learn the Masoretic Hebrew accents.
+
+Sub-goals:
 - Identify Hebrew accents within the provided text.
 - Offer the ability to filter specific accents.
 - Provide an option to display the identified accents.
@@ -133,10 +136,10 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
 
- - [Tabula Accentum of the BHS](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf)
+ - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship, 
+providing essential resources for the study of the Hebrew Bible and its interpretation.
 
  - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
-- 
-
+  
 #### Notes
  - Accents are sometimes called *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים)
