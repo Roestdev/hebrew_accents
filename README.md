@@ -142,4 +142,6 @@ providing essential resources for the study of the Hebrew Bible and its interpre
  - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
   
 #### Notes
- - Accents are sometimes called *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים)
+ - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
+ - Disjunctives and conjunctives are sometimes referred to as *pausal* and *non-pausal*
+

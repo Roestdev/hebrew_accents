@@ -15,12 +15,21 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 # Basis of the design
 
-The classification of emphases as described in the book by Mark D. Futato, Sr. will serve as the basis for design. The reason is that this book is recently published (2020) and it is on my bookshelf.
+The classification of accents as described in the book by Mark D. Futato, Sr. will serve as the basis for design. The reason is that this book is recently published (2020) and it is on my bookshelf :-)
 
 The above will be supplemented with the following:
 
-- the accent called `Mayela`, which is mentioned in the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship.
+- the accent called `Mayela`, which is mentioned in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship.
 
 - a correction for the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter.
 
 - some minor transliteration adaptions.
+
+
+#### Note
+
+My preference is for the ranking and group classification as used in the `Biblia Hebraica Stuttgartensia`. 
+
+Unfortunately, so far I have not seen a document describing the classification of disjunctives for the prosa. 
+
+Should this be the case in the future it will be incorporated into the implmentation.
