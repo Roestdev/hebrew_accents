@@ -136,8 +136,7 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
 
- - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship, 
-providing essential resources for the study of the Hebrew Bible and its interpretation.
+ - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship, providing essential resources for the study of the Hebrew Bible and its interpretation.
 
  - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
   
