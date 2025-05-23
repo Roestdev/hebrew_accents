@@ -28,8 +28,4 @@ The above will be supplemented with the following:
 
 #### Note
 
-My preference is for the ranking and group classification as used in the `Biblia Hebraica Stuttgartensia`. 
-
-Unfortunately, so far I have not seen a document describing the classification of disjunctives for the prosa. 
-
-Should this be the case in the future it will be incorporated into the implmentation.
+My preference is for the ranking and group classification as used in the `Biblia Hebraica Stuttgartensia`. Unfortunately, so far I have not seen a document describing the classification of disjunctives for the prosa. Should this be the case in the future it will be incorporated into the implementation.
