@@ -139,6 +139,8 @@ be dual licensed as above, without any additional terms or conditions.
  - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship, providing essential resources for the study of the Hebrew Bible and its interpretation.
 
  - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
+ 
+ - [Gesenius Hebrew Grammer](https://dn790008.ca.archive.org/0/items/geseniushebrewgr00geseuoft/geseniushebrewgr00geseuoft.pdf)
   
 #### Notes
  - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
