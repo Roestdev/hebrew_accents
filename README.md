@@ -36,11 +36,11 @@ Several factors contribute to the complexity of Hebrew accents in the Tanach, in
   - Disjunctive accents
   - Conjunctive accents
 
-- All disjunctive accents are ordered according their relative importance.m
+- Disjunctive accents are ordered according their relative importance.
   
-- All disjunctive accents are systematically organized into distinct groups. 
+- Disjunctive accents may be organized hiarchial groups. 
 
-- In the "Twenty-One Books," there are four groups of disjunctive accents, while the "Three Books" contain three groups.
+  - In the "Twenty-One Books," there are four groups of disjunctive accents, while the "Three Books" contain three groups.
 
 - The same (UTF-8) accent can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books".
 
@@ -130,17 +130,19 @@ be dual licensed as above, without any additional terms or conditions.
   
  - [Gesenius Hebrew Grammar - §15. The Accents.](https://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents)
 
- - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](https://archive.org/details/treatiseonaccent00wickuoft) written by Wickes.
+ - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](https://archive.org/details/treatiseonaccent00wickuoft) written by Wickes
 
- - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) written by Wickes.
+ - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) written by Wickes
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
 
- - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia" which is a cornerstone of biblical scholarship, providing essential resources for the study of the Hebrew Bible and its interpretation.
+ - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia".
 
- - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) by Sung Jin Park.
+ - [Introduction to Tiberian Hebrew Accents](https://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf) an excerpt by Sung Jin Park.
  
  - [Gesenius Hebrew Grammer](https://dn790008.ca.archive.org/0/items/geseniushebrewgr00geseuoft/geseniushebrewgr00geseuoft.pdf)
+
+ - [The Masoretes and the Punctuation of Biblical Hebrew](https://usermanual.wiki/bililite/MasoreticPunctuation.1300310592.pdf) from the British & Foreign Bible Society
   
 #### Notes
  - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).

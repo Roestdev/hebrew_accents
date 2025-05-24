@@ -1,13 +1,13 @@
 # Introduction
 
-As indicated in the README file, there is much discussion and different understandings regarding the accents. In the file [Incomplete_overview_of_the_masoretic_hebrew_accents](doc/Incomplete_overview_of_the_masoretic_hebrew_accents), I have put a few different views side by side, in order to see where the differences are.
+As indicated in the README file, there is much discussion and different understandings regarding the accents. In the file [Incomplete_overview_of_the_masoretic_hebrew_accents](doc/Incomplete_overview_of_the_masoretic_hebrew_accents). In that file, I have placed the view of a few different scholars side by side for simple comparison.
 
 Despite many similarities, I also discovered some differences between the insights from scholars, including:
 
-- ordering of accents
-- alternative names (Hebrew/Aramaic)
-- grouping of disjunctives
-- the same accents in different groups (H. Richter)
+- the order of the accents
+- putting disjunctive accents into groups
+  - Gesenius indicates that the division into groups originated from Samuel Bohlius (1636)
+  - contents of the groups are not identical
 
 Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, I will make a choice regarding implementation.
 
@@ -15,17 +15,12 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 # Basis of the design
 
-The classification of accents as described in the book by Mark D. Futato, Sr. will serve as the basis for design. The reason is that this book is recently published (2020) and it is on my bookshelf :-)
+I decided too use the layout as  mentioned in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
-The above will be supplemented with the following:
+On top of that a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter will be added.
 
-- the accent called `Mayela`, which is mentioned in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship.
+### Note
 
-- a correction for the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter.
+The ordering of the accent used in the  `Biblia Hebraica Stuttgartensia` is very similar to the ones from `Gesenius`, `William Wickes` and `James D. Price`.
 
-- some minor transliteration adaptions.
-
-
-#### Note
-
-My preference is for the ranking and group classification as used in the `Biblia Hebraica Stuttgartensia`. Unfortunately, so far I have not seen a document describing the classification of disjunctives for the prosa. Should this be the case in the future it will be incorporated into the implementation.
+For now the division into groups of the disjunctives will not be implemented, because they were added not so long ago and scholar views differ too much.
