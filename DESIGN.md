@@ -13,14 +13,12 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 </br>
 
-# Basis of the design
+# Design decision
 
-I decided too use the layout as  mentioned in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
+I chose to utilize the layout outlined in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
 On top of that a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter will be added.
 
 ### Note
 
-The ordering of the accent used in the  `Biblia Hebraica Stuttgartensia` is very similar to the ones from `Gesenius`, `William Wickes` and `James D. Price`.
-
-For now the division into groups of the disjunctives will not be implemented, because they were added not so long ago and scholar views differ too much.
+- For now the division into groups of the disjunctives will not be implemented, because they were added not so long ago and scholar views differ too much.
