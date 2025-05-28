@@ -22,3 +22,29 @@ On top of that a correction of the errors regarding the Unicode characters `HEBR
 ### Note
 
 - For now the division into groups of the disjunctives will not be implemented, because they were added not so long ago and scholar views differ too much.
+
+
+# Design
+
+Below the base of the design. Everything else will be build on top of it.
+ 
+1. New type: **ContextVerse** (sentence + Context)
+
+2. **Enum Context**: Prose, Poetry
+
+3. **Accent attributes**:
+   - name (String)
+   - hebrew name (String)
+   - alternative name (String, optional)
+   - alternative hebrew name (String, optional)
+   - horizontal position (enum)
+   - vertical position (enum)
+   - order (u8)
+   - comment (String, optional)
+   - group (u8, optional) ?
+
+4. **Enum Vertical position**:  top, bottom
+5. **Enum Horizontal position:**
+   - postpositive (left)
+   - normal (middle)
+   - prepositive (right)

@@ -126,15 +126,15 @@ be dual licensed as above, without any additional terms or conditions.
   
  - [Basics of Hebrew Accents](https://zondervanacademic.com/products/basics-of-hebrew-accents), written by Mark D. Futato, Sr.
 
- - [Hebrew Cantillation Marks And Their Encoding](https://mechon-mamre.org/c/hr/index.htm) written by Helmut Richter.
+ - [Hebrew Cantillation Marks And Their Encoding](https://mechon-mamre.org/c/hr/index.htm) by Helmut Richter.
   
  - [Gesenius Hebrew Grammar - §15. The Accents.](https://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents)
 
- - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](https://archive.org/details/treatiseonaccent00wickuoft) written by Wickes
+ - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](https://archive.org/details/treatiseonaccent00wickuoft) by Wickes
 
- - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) written by Wickes
+ - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](https://archive.org/details/treatiseonaccent0000wick) by Wickes
 
- - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
+ - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) by James D. Price, Ph.D.
 
  - [Tabula Accentum](https://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf) of the "Biblia Hebraica Stuttgartensia".
 
@@ -144,7 +144,15 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [The Masoretes and the Punctuation of Biblical Hebrew](https://usermanual.wiki/bililite/MasoreticPunctuation.1300310592.pdf) from the British & Foreign Bible Society
   
+  - [ACCENTS IN HEBREW](https://www.jewishencyclopedia.com/articles/717-accents-in-hebrew) by  Max L. Margolis
+
+  - [The Masoretic Hebrew Accents in Translation and Interpretation](https://hebrew4christians.com/Grammar/Unit_Three/Word_Accents/HebrewAccents_Barrick.pdf) by William D. Barrick
+  
 #### Notes
+
  - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
- - Disjunctives and conjunctives are sometimes referred to as *pausal* and *non-pausal*
+
+ - `Disjunctives` are sometimes referred to as *pausal* or *domini*
+
+ - `Conjunctives` are sometimes referred to as *non-pausal* or *servi*
 
