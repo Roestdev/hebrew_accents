@@ -17,7 +17,8 @@ This README file provides a general overview of what to expect from this library
 
 ## Description
  
-This crate is going to be a library to find, filter, show Hebrew accents.
+This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
+
 
 ### Brief overview in the accents in the Tanach
  
@@ -61,7 +62,7 @@ For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicod
  
 - Identify Hebrew accents within the provided text.
 - Offer the ability to filter specific accents.
-- Provide an option to display the identified accents.
+- Offer an option to display only specific accents including all consonants.
 - Supply statistical information regarding the usage of the accents.
 
 ### Non-Goals
@@ -129,7 +130,7 @@ be dual licensed as above, without any additional terms or conditions.
 
  - [The Syntax of Masoretic Accents in the Hebrew Bible](https://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf) written by James D. Price, Ph.D.
  
- - [Hebrew_Cantillation on wiki](https://en.wikipedia.org/wiki/Hebrew_cantillation)
+ - [Hebrew_Cantillation](https://en.wikipedia.org/wiki/Hebrew_cantillation)  (wikipedia)
 
 #### Notes
  - Accents are sometimes called *Hebrew Cantilationmarks* or taʿamei ha-mikra (טעמי המקרא) or just teʿamim (טעמים).
