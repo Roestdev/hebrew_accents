@@ -18,7 +18,8 @@ This README file provides a general overview of what to expect from this library
 
 ## Description
  
-This crate is going to be a library to find, filter and show Masoretic Hebrew accents. 
+This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
+
 
 ### Brief overview in the accents in the Tanach
  
@@ -68,7 +69,7 @@ The main goal is to write a library that can be used to learn the Masoretic Hebr
 Sub-goals:
 - Identify Hebrew accents within the provided text.
 - Offer the ability to filter specific accents.
-- Provide an option to display the identified accents.
+- Offer an option to display only specific accents including all consonants.
 - Supply statistical information regarding the usage of the accents.
 
 ### Non-Goals
