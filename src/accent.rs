@@ -73,7 +73,7 @@ impl ProseAccent {
     fn rank(&self) -> u8 {
         match self {
             ProseAccent::Silluq => 1,
-            ProseAccent::Atnach => 2,
+            ProseAccent::Atnakh => 2,
             ProseAccent::Segolta => 3,
             ProseAccent::Shalshelet => 4,
             ProseAccent::ZaqephQaton => 5, // parvum
@@ -85,21 +85,21 @@ impl ProseAccent {
             ProseAccent::Yetiv => 11,
             ProseAccent::Tevir => 12,
             ProseAccent::Geresh => 13,
-            ProseAccent::Gerashayim => 14,
+            ProseAccent::Gershayim => 14,
             ProseAccent::Pazer => 15,
             ProseAccent::PazerGadol => 16, // magnum
-            ProseAccent::TelishaGedola => 17, // magnum
+            ProseAccent::TelishaGedolah => 17, // magnum
             ProseAccent::Legarmeh => 18, // with Munakh 
             // Conjunctives
             ProseAccent::Munakh => 19,
             ProseAccent::Mahpakh => 20,
-            ProseAccent::Merkha => 21,
-            ProseAccent::MerkhaKhephula => 22,
+            ProseAccent::Merekha => 21,
+            ProseAccent::MerekhaKhephulah => 22,
             ProseAccent::Darga => 23,
             ProseAccent::Azla => 24,
             ProseAccent::TelishaQetanna => 25, // parvum = small
             ProseAccent::Galgal => 26,
-            ProseAccent::Meayla => 27,
+            ProseAccent::Mayela => 27,
         }
     }
     /// Returns information about the accent.

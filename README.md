@@ -148,6 +148,8 @@ be dual licensed as above, without any additional terms or conditions.
   - [ACCENTS IN HEBREW](https://www.jewishencyclopedia.com/articles/717-accents-in-hebrew) by  Max L. Margolis
 
   - [The Masoretic Hebrew Accents in Translation and Interpretation](https://hebrew4christians.com/Grammar/Unit_Three/Word_Accents/HebrewAccents_Barrick.pdf) by William D. Barrick
+
+- [Hebrew_Cantillation](https://en.wikipedia.org/wiki/Hebrew_cantillation)  (wikipedia)
   
 #### Notes
 
