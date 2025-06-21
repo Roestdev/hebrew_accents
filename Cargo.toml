@@ -13,4 +13,5 @@ readme = "README.md"
 #rust-version = "1.56.1"
 
 [dependencies]
-# hebrew_unicode_script = "2.0.0"
+# hebrew_unicode_script = "2.0.
+regex = "1.11.1"
