@@ -5,7 +5,5 @@ mod accent;
 mod sentence;
 
 // export
-//pub use crate::accent::PoetryAccent::*;
-// pub use crate::accent::ProseAccent::*;
 pub use crate::accent::*;
 pub use crate::sentence::*;

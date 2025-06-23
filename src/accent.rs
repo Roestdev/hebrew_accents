@@ -1,7 +1,7 @@
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)] //,Display,Default
 pub enum HebrewAccent {
-    TwentyOne(ProseAccent),
-    Three(PoetryAccent),
+    Prose(ProseAccent),
+    Poetry(PoetryAccent),
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
