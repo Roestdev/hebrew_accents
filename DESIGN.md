@@ -27,7 +27,7 @@ Looking roughly I notice the following similarities and differences.
   - Gesenius indicates that the division into groups originated from Samuel Bohlius (1636)
   - somes cholars 
   - contents of the groups are not identical
-- The names of the accents is a mix of Ashkenazi and Sephardi (see [wiwikipediaki](https://en.wikipedia.org/wiki/Hebrew_cantillation#Names_and_shapes_of_the_te'amim))
+- The names of the accents is a mix of Ashkenazi and Sephardi (see [wikipedia](https://en.wikipedia.org/wiki/Hebrew_cantillation#Names_and_shapes_of_the_te'amim))
 
 Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, I will make a choice regarding implementation.
 
@@ -39,9 +39,11 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 - On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter will be added.
 
-- Accent names will be according `Biblia Hebraica Stuttgartensia`, but aternate names will be provided.
+- Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided.
 
-- Transliteration of the Hebrew names is listed in the file [Transliteration](doc/Transliteration.ods).
+- The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
+  
+- Paseq, Maqqefand Meteg will be added to the conjunctive accents, as mentioned by `Helmut Rigter`.
 
 ### Note
 
@@ -68,8 +70,8 @@ Below the start of the design. Everything else will be build on top of it.
    - horizontal_position (enum)
    - vertical_position (enum)
    - order (u8)
-   - comment (Option<String>
-   - group_nr (u8, optional) 
+   - comment (Option<String>)
+   - group_nr (Option<u8>) 
 
 4. **Enum Vertical position**:   
    - top
@@ -79,3 +81,21 @@ Below the start of the design. Everything else will be build on top of it.
    - postpositive (left)
    - normal (middle)
    - prepositive (right)
+
+
+## Prose books
+
+- Two accents consist two Unicode code-points: 
+  - Shalshelet
+  - Legarmeh
+
+## Poetic books
+
+- Seven accents consist two Unicode code-points:
+  - Ole We Yored
+  - Revia Mugrash
+  - Shalshelet Gadol
+  - Mahpakh Legarmeh
+  - Azla Legarmeh
+  - Tsinnorit Merkha
+  - Tsinnorit Mahpakh
