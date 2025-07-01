@@ -143,8 +143,8 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Galgal) if self.context == Context::Prosaic => {
                 self.sentence.contains('\u{005AA}')
             }
-            HebrewAccent::Prose(ProseAccent::Meayela) if self.context == Context::Prosaic => {
-                contains_meayela(self)
+            HebrewAccent::Prose(ProseAccent::Mayla) if self.context == Context::Prosaic => {
+                contains_mayla(self)
             }
 
             /* **********************************************************
@@ -314,7 +314,7 @@ impl SentenceContext {
     //             Some(1)
     //         }
     //         HebrewAccent::Prose(ProseAccent::Galgal) if self.context == Context::Prosaic => Some(1),
-    //         HebrewAccent::Prose(ProseAccent::Meayela) if self.context == Context::Prosaic => {
+    //         HebrewAccent::Prose(ProseAccent::Mayla) if self.context == Context::Prosaic => {
     //             Some(1)
     //         }
     //         // Poetry Disjunctives
@@ -454,7 +454,7 @@ fn contains_munnach(sc: &SentenceContext) -> bool {
     re_munnach.is_match(&sc.sentence)
 }
 
-fn contains_meayela(sc: &SentenceContext) -> bool {
+fn contains_mayla(sc: &SentenceContext) -> bool {
     /*
         Mayela is not a true conjunctive accent.
         Mayela (Tiphcha) only appears in the same word stressed by Athnach or Silluq.
@@ -775,15 +775,15 @@ mod tests {
         assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
     }
     #[test]
-    fn test_contains_prose_meayela() {
+    fn test_contains_prose_mayla() {
         let newsc = SentenceContext::new("בּראשׁית בּרא א֖לה֑ים את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Meayela)));
+        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Mayla)));
         let newsc = SentenceContext::new("בּראשׁית בּרא אלה֑ים֖ את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Meayela)));
+        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Mayla)));
         let newsc = SentenceContext::new("בּראשׁית בּרא אל֑ה֖ים את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Meayela)));
+        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Mayla)));
         let newsc = SentenceContext::new("בּראשׁית בּרא א֖ל֑הים את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Meayela)));
+        assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Mayla)));
         assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
     }
     /* **********************************************************
