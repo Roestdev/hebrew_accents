@@ -7,10 +7,9 @@ pub enum HebrewAccent {
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
 pub enum ProseAccent {
     // Disjunctives
-    SophPasuq,
     #[default]
     Silluq,
-    Atnach, //Etnachta,
+    Atnach,  //Etnachta,
     Segolta, //postpositive
     Shalshelet,
     ZaqephQatan,
@@ -28,7 +27,6 @@ pub enum ProseAccent {
     TelishaGedolah, //prepositive
     Legarmeh,
     // Conjunctives
-    Paseq,
     Munnach,
     Mahpakh,
     Merkha,
@@ -38,14 +36,11 @@ pub enum ProseAccent {
     TelishaQetannah, //postpositive
     Galgal,
     Mayla, //Meayela,
-    Maqqeph,
-    Meteg,
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
 pub enum PoetryAccent {
     // Disjunctives
-    SophPasuq,
     #[default]
     Silluq,
     OleWeYored,
@@ -60,7 +55,6 @@ pub enum PoetryAccent {
     MahpakhLegarmeh,
     AzlaLegarmeh,
     // Conjunctives
-    Paseq,
     Munnach,
     Merkha,
     Illuy,
@@ -71,8 +65,6 @@ pub enum PoetryAccent {
     ShalsheletQetannah,
     TsinnoritMerkha,
     TsinnoritMahpakh,
-    Maqqeph,
-    Meteg,
 }
 
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Copy, Display
@@ -94,7 +86,7 @@ pub enum AccentType {
     Conjunctive,
     #[default]
     Disjunctive,
-    Neither, 
+    Neither,
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
@@ -121,7 +113,6 @@ impl ProseAccent {
     fn rank(&self) -> u8 {
         match self {
             // Disjunctives
-            ProseAccent::SophPasuq => 0,
             ProseAccent::Silluq => 1,
             ProseAccent::Atnach => 2,
             ProseAccent::Segolta => 3,
@@ -150,9 +141,6 @@ impl ProseAccent {
             ProseAccent::TelishaQetannah => 25,
             ProseAccent::Galgal => 26,
             ProseAccent::Mayla => 27,
-            ProseAccent::Paseq => 101,
-            ProseAccent::Maqqeph => 102,
-            ProseAccent::Meteg => 103,
         }
     }
     /// Returns information about the accent.
@@ -161,18 +149,6 @@ impl ProseAccent {
     fn info(&self) -> AccentInfo {
         match self {
             // Disjunctives
-            ProseAccent::SophPasuq => AccentInfo {
-                name: "Soph Pasuq".to_string(),
-                hebrew: "סוֹף פָּסֽוּק".to_string(),
-                meaning: Some("End of verse".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: None,
-                accent_type: AccentType::Neither,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::End,
-                position_codepoint2: None,
-            },
             ProseAccent::Silluq => AccentInfo {
                 name: "Silluq".to_string(),
                 hebrew: "סִילֽוּק".to_string(),
@@ -498,42 +474,6 @@ impl ProseAccent {
                 position_codepoint1: AccentPosition::Under,
                 position_codepoint2: None,
             },
-            ProseAccent::Paseq => AccentInfo {
-                name: "Paseq".to_string(),
-                hebrew: "פָּסֵ֣ק".to_string(),
-                meaning: Some("pause or break)".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("Follows an accent (-> multi character accent)".to_string()),
-                accent_type: AccentType::Neither,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Under,
-                position_codepoint2: None,
-            },
-            ProseAccent::Maqqeph => AccentInfo {
-                name: "Maqqeph".to_string(),
-                hebrew: "מַקֵּף".to_string(),
-                meaning: Some("binder".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("".to_string()),
-                accent_type: AccentType::Conjunctive,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Under,
-                position_codepoint2: None,
-            },
-            ProseAccent::Meteg => AccentInfo {
-                name: "Meteg".to_string(),
-                hebrew: "מֶתֶג".to_string(),
-                meaning: Some("bridle".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("secondary stress".to_string()),
-                accent_type: AccentType::Conjunctive,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Under,
-                position_codepoint2: None,
-            },
         }
     }
 }
@@ -543,7 +483,6 @@ impl PoetryAccent {
     fn rank(&self) -> u8 {
         match self {
             // Disjunctives
-            PoetryAccent::SophPasuq => 0,
             PoetryAccent::Silluq => 1,
             PoetryAccent::OleWeYored => 2,
             PoetryAccent::Atnach => 3,
@@ -567,28 +506,12 @@ impl PoetryAccent {
             PoetryAccent::ShalsheletQetannah => 20,
             PoetryAccent::TsinnoritMerkha => 21,
             PoetryAccent::TsinnoritMahpakh => 21,
-            //
-            PoetryAccent::Paseq => 101,
-            PoetryAccent::Maqqeph => 102,
-            PoetryAccent::Meteg => 103,
         }
     }
     #[allow(unused)]
     fn info(&self) -> AccentInfo {
         match self {
             // Disjunctives
-            PoetryAccent::SophPasuq => AccentInfo {
-                name: "Soph Pasuq".to_string(),
-                hebrew: "סוֹף פָּסֽוּק".to_string(),
-                meaning: Some("End of verse".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("End of verse".to_string()),
-                accent_type: AccentType::Neither,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::End,
-                position_codepoint2: None,
-            },
             PoetryAccent::Silluq => AccentInfo {
                 name: "Silluq".to_string(),
                 hebrew: "סִילֽוּק".to_string(),
@@ -850,42 +773,6 @@ impl PoetryAccent {
                 alt_hebrew: None,
                 comment: Some("??? Mahpakh Metsunnar".to_string()),
                 accent_type: AccentType::Conjunctive,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Above,
-                position_codepoint2: None,
-            },
-            PoetryAccent::Paseq => AccentInfo {
-                name: "Paseq".to_string(),
-                hebrew: "פָּסֵ֣ק".to_string(),
-                meaning: Some("pause or break)".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("Follows an accent (-> multi character accent)".to_string()),
-                accent_type: AccentType::Neither,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Above,
-                position_codepoint2: None,
-            },
-            PoetryAccent::Maqqeph => AccentInfo {
-                name: "Maqqeph".to_string(),
-                hebrew: "מַקֵּף".to_string(),
-                meaning: Some("binder".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("".to_string()),
-                accent_type: AccentType::Neither,
-                nr_of_code_points: AccentCodePoints::One,
-                position_codepoint1: AccentPosition::Above,
-                position_codepoint2: None,
-            },
-            PoetryAccent::Meteg => AccentInfo {
-                name: "Meteg".to_string(),
-                hebrew: "מֶתֶג".to_string(),
-                meaning: Some("bridle".to_string()),
-                alt_name: None,
-                alt_hebrew: None,
-                comment: Some("secondary stress".to_string()),
-                accent_type: AccentType::Neither,
                 nr_of_code_points: AccentCodePoints::One,
                 position_codepoint1: AccentPosition::Above,
                 position_codepoint2: None,

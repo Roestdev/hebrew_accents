@@ -42,12 +42,6 @@ Given that the scholars themselves do not have a unified view and that I myself 
 - Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided.
 
 - The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
-  
-- Paseq, Maqqefand Meteg will be added to the conjunctive accents, as mentioned by `Helmut Rigter`.
-
-### Note
-
-- For now the division into groups of the disjunctives will not be implemented, because they were added not so long ago and scholar views differ too much.
 
 # Design
 

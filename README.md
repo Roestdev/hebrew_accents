@@ -6,13 +6,12 @@ Managing Masoretic Hebrew Accents
 
 ## Project Status 
 
-**This project is currently in the design mode.**
+**This project is currently in the design/development mode.**
 
-`Current Version:`  v0.0.0.
+`Current Version:`  v0.0.1.
 
-``` txt
-This README file provides a general overview of what to expect from this library.
-```
+`Current feautures:`  
+- fn contains_accent(SentenceContext, HebrewAccent) -> bool
 
 </br>
 
@@ -78,7 +77,48 @@ Sub-goals:
 - Determine the type of text based on the identified accents.
 - Achieve absolute accuracy (100% correctness).
 
+## Caveats
+
+In order to locate some of the accents the crate Fancy-Regex is used.
+This gives some issues, because the `negative lookbehind` feature does not function with quantifiers.
+It concerns the following Poetic accents:
+- Revia Gadol  
+  Could also be a `Revia Mugrash` or a `Revia Qaton`
+
+- Revia Qaton  
+  Could also be a `Revia Mugrash`
+
+- Merkha   
+  Could also be an `Ole We Yored` or `Tsinnorit Merkha`
+
+- Mahpakh  
+  Could also be a `Tsinnorit Mahpkh`
+
 ## Examples
+
+### Usage contains_accent()
+
+``` rust
+use hebrew_accents::SentenceContext;;
+use hebrew_accents::Context;
+use hebrew_accents::HebrewAccent;
+use hebrew_accents::ProseAccent;
+
+let newsc = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃", Context::Prosaic,);
+assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
+```
+
+``` rust
+use hebrew_accents::SentenceContext;;
+use hebrew_accents::Context;
+use hebrew_accents::HebrewAccent;
+use hebrew_accents::PoetryAccent;
+
+let newsc = SentenceContext::new("יצחק אל־יע֓קב ׀ ויברך", Context::Poetic);
+assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol)));
+```
+
+### Usage find_accent()
 
 TODO
 
