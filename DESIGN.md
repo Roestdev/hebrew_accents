@@ -4,7 +4,7 @@ As indicated in the README file, there is much discussion and different understa
 
 Looking roughly I notice the following similarities and differences.
 
-#### Similarities
+### Similarities
 
 - Number of Unicode code-points per accent
 - Distribution and number of accents:
@@ -17,25 +17,24 @@ Looking roughly I notice the following similarities and differences.
     - 10 conjuntives
 
   Notes: 
-    - Mayela is a secondary accent
+    - Mayela and Meteg are secondary accents
     - Some accents are in multiple groups (Helmut Righter) 
 
-#### Differences
+### Differences
 
 - The ordering of the accents
 - Putting disjunctive accents into groups
   - Gesenius indicates that the division into groups originated from Samuel Bohlius (1636)
-  - somes cholars 
   - contents of the groups are not identical
-- The names of the accents is a mix of Ashkenazi and Sephardi (see [wikipedia](https://en.wikipedia.org/wiki/Hebrew_cantillation#Names_and_shapes_of_the_te'amim))
+- The names of the accents is mostly a mix of Ashkenazi and Sephardi (see [wikipedia](https://en.wikipedia.org/wiki/Hebrew_cantillation#Names_and_shapes_of_the_te'amim))
 
-Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, I will make a choice regarding implementation.
+Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, choices needs to be made regarding the implementation.
 
 </br>
 
 # Design decision
 
-- I chose to utilize the layout outlined in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
+- I chose to utilize the layout as outlined in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
 - On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter will be added.
 
@@ -43,12 +42,61 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 - The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
 
+## Accent Mapping to Unicode code-points
+
+Hebrew accents as they occur in the Tanach are mostly, but not always exact the same as the accents as mentioned in the Unicode code page.
+
+#### One Hebrew Accent -> one code-point
+
+This covers most of the cases. Examples: 
+ - ProseAccent::Segolta -> Unicode code-point: **U+0592**
+ - PoetryAccent::Munnach -> Unicode code-point: **U05A3**
+
+#### One Hebrew Accent -> two code-points
+
+- In the `Prose books` the following two accents consist of two(2) Unicode code-points: 
+  - Shalshelet
+  - Legarmeh
+
+- In the `Poetic books` the following seven accents consist of two(2) Unicode code-points:
+  - Ole We Yored
+  - Revia Mugrash
+  - Shalshelet Gadol
+  - Mahpakh Legarmeh
+  - Azla Legarmeh
+  - Tsinnorit Merkha
+  - Tsinnorit Mahpakh
+
+#### Two Hebrew Accents -> One code-point
+
+Examples: 
+- `Mayla` and `Tiphcha` both have the same unicode point **U+0596**
+- `Silluq` and `Meteg` both have the same unicode point **U+05BD**
+
+(more details can be found in the code itself)
+
 # Design
 
 Below the start of the design. Everything else will be build on top of it.
 
 *(This section will be updated during development)*
 
+## Handling the different accent mappings
+
+In general all mappings can be resolved using either the [String](https://doc.rust-lang.org/std/string/struct.String.html#implementations[) methods or some kind of regular expression ([Regex](](https://docs.rs/regex/latest/regex/)) or [Fancy-Regex](https://docs.rs/fancy-regex/latest/fancy_regex/)).
+
+
+**Except** the following four Hebrew Accents, because they need a `flexible negative lookbehind`, which is at the moment of writing not available as far as I know.
+
+1. Merkha  
+The accent `Merkha`, `OleWeYored` and `TsinnoritMerkha` all contain the unicode point **U+05A5**.
+2. Mahpakh
+3. Revia Gadol
+4. Revia Qaton
+
+
+
+## Data structures
 
 1. **Enum Context**: Prose, Poetry
    
@@ -77,19 +125,11 @@ Below the start of the design. Everything else will be build on top of it.
    - prepositive (right)
 
 
-## Prose books
 
-- Two accents consist two Unicode code-points: 
-  - Shalshelet
-  - Legarmeh
+### Merkha
 
-## Poetic books
+The accent `Merkha`, `OleWeYored` and `TsinnoritMerkha` all contain the unicode point **U+05A5**. 
 
-- Seven accents consist two Unicode code-points:
-  - Ole We Yored
-  - Revia Mugrash
-  - Shalshelet Gadol
-  - Mahpakh Legarmeh
-  - Azla Legarmeh
-  - Tsinnorit Merkha
-  - Tsinnorit Mahpakh
+In order to find a Merkha  ('one code-point accent') we need to check if it is *not* part of a 'two code-point' accent. 
+
+need a flexible negative lookbehind if the , which is at the moment of writing not covered by the crate fancy-regex.

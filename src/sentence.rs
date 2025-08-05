@@ -1,4 +1,6 @@
 #![allow(unused)]
+use crate::constants::*;
+use crate::sentence;
 use crate::HebrewAccent;
 use crate::PoetryAccent;
 use crate::ProseAccent;
@@ -89,7 +91,7 @@ static RE_POETRY_MAHPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(||
     // - no GERESH (\u{059C}) (OR GERESH MUQDAM (\u{059D})?) in the same word as
     // - REVIA (\u{0597}) followed by
     // - OLE (\u{05AB}) followed by         }  can be split over two words
-    // - YORED (\u{05A5}) (aka MERKHA)      }
+    // - YORED (\u{05A5}) (aka Merkha)      }
     Regex::new(r"\u{05A4}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap());
 
 static RE_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(||
@@ -292,6 +294,7 @@ impl SentenceContext {
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.context == Context::Poetic => {
                 RE_POETRY_REVIA_GADOL.is_match(&self.sentence)
+                // contains_revia_gadol(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.context == Context::Poetic => {
                 RE_POETRY_REVIA_MUGRASH.is_match(&self.sentence)
@@ -301,6 +304,7 @@ impl SentenceContext {
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.context == Context::Poetic => {
                 RE_POETRY_REVIA_QATON.is_match(&self.sentence)
+                // contains_revia_qaton(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => {
                 self.sentence.contains('\u{05AD}')
@@ -318,15 +322,18 @@ impl SentenceContext {
                 self.sentence.contains('\u{05A3}')
             }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => {
-                self.sentence.contains('\u{05A5}')
+                //self.sentence.contains('\u{05A5}')
                 // RE_POETRY_MERKHA.is_match(&self.sentence)
+                // replacewith a function
+                contains_merkha(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => {
                 self.sentence.contains('\u{05AC}')
             }
             HebrewAccent::Poetry(PoetryAccent::Mahpakh) if self.context == Context::Poetic => {
                 //self.sentence.contains('\u{05A4}')
-                RE_POETRY_MAHPAKH.is_match(&self.sentence).unwrap()
+                // RE_POETRY_MAHPAKH.is_match(&self.sentence).unwrap()
+                contains_mahpakh(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.context == Context::Poetic => {
                 RE_POETRY_AZLA.is_match(&self.sentence).unwrap()
@@ -474,6 +481,124 @@ impl SentenceContext {
     }
 }
 
+fn contains_merkha(sentence: &str) -> bool {
+    // Merkha is
+    //   not part of Ole We Yored (needs Negative Lookbehind)
+    //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
+    let target_char = MERKHA;
+    let possible_combinations_lookbehind = [ZARQA, OLE];
+
+    if !&sentence.contains(target_char) {
+        return false;
+    }
+    // turn sentence into a Vec of chars for indexing
+    let char_vec: Vec<char> = sentence.chars().collect();
+    // retrieve positions of the target character
+    let positions = indexes_of_target_char(&target_char, &char_vec);
+    // loop over all positions
+    for &index in &positions {
+        println!("LOOP::Index of target character = {index}\n");
+        println!("LOOP::INFO:: Negative Looking Backwards");
+        let is_part_of = is_part_of_two_code_point_accent_look_behind(
+            &char_vec,
+            &target_char,
+            index,
+            &possible_combinations_lookbehind,
+            2,
+        );
+        if !is_part_of {
+            println!(
+                "Found at least one target char, not part of another aaccent:: BREAK the loop"
+            );
+            return true;
+        }
+        println!("LOOP::Target character found backwords? = {is_part_of}\n");
+    }
+    false
+    //sentence.contains(MERKHA)
+}
+
+fn indexes_of_target_char(target_char: &char, char_vec: &[char]) -> Vec<usize> {
+    // get indexes of the target character
+    let indexes_of_target_char: Vec<usize> = char_vec
+        .iter()
+        .enumerate()
+        .filter_map(|(index, &value)| {
+            if value == *target_char {
+                Some(index)
+            } else {
+                None
+            }
+        })
+        .collect();
+    indexes_of_target_char
+}
+fn is_part_of_two_code_point_accent_look_behind(
+    sentence: &[char],
+    target_char: &char,
+    index_target_char: usize,
+    possible_combinations_lookbehind: &[char],
+    max_word_span: usize,
+) -> bool {
+    // the word containing the accent is the first word
+    let mut word_count: usize = 0;
+    if index_target_char == 0 {
+        println!("LB::Target character is found at the first position");
+        // Early exit if the position is at the start
+        return false;
+    }
+    // backwards search
+    for current_index in (0..index_target_char).rev() {
+        let current_char = sentence[current_index];
+        println!(
+            "LB::INFO::Current character [ {current_char} ] at index {current_index} - word_count: {word_count}"
+        );
+
+        if current_char == ' ' || current_char == MAQAF {
+            word_count += 1;
+            println!("LB::new word_count: {word_count}");
+            if word_count == max_word_span {
+                println!("LB::Max word count reached");
+                return false;
+            }
+        }
+        // Check for the second directly following target character
+        if current_char == *target_char {
+            println!("LB::Found target character [{current_char}] at position {current_index}");
+            return false;
+        }
+        // Check for possible combinations
+        if possible_combinations_lookbehind.contains(&current_char) {
+            println!("LB::Found:: Part of two code-point accent");
+            return true;
+        }
+    }
+    println!("LB::END-OF:: is_part_of_two_code_point_accent_look_behind");
+    true
+}
+
+fn contains_mahpakh(sentence: &str) -> bool {
+    // Mahpakh
+    //   not part of Mahpakh Legarmeh (needs Negative Forward)
+    //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
+    sentence.contains(MAHPAKH)
+}
+
+fn contains_revia_gadol(sentence: &str) -> bool {
+    // Revia Gadol is
+    //   before Ole We Yored (needs Negative Lookforward)
+    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    sentence.contains(REVIA);
+    false
+}
+fn contains_revia_qaton(sentence: &str) -> bool {
+    // Revia Qaton is
+    //   before Ole We Yored (needs Negative Lookforward)
+    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    sentence.contains(REVIA);
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -488,7 +613,7 @@ mod tests {
             Context::Prosaic,
         );
         assert!(prosaic_sc2.contains_accent(HebrewAccent::Prose(ProseAccent::Silluq)));
-        // // ProseAccent, no Soph Paseq, with Pey
+        // ProseAccent, no Soph Paseq, with Pey
         let prosaic_sc3 = SentenceContext::new(
             "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ס ",
             Context::Poetic,
@@ -956,46 +1081,39 @@ mod tests {
     }
     #[test]
     fn test_contains_poetry_merkha() {
-        // accent in a single word
-        let newsc = SentenceContext::new("אאת אב֥רהם", Context::Poetic);
-        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        let newsc = SentenceContext::new("אא֘ת־אברהם", Context::Poetic);
+        // No merkha
+        let newsc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("את־אב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("אא֘ת־אברהם", Context::Poetic);
-        // assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // // accent in two words seperated by Maqqef
-        // let newsc = SentenceContext::new("את־א֘ב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("את־אב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("את־א֘ברהם", Context::Poetic);
-        // assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // // accent in two words
-        // let newsc = SentenceContext::new("את־א֘בם ב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("את־א֘בם ברהם", Context::Poetic);
-        // assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // let newsc = SentenceContext::new("את־אבם ב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // // accent in three words
-        // let newsc = SentenceContext::new("את־א֘בם הם ב֥רהם", Context::Poetic);
-        // assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-    }
-    #[test]
-    fn test_contains_poetry_merkha_this_one_should_fail() {
-        // Ole We Yored
-        let newsc = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Poetic);
+
+        // ONE merkha
+        let newsc = SentenceContext::new("בּראשׁית בּרא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        let newsc = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ ימָ֥יִ", Context::Poetic);
+
+        // MERKHA + TSINNORIT (2w)
+        let newsc = SentenceContext::new("בּראשׁית בּרא אל֘הים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
+
+        // MERKHA + TSINNORIT (1w)
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
+
+        // MERKHA + OLE (2w)
+        let newsc = SentenceContext::new("בּראשׁית בּרא אלה֫ים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
+
+        // MERKHA + OLE (1w)
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֫להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
+
+        // MERKHA + TSINNORIT (3w)
+        let newsc = SentenceContext::new("בּראשׁית בּר֘א אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // Tsinnorit Merkha
-        let newsc = SentenceContext::new("אא֘תאב֥רהם", Context::Poetic);
-        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        let newsc = SentenceContext::new("אא֘ת אב֥רהם", Context::Poetic);
+
+        // MERKHA + MERKHA + TSINNORIT (2w)
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להים א֥ת השּׁ֥מים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
     }
+    
     #[test]
     fn test_contains_poetry_illuy() {
         let newsc = SentenceContext::new("את־אב֬רהם", Context::Poetic);
@@ -1020,7 +1138,7 @@ mod tests {
     #[test]
     fn test_contains_poetry_mahpakh() {
         let newsc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
-        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
         let newsc = SentenceContext::new(" אם֤ת־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
         let newsc = SentenceContext::new(" אם֤ת אברהם֤ ׀ מזמ֗ור", Context::Poetic);
@@ -1117,7 +1235,7 @@ mod tests {
     }
 
     // #[test]
-    // // TODO
+    // TODO
     // fn test_find() {
     //     let newsc = SentenceContext::new("gad", Context::Prosaic);
     //     assert_eq!(

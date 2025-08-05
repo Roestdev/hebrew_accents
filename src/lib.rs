@@ -2,6 +2,7 @@
 
 // contains all function API's
 mod accent;
+mod constants;
 mod sentence;
 
 // export
