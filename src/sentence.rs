@@ -75,14 +75,14 @@ static RE_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(||
     // - Revia (\u{0597})
     Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap());
 
-static RE_POETRY_REVIA_QATON: Lazy<Regex> = Lazy::new(||
-    // TODO
-    // - Revia (\u{0597})
-    // An 'Ole We Yored' consists of the following two UTF-8 code-points
-    //      - Ole (\u{05AB}) followed by
-    //      - Yored (\u{05A5}) aka Merkha
-    // This accent can stretch over two words (a.k.a. word-unit)
-    Regex::new(r"\u{0597}[\s\p{Hebrew}]*?\u{05AB}\p{Hebrew}+?\s?\p{Hebrew}*?\u{05A5}").unwrap());
+//static RE_POETRY_REVIA_QATON: Lazy<Regex> = Lazy::new(||
+// TODO
+// - Revia (\u{0597})
+// An 'Ole We Yored' consists of the following two UTF-8 code-points
+//      - Ole (\u{05AB}) followed by
+//      - Yored (\u{05A5}) aka Merkha
+// This accent can stretch over two words (a.k.a. word-unit)
+//    Regex::new(r"\u{0597}[\s\p{Hebrew}]*?\u{05AB}\p{Hebrew}+?\s?\p{Hebrew}*?\u{05A5}").unwrap());
 
 static RE_POETRY_MAHPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(||
     // TODO add BEFORE OLEWEYORED to the regex
@@ -102,22 +102,22 @@ static RE_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(||
     Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{05A8}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap());
 
 // conjunctives
-static RE_POETRY_MERKHA: Lazy<FancyRegex> = Lazy::new(||
-    // NOTE: FANCY-REGEX does not work for variable length in the negative look-behind
-    //       So currently a negative checks for "Tsinorit Merkha" and 
-    //       "Ole_We_Yored" is NOT possible!
-    // - Merkha (\u{05A5})
-    // but NOT part of 
-    //   Ole_We_Yored (Ole (\u{05AB}) followed by Yored (\u{05A5}) aka Merkha)
-    //   -- OR --
-    //   Tsinorit_Merkha (Tsinnorit (\u{0598}) followed by Merkha (\u{05A5})
-    FancyRegex::new(r"[(?<!\u{05AB}\p{Hebrew}*?[\s\u{05BE}]?\p{Hebrew}*?)(?<!\u{0598}\p{Hebrew}*?[\s\u{05BE}]?\p{Hebrew}*?)]\u{05A5}").unwrap());
+//static RE_POETRY_MERKHA: Lazy<FancyRegex> = Lazy::new(||
+// NOTE: FANCY-REGEX does not work for variable length in the negative look-behind
+//       So currently a negative checks for "Tsinorit Merkha" and
+//       "Ole_We_Yored" is NOT possible!
+// - Merkha (\u{05A5})
+// but NOT part of
+//   Ole_We_Yored (Ole (\u{05AB}) followed by Yored (\u{05A5}) aka Merkha)
+//   -- OR --
+//   Tsinorit_Merkha (Tsinnorit (\u{0598}) followed by Merkha (\u{05A5})
+//    FancyRegex::new(r"[(?<!\u{05AB}\p{Hebrew}*?[\s\u{05BE}]?\p{Hebrew}*?)(?<!\u{0598}\p{Hebrew}*?[\s\u{05BE}]?\p{Hebrew}*?)]\u{05A5}").unwrap());
 
-static RE_POETRY_MAHPAKH: Lazy<FancyRegex> = Lazy::new(||
-    // NOTE: FANCY-REGEX does not work for variable length in the negative look-behind
-    //       So currently a negative check for "TsinnoritMahpakh" is NOT possible!
-    // Mahpakh (\u{05A4})
-    FancyRegex::new(r"(\x{05A4}\p{Hebrew}*?\x{05BE})|(\x{05A4}(?!\p{Hebrew}*?\s*?[\x{05C0}\x{007C}]))").unwrap());
+//static RE_POETRY_MAHPAKH: Lazy<FancyRegex> = Lazy::new(||
+// NOTE: FANCY-REGEX does not work for variable length in the negative look-behind
+//       So currently a negative check for "TsinnoritMahpakh" is NOT possible!
+// Mahpakh (\u{05A4})
+//    FancyRegex::new(r"(\x{05A4}\p{Hebrew}*?\x{05BE})|(\x{05A4}(?!\p{Hebrew}*?\s*?[\x{05C0}\x{007C}]))").unwrap());
 
 static RE_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
     FancyRegex::new(r"(\u{05A8}\p{Hebrew}*?\u{05BE})|(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))")
@@ -293,8 +293,9 @@ impl SentenceContext {
                 RE_POETRY_OLE_WE_YORED.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.context == Context::Poetic => {
-                RE_POETRY_REVIA_GADOL.is_match(&self.sentence)
-                // contains_revia_gadol(&self.sentence)
+                false
+                //RE_POETRY_REVIA_GADOL.is_match(&self.sentence)
+                // contains_poetry_revia_gadol(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.context == Context::Poetic => {
                 RE_POETRY_REVIA_MUGRASH.is_match(&self.sentence)
@@ -303,8 +304,9 @@ impl SentenceContext {
                 self.sentence.contains('\u{05AE}')
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.context == Context::Poetic => {
-                RE_POETRY_REVIA_QATON.is_match(&self.sentence)
-                // contains_revia_qaton(&self.sentence)
+                false
+                // RE_POETRY_REVIA_QATON.is_match(&self.sentence)
+                // contains_poetry_revia_qaton(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => {
                 self.sentence.contains('\u{05AD}')
@@ -325,7 +327,7 @@ impl SentenceContext {
                 //self.sentence.contains('\u{05A5}')
                 // RE_POETRY_MERKHA.is_match(&self.sentence)
                 // replacewith a function
-                contains_merkha(&self.sentence)
+                contains_poetry_merkha(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => {
                 self.sentence.contains('\u{05AC}')
@@ -333,7 +335,7 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Mahpakh) if self.context == Context::Poetic => {
                 //self.sentence.contains('\u{05A4}')
                 // RE_POETRY_MAHPAKH.is_match(&self.sentence).unwrap()
-                contains_mahpakh(&self.sentence)
+                contains_poetry_mahpakh(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.context == Context::Poetic => {
                 RE_POETRY_AZLA.is_match(&self.sentence).unwrap()
@@ -481,22 +483,24 @@ impl SentenceContext {
     }
 }
 
-fn contains_merkha(sentence: &str) -> bool {
+fn contains_poetry_merkha(sentence: &str) -> bool {
     // Merkha is
     //   not part of Ole We Yored (needs Negative Lookbehind)
+    //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
     let possible_combinations_lookbehind = [ZARQA, OLE];
 
+    // Check for the existence of the target character in the sentence
     if !&sentence.contains(target_char) {
         return false;
     }
-    // turn sentence into a Vec of chars for indexing
+    // Convert the sentence into a Vec<char> for character indexing
     let char_vec: Vec<char> = sentence.chars().collect();
-    // retrieve positions of the target character
-    let positions = indexes_of_target_char(&target_char, &char_vec);
-    // loop over all positions
-    for &index in &positions {
+    // Find the indices of the target character within the sentence
+    let indices = indexes_of_target_char(target_char, &char_vec);
+    // loop over all character positions
+    for &index in &indices {
         println!("LOOP::Index of target character = {index}\n");
         println!("LOOP::INFO:: Negative Looking Backwards");
         let is_part_of = is_part_of_two_code_point_accent_look_behind(
@@ -518,21 +522,71 @@ fn contains_merkha(sentence: &str) -> bool {
     //sentence.contains(MERKHA)
 }
 
-fn indexes_of_target_char(target_char: &char, char_vec: &[char]) -> Vec<usize> {
-    // get indexes of the target character
-    let indexes_of_target_char: Vec<usize> = char_vec
+fn contains_poetry_mahpakh(sentence: &str) -> bool {
+    // Mahpakh
+    //   not part of Mahpakh Legarmeh (needs Negative Forward)
+    //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
+    let target_char = MAHPAKH;
+    let possible_combinations_lookbehind = [ZARQA];
+    let possible_combinations_lookahead = [PASEQ, VERTICAL_LINE];
+
+    // check if the target character is present in the senctence
+    if !&sentence.contains(target_char) {
+        println!("MAHPAKH not found in the senctence at all  -> return false");
+        return false;
+    }
+    // turn sentence into a Vec of chars for indexing
+    let char_vec: Vec<char> = sentence.chars().collect();
+    // retrieve character positions of the target character
+    let indices: Vec<usize> = indexes_of_target_char(target_char, &char_vec);
+    // loop over all character positions
+    for index in indices {
+        println!("\n\nLOOP::Index of target character = {index}\n");
+        println!("\nNegative Looking Backward");
+        let two_code_points_behind = is_part_of_two_code_point_accent_look_behind(
+            &char_vec,
+            &target_char,
+            index,
+            &possible_combinations_lookbehind,
+            2,
+        );
+        println!("\nNegative Looking Forward");
+        let is_part_of_mahpakh_legarmeh = is_part_of_mapakh_legarmeh_look_ahead(index, &char_vec);
+
+        if !two_code_points_behind && !is_part_of_mahpakh_legarmeh {
+            println!("Found at least one target char, not part of another accent:: Return TRUE");
+            return true;
+        }
+    }
+    false
+    //sentence.contains(MAHPAKH)
+}
+
+fn contains_poetry_revia_gadol(sentence: &str) -> bool {
+    todo!();
+    // Revia Gadol is
+    //   before Ole We Yored (needs Negative Lookforward)
+    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    sentence.contains(REVIA);
+    false
+}
+fn contains_poetry_revia_qaton(sentence: &str) -> bool {
+    todo!();
+    // Revia Qaton is
+    //   before Ole We Yored (needs Negative Lookforward)
+    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    sentence.contains(REVIA);
+    false
+}
+
+fn indexes_of_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
+    sentence
         .iter()
         .enumerate()
-        .filter_map(|(index, &value)| {
-            if value == *target_char {
-                Some(index)
-            } else {
-                None
-            }
-        })
-        .collect();
-    indexes_of_target_char
+        .filter_map(|(index, &c)| if c == target_char { Some(index) } else { None })
+        .collect()
 }
+
 fn is_part_of_two_code_point_accent_look_behind(
     sentence: &[char],
     target_char: &char,
@@ -573,32 +627,73 @@ fn is_part_of_two_code_point_accent_look_behind(
             return true;
         }
     }
-    println!("LB::END-OF:: is_part_of_two_code_point_accent_look_behind");
+    println!("LB::End of look behind");
     true
 }
 
-fn contains_mahpakh(sentence: &str) -> bool {
-    // Mahpakh
-    //   not part of Mahpakh Legarmeh (needs Negative Forward)
-    //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
-    sentence.contains(MAHPAKH)
+pub fn is_part_of_mapakh_legarmeh_look_ahead(
+    start_index_target_char: usize,
+    sentence: &[char],
+) -> bool {
+    // TODO MULIPLESPACES NOT COVERED
+    // Check if the start index is at the end of the character vector
+    if start_index_target_char >= sentence.len() {
+        println!("find_paseq::Target character is found at the last position");
+        return false; // Early exit if the position is at the end of the sentence
+    }
+
+    let possible_combinations_lookahead = [PASEQ, VERTICAL_LINE];
+    let mut word_count: usize = 0;
+
+    // Start iterating from the next character after the target character
+    for (current_index, _) in sentence
+        .iter()
+        .enumerate()
+        .skip((start_index_target_char + 1))
+    {
+        let current_char = sentence[current_index];
+        println!(
+            "find_paseq::char current_index = {current_index} is '{current_char}', word count = {word_count}");
+
+        // Check for possible combinations
+        // Increment word count on space character
+        if current_char == ' ' {
+            word_count += 1;
+            println!("find_paseq1::new word_count: {word_count}");
+            if word_count == 2 {
+                println!("find_paseq2::Max word count reached");
+                return false;
+            }
+            continue;
+        }
+        if possible_combinations_lookahead.contains(&current_char) {
+            println!("find_paseq3:: Part of two code-point accent!!!");
+            return true;
+        }
+        // else {
+        //     println!("find_paseq4:: Part of two code-point accent!!!");
+
+        //     return false;
+        // }
+
+        // If one word has been counted, check for combinations again
+        // if word_count == 1 {
+        //     if possible_combinations_lookahead.contains(&current_char) {
+        //         println!("find_paseq:: Part of two code-point accent!!!");
+        //         return true;
+        //     } else {
+        //         println!("find_paseq:: NOT part of two code-point accent!!!");
+        //         return false;
+        //     }
+        // }
+    }
+
+    false // Return false if no conditions are met
 }
 
-fn contains_revia_gadol(sentence: &str) -> bool {
-    // Revia Gadol is
-    //   before Ole We Yored (needs Negative Lookforward)
-    //   not part of Revia Mugrash (needs Negative Lookbehind)
-    sentence.contains(REVIA);
+fn is_followed_by_ole_we_yored() -> bool {
     false
 }
-fn contains_revia_qaton(sentence: &str) -> bool {
-    // Revia Qaton is
-    //   before Ole We Yored (needs Negative Lookforward)
-    //   not part of Revia Mugrash (needs Negative Lookbehind)
-    sentence.contains(REVIA);
-    false
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1113,7 +1208,7 @@ mod tests {
         let newsc = SentenceContext::new("בּראשׁית בּרא א֘להים א֥ת השּׁ֥מים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
     }
-    
+
     #[test]
     fn test_contains_poetry_illuy() {
         let newsc = SentenceContext::new("את־אב֬רהם", Context::Poetic);
@@ -1137,25 +1232,54 @@ mod tests {
     }
     #[test]
     fn test_contains_poetry_mahpakh() {
-        let newsc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        // No Mahpakh
+        let newsc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh
+        let newsc = SentenceContext::new("בּראשׁית בּרא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
-        let newsc = SentenceContext::new(" אם֤ת־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        // One Mahpakh, part of Tsinnorit Mahpakh (one word)
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להי֤ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Tsinnorit Mahpakh (two words)
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Tsinnorit Mahpakh (three words)
+        let newsc = SentenceContext::new("בּראשׁית בּ֘רא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
-        let newsc = SentenceContext::new(" אם֤ת אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        // One Mahpakh, part of Tsinnorit Mahpakh (one word), followed with a Mahpakh
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להי֤ם את השּׁמים ואת הא֤רץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
-        let newsc = SentenceContext::new(" את־אברהם֤ מזמ֗ור", Context::Poetic);
+        // One Mahpakh, part of Tsinnorit Mahpakh (two words), followed with a Mahpakh
+        let newsc = SentenceContext::new("בּראשׁית בּרא א֘להים א֤ת השּׁמים ואת הא֤רץ׃", Context::Poetic);
+        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Tsinnorit Mahpakh (three words), followed with a Mahpakh
+        let newsc = SentenceContext::new("בּראשׁית בּ֘רא אלהים א֤ת השּׁמים ואת הא֤רץ׃", Context::Poetic);
+        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (no space)
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת׀ הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (one space)
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת ׀ הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (no space - vertical line)
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת| הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (one space - vertical line)
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת | הארץ׃", Context::Poetic);
+        assert!(!newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (too many spaces)
+        let newsc =
+            SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת    ׀ הארץ׃", Context::Poetic);
+        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        //One Mahpakh, part of Mahpakh Legarmeh (no space), followed with a Mahpakh
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת׀ האר֤ץ׃", Context::Poetic);
+        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
+        // One Mahpakh, part of Mahpakh Legarmeh (one space), followed with a Mahpakh
+        let newsc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת ׀ האר֤ץ׃", Context::Poetic);
         assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
     }
-    #[test]
-    fn test_contains_poetry_mahpakh_this_one_should_fail() {
-        // Fancy-regex is not supporting flexible negative lookbehind
-        // "tsinnorit mahpakh" in one word
-        let newsc = SentenceContext::new("את־א֘ב֤רהם אהם", Context::Poetic);
-        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
-        // "tsinnorit mahpakh" in two words
-        let newsc = SentenceContext::new("את־א֘אהם ב֤רהם אהם", Context::Poetic);
-        assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mahpakh)));
-    }
+
     #[test]
     fn test_contains_poetry_azla() {
         let newsc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
