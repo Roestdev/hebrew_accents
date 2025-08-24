@@ -1,10 +1,10 @@
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)] //,Display,Default
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum HebrewAccent {
     Prose(ProseAccent),
     Poetry(PoetryAccent),
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum ProseAccent {
     // Disjunctives
     #[default]
@@ -12,7 +12,7 @@ pub enum ProseAccent {
     Atnach,  //Etnachta,
     Segolta, //postpositive
     Shalshelet,
-    ZaqephQatan,
+    ZaqephQaton,
     ZaqephGadol,
     Revia,
     Tiphcha,
@@ -35,10 +35,10 @@ pub enum ProseAccent {
     Azla,
     TelishaQetannah, //postpositive
     Galgal,
-    Mayla, //Meayela,
+    Meayla, //Meayela,
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)] //Display
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum PoetryAccent {
     // Disjunctives
     #[default]
@@ -52,7 +52,7 @@ pub enum PoetryAccent {
     ReviaQaton,
     Dechi, // prepositive
     Pazer,
-    MahpakhLegarmeh,
+    MehuppakhLegarmeh,
     AzlaLegarmeh,
     // Conjunctives
     Munnach,
@@ -60,7 +60,7 @@ pub enum PoetryAccent {
     Illuy,
     Tarkha,
     Galgal,
-    Mahpakh,
+    Mehuppakh,
     Azla,
     ShalsheletQetannah,
     TsinnoritMerkha,
@@ -117,7 +117,7 @@ impl ProseAccent {
             ProseAccent::Atnach => 2,
             ProseAccent::Segolta => 3,
             ProseAccent::Shalshelet => 4,
-            ProseAccent::ZaqephQatan => 5,
+            ProseAccent::ZaqephQaton => 5,
             ProseAccent::ZaqephGadol => 6,
             ProseAccent::Revia => 7,
             ProseAccent::Tiphcha => 8,
@@ -140,7 +140,7 @@ impl ProseAccent {
             ProseAccent::Azla => 24,
             ProseAccent::TelishaQetannah => 25,
             ProseAccent::Galgal => 26,
-            ProseAccent::Mayla => 27,
+            ProseAccent::Meayla => 27,
         }
     }
     /// Returns information about the accent.
@@ -197,7 +197,7 @@ impl ProseAccent {
                 position_codepoint1: AccentPosition::Above,
                 position_codepoint2: Some(AccentPosition::End),
             },
-            ProseAccent::ZaqephQatan => AccentInfo {
+            ProseAccent::ZaqephQaton => AccentInfo {
                 name: "Zaqeph Qatan".to_string(),
                 hebrew: "זָקֵף קָט֔וֹן".to_string(),
                 meaning: None,
@@ -462,8 +462,8 @@ impl ProseAccent {
                 position_codepoint1: AccentPosition::Under,
                 position_codepoint2: None,
             },
-            ProseAccent::Mayla => AccentInfo {
-                name: "Mayla".to_string(),
+            ProseAccent::Meayla => AccentInfo {
+                name: "Meayla".to_string(),
                 hebrew: "מָֽאיְלָא".to_string(),
                 meaning: None,
                 alt_name: Some("Meayyela".to_string()),
@@ -493,7 +493,7 @@ impl PoetryAccent {
             PoetryAccent::ReviaQaton => 8,
             PoetryAccent::Dechi => 9,
             PoetryAccent::Pazer => 10,
-            PoetryAccent::MahpakhLegarmeh => 11,
+            PoetryAccent::MehuppakhLegarmeh => 11,
             PoetryAccent::AzlaLegarmeh => 12,
             // Conjunctives
             PoetryAccent::Munnach => 13,
@@ -501,7 +501,7 @@ impl PoetryAccent {
             PoetryAccent::Illuy => 15,
             PoetryAccent::Tarkha => 16,
             PoetryAccent::Galgal => 17,
-            PoetryAccent::Mahpakh => 18,
+            PoetryAccent::Mehuppakh => 18,
             PoetryAccent::Azla => 19,
             PoetryAccent::ShalsheletQetannah => 20,
             PoetryAccent::TsinnoritMerkha => 21,
@@ -632,8 +632,8 @@ impl PoetryAccent {
                 position_codepoint1: AccentPosition::Above,
                 position_codepoint2: None,
             },
-            PoetryAccent::MahpakhLegarmeh => AccentInfo {
-                name: "Mahpakh Legarmeh".to_string(),
+            PoetryAccent::MehuppakhLegarmeh => AccentInfo {
+                name: "Mehuppakh Legarmeh".to_string(),
                 hebrew: "מַהְפָּךְ לְגַרְמֵהּ".to_string(),
                 meaning: None,
                 alt_name: None,
@@ -717,8 +717,8 @@ impl PoetryAccent {
                 position_codepoint1: AccentPosition::Under,
                 position_codepoint2: None,
             },
-            PoetryAccent::Mahpakh => AccentInfo {
-                name: "Mahpakh".to_string(),
+            PoetryAccent::Mehuppakh => AccentInfo {
+                name: "Mehuppakh".to_string(),
                 hebrew: "מַהְפַּ֤ך".to_string(),
                 meaning: None,
                 alt_name: None,
@@ -798,7 +798,7 @@ mod tests {
         println!("\n{:#?}", ProseAccent::Atnach.info());
         println!("\n{:#?}", ProseAccent::Segolta.info());
         println!("\n{:#?}", ProseAccent::Shalshelet.info());
-        println!("\n{:#?}", ProseAccent::ZaqephQatan.info());
+        println!("\n{:#?}", ProseAccent::ZaqephQaton.info());
         println!("\n{:#?}", ProseAccent::ZaqephGadol.info());
         println!("\n{:#?}", ProseAccent::Revia.info());
         println!("\n{:#?}", ProseAccent::Tiphcha.info());
@@ -821,7 +821,7 @@ mod tests {
         println!("\n{:#?}", ProseAccent::Azla.info());
         println!("\n{:#?}", ProseAccent::TelishaQetannah.info());
         println!("\n{:#?}", ProseAccent::Galgal.info());
-        println!("\n{:#?}", ProseAccent::Mayla.info());
+        println!("\n{:#?}", ProseAccent::Meayla.info());
     }
     #[test]
     fn no_test_just_print_rank() {
@@ -829,7 +829,7 @@ mod tests {
         println!("\n{:#?}", ProseAccent::Atnach.rank());
         println!("\n{:#?}", ProseAccent::Segolta.rank());
         println!("\n{:#?}", ProseAccent::Shalshelet.rank());
-        println!("\n{:#?}", ProseAccent::ZaqephQatan.rank());
+        println!("\n{:#?}", ProseAccent::ZaqephQaton.rank());
         println!("\n{:#?}", ProseAccent::ZaqephGadol.rank());
         println!("\n{:#?}", ProseAccent::Revia.rank());
         println!("\n{:#?}", ProseAccent::Tiphcha.rank());
@@ -852,6 +852,6 @@ mod tests {
         println!("\n{:#?}", ProseAccent::Azla.rank());
         println!("\n{:#?}", ProseAccent::TelishaQetannah.rank());
         println!("\n{:#?}", ProseAccent::Galgal.rank());
-        println!("\n{:#?}", ProseAccent::Mayla.rank());
+        println!("\n{:#?}", ProseAccent::Meayla.rank());
     }
 }
