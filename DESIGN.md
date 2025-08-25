@@ -2,7 +2,7 @@
 
 As indicated in the README file, there is much discussion and different understandings regarding the accents. In the file [Incomplete_overview_of_the_masoretic_hebrew_accents](doc/Incomplete_overview_of_the_masoretic_hebrew_accents.ods). I have placed the insights of various scholars (whose infomation I was able to find) in a file for easy comparison.
 
-Looking roughly I notice the following similarities and differences.
+Looking roughly I noticed the following similarities and differences.
 
 ### Similarities
 
@@ -34,13 +34,14 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 # Design decision
 
-- I chose to utilize the layout as outlined in the `Biblia Hebraica Stuttgartensia` which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
+- I chose to utilize the layout as outlined in the `Biblia Hebraica Stuttgartensia` (BHS) which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
-- On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR` as mentioned by Helmut Richter will be added.
+- On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR`, as mentioned by Helmut Richter will be added.
 
-- Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided.
+- Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided if applicable.
 
 - The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
+- The secondary accent Meteg,which is not menttioned BHS will be added to the list of both conjunctives (prose and poetry).
 
 ## Accent Mapping to Unicode code-points
 
@@ -62,18 +63,37 @@ This covers most of the cases. Examples:
   - Ole We Yored
   - Revia Mugrash
   - Shalshelet Gadol
-  - Mahpakh Legarmeh
+  - Mehuppakh Legarmeh
   - Azla Legarmeh
   - Tsinnorit Merkha
   - Tsinnorit Mahpakh
 
 #### Two Hebrew Accents -> One code-point
 
+Some accents have different names (and functions), depending of the position within the sentence.
+
 Examples: 
-- `Mayla` and `Tiphcha` both have the same unicode point **U+0596**
+- `Meayla` and `Tiphcha` both have the same unicode point **U+0596**
 - `Silluq` and `Meteg` both have the same unicode point **U+05BD**
 
 (more details can be found in the code itself)
+
+### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
+
+- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:
+
+   -  The Yetiv mark
+   -  The Tevir mark
+
+  In various sources, the Yetiv mark is classified as a conjunctive accent, while the Tevir mark is considered a disjunctive accent. However, the Unicode tables seem to reverse this definition, treating the Yetiv mark as a disjunctive accent and the Tevir mark as a conjunctive accent.
+
+- Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
+
+- Additionally, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
+
+For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
+
+</br>
 
 # Design
 
@@ -86,14 +106,35 @@ Below the start of the design. Everything else will be build on top of it.
 In general all mappings can be resolved using either the [String](https://doc.rust-lang.org/std/string/struct.String.html#implementations[) methods or some kind of regular expression ([Regex](](https://docs.rs/regex/latest/regex/)) or [Fancy-Regex](https://docs.rs/fancy-regex/latest/fancy_regex/)).
 
 
-**Except** the following four Hebrew Accents, because they need a `flexible negative lookbehind`, which is at the moment of writing not available as far as I know.
+**Except** the following four **poetry** Hebrew Accents, because they need a `flexible negative lookbehind`, which is at the moment of writing not available as far as I know.
 
-1. Merkha  
-The accent `Merkha`, `OleWeYored` and `TsinnoritMerkha` all contain the unicode point **U+05A5**.
-2. Mahpakh
-3. Revia Gadol
-4. Revia Qaton
+1. `Merkha`  
+The accent Merkha, Ole We Yored and Tsinnorit Merkha all contain the unicode point **U+05A5**.
 
+2. `Mehuppakh`   
+   The accent Mehuppakh, Mehuppakh Legarmeh and Tsinnorit Mahpakh all contain the unicode point **U+05A5**.
+
+3. `Revia Gadol`   
+   Revia 
+4. `Revia Qaton`
+
+## Caveats
+
+In order to locate some of the accents the crate Fancy-Regex is used.
+This gives some issues, because the `negative lookbehind` feature does not function with quantifiers.
+
+It concerns the following Poetic accents:
+- Revia Gadol  
+  Could also be a `Revia Mugrash` or a `Revia Qaton`
+
+- Revia Qaton  
+  Could also be a `Revia Mugrash`
+
+- Merkha   
+  Could also be part of an `Ole We Yored` or `Tsinnorit Merkha`
+
+- Mahpakh  
+  Could also be part of a `Tsinnorit Mahpkh`
 
 
 ## Data structures
