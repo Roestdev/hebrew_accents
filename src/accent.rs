@@ -10,21 +10,21 @@ pub enum ProseAccent {
     #[default]
     Silluq,
     Atnach,
-    Segolta, 
+    Segolta,
     Shalshelet,
     ZaqephQaton,
     ZaqephGadol,
     Revia,
     Tiphcha,
-    Zarqa,  
-    Pashta, 
-    Yetiv,  
+    Zarqa,
+    Pashta,
+    Yetiv,
     Tevir,
     Geresh,
     Gershayim,
     Pazer,
     PazerGadol,
-    TelishaGedolah, 
+    TelishaGedolah,
     Legarmeh,
     // Conjunctives
     Munnach,
@@ -35,7 +35,7 @@ pub enum ProseAccent {
     Azla,
     TelishaQetannah,
     Galgal,
-    Meayla, 
+    Meayla,
     Meteg,
 }
 
@@ -49,9 +49,9 @@ pub enum PoetryAccent {
     ReviaGadol,
     ReviaMugrash,
     ShalsheletGadol,
-    Tsinnor, 
+    Tsinnor,
     ReviaQaton,
-    Dechi, 
+    Dechi,
     Pazer,
     MehuppakhLegarmeh,
     AzlaLegarmeh,
@@ -155,15 +155,15 @@ impl ProseAccent {
     }
     /// Returns information about the accent.
     /// This can be expanded to include more details as needed.
-   
-   // TODO add meaning to all accents
+
+    // TODO add meaning to all accents
     #[allow(unused)]
     fn info(&self) -> AccentInfo {
         match self {
             // Disjunctives
             ProseAccent::Silluq => AccentInfo {
-                name: "Silluq".to_string(), 
-                hebrew: "סִילֽוּק".to_string(), 
+                name: "Silluq".to_string(),
+                hebrew: "סִילֽוּק".to_string(),
                 meaning: None,
                 alt_name: None,
                 alt_hebrew: None,

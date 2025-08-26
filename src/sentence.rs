@@ -49,6 +49,12 @@ static RE_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(\u{0596}\p{Hebrew}+\u{0591}|\u{0596}\p{Hebrew}*?\u{05BD}\p{Hebrew}*?\s?[\u{05E4}\u{05E1}]?\s?$)").unwrap()
 });
 
+// A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
+// A Silluq is not a Meteg
+static RE_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
+    FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)").unwrap()
+});
+
 // An 'Ole We Yored' consists of the following two UTF-8 code-points
 //      - Ole (\u{05AB}) followed by
 //      - Yored (\u{05A5}) aka Merkha
@@ -249,9 +255,9 @@ impl SentenceContext {
                 RE_PROSE_MEAYLA.is_match(&self.sentence)
             }
             // TODO NEEDS REGEX
-            HebrewAccent::Prose(ProseAccent::Meteg)
-            | HebrewAccent::Poetry(PoetryAccent::Meteg) => self.sentence.contains(METEG),
-            
+            HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
+                RE_COMMON_METEG.is_match(&self.sentence).unwrap()
+            }
             /* **********************************************************
              *                          POETRY
              * *********************************************************/
@@ -1089,6 +1095,28 @@ mod tests {
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meayla)));
     }
+    #[test]
+    fn test_contains_prose_meteg() {
+        // Only Silluq, No Meteg
+        let sentence_c =
+            SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Prosaic);
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
+        // Meteg and Siluq, separated by a Maqef
+        let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Prosaic);
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
+        // Meteg and Siluq in separate words
+        let sentence_c = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
+            Context::Prosaic,
+        );
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
+        // Only Meteg, no Silluq
+        let sentence_c = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ",
+            Context::Prosaic,
+        );
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
+    }
     /* **********************************************************
      *                          POETRY
      * *********************************************************/
@@ -1476,5 +1504,28 @@ mod tests {
         // accent in three words
         let sentence_c = SentenceContext::new("את־א֘ב רהם אהאב֤ם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
+    }
+
+        #[test]
+    fn test_contains_poetry_meteg() {
+        // Only Silluq, No Meteg
+        let sentence_c =
+            SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
+        // Meteg and Siluq, separated by a Maqef
+        let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
+        // Meteg and Siluq in separate words
+        let sentence_c = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
+            Context::Poetic,
+        );
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
+        // Only Meteg, no Silluq
+        let sentence_c = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ",
+            Context::Poetic,
+        );
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
     }
 }
