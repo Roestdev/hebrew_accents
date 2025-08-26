@@ -1,7 +1,6 @@
 # hebrew_accents
 
 Managing Masoretic Hebrew Accents
-
 </br>
 
 ## Project Status 
@@ -18,7 +17,6 @@ Managing Masoretic Hebrew Accents
 ## Description
  
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
-
 
 ### Brief overview in the accents in the Tanach
  
@@ -46,20 +44,15 @@ Several factors contribute to the complexity of Hebrew accents in the Tanach, in
 
 - It is possible that one Unicode code-point can be mapped to different Hebrew accents.
 
-### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
+#### Notes
 
-- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:
+ - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
 
-   -  The Yetiv mark
-   -  The Tevir mark
+ - `Disjunctives` are sometimes referred to as *pausal* or *domini*
 
-  In various sources, the Yetiv mark is classified as a conjunctive accent, while the Tevir mark is considered a disjunctive accent. However, the Unicode tables seem to reverse this definition, treating the Yetiv mark as a disjunctive accent and the Tevir mark as a conjunctive accent.
-
-- Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
-
-- Additionally, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
-
-For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
+ - `Conjunctives` are sometimes referred to as *non-pausal* or *servi*
+  
+*More details can be found in the references section at the end of this document*
 
 ### Goal
 
@@ -76,23 +69,6 @@ Sub-goals:
 - Detect errors in the text related to accentuation rules.
 - Determine the type of text based on the identified accents.
 - Achieve absolute accuracy (100% correctness).
-
-## Caveats
-
-In order to locate some of the accents the crate Fancy-Regex is used.
-This gives some issues, because the `negative lookbehind` feature does not function with quantifiers.
-It concerns the following Poetic accents:
-- Revia Gadol  
-  Could also be a `Revia Mugrash` or a `Revia Qaton`
-
-- Revia Qaton  
-  Could also be a `Revia Mugrash`
-
-- Merkha   
-  Could also be an `Ole We Yored` or `Tsinnorit Merkha`
-
-- Mahpakh  
-  Could also be a `Tsinnorit Mahpkh`
 
 ## Examples
 
@@ -190,12 +166,5 @@ be dual licensed as above, without any additional terms or conditions.
   - [The Masoretic Hebrew Accents in Translation and Interpretation](https://hebrew4christians.com/Grammar/Unit_Three/Word_Accents/HebrewAccents_Barrick.pdf) by William D. Barrick
 
 - [Hebrew_Cantillation](https://en.wikipedia.org/wiki/Hebrew_cantillation)  (wikipedia)
-  
-#### Notes
 
- - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
-
- - `Disjunctives` are sometimes referred to as *pausal* or *domini*
-
- - `Conjunctives` are sometimes referred to as *non-pausal* or *servi*
 
