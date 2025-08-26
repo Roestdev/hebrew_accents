@@ -164,10 +164,10 @@ impl SentenceContext {
             }
 
             HebrewAccent::Prose(ProseAccent::Atnach)
-            | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.contains('\u{0591}'),
+            | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.contains(ETNAHTA),
 
             HebrewAccent::Prose(ProseAccent::Segolta) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0592}')
+                self.sentence.contains(SEGOL)
             }
 
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.context == Context::Prosaic => {
@@ -175,44 +175,44 @@ impl SentenceContext {
             }
 
             HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0594}')
+                self.sentence.contains(ZAQEF_QATAN)
             }
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0595}')
+                self.sentence.contains(ZAQEF_GADOL)
             }
             HebrewAccent::Prose(ProseAccent::Revia) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0597}')
+                self.sentence.contains(REVIA)
             }
             HebrewAccent::Prose(ProseAccent::Tiphcha)
-            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self.sentence.contains('\u{0596}'),
+            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self.sentence.contains(TIPEHA),
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0598}')
+                self.sentence.contains(ZARQA)
             }
             HebrewAccent::Prose(ProseAccent::Pashta) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{0599}')
+                self.sentence.contains(PASHTA)
             }
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{059A}')
+                self.sentence.contains(YETIV)
             }
             HebrewAccent::Prose(ProseAccent::Tevir) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{059B}')
+                self.sentence.contains(TEVIR)
             }
             HebrewAccent::Prose(ProseAccent::Geresh) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{059C}')
+                self.sentence.contains(GERESH)
             }
             HebrewAccent::Prose(ProseAccent::Gershayim) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{059E}')
+                self.sentence.contains(GERSHAYIM)
             }
             HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
-                self.sentence.contains('\u{05A1}')
+                self.sentence.contains(PAZER)
             }
             HebrewAccent::Prose(ProseAccent::PazerGadol) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{059F}')
+                self.sentence.contains(QARNEY_PARA)
             }
             HebrewAccent::Prose(ProseAccent::TelishaGedolah)
                 if self.context == Context::Prosaic =>
             {
-                self.sentence.contains('\u{05A0}')
+                self.sentence.contains(TELISHA_GEDOLA)
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) => {
                 RE_PROSE_LEGARMEH.is_match(&self.sentence)
@@ -222,32 +222,36 @@ impl SentenceContext {
                 RE_PROSE_MUNNACH.is_match(&self.sentence).unwrap()
             }
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{05A4}')
+                self.sentence.contains(MAHPAKH)
             }
             HebrewAccent::Prose(ProseAccent::Merkha) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{05A5}')
+                self.sentence.contains(MERKHA)
             }
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah)
                 if self.context == Context::Prosaic =>
             {
-                self.sentence.contains('\u{05A6}')
+                self.sentence.contains(MERKHA_KEFULA)
             }
             HebrewAccent::Prose(ProseAccent::Darga) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{05A7}')
+                self.sentence.contains(DARGA)
             }
             HebrewAccent::Prose(ProseAccent::Azla) if self.context == Context::Prosaic => {
-                self.sentence.contains('\u{05A8}')
+                self.sentence.contains(QADMA)
             }
             HebrewAccent::Prose(ProseAccent::TelishaQetannah)
                 if self.context == Context::Prosaic =>
             {
-                self.sentence.contains('\u{05A9}')
+                self.sentence.contains(TELISHA_QETANA)
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
-            | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.contains('\u{005AA}'),
+            | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.contains(YERAH_BEN_YOMO),
             HebrewAccent::Prose(ProseAccent::Meayla) if self.context == Context::Prosaic => {
                 RE_PROSE_MEAYLA.is_match(&self.sentence)
             }
+            // TODO NEEDS REGEX
+            HebrewAccent::Prose(ProseAccent::Meteg)
+            | HebrewAccent::Poetry(PoetryAccent::Meteg) => self.sentence.contains(METEG),
+            
             /* **********************************************************
              *                          POETRY
              * *********************************************************/
@@ -270,7 +274,7 @@ impl SentenceContext {
                 RE_COMMON_SHALSHELET.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.context == Context::Poetic => {
-                self.sentence.contains('\u{05AE}')
+                self.sentence.contains(ZINOR)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.context == Context::Poetic => {
                 // false
@@ -278,7 +282,7 @@ impl SentenceContext {
                 contains_poetry_revia_qaton(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => {
-                self.sentence.contains('\u{05AD}')
+                self.sentence.contains(DEHI)
             }
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.context == Context::Poetic =>
@@ -290,16 +294,13 @@ impl SentenceContext {
             }
             // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munnach) if self.context == Context::Poetic => {
-                self.sentence.contains('\u{05A3}')
+                self.sentence.contains(MUNAH)
             }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => {
-                //self.sentence.contains('\u{05A5}')
-                // RE_POETRY_MERKHA.is_match(&self.sentence)
-                // replacewith a function
                 contains_poetry_merkha(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => {
-                self.sentence.contains('\u{05AC}')
+                self.sentence.contains(ILUY)
             }
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.context == Context::Poetic => {
                 contains_poetry_mehuppakh(&self.sentence)
@@ -489,7 +490,7 @@ fn contains_poetry_merkha(sentence: &str) -> bool {
 
 fn contains_poetry_mehuppakh(sentence: &str) -> bool {
     // Mehupppakh (as a poetry accent)
-    //   not part of Mahpakh Legarmeh (needs Negative Forward)
+    //   not part of Mehuppakh Legarmeh (needs Negative Forward)
     //   AND
     //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
     let target_char = MAHPAKH;
@@ -517,7 +518,7 @@ fn contains_poetry_mehuppakh(sentence: &str) -> bool {
             2,
         );
         let is_part_of_mahpakh_legarmeh = is_part_of_mahpakh_legarmeh_look_ahead(index, &char_vec);
-    
+
         println!("\nResult: Negative Looking Backward = {two_code_points_behind}");
         println!("Result: Negative Looking Forward = {is_part_of_mahpakh_legarmeh}");
         if !two_code_points_behind && !is_part_of_mahpakh_legarmeh {
@@ -684,17 +685,20 @@ fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[
                 println!("MAX wordcount");
                 return false;
             }
-            // space found
+            // space found -> count ++
             (' ', _) => {
-                println!("Space found");
                 word_count += 1;
             }
-            // mahpakh found 
-            (PASEQ | VERTICAL_LINE, 0 | 1) => {
+            // mahpakh found
+            (PASEQ, 0 | 1) => {
                 println!("PASEQ found");
                 return true;
             }
-            // PASEQ not found as first character in the second word
+            (VERTICAL_LINE, 0 | 1) => {
+                println!("VERTICAL_LINE found");
+                return true;
+            }
+            // PASEQ or VERTICAL_LINE not found as first character in the second word
             (_, 1) => {
                 println!("No PASEQ found as the first char 2nd word");
                 return false;
@@ -1343,7 +1347,7 @@ mod tests {
         let sentence_c =
             SentenceContext::new("בּראשׁית בּ֘רא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Mehuppakh)));
-        
+
         // One Mehuppach, part of Mehuppach Legarmeh (no space) TODO
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת׀ הארץ׃", Context::Poetic);
