@@ -7,16 +7,25 @@ Managing Masoretic Hebrew Accents
 
 **This project is currently in the design/development mode.**
 
-`Current Version:`  v0.0.1.
+`Current Version:`  v0.0.2
 
 `Current feautures:`  
-- fn contains_accent(SentenceContext, HebrewAccent) -> bool
 
-</br>
+##### v0.0.1
 
+- new() ->  SentenceContext
+- contains_accent(SentenceContext, HebrewAccent) -> bool 
+- rank() -> number 
+
+##### v0.0.2    
+
+  -  Secondairy accent Meteg is added 
+  
 ## Description
  
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
+
+Be aware that the Hebrew accents are not exactly the same as the UTF8 Hebrew Unicode code-points!
 
 ### Brief overview in the accents in the Tanach
  

@@ -18,7 +18,7 @@ Looking roughly I noticed the following similarities and differences.
 
   Notes: 
     - Mayela and Meteg are secondary accents
-    - Some accents are in multiple groups (Helmut Righter) 
+    - Some accents are in multiple groups (see p.e. Helmut Righter) 
 
 ### Differences
 
@@ -41,42 +41,8 @@ Given that the scholars themselves do not have a unified view and that I myself 
 - Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided if applicable.
 
 - The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
+
 - The secondary accent Meteg,which is not menttioned BHS will be added to the list of both conjunctives (prose and poetry).
-
-## Accent Mapping to Unicode code-points
-
-Hebrew accents as they occur in the Tanach are mostly, but not always exact the same as the accents as mentioned in the Unicode code page.
-
-#### One Hebrew Accent -> one code-point
-
-This covers most of the cases. Examples: 
- - ProseAccent::Segolta -> Unicode code-point: **U+0592**
- - PoetryAccent::Munnach -> Unicode code-point: **U05A3**
-
-#### One Hebrew Accent -> two code-points
-
-- In the `Prose books` the following two accents consist of two(2) Unicode code-points: 
-  - Shalshelet
-  - Legarmeh
-
-- In the `Poetic books` the following seven accents consist of two(2) Unicode code-points:
-  - Ole We Yored
-  - Revia Mugrash
-  - Shalshelet Gadol
-  - Mehuppakh Legarmeh
-  - Azla Legarmeh
-  - Tsinnorit Merkha
-  - Tsinnorit Mahpakh
-
-#### Two Hebrew Accents -> One code-point
-
-Some accents have different names (and functions), depending of the position within the sentence.
-
-Examples: 
-- `Meayla` and `Tiphcha` both have the same unicode point **U+0596**
-- `Silluq` and `Meteg` both have the same unicode point **U+05BD**
-
-(more details can be found in the code itself)
 
 ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
@@ -93,6 +59,42 @@ Examples:
 
 For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
 
+## Accent Mapping to Unicode code-points
+
+Hebrew accents as they occur in the Tanach are mostly, but not always exact the same as the accents as mentioned in the Unicode code page.
+
+1. **One Hebrew Accent -> one code-point**
+
+    This covers most of the cases. Examples:
+
+    - ProseAccent::Segolta -> Unicode code-point: **U+0592**
+    - PoetryAccent::Munnach -> Unicode code-point: **U+05A3**
+
+2. **One Hebrew Accent -> two code-points**
+
+   - In the `Prose books` the following two accents consist of two(2) Unicode code-points: 
+     - Shalshelet
+     - Legarmeh
+
+   - In the `Poetic books` the following seven accents consist of two(2) Unicode code-points:
+     - Ole We Yored
+     - Revia Mugrash
+     - Shalshelet Gadol
+     - Mehuppakh Legarmeh
+     - Azla Legarmeh
+     - Tsinnorit Merkha
+     - Tsinnorit Mahpakh
+
+3. **Two Hebrew Accents -> One code-point**
+
+    Some accents have different names (and functions), depending of the position within the sentence.
+
+    Examples: 
+    - `Meayla` and `Tiphcha` both have the same unicode point **U+0596**
+    - `Silluq` and `Meteg` both have the same unicode point **U+05BD**
+
+    (more details can be found in the code itself)
+
 </br>
 
 # Design
@@ -105,72 +107,71 @@ Below the start of the design. Everything else will be build on top of it.
 
 In general all mappings can be resolved using either the [String](https://doc.rust-lang.org/std/string/struct.String.html#implementations[) methods or some kind of regular expression ([Regex](](https://docs.rs/regex/latest/regex/)) or [Fancy-Regex](https://docs.rs/fancy-regex/latest/fancy_regex/)).
 
-
-**Except** the following four **poetry** Hebrew Accents, because they need a `flexible negative lookbehind`, which is at the moment of writing not available as far as I know.
+**Except** the following four **poetry** Hebrew Accents, because they need a `flexible negative lookbehind` (*which is at the moment of writing not available as far as I know*):
 
 1. `Merkha`  
-The accent Merkha, Ole We Yored and Tsinnorit Merkha all contain the unicode point **U+05A5**.
+    The accent Merkha, Ole We Yored and Tsinnorit Merkha all contain the ssame Unicode code-point **U+05A5**.
 
 2. `Mehuppakh`   
-   The accent Mehuppakh, Mehuppakh Legarmeh and Tsinnorit Mahpakh all contain the unicode point **U+05A5**.
+   The accent Mehuppakh, Mehuppakh Legarmeh and Tsinnorit Mahpakh all contain the same Unicode code-point **U+05A5**.
 
-3. `Revia Gadol`   
-   Revia 
-4. `Revia Qaton`
+3. `Revia Gadol`  and `Revia Qaton`
+   Revia Gadol, Revia Qaton and Revia Mugrash all contain same the Unicode code-point **U+0597**.
 
-## Caveats
-
-In order to locate some of the accents the crate Fancy-Regex is used.
-This gives some issues, because the `negative lookbehind` feature does not function with quantifiers.
-
-It concerns the following Poetic accents:
-- Revia Gadol  
-  Could also be a `Revia Mugrash` or a `Revia Qaton`
-
-- Revia Qaton  
-  Could also be a `Revia Mugrash`
-
-- Merkha   
-  Could also be part of an `Ole We Yored` or `Tsinnorit Merkha`
-
-- Mahpakh  
-  Could also be part of a `Tsinnorit Mahpkh`
-
+   Allthough the Revia Gadol and Revia Qaton are represented by the same Unicode code-point, the difference is based upon the position in the sentence and the relation to another accent ( `OleWeYored`).
 
 ## Data structures
 
-1. **Enum Context**: Prose, Poetry
-   
-2. **Enum AccentType**: Disjunctive, Conjunctive
+1. **SentenceContext**   
+    grouping the sentence and the context
 
-3. **Struct AccentAttributes**:
-   - name_transl (String)
-   - name_hebrew (String)
-   - ashkenazi_transl (Option<String>)
-   - Ashkenazi_hebrew (Option<String>)
-   - Sephardi_transl (Option<String>)
-   - Sephardi_hebrew (Option<String>)
-   - horizontal_position (enum)
-   - vertical_position (enum)
-   - order (u8)
-   - comment (Option<String>)
-   - group_nr (Option<u8>) 
+1. **Hebrew Accent**  
+    Prose(ProseAccent), Poetry(PoetryAccent)
 
-4. **Enum Vertical position**:   
-   - top
-   - bottom
+2. **Prose Accent** 
+   All prose accents
 
-5. **Enum Horizontal position:**
-   - postpositive (left)
-   - normal (middle)
-   - prepositive (right)
+3. **Poetry Accent**   
+    All poetry accents
 
+4. **Context** 
+   The context (writing style) of the sentence
+   Prose, Poetry
 
+5. **Accent Type**  
+   Two type of accents: Primairy and Secundary
 
-### Merkha
+6. **Accent Category**    
+   Disjunctive, Conjunctive
 
-The accent `Merkha`, `OleWeYored` and `TsinnoritMerkha` all contain the unicode point **U+05A5**. 
+7. **Accent Position**
+   Indication of the position of the accent in relation to the applicable consonant
 
-In order to find a Merkha  ('one code-point accent') we need to check if it is *not* part of a 'two code-point' accent. 
+8. **Accent CodePoints**   
+   The number of Unicode code-points
 
-need a flexible negative lookbehind if the , which is at the moment of writing not covered by the crate fancy-regex.
+9.  **Accent Information**   
+   Contains all kind of attributes of the accents.
+   e.g. position, type etc. etc.
+
+## Functions
+
+#### For `SentenceContext`
+
+- new() 
+  - creates a new SentenceContext object
+
+- contains_accent() 
+  -  checks if the accent is present in the sentence
+
+- find_accent() **TODO**
+  - returns the position of the first found accent
+
+#### For `ProseAccent` and `PoetryAccents`
+
+- rank() 
+   - gives the rank number of the accent
+
+- info() **TODO**
+    - gives additional information for a specific accent, e.g. accents position etc. etc.
+
