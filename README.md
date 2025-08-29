@@ -21,6 +21,13 @@ Managing Masoretic Hebrew Accents
 
   -  Secondairy accent Meteg is added 
   
+
+##### v0.0.3   
+
+  -  doc
+  -  doc test rank()
+  -  info() + doc + test
+  
 ## Description
  
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
@@ -106,6 +113,23 @@ assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol
 ### Usage find_accent()
 
 TODO
+
+### Usage rank()
+
+``` rust
+use hebrew_accents::ProseAccent;
+
+let prose_accent = ProseAccent::TelishaGedolah;
+assert_eq!(17, prose_accent.rank());
+```
+
+``` rust
+use hebrew_accents::PoetryAccent;
+
+let poetry_accent = PoetryAccent::ShalsheletGadol;
+assert_eq!(6, poetry_accent.rank());
+```
+
 
 ## Releases
 

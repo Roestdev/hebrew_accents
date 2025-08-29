@@ -119,7 +119,7 @@ pub enum AccentCodePoints {
 
 impl ProseAccent {
     #[allow(unused)]
-    fn rank(&self) -> u8 {
+    pub fn rank(&self) -> u8 {
         match self {
             // Disjunctives
             ProseAccent::Silluq => 1,
@@ -561,7 +561,7 @@ impl ProseAccent {
 
 impl PoetryAccent {
     #[allow(unused)]
-    fn rank(&self) -> u8 {
+    pub fn rank(&self) -> u8 {
         match self {
             // Disjunctives
             PoetryAccent::Silluq => 1,
