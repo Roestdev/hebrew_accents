@@ -128,13 +128,13 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 1. **Hebrew Accent**  
     Prose(ProseAccent), Poetry(PoetryAccent)
 
-2. **Prose Accent** 
+2. **Prose Accent**  
    All prose accents
 
 3. **Poetry Accent**   
     All poetry accents
 
-4. **Context** 
+4. **Context**  
    The context (writing style) of the sentence
    Prose, Poetry
 
@@ -144,7 +144,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 6. **Accent Category**    
    Disjunctive, Conjunctive
 
-7. **Accent Position**
+7. **Accent Position**  
    Indication of the position of the accent in relation to the applicable consonant
 
 8. **Accent CodePoints**   

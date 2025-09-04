@@ -40,7 +40,7 @@ static RE_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 static RE_PROSE_MUNNACH: Lazy<FancyRegex> =
     Lazy::new(|| FancyRegex::new(r"\u{05A3}(?!\p{Hebrew}*?\s*?[\u{05C0}\u{007C}])").unwrap());
 
-// A Meayla is a Tiphcha before Silluq or Atnach in the same word
+// A Mayela is a Tiphcha before Silluq or Atnach in the same word
 // or words connected with a Maqqef (\u{05BE})
 // Tiphcha: U+0596
 // Atnach:  U+0591
@@ -65,9 +65,8 @@ static RE_POETRY_OLE_WE_YORED: Lazy<Regex> =
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
 // - Geresh (\u{059C}) followed by
 // - Revia (\u{0597})
-//
-//  Maqqef (\u{05BE})
-// 'Geresh Muqdam' (\u{059D}) is Jiddisch?
+// - Maqqef (\u{05BE})
+// - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
 static RE_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 });
@@ -168,18 +167,14 @@ impl SentenceContext {
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
                 RE_COMMON_SILLUQ.is_match(&self.sentence).unwrap()
             }
-
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.contains(ETNAHTA),
-
             HebrewAccent::Prose(ProseAccent::Segolta) if self.context == Context::Prosaic => {
                 self.sentence.contains(SEGOL)
             }
-
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.context == Context::Prosaic => {
                 RE_COMMON_SHALSHELET.is_match(&self.sentence)
             }
-
             HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.context == Context::Prosaic => {
                 self.sentence.contains(ZAQEF_QATAN)
             }
@@ -251,10 +246,9 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
             | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.contains(YERAH_BEN_YOMO),
-            HebrewAccent::Prose(ProseAccent::Meayla) if self.context == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::Mayela) if self.context == Context::Prosaic => {
                 RE_PROSE_MEAYLA.is_match(&self.sentence)
             }
-            // TODO NEEDS REGEX
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
                 RE_COMMON_METEG.is_match(&self.sentence).unwrap()
             }
@@ -266,14 +260,11 @@ impl SentenceContext {
                 RE_POETRY_OLE_WE_YORED.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.context == Context::Poetic => {
-                //false
-                //RE_POETRY_REVIA_GADOL.is_match(&self.sentence)
                 contains_poetry_revia_gadol(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.context == Context::Poetic => {
                 RE_POETRY_REVIA_MUGRASH.is_match(&self.sentence)
             }
-
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol)
                 if self.context == Context::Poetic =>
             {
@@ -283,8 +274,6 @@ impl SentenceContext {
                 self.sentence.contains(ZINOR)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.context == Context::Poetic => {
-                // false
-                // RE_POETRY_REVIA_QATON.is_match(&self.sentence)
                 contains_poetry_revia_qaton(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => {
@@ -395,11 +384,8 @@ impl SentenceContext {
                 None
             }
             HebrewAccent::Prose(ProseAccent::Galgal) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Meayla) if self.context == Context::Prosaic => None,
+            HebrewAccent::Prose(ProseAccent::Mayela) if self.context == Context::Prosaic => None,
             // Poetry Disjunctives
-            // HebrewAccent::Poetry(PoetryAccent::Silluq) if self.context == Context::Poetic => {
-            //     None
-            // }
             HebrewAccent::Poetry(PoetryAccent::OleWeYored) if self.context == Context::Poetic => {
                 None
             }
@@ -429,7 +415,7 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.context == Context::Poetic => {
                 None
             }
-            // Poetry Conjunctives
+            // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munnach) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => None,
@@ -1081,19 +1067,19 @@ mod tests {
         // Tiphcha followed by Atnach
         let sentence_c =
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹ֖הִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meayla)));
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
         // Tiphcha followed by Atnach, two words connected with a Maqqef
         let sentence_c =
             SentenceContext::new("ויּ֖צא־נ֑ח וּבנ֛יו ואשׁתּ֥ו וּנשֽׁי־בנ֖יו אתּֽו׃", Context::Prosaic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meayla)));
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
         // Tiphcha followed by silluq
         let sentence_c =
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָ֖אָֽרֶץ", Context::Prosaic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meayla)));
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
         // only Tiphcha
         let sentence_c =
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meayla)));
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
     }
     #[test]
     fn test_contains_prose_meteg() {
@@ -1137,7 +1123,6 @@ mod tests {
     }
     #[test]
     fn test_contains_poetry_revia_gadol() {
-        // TODO
         // No Revia at all
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
@@ -1290,7 +1275,6 @@ mod tests {
     }
     #[test]
     fn test_contains_poetry_munnach() {
-        // TODO combi with prose?
         let sentence_c = SentenceContext::new("את־אבר֣הם", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Munnach)));
         let sentence_c = SentenceContext::new("את־אברהם", Context::Poetic);
@@ -1506,7 +1490,7 @@ mod tests {
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
     }
 
-        #[test]
+    #[test]
     fn test_contains_poetry_meteg() {
         // Only Silluq, No Meteg
         let sentence_c =
