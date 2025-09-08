@@ -1,10 +1,10 @@
 #![doc = include_str!("../README.md")]
 
-// contains all function API's
+//
 mod accent;
 mod constants;
-mod sentence;
+mod sentence_context;
 
 // export
 pub use crate::accent::*;
-pub use crate::sentence::*;
+pub use crate::sentence_context::*;

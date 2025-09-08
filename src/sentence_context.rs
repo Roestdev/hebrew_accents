@@ -59,7 +59,7 @@ static RE_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
 //      - Ole (\u{05AB}) followed by
 //      - Yored (\u{05A5}) aka Merkha
 // This accent can stretch over two words (a.k.a. word-unit)
-static RE_POETRY_OLE_WE_YORED: Lazy<Regex> =
+static RE_POETRY_OLEH_WE_YORED: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\u{05AB}\p{Hebrew}+\s?\p{Hebrew}*\u{05A5}").unwrap());
 
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
@@ -256,8 +256,8 @@ impl SentenceContext {
              *                          POETRY
              * *********************************************************/
             // Disjunctives
-            HebrewAccent::Poetry(PoetryAccent::OleWeYored) if self.context == Context::Poetic => {
-                RE_POETRY_OLE_WE_YORED.is_match(&self.sentence)
+            HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.context == Context::Poetic => {
+                RE_POETRY_OLEH_WE_YORED.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.context == Context::Poetic => {
                 contains_poetry_revia_gadol(&self.sentence)
@@ -386,7 +386,7 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Galgal) if self.context == Context::Prosaic => None,
             HebrewAccent::Prose(ProseAccent::Mayela) if self.context == Context::Prosaic => None,
             // Poetry Disjunctives
-            HebrewAccent::Poetry(PoetryAccent::OleWeYored) if self.context == Context::Poetic => {
+            HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.context == Context::Poetic => {
                 None
             }
             //HebrewAccent::Poetry(PoetryAccent::Atnach) if self.context == Context::Poetic => None,
@@ -451,7 +451,7 @@ fn contains_poetry_merkha(sentence: &str) -> bool {
     //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
-    let possible_combinations_lookbehind = [TSINNORIT, OLE];
+    let possible_combinations_lookbehind = [TSINNORIT, OLEH];
 
     // Check for the existence of the target character in the sentence
     if !&sentence.contains(target_char) {
@@ -718,7 +718,7 @@ fn is_followed_by_ole_we_yored(index_of_target_char: usize, sentence: &[char]) -
         match (*current_char, word_count) {
             // return if Ole We Yored is found
             (_, _) if ole_found & yored_found => {
-                println!("OLE WE YORED found!");
+                println!("OLEH WE YORED found!");
                 return ole_found && yored_found;
             }
             // return if maximum word count is reached
@@ -731,8 +731,8 @@ fn is_followed_by_ole_we_yored(index_of_target_char: usize, sentence: &[char]) -
             // update word count after a Maqef
             (MAQAF, _) => word_count += 1,
             // check for Ole in the next word
-            (OLE, 1) => {
-                println!("found OLE");
+            (OLEH, 1) => {
+                println!("found OLEH");
                 ole_found = true;
             }
             // check for Yored in the next or second word
@@ -854,7 +854,7 @@ mod tests {
     fn test_contains_prose_revia() {
         let sentence_c = SentenceContext::new("אלהים֮ את־הרקיע֒ ויּבדּ֗ל בּ֤ין", Context::Prosaic);
         assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Revia)));
-        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
         let sentence_c = SentenceContext::new("אלהים֮ את־הרקיע֒ ויּבדּל בּ֤ין", Context::Prosaic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Revia)));
     }
@@ -1108,18 +1108,18 @@ mod tests {
      * *********************************************************/
     #[test]
     fn test_contains_poetry_ole_we_yored() {
-        // OleWeYored, one word
+        // OlehWeYored, one word
         let sentence_c = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Poetic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
-        // OleWeYored, one word - context: Prosaic
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
+        // OlehWeYored, one word - context: Prosaic
         let sentence_c = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
-        // OleWeYored, two words
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
+        // OlehWeYored, two words
         let sentence_c = SentenceContext::new("ועַֽל־פַּלְגֵ֫י מָ֥יִם וְעָלֵ֥הוּ ׃", Context::Poetic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
-        // OleWeYored, three words
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
+        // OlehWeYored, three words
         let sentence_c = SentenceContext::new("ועַֽל־פַּלְגֵ֫י מָיִם וְעָ֥לֵ֥הוּ ׃", Context::Poetic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OleWeYored)));
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
     }
     #[test]
     fn test_contains_poetry_revia_gadol() {
