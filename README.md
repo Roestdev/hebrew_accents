@@ -38,23 +38,28 @@ Be aware that the Hebrew accents are not exactly the same as the UTF8 Hebrew Uni
  
 The accents used in the Tanach have been (are) the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed in the Tanach is complex and nuanced, presenting a challenging area of study for scholars and researchers.
 
-Several factors contribute to the complexity of Hebrew accents in the Tanach, including:
+Several factors contribute to the complexity of Hebrew accents in the Tanach, including the following:
+
+- There are **two** main systems of accents: one system for the majority of the books, known as the "Twenty-One Books" (Prose) and another system for the remaining books, known as "Three Books" (Poetry)
+
+  - `Prose` ( Hebrew: סגנון פרוזאי ): This style is used for narrative and descriptive passages, such as historical accounts, genealogies, and instructional texts. Prose is characterized by a straightforward and simple writing style, with a focus on conveying information and telling a story.
+
+  - `Poetry` ( Hebrew: סגנון שירי ): This style is used for expressive and lyrical passages, such as psalms, songs, and wisdom literature. Poetry is characterized by a more formal and structured writing style, with a focus on rhythm, meter, and figurative language.
+  
+  These two styles are not mutually exclusive, and many passages in the Tanach blend elements of both prose and poetry. However, in general, the Tanach can be divided into sections that are primarily prose (such as the historical books of Genesis, Exodus, and Numbers) and sections that are primarily poetry (such as the book of Psalms and the book of Job).
+
+  It's worth noting that the distinction between prose and poetry in the Tanach is not always clear-cut, and different scholars and traditions may have different opinions on the matter. Additionally, the writing styles in the Tanach have evolved over time, and different books and sections may reflect different literary and cultural influences.
+
 - Accents have three roles at the same time:
+  
   - To indicate of stressed syllables, but not always.
   - To indicate the syntactic relation in a sentence.
   - Intonation of the words, used for singing the sentence.
 
--  In the Tanach, there are two main systems of accents used: one for the majority of the books, known as the "Twenty-One Books" (which includes all the books except for the three poetic books), and another for the three poetic books of Psalms, Proverbs, and Job, known as "Three Books".
+- Within each system there are two major categories of Masoretic accents:
 
-- Within the main system there are two major categories of Masoretic accents:
   - Disjunctive accents
   - Conjunctive accents
-
-- Disjunctive accents are ordered according their relative importance.
-  
-- Disjunctive accents may be organized hiarchial groups. 
-
-  - In the "Twenty-One Books," there are four groups of disjunctive accents, while the "Three Books" contain three groups.
 
 - The same (UTF-8) accent can be disjunctive in the "Twenty-One Books" and conjunctive in the "Three Books".
 
