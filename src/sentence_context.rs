@@ -24,7 +24,7 @@ static RE_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
 });
 
 // A 'Legarmeh' consists of the following two UTF-8 code-points:
-//      - Munnach (\u{05A3}) followed by
+//      - Munach (\u{05A3}) followed by
 //      - Paseq (\u{05C0})
 // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
 static RE_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
@@ -32,9 +32,9 @@ static RE_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 });
 
 // Context: Prose and Poetry
-// A 'Munnach' is a 'Munnach' if it is NOT FOLLOWED by a Paseq !
+// A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
 // Otherwise is called a 'Legarmeh'
-//      - Munnach (\u{05A3})
+//      - Munach (\u{05A3})
 //      - Paseq (\u{05C0})
 // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
 static RE_PROSE_MUNNACH: Lazy<FancyRegex> =
@@ -219,7 +219,7 @@ impl SentenceContext {
                 RE_PROSE_LEGARMEH.is_match(&self.sentence)
             }
             // Conjunctives
-            HebrewAccent::Prose(ProseAccent::Munnach) if self.context == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::Munach) if self.context == Context::Prosaic => {
                 RE_PROSE_MUNNACH.is_match(&self.sentence).unwrap()
             }
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.context == Context::Prosaic => {
@@ -288,7 +288,7 @@ impl SentenceContext {
                 RE_POETRY_AZLA_LEGARMEH.is_match(&self.sentence)
             }
             // Conjunctives
-            HebrewAccent::Poetry(PoetryAccent::Munnach) if self.context == Context::Poetic => {
+            HebrewAccent::Poetry(PoetryAccent::Munach) if self.context == Context::Poetic => {
                 self.sentence.contains(MUNAH)
             }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => {
@@ -368,7 +368,7 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) if self.context == Context::Prosaic => None,
             // Prose Conjunctives
-            HebrewAccent::Prose(ProseAccent::Munnach) if self.context == Context::Prosaic => None,
+            HebrewAccent::Prose(ProseAccent::Munach) if self.context == Context::Prosaic => None,
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.context == Context::Prosaic => None,
             HebrewAccent::Prose(ProseAccent::Merkha) if self.context == Context::Prosaic => None,
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah)
@@ -416,7 +416,7 @@ impl SentenceContext {
                 None
             }
             // Conjunctives
-            HebrewAccent::Poetry(PoetryAccent::Munnach) if self.context == Context::Poetic => None,
+            HebrewAccent::Poetry(PoetryAccent::Munach) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::Tarkha) if self.context == Context::Poetic => None,
@@ -451,7 +451,7 @@ fn contains_poetry_merkha(sentence: &str) -> bool {
     //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
-    let possible_combinations_lookbehind = [TSINNORIT, OLEH];
+    let possible_combinations_lookbehind = [TSINNORIT, OLE];
 
     // Check for the existence of the target character in the sentence
     if !&sentence.contains(target_char) {
@@ -549,7 +549,7 @@ fn contains_poetry_revia_gadol(sentence: &str) -> bool {
             &possible_combinations_lookbehind,
             1,
         );
-        let followed_by_owy = is_followed_by_ole_we_yored(index, &char_vec);
+        let followed_by_owy = is_followed_by_oleh_we_yored(index, &char_vec);
         //  2cp   oleweyored     revia_qadol
         //  no      no      -       yes
         //  no      yes     -       no
@@ -594,7 +594,7 @@ fn contains_poetry_revia_qaton(sentence: &str) -> bool {
             1,
         );
         println!("Followed by Ole We Yored");
-        let followed_by_owy = is_followed_by_ole_we_yored(index, &char_vec);
+        let followed_by_owy = is_followed_by_oleh_we_yored(index, &char_vec);
         // 2cp   oleweyored     revia_qaton
         //  no      no      -       no
         //  no      yes     -       yes
@@ -704,8 +704,8 @@ fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[
 
 // Check if a character is followed by an Ole We Yored
 // Note: Ole We Yored may be distributed over two words
-fn is_followed_by_ole_we_yored(index_of_target_char: usize, sentence: &[char]) -> bool {
-    println!("\n==> LOOKING FORWARD - is_followed_by_ole_we_yored");
+fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) -> bool {
+    println!("\n==> LOOKING FORWARD - is_followed_by_oleh_we_yored");
     if index_of_target_char >= sentence.len() {
         return false; // Early exit if the position is at the end of the sentence
     }
@@ -731,8 +731,8 @@ fn is_followed_by_ole_we_yored(index_of_target_char: usize, sentence: &[char]) -
             // update word count after a Maqef
             (MAQAF, _) => word_count += 1,
             // check for Ole in the next word
-            (OLEH, 1) => {
-                println!("found OLEH");
+            (OLE, 1) => {
+                println!("found OLE");
                 ole_found = true;
             }
             // check for Yored in the next or second word
@@ -981,26 +981,26 @@ mod tests {
     // Conjunctives
     #[test]
     fn test_contains_prose_munnach() {
-        // Single Munnach
+        // Single Munach
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֣להים את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munnach)));
-        // Munnach part of Legarmeh (Paseq)
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munach)));
+        // Munach part of Legarmeh (Paseq)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֣להים׀  את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munnach)));
-        // Munnach part of Legarmeh (space + Paseq)
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munach)));
+        // Munach part of Legarmeh (space + Paseq)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֣להים ׀  את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munnach)));
-        // Munnach part of Legarmeh (Vertical Bar)
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munach)));
+        // Munach part of Legarmeh (Vertical Bar)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֣להים|  את השּׁמים ואת הארץ׃׃", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munnach)));
-        // Munnach part of Legarmeh (space +Vertical Bar)
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munach)));
+        // Munach part of Legarmeh (space +Vertical Bar)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֣להים  |  את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munnach)));
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Munach)));
     }
     #[test]
     fn test_contains_prose_mahpakh() {
@@ -1276,9 +1276,9 @@ mod tests {
     #[test]
     fn test_contains_poetry_munnach() {
         let sentence_c = SentenceContext::new("את־אבר֣הם", Context::Poetic);
-        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Munnach)));
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Munach)));
         let sentence_c = SentenceContext::new("את־אברהם", Context::Poetic);
-        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Munnach)));
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Munach)));
     }
     #[test]
     fn test_contains_poetry_merkha() {

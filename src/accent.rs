@@ -29,7 +29,7 @@ pub enum ProseAccent {
     TelishaGedolah,
     Legarmeh,
     // Conjunctives
-    Munnach,
+    Munach,
     Mahpakh,
     Merkha,
     MerkhaKephulah,
@@ -58,7 +58,7 @@ pub enum PoetryAccent {
     MehuppakhLegarmeh,
     AzlaLegarmeh,
     // Conjunctives
-    Munnach,
+    Munach,
     Merkha,
     Illuy,
     Tarkha,
@@ -168,7 +168,7 @@ impl ProseAccent {
             ProseAccent::TelishaGedolah => 17,
             ProseAccent::Legarmeh => 18,
             // Conjunctives
-            ProseAccent::Munnach => 19,
+            ProseAccent::Munach => 19,
             ProseAccent::Mahpakh => 20,
             ProseAccent::Merkha => 21,
             ProseAccent::MerkhaKephulah => 22,
@@ -312,7 +312,7 @@ impl ProseAccent {
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
                 acc_type: AccentType::Primairy,
-                code_point_1: CP_QADMA,
+                code_point_1: CP_PASHTA,
                 code_point_2: None,
                 comment: Some("if you sound almost last (2 pasta’s in one word)".to_string()),
             },
@@ -346,8 +346,8 @@ impl ProseAccent {
                 bhs_name: "Geresh".to_string(),
                 bhs_hebrew: "גֵּרֵישׁ".to_string(),
                 bhs_meaning:"expulsion, driving out, divorce".to_string(),
-                alt_bhs_name: None,
-                alt_bhs_hebrew: None,
+                alt_bhs_name: Some("Teres".to_string()),
+                alt_bhs_hebrew: Some("טֶרֶס".to_string()),
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
                 acc_type: AccentType::Primairy,
@@ -411,7 +411,7 @@ impl ProseAccent {
                 bhs_name: "Legarmeh".to_string(),
                 bhs_hebrew: "לְגַרְמֶהּ".to_string(),
                 bhs_meaning:"for or by itself, independant".to_string(),
-                alt_bhs_name: Some("Munnach Legarmeh".to_string()),
+                alt_bhs_name: Some("Munach Legarmeh".to_string()),
                 alt_bhs_hebrew: Some("מוּנַח לְגַרְמֵ֣הּ".to_string()),
                 alt_bhs_meaning: None,
                 acc_type: AccentType::Primairy,
@@ -421,9 +421,9 @@ impl ProseAccent {
                 comment:Some("Munach with passeq; Before Revia".to_string()),
             },
             // Conjunctives
-            ProseAccent::Munnach => HebrewAccentDetails {
-                bhs_name: "Munnach".to_string(),
-                bhs_hebrew: "מֻנַּח".to_string(),
+            ProseAccent::Munach => HebrewAccentDetails {
+                bhs_name: "Munach".to_string(),
+                bhs_hebrew: "מוּנַ֣ח".to_string(),
                 bhs_meaning:"resting or placed".to_string(),
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
@@ -573,7 +573,7 @@ impl PoetryAccent {
             PoetryAccent::MehuppakhLegarmeh => 11,
             PoetryAccent::AzlaLegarmeh => 12,
             // Conjunctives
-            PoetryAccent::Munnach => 13,
+            PoetryAccent::Munach => 13,
             PoetryAccent::Merkha => 14,
             PoetryAccent::Illuy => 15,
             PoetryAccent::Tarkha => 16,
@@ -612,7 +612,7 @@ impl PoetryAccent {
                 alt_bhs_meaning: None,
                 acc_type: AccentType::Primairy,
                 acc_category: AccentCategory::Disjunctive,
-                code_point_1: CP_OLEH,
+                code_point_1: CP_OLE,
                 code_point_2: Some(CP_MAHAPAKH),
                 comment: None,
             },
@@ -747,8 +747,8 @@ impl PoetryAccent {
                 comment: None,
             },
             // Conjunctives
-            PoetryAccent::Munnach => HebrewAccentDetails {
-                bhs_name: "Munnach".to_string(),
+            PoetryAccent::Munach => HebrewAccentDetails {
+                bhs_name: "Munach".to_string(),
                 bhs_hebrew: "מֻנַּח".to_string(),
                 bhs_meaning:"rest or placed".to_string(),
                 alt_bhs_name: None,
@@ -888,7 +888,7 @@ impl PoetryAccent {
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_METEG,
                 code_point_2: None,
-                comment: Some("??? Mahpakh Metsunnar".to_string()),
+                comment: None,
             },
         }
     }
@@ -926,7 +926,7 @@ mod tests {
         println!("\n{:#?}", ProseAccent::TelishaGedolah.details());
         println!("\n{:#?}", ProseAccent::Legarmeh.details());
         // Conjunctives
-        println!("\n{:#?}", ProseAccent::Munnach.details());
+        println!("\n{:#?}", ProseAccent::Munach.details());
         println!("\n{:#?}", ProseAccent::Mahpakh.details());
         println!("\n{:#?}", ProseAccent::Merkha.details());
         println!("\n{:#?}", ProseAccent::MerkhaKephulah.details());
@@ -957,7 +957,7 @@ mod tests {
         println!("\n{:#?}", ProseAccent::TelishaGedolah.rank());
         println!("\n{:#?}", ProseAccent::Legarmeh.rank());
         // Conjunctives
-        println!("\n{:#?}", ProseAccent::Munnach.rank());
+        println!("\n{:#?}", ProseAccent::Munach.rank());
         println!("\n{:#?}", ProseAccent::Mahpakh.rank());
         println!("\n{:#?}", ProseAccent::Merkha.rank());
         println!("\n{:#?}", ProseAccent::MerkhaKephulah.rank());
