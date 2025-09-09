@@ -4,6 +4,7 @@
 mod accent;
 mod constants;
 mod sentence_context;
+mod regex;
 
 // export
 pub use crate::accent::*;
