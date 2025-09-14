@@ -1,28 +1,30 @@
 use crate::constants::*;
+use crate::regex::*;
 use crate::HebrewAccent;
 use crate::PoetryAccent;
 use crate::ProseAccent;
-use crate::regex::*;
 
-
-
-
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
-pub enum Context {
-    Poetic,
-    #[default]
-    Prosaic,
-}
-
+/// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 pub struct SentenceContext {
     pub sentence: String,
     pub context: Context,
 }
 
+/// Describes the context of a sentence (poetic or prosaic)
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+pub enum Context {
+    /// The sentence follows a poetic structure (e.g., meter, rhyme).
+    Poetic,
+    /// The sentence follows ordinary prose conventions.
+    #[default]
+    Prosaic,
+}
+
 impl SentenceContext {
-    /// Checks if the given character is a HBR accent segol.
-    ///
+    
+    /// Creates a new object: SentenceContext
+    /// 
     /// # Example
     /// ```
     /// use hebrew_accents::Context;
@@ -341,11 +343,11 @@ impl SentenceContext {
 
 fn contains_poetry_merkha(sentence: &str) -> bool {
     // Merkha (as a poetry accent) is
-    //   not part of Ole We Yored (needs Negative Lookbehind)
+    //   not part of Oleh We Yored (needs Negative Lookbehind)
     //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
-    let possible_combinations_lookbehind = [TSINNORIT, OLE];
+    let possible_combinations_lookbehind = [TSINNORIT, OLEH];
 
     // Check for the existence of the target character in the sentence
     if !&sentence.contains(target_char) {
@@ -422,7 +424,7 @@ fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     // Revia Gadol is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
-    //   not followed by an Ole We Yored (needs Positive LookAhead)
+    //   not followed by an Oleh We Yored (needs Positive LookAhead)
     let target_char = REVIA;
     let possible_combinations_lookbehind = [GERESH];
 
@@ -463,7 +465,7 @@ fn contains_poetry_revia_qaton(sentence: &str) -> bool {
     // Revia Qaton is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
-    //   followed by an Ole We Yored (needs Positive LookAhead)
+    //   followed by an Oleh We Yored (needs Positive LookAhead)
     let target_char = REVIA;
     let possible_combinations_lookbehind = [GERESH];
 
@@ -487,7 +489,7 @@ fn contains_poetry_revia_qaton(sentence: &str) -> bool {
             &possible_combinations_lookbehind,
             1,
         );
-        println!("Followed by Ole We Yored");
+        println!("Followed by Oleh We Yored");
         let followed_by_owy = is_followed_by_oleh_we_yored(index, &char_vec);
         // 2cp   oleweyored     revia_qaton
         //  no      no      -       no
@@ -596,41 +598,41 @@ fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[
     false
 }
 
-// Check if a character is followed by an Ole We Yored
-// Note: Ole We Yored may be distributed over two words
+// Check if a character is followed by an Oleh We Yored
+// Note: Oleh We Yored may be distributed over two words
 fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) -> bool {
     println!("\n==> LOOKING FORWARD - is_followed_by_oleh_we_yored");
     if index_of_target_char >= sentence.len() {
         return false; // Early exit if the position is at the end of the sentence
     }
     let mut word_count: usize = 0;
-    let mut ole_found = false;
+    let mut oleh_found = false;
     let mut yored_found = false;
     // Start iterating from the next character after the target character
     for current_char in sentence.iter().skip(index_of_target_char + 1) {
         println!("\ncurr_char: {current_char} - word_count: {word_count}");
         match (*current_char, word_count) {
-            // return if Ole We Yored is found
-            (_, _) if ole_found & yored_found => {
+            // return if Oleh We Yored is found
+            (_, _) if oleh_found & yored_found => {
                 println!("OLEH WE YORED found!");
-                return ole_found && yored_found;
+                return oleh_found && yored_found;
             }
             // return if maximum word count is reached
             (_, 3) => {
                 println!("MAX word count reached");
-                return ole_found && yored_found;
+                return oleh_found && yored_found;
             }
             // update word count after a space
             (' ', _) => word_count += 1,
             // update word count after a Maqef
             (MAQAF, _) => word_count += 1,
-            // check for Ole in the next word
-            (OLE, 1) => {
-                println!("found OLE");
-                ole_found = true;
+            // check for Oleh in the next word
+            (OLEH, 1) => {
+                println!("found Oleh");
+                oleh_found = true;
             }
             // check for Yored in the next or second word
-            (YORED, 1 | 2) if ole_found => {
+            (YORED, 1 | 2) if oleh_found => {
                 println!("found YORED");
                 yored_found = true;
             }
@@ -639,14 +641,16 @@ fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) 
         }
         println!("curr_char: {current_char} - word_count:  {word_count}");
     }
-    println!("==> Result: \n\tole_found: {ole_found}\tyored_found: {yored_found}");
-    ole_found && yored_found
+    println!("==> Result: \n\toleh_found: {oleh_found}\tyored_found: {yored_found}");
+    oleh_found && yored_found
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+
+    // TODO add  Verse: Psalm 30 verse 5 (30:5) – the very last word of the verse is “וְהָיָה” (ve‑hayah).
     #[test]
     fn test_contains_prose_poetry_silluq() {
         // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
@@ -975,6 +979,7 @@ mod tests {
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
     }
+    // TODO add  Verse: Psalm 30 verse 5 (30:5) – the very last word of the verse is “וְהָיָה” (ve‑hayah).
     #[test]
     fn test_contains_prose_meteg() {
         // Only Silluq, No Meteg
@@ -1001,7 +1006,7 @@ mod tests {
      *                          POETRY
      * *********************************************************/
     #[test]
-    fn test_contains_poetry_ole_we_yored() {
+    fn test_contains_poetry_oleh_we_yored() {
         // OlehWeYored, one word
         let sentence_c = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::OlehWeYored)));
@@ -1025,19 +1030,19 @@ mod tests {
         let sentence_c =
             SentenceContext::new("בּר֗אשׁית בּרא אלהים את השּׁ֗מים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaGadol)));
-        // Revia followed by Ole We Yored (1 word)
+        // Revia followed by Oleh We Yored (1 word)
         let sentence_c =
             SentenceContext::new("בּר֗אשׁית בּ֫ר֥א אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaGadol)));
-        // Revia followed by Ole We Yored (2 words)
+        // Revia followed by Oleh We Yored (2 words)
         let sentence_c =
             SentenceContext::new("בּר֗אשׁית בּ֫רא אלה֥ים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaGadol)));
-        // Revia followed by 'Ole We Yored' (3 words)
+        // Revia followed by 'Oleh We Yored' (3 words)
         let sentence_c =
             SentenceContext::new("בּר֗אשׁית בּ֫רא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaGadol)));
-        // Revia not directly followed by Ole We Yored (1 word)
+        // Revia not directly followed by Oleh We Yored (1 word)
         let sentence_c =
             SentenceContext::new("בּר֗אשׁית בּרא אלה֫י֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaGadol)));
@@ -1100,19 +1105,19 @@ mod tests {
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים א֗ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaQaton)));
-        // Revia directly followed by Ole We Yored (1 word)
+        // Revia directly followed by Oleh We Yored (1 word)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמי֥ם ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaQaton)));
-        // Revia directly followed by Ole We Yored (2 words)
+        // Revia directly followed by Oleh We Yored (2 words)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaQaton)));
-        // Revia directly followed by 'Ole We Yored' (3 words)
+        // Revia directly followed by 'Oleh We Yored' (3 words)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים ואת האר֥ץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaQaton)));
-        // Revia NOT directly followed by Ole We Yored (2 words)
+        // Revia NOT directly followed by Oleh We Yored (2 words)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֗להים א֓ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::ReviaQaton)));
@@ -1196,15 +1201,15 @@ mod tests {
         let sentence_c =
             SentenceContext::new("בּראשׁית בּר֘א אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // Ole + Merkha (1w)
+        // Oleh + Merkha (1w)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא א֫להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // Ole + Merkha (2w)
+        // Oleh + Merkha (2w)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּרא אלה֫ים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));
-        // Ole + Merkha (3w)
+        // Oleh + Merkha (3w)
         let sentence_c =
             SentenceContext::new("בּראשׁית בּר֫א אלהים א֥ת השּׁ֥מים ואת הארץ׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Merkha)));

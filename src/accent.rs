@@ -1,11 +1,13 @@
 use crate::constants::*;
 
+/// Hebrew Accent, either Prose or Poetry
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum HebrewAccent {
     Prose(ProseAccent),
     Poetry(PoetryAccent),
 }
 
+/// All variants of the Hebrew Prose Accents
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum ProseAccent {
     // Disjunctives
@@ -41,6 +43,7 @@ pub enum ProseAccent {
     Meteg,
 }
 
+/// All variants of the Hebrew Poetry Accents
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum PoetryAccent {
     // Disjunctives
@@ -71,6 +74,7 @@ pub enum PoetryAccent {
     Meteg,
 }
 
+/// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct HebrewAccentDetails {
     bhs_name: String,
@@ -81,13 +85,14 @@ pub struct HebrewAccentDetails {
     alt_bhs_meaning: Option<String>,
     acc_category: AccentCategory,
     acc_type: AccentType,
-    code_point_1: Utf8CodePoint,
-    code_point_2: Option<Utf8CodePoint>,
+    code_point_1: Utf8CodePointInfo,
+    code_point_2: Option<Utf8CodePointInfo>,
     comment: Option<String>,
 }
 
+/// Details on a specific UTF8 Unicode code-point
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-pub struct Utf8CodePoint {
+pub struct Utf8CodePointInfo {
     pub code_point: &'static str,
     pub hex_value: &'static str,
     pub name: &'static str,
@@ -99,6 +104,7 @@ pub struct Utf8CodePoint {
     pub yemenite: Tradition,
 }
 
+/// Names according one of four Hebrew Traditions
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum Tradition {
     Ashkenazi {
@@ -119,6 +125,7 @@ pub enum Tradition {
     },
 }
 
+/// Hebrew Accent category (either Conjunctive or Disjunctive)
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentCategory {
     Conjunctive,
@@ -126,6 +133,7 @@ pub enum AccentCategory {
     Disjunctive,
 }
 
+/// Hebrew Accent types (Primary and Secundary)
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentType {
     #[default]
@@ -133,6 +141,7 @@ pub enum AccentType {
     Secondary,
 }
 
+/// Accent position, Indicating the location of the accent in relation to the consonant
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentPosition {
     #[default]
@@ -486,7 +495,7 @@ impl ProseAccent {
                 code_point_2: None,
                 comment: None,
             },
-            ProseAccent::Azla => HebrewAccentDetails { 
+            ProseAccent::Azla => HebrewAccentDetails {
                 bhs_name: "Azla".to_string(),
                 bhs_hebrew: "אַזְלָא".to_string(),
                 bhs_meaning:"going on (not pausing), depart".to_string(),

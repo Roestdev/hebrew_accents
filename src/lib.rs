@@ -3,8 +3,8 @@
 //
 mod accent;
 mod constants;
-mod sentence_context;
 mod regex;
+mod sentence_context;
 
 // export
 pub use crate::accent::*;

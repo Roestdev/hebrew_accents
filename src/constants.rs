@@ -1,19 +1,16 @@
 use crate::AccentPosition;
 use crate::Tradition;
-use crate::Utf8CodePoint;
+use crate::Utf8CodePointInfo;
 
 // used for method: contains()
 pub const ETNAHTA: char = '\u{0591}';
 pub const SEGOL: char = '\u{0592}';
-//pub const SHALSHELET:char = '\u{0593}';
+pub const SHALSHELET: char = '\u{0593}';
 pub const ZAQEF_QATAN: char = '\u{0594}';
 pub const ZAQEF_GADOL: char = '\u{0595}';
 pub const TIPEHA: char = '\u{0596}';
 pub const REVIA: char = '\u{0597}';
-
 pub const ZARQA: char = '\u{0598}';
-pub const TSINNORIT: char = '\u{0598}';
-
 pub const PASHTA: char = '\u{0599}';
 pub const YETIV: char = '\u{059A}';
 pub const TEVIR: char = '\u{059B}';
@@ -32,21 +29,25 @@ pub const DARGA: char = '\u{05A7}';
 pub const QADMA: char = '\u{05A8}';
 pub const TELISHA_QETANA: char = '\u{05A9}';
 pub const YERAH_BEN_YOMO: char = '\u{05AA}';
-pub const OLE: char = '\u{05AB}';
+pub const OLEH: char = '\u{05AB}';
 pub const ILUY: char = '\u{05AC}';
 pub const DEHI: char = '\u{05AD}';
 pub const ZINOR: char = '\u{05AE}';
-//pub const METEG:char = '\u{05BD}';
+pub const METEG: char = '\u{05BD}';
 pub const MAQAF: char = '\u{05BE}';
 //pub const RAFE:char = '\u{05BF}';
 pub const PASEQ: char = '\u{05C0}';
-//pub const SOF_PASUQ:char = '\u{05C3}';
+pub const SOF_PASUQ: char = '\u{05C3}';
 
 pub const VERTICAL_LINE: char = '\u{007C}';
-pub const YORED: char = '\u{05A5}';
 
-//pub const SILLUQ: char = METEG;
-//pub const MEAYLA: char = TIPEHA;
+// aliases
+pub const TSINNORIT: char = ZARQA;
+pub const YORED: char = MERKHA;
+pub const AZLA: char = QADMA;
+pub const SILLUQ: char = METEG;
+pub const MEAYLA: char = TIPEHA;
+pub const ATNACH: char = ETNAHTA;
 
 // Constants below are a mix of the following:
 // - UTF8 code table (https://utf8-chartable.de/unicode-utf8-table.pl)
@@ -58,7 +59,7 @@ pub const YORED: char = '\u{05A5}';
 // Purpose: give more detailed information on the accents
 //
 // (ordering of the list is based on the value of their Unicode code-point)
-pub const CP_ETNAHTA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ETNAHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0591",
     hex_value: "0xd6 0x91",
     name: "HEBREW ACCENT ETNAHTA",
@@ -82,7 +83,7 @@ pub const CP_ETNAHTA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_SEGOL: Utf8CodePoint = Utf8CodePoint {
+pub const CP_SEGOL: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0592",
     hex_value: "0xd6 0x92",
     name: "HEBREW ACCENT SEGOL",
@@ -106,7 +107,7 @@ pub const CP_SEGOL: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_SHALSHELET: Utf8CodePoint = Utf8CodePoint {
+pub const CP_SHALSHELET: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0593",
     hex_value: "0xd6 0x93",
     name: "HEBREW ACCENT SHALSHELET",
@@ -130,7 +131,7 @@ pub const CP_SHALSHELET: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_ZAQEF_QATAN: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0594",
     hex_value: "0xd6 0x94",
     name: "HEBREW ACCENT ZAQEF QATAN",
@@ -154,7 +155,7 @@ pub const CP_ZAQEF_QATAN: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_ZAQEF_GADOL: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0595",
     hex_value: "0xd6 0x95",
     name: "HEBREW ACCENT ZAQEF GADOL",
@@ -178,7 +179,7 @@ pub const CP_ZAQEF_GADOL: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_TIPEHA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_TIPEHA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0596",
     hex_value: "0xd6 0x96",
     name: "HEBREW ACCENT TIPEHA",
@@ -202,7 +203,7 @@ pub const CP_TIPEHA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_REVIA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_REVIA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0597",
     hex_value: "0xd6 0x97",
     name: "HEBREW ACCENT REVIA",
@@ -226,7 +227,7 @@ pub const CP_REVIA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_ZARQA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ZARQA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0598",
     hex_value: "0xd6 0x98",
     name: "HEBREW ACCENT ZARQA",
@@ -250,7 +251,7 @@ pub const CP_ZARQA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_PASHTA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_PASHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+0599",
     hex_value: "0xd6 0x99",
     name: "HEBREW ACCENT PASHTA",
@@ -274,7 +275,7 @@ pub const CP_PASHTA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_YETIV: Utf8CodePoint = Utf8CodePoint {
+pub const CP_YETIV: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059A",
     hex_value: "0xd6 0x9a",
     name: "HEBREW ACCENT YETIV",
@@ -298,7 +299,7 @@ pub const CP_YETIV: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_TEVIR: Utf8CodePoint = Utf8CodePoint {
+pub const CP_TEVIR: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059B",
     hex_value: "0xd6 0x9b",
     name: "HEBREW ACCENT TEVIR",
@@ -321,7 +322,7 @@ pub const CP_TEVIR: Utf8CodePoint = Utf8CodePoint {
         name: "tavra",
     },
 };
-pub const CP_GERESH: Utf8CodePoint = Utf8CodePoint {
+pub const CP_GERESH: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059C",
     hex_value: "0xd6 0x9c",
     name: "HEBREW ACCENT GERESH",
@@ -346,7 +347,7 @@ pub const CP_GERESH: Utf8CodePoint = Utf8CodePoint {
 };
 
 // TODO
-// pub const CP_GERESH_MUQDAM: Utf8CodePoint = Utf8CodePoint {
+// pub const CP_GERESH_MUQDAM: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+059D",
 //     hex_value: "0xd6 0x9d",
 //     name: "HEBREW ACCENT GERESH MUQDAM",
@@ -370,7 +371,7 @@ pub const CP_GERESH: Utf8CodePoint = Utf8CodePoint {
 //     },
 // };
 
-pub const CP_GERSHAYIM: Utf8CodePoint = Utf8CodePoint {
+pub const CP_GERSHAYIM: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059E",
     hex_value: "0xd6 0x9e",
     name: "HEBREW ACCENT GERSHAYIM",
@@ -394,8 +395,7 @@ pub const CP_GERSHAYIM: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-
-pub const CP_QARNEY_PARA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_QARNEY_PARA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059F",
     hex_value: "0xd6 0x9f",
     name: "HEBREW ACCENT QARNEY PARA",
@@ -419,7 +419,7 @@ pub const CP_QARNEY_PARA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_TELISHA_GEDOLA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A0",
     hex_value: "0xd6 0xa0",
     name: "HEBREW ACCENT TELISHA GEDOLA",
@@ -443,7 +443,7 @@ pub const CP_TELISHA_GEDOLA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_PAZER: Utf8CodePoint = Utf8CodePoint {
+pub const CP_PAZER: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A1",
     hex_value: "0xd6 0xa1",
     name: "HEBREW ACCENT PAZER",
@@ -468,7 +468,7 @@ pub const CP_PAZER: Utf8CodePoint = Utf8CodePoint {
 };
 
 // TODO
-// pub const CP_ATNAH_HAFUKH: Utf8CodePoint = Utf8CodePoint {
+// pub const CP_ATNAH_HAFUKH: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+05A2",
 //     hex_value: "0xd6 0xa2",
 //     name: "HEBREW ACCENT ATNAH HAFUKH",
@@ -493,9 +493,9 @@ pub const CP_PAZER: Utf8CodePoint = Utf8CodePoint {
 // };
 
 // TODO
-//pub const CP_: Utf8CodePoint = Utf8CodePoint { code_point:"U+05A3", hex_value: "", name: "", symbol: "", position: AccentPosition::Above, ashkenazi: Tradition::Ashkenazi { hebrew: "מוּנַח לְגַרְמֵ֣הּ׀", name: "Munach legarmeh", }, sephardi: Tradition::Sephardi { hebrew: "פָּסֵ֣ק׀", name: "Paseq",  }, italian: Tradition::Italian { hebrew: "לְגַרְמֵ֣הּ׀", name: "Legarmeh",  }, yemenite: Tradition::Yemenite { hebrew: "unknown",name: "unknown",},};
+//pub const CP_: Utf8CodePointInfo = Utf8CodePointInfo { code_point:"U+05A3", hex_value: "", name: "", symbol: "", position: AccentPosition::Above, ashkenazi: Tradition::Ashkenazi { hebrew: "מוּנַח לְגַרְמֵ֣הּ׀", name: "Munach legarmeh", }, sephardi: Tradition::Sephardi { hebrew: "פָּסֵ֣ק׀", name: "Paseq",  }, italian: Tradition::Italian { hebrew: "לְגַרְמֵ֣הּ׀", name: "Legarmeh",  }, yemenite: Tradition::Yemenite { hebrew: "unknown",name: "unknown",},};
 
-pub const CP_MUNAH: Utf8CodePoint = Utf8CodePoint {
+pub const CP_MUNAH: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A3",
     hex_value: "0xd6 0xa3",
     name: "HEBREW ACCENT MUNAH",
@@ -519,7 +519,7 @@ pub const CP_MUNAH: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_MAHAPAKH: Utf8CodePoint = Utf8CodePoint {
+pub const CP_MAHAPAKH: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A4",
     hex_value: "0xd6 0xa4",
     name: "HEBREW ACCENT MAHAPAKH",
@@ -543,7 +543,7 @@ pub const CP_MAHAPAKH: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_MERKHA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_MERKHA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A5",
     hex_value: "0xd6 0xa5",
     name: "HEBREW ACCENT MERKHA",
@@ -567,7 +567,7 @@ pub const CP_MERKHA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_MERKHA_KEFULA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A6",
     hex_value: "0xd6 0xa6",
     name: "HEBREW ACCENT MERKHA KEFULA",
@@ -591,7 +591,7 @@ pub const CP_MERKHA_KEFULA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_DARGA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_DARGA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A7",
     hex_value: "0xd6 0xa7",
     name: "HEBREW ACCENT DARGA",
@@ -615,7 +615,7 @@ pub const CP_DARGA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_QADMA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_QADMA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A8",
     hex_value: "0xd6 0xa8",
     name: "HEBREW ACCENT QADMA",
@@ -640,7 +640,7 @@ pub const CP_QADMA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_TELISHA_QETANA: Utf8CodePoint = Utf8CodePoint {
+pub const CP_TELISHA_QETANA: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A9",
     hex_value: "0xd6 0xa9",
     name: "HEBREW ACCENT TELISHA QETANA",
@@ -664,7 +664,7 @@ pub const CP_TELISHA_QETANA: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_YERAH_BEN_YOMO: Utf8CodePoint = Utf8CodePoint {
+pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05AA",
     hex_value: "0xd6 0xaa",
     name: "HEBREW ACCENT YERAH BEN YOMO",
@@ -688,7 +688,7 @@ pub const CP_YERAH_BEN_YOMO: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_OLE: Utf8CodePoint = Utf8CodePoint {
+pub const CP_OLE: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05AB",
     hex_value: "0xd6 0xab",
     name: "HEBREW ACCENT OLE",
@@ -712,7 +712,7 @@ pub const CP_OLE: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_ILUY: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ILUY: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05AC",
     hex_value: "0xd6 0xac",
     name: "HEBREW ACCENT ILUY",
@@ -736,7 +736,7 @@ pub const CP_ILUY: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_DEHI: Utf8CodePoint = Utf8CodePoint {
+pub const CP_DEHI: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05AD",
     hex_value: "0xd6 0xad",
     name: "HEBREW ACCENT DEHI",
@@ -760,7 +760,7 @@ pub const CP_DEHI: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_ZINOR: Utf8CodePoint = Utf8CodePoint {
+pub const CP_ZINOR: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05AE",
     hex_value: "0xd6 0xae",
     name: "HEBREW ACCENT ZINOR",
@@ -784,7 +784,7 @@ pub const CP_ZINOR: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_SILLUQ: Utf8CodePoint = Utf8CodePoint {
+pub const CP_SILLUQ: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05BD",
     hex_value: "0xd6 0xbd",
     name: "HEBREW POINT METEG",
@@ -808,7 +808,7 @@ pub const CP_SILLUQ: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-pub const CP_METEG: Utf8CodePoint = Utf8CodePoint {
+pub const CP_METEG: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05BD",
     hex_value: "0xd6 0xbd",
     name: "HEBREW POINT METEG",
@@ -832,7 +832,7 @@ pub const CP_METEG: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-// pub const CP_MAQAF: Utf8CodePoint = Utf8CodePoint {
+// pub const CP_MAQAF: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+05BE",
 //     hex_value: "0xd6 0xbe",
 //     name: "HEBREW PUNCTUATION MAQAF",
@@ -856,7 +856,7 @@ pub const CP_METEG: Utf8CodePoint = Utf8CodePoint {
 //     },
 // };
 
-pub const CP_PASEQ: Utf8CodePoint = Utf8CodePoint {
+pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05C0",
     hex_value: "0xd7 0x80",
     name: "HEBREW PUNCTUATION PASEQ",
@@ -880,7 +880,7 @@ pub const CP_PASEQ: Utf8CodePoint = Utf8CodePoint {
     },
 };
 
-// pub const CP_SOF_PASUQ: Utf8CodePoint = Utf8CodePoint {
+// pub const CP_SOF_PASUQ: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+05C3",
 //     hex_value: "0xd7 0x83",
 //     name: "HEBREW PUNCTUATION SOF PASUQ",
