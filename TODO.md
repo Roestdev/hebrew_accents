@@ -1,12 +1,27 @@
-Below a todo list
+Below a todo list.
 
-- [x] contains_accent(), for `SentenceContext`
-- [x] rank(), for `ProseAccent` and `PoetryAccent`
-- [] info() // provide information of an Accent
-  - [x] for `ProseAccent` and `PoetryAccent` 
-  - [X] Restructure the datamodel for info()
-  - [ ] Merge info() into `HebrewAccent`
-- [ ] find_accent() for `SentenceContext`
-- [ ] find_iter() for `SentenceContext`
+
+#### `General`
+- [ ] improve documentation
+- [ ] test coverage
 - [ ] error_handling?
 - [ ] logging?
+
+#### `SentenceContext`
+
+- [x] contains_accent()
+- [ ] find_accent() 
+- [ ] tests for find_accent() 
+- [ ] find_iter() 
+- [ ] tests for find_iter() 
+  
+#### `HebrewAccent`  
+- [ ] details()
+- [ ] test for details()
+
+#### `ProseAccent` and `PoetryAccent`
+- [x] rank()
+- [x] info()
+  - [x] rename to details()
+  - [X] Restructure the datamodel for details()
+  - [ ] Test for details()
