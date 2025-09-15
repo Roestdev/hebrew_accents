@@ -7,6 +7,10 @@ Managing Masoretic Hebrew Accents
 
 **This project is currently in the design/development mode.**
 
+#### DO NOT use in production
+There will be interface breakages.    
+
+
 `Current Version:`  v0.0.2
 
 `Current feautures:`  

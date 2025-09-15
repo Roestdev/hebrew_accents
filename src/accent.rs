@@ -41,6 +41,7 @@ pub enum ProseAccent {
     Galgal,
     Mayela,
     Meteg,
+    Maqqeph,
 }
 
 /// All variants of the Hebrew Poetry Accents
@@ -72,6 +73,7 @@ pub enum PoetryAccent {
     TsinnoritMerkha,
     TsinnoritMahpakh,
     Meteg,
+    Maqqeph,
 }
 
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
@@ -98,12 +100,11 @@ pub struct Utf8CodePointInfo {
     pub name: &'static str,
     pub symbol: &'static str,
     pub position: AccentPosition,
-    pub ashkenazi: Tradition,
-    pub sephardi: Tradition,
-    pub italian: Tradition,
-    pub yemenite: Tradition,
+    pub ashkenazi: Option<Tradition>,
+    pub sephardi: Option<Tradition>,
+    pub italian: Option<Tradition>,
+    pub yemenite: Option<Tradition>,
 }
-
 /// Names according one of four Hebrew Traditions
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum Tradition {
@@ -138,7 +139,10 @@ pub enum AccentCategory {
 pub enum AccentType {
     #[default]
     Primairy,
+    // used for Meayla and Meteg
     Secondary,
+    // used for Maqqepf
+    None,
 }
 
 /// Accent position, Indicating the location of the accent in relation to the consonant
@@ -146,10 +150,14 @@ pub enum AccentType {
 pub enum AccentPosition {
     #[default]
     Above,
+    // above and after the consonant
     AbovePostPositive,
+    // above and before the consonant
     AbovePrePositive,
-    End, // used to denote a Paseq, Soph Pasuq
+    // at the end of the word (used for Paseq, Soph Pasuq and Maqqeph)
+    End,
     Under,
+    // under and after the consonant
     UnderPrePositive,
 }
 
@@ -187,6 +195,7 @@ impl ProseAccent {
             ProseAccent::Galgal => 26,
             ProseAccent::Mayela => 27,
             ProseAccent::Meteg => 28,
+            ProseAccent::Maqqeph => 29,
         }
     }
     /// Returns detailsrmation about the accent.
@@ -560,6 +569,19 @@ impl ProseAccent {
                 code_point_2: None,
                 comment: None,
             },
+            ProseAccent::Maqqeph => HebrewAccentDetails {
+                bhs_name: "Maqqeph".to_string(),
+                bhs_hebrew: "מַקֵּף".to_string(),
+                bhs_meaning:"binder".to_string(),
+                alt_bhs_name: None,
+                alt_bhs_hebrew: None,
+                alt_bhs_meaning: None,
+                acc_type: AccentType::None,
+                acc_category: AccentCategory::Conjunctive,
+                code_point_1: CP_MAQAF,
+                code_point_2: None,
+                comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent.".to_string()),
+            },
         }
     }
 }
@@ -593,6 +615,7 @@ impl PoetryAccent {
             PoetryAccent::TsinnoritMerkha => 21,
             PoetryAccent::TsinnoritMahpakh => 21,
             PoetryAccent::Meteg => 22,
+            PoetryAccent::Maqqeph => 23,
         }
     }
     #[allow(unused)]
@@ -898,6 +921,20 @@ impl PoetryAccent {
                 code_point_1: CP_METEG,
                 code_point_2: None,
                 comment: None,
+            },
+            PoetryAccent::Maqqeph => HebrewAccentDetails {
+                bhs_name: "Maqqeph".to_string(),
+                bhs_hebrew: "מַקֵּף".to_string(),
+                bhs_meaning:"binder".to_string(),
+                alt_bhs_name: Some("Maqqaph".to_string()),
+                alt_bhs_hebrew:  Some("מַקָּף".to_string()),
+                alt_bhs_meaning: None,
+                acc_type: AccentType::None,
+                acc_category: AccentCategory::Conjunctive,
+                code_point_1: CP_MAQAF,
+                code_point_2: None,
+                comment: Some("The Maqqeph (in Biblical Hebrew), may join two (or more) short words together. 
+                Whereafter they are considered to be one compound word with only one Hebrew Accent.".to_string()),
             },
         }
     }

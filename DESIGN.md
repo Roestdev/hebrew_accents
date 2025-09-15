@@ -42,8 +42,10 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 - The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
 
-- The secondary accent Meteg,which is not menttioned BHS will be added to the list of both conjunctives (prose and poetry).
+- The 'accent' Meteg, which is not mentioned BHS will be added to the list of both (prose and poetry) conjunctives. The Meteg is just as the Meayla seen as a secondary accent.
 
+- The Maqqeph will also be added to the list of both (prose and poetry) conjunctives. Although the Maqqeph does not belong to the conjunctive accents, it does have the function of binding words together, just like the conjunctives.
+  
 ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
 - The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:

@@ -22,9 +22,8 @@ pub enum Context {
 }
 
 impl SentenceContext {
-    
     /// Creates a new object: SentenceContext
-    /// 
+    ///
     /// # Example
     /// ```
     /// use hebrew_accents::Context;
@@ -148,6 +147,8 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
                 RE_COMMON_METEG.is_match(&self.sentence).unwrap()
             }
+            HebrewAccent::Prose(ProseAccent::Maqqeph)
+            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => self.sentence.contains(MAQQEPH),
             /* **********************************************************
              *                          POETRY
              * *********************************************************/
@@ -535,7 +536,7 @@ fn is_part_of_two_code_point_accent_look_behind(
         println!(
             "LB::Current character [ {current_char} ] at index {current_index} - word_count: {word_count}"
         );
-        if current_char == ' ' || current_char == MAQAF {
+        if current_char == ' ' || current_char == MAQQEPH {
             word_count += 1;
             println!("LB::new word_count: {word_count}");
             if word_count == max_word_span {
@@ -624,8 +625,8 @@ fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) 
             }
             // update word count after a space
             (' ', _) => word_count += 1,
-            // update word count after a Maqef
-            (MAQAF, _) => word_count += 1,
+            // update word count after a Maqqeph
+            (MAQQEPH, _) => word_count += 1,
             // check for Oleh in the next word
             (OLEH, 1) => {
                 println!("found Oleh");
@@ -649,8 +650,6 @@ fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) 
 mod tests {
     use super::*;
 
-
-    // TODO add  Verse: Psalm 30 verse 5 (30:5) – the very last word of the verse is “וְהָיָה” (ve‑hayah).
     #[test]
     fn test_contains_prose_poetry_silluq() {
         // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
@@ -680,7 +679,7 @@ mod tests {
             Context::Poetic,
         );
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Silluq)));
-        // Meteg followed by Maqqef (\u{05BE}) (meaning no Meteg in the last word)
+        // Meteg followed by Maqqeph (\u{05BE}) (meaning no Meteg in the last word)
         let sentence_c1 = SentenceContext::new("וַ וַיִּצֹ֥ק שֶׁ֖מֶן עַֽל־עַל־רֹאשׁהּ׃ ׃ פ", Context::Poetic);
         assert!(!sentence_c1.contains_accent(HebrewAccent::Poetry(PoetryAccent::Silluq)));
     }
@@ -966,7 +965,7 @@ mod tests {
         let sentence_c =
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹ֖הִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
-        // Tiphcha followed by Atnach, two words connected with a Maqqef
+        // Tiphcha followed by Atnach, two words connected with a Maqqeph
         let sentence_c =
             SentenceContext::new("ויּ֖צא־נ֑ח וּבנ֛יו ואשׁתּ֥ו וּנשֽׁי־בנ֖יו אתּֽו׃", Context::Prosaic);
         assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
@@ -979,14 +978,13 @@ mod tests {
             SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Mayela)));
     }
-    // TODO add  Verse: Psalm 30 verse 5 (30:5) – the very last word of the verse is “וְהָיָה” (ve‑hayah).
     #[test]
     fn test_contains_prose_meteg() {
         // Only Silluq, No Meteg
         let sentence_c =
             SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Prosaic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
-        // Meteg and Siluq, separated by a Maqef
+        // Meteg and Siluq, separated by a Maqqeph
         let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Prosaic);
         assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
         // Meteg and Siluq in separate words
@@ -1001,6 +999,16 @@ mod tests {
             Context::Prosaic,
         );
         assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Meteg)));
+    }
+    #[test]
+    fn test_contains_prose_maqqeph() {
+        // No Maqqeph
+        let sentence_c =
+            SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        assert!(!sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Maqqeph)));
+        // One Maqqeph
+        let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        assert!(sentence_c.contains_accent(HebrewAccent::Prose(ProseAccent::Maqqeph)));
     }
     /* **********************************************************
      *                          POETRY
@@ -1333,13 +1341,13 @@ mod tests {
         // accent in a single word, without Merkha
         let sentence_c = SentenceContext::new("אא֘ת־אברהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha)));
-        // accent in two words seperated by Maqqef
+        // accent in two words seperated by Maqqeph
         let sentence_c = SentenceContext::new("את־א֘ב֥רהם", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha)));
-        // accent in two words seperated by Maqqef, without Tsinnorit
+        // accent in two words seperated by Maqqeph, without Tsinnorit
         let sentence_c = SentenceContext::new("את־אב֥רהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha)));
-        // accent in two words seperated by Maqqef, without Merkha
+        // accent in two words seperated by Maqqeph, without Merkha
         let sentence_c = SentenceContext::new("את־א֘ברהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha)));
         // accent in two words
@@ -1366,13 +1374,13 @@ mod tests {
         // accent in a single word, without Tsinnorit
         let sentence_c = SentenceContext::new("את־א֘ברהם אהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
-        // accent in two words seperated by Maqqef, without Mahpakh
+        // accent in two words seperated by Maqqeph, without Mahpakh
         let sentence_c = SentenceContext::new("אא֘ת־אב֤רהם אהם", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
-        // accent in two words seperated by Maqqef, without Tsinnorit
+        // accent in two words seperated by Maqqeph, without Tsinnorit
         let sentence_c = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
-        // accent in two words seperated by Maqqef, without Mahpakh
+        // accent in two words seperated by Maqqeph, without Mahpakh
         let sentence_c = SentenceContext::new("אא֘ת־אברהם אהם", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)));
         // accent in two words
@@ -1395,7 +1403,7 @@ mod tests {
         let sentence_c =
             SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
         assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
-        // Meteg and Siluq, separated by a Maqef
+        // Meteg and Siluq, separated by a Maqqeph
         let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
         // Meteg and Siluq in separate words
@@ -1410,5 +1418,15 @@ mod tests {
             Context::Poetic,
         );
         assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Meteg)));
+    }
+    #[test]
+    fn test_contains_poetry_maqqeph() {
+        // No Maqqeph
+        let sentence_c =
+            SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        assert!(!sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Maqqeph)));
+        // One Maqqeph
+        let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        assert!(sentence_c.contains_accent(HebrewAccent::Poetry(PoetryAccent::Maqqeph)));
     }
 }

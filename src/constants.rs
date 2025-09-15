@@ -2,7 +2,7 @@ use crate::AccentPosition;
 use crate::Tradition;
 use crate::Utf8CodePointInfo;
 
-// used for method: contains()
+// used for method: HebrewContext::contains()
 pub const ETNAHTA: char = '\u{0591}';
 pub const SEGOL: char = '\u{0592}';
 pub const SHALSHELET: char = '\u{0593}';
@@ -48,6 +48,7 @@ pub const AZLA: char = QADMA;
 pub const SILLUQ: char = METEG;
 pub const MEAYLA: char = TIPEHA;
 pub const ATNACH: char = ETNAHTA;
+pub const MAQQEPH: char = MAQAF;
 
 // Constants below are a mix of the following:
 // - UTF8 code table (https://utf8-chartable.de/unicode-utf8-table.pl)
@@ -65,22 +66,22 @@ pub const CP_ETNAHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ETNAHTA",
     symbol: "֑",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "אֶתְנַחְתָּ֑א",
         name: "etnachta",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "אַתְנָ֑ח",
         name: "atnach",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "אַתְנָ֑ח",
         name: "atnach",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "אֶתְנָחָ֑א",
         name: "Etnacha",
-    },
+    }),
 };
 
 pub const CP_SEGOL: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -89,22 +90,19 @@ pub const CP_SEGOL: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT SEGOL",
     symbol: "֒",
     position: AccentPosition::AbovePostPositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "סְגוֹל֒",
         name: "segol",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "סְגוֹלְתָּא֒",
         name: "segolta",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שְׁרֵי֒",
         name: "shere",
-    },
-    yemenite: Tradition::Yemenite {
-        hebrew: "unknown",
-        name: "unknown",
-    },
+    }),
+    yemenite: None,
 };
 
 pub const CP_SHALSHELET: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -113,22 +111,22 @@ pub const CP_SHALSHELET: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT SHALSHELET",
     symbol: "֓",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "שַׁלְשֶׁ֓לֶת",
         name: "shalshelet",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "שַׁלְשֶׁ֓לֶת",
         name: "shalshelet",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שַׁלְשֶׁ֓לֶת",
         name: "shalshelet",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "שִׁישְׁלָ֓א",
         name: "shishla",
-    },
+    }),
 };
 
 pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -137,22 +135,22 @@ pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ZAQEF QATAN",
     symbol: "֔",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זָקֵף קָטָ֔ן",
         name: "zaqeph qatan",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "זָקֵף קָט֔וֹן",
         name: "zaqeph qaton",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "זָקֵף קָט֔וֹן",
         name: "zaqeph qaton",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "זָקֵף קָט֔וֹן",
         name: "zaqeph qaton",
-    },
+    }),
 };
 
 pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -161,22 +159,22 @@ pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ZAQEF GADOL",
     symbol: "֕",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זָקֵף גָּד֕וֹל",
         name: "zaqeph gadol",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "זָקֵף גָּד֕וֹל",
         name: "zaqeph gadol",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "זָקֵף גָּד֕וֹל",
         name: "zaqeph gadol",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "זָקֵף גָּד֕וֹל",
         name: "zaqeph gadol",
-    },
+    }),
 };
 
 pub const CP_TIPEHA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -185,22 +183,22 @@ pub const CP_TIPEHA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT TIPEHA",
     symbol: "֖",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "טִפְחָ֖א",
         name: "tiphcha",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "טַרְחָ֖א",
         name: "tarcha",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "טַרְחָ֖א",
         name: "tarcha",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "נְטוּיָ֖ה",
         name: "netuyah",
-    },
+    }),
 };
 
 pub const CP_REVIA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -209,22 +207,22 @@ pub const CP_REVIA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT REVIA",
     symbol: "֗",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "רְבִ֗יע",
         name: "revia/revi’i",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "רְבִ֗יע",
         name: "revia",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "רְבִ֗יע",
         name: "revia",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "רְבִ֗יע",
         name: "revia",
-    },
+    }),
 };
 
 pub const CP_ZARQA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -233,22 +231,22 @@ pub const CP_ZARQA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ZARQA",
     symbol: "֘",
     position: AccentPosition::AbovePostPositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זַרְקָא֘",
         name: "zarqa",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "זַרְקָא֘",
         name: "zarqa",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "זַרְקָא֘",
         name: "zarqa",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "צִנּוֹר֘",
         name: "tsinnor",
-    },
+    }),
 };
 
 pub const CP_PASHTA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -257,22 +255,22 @@ pub const CP_PASHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT PASHTA",
     symbol: "֙",
     position: AccentPosition::AbovePostPositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פַּשְׁטָא֙",
         name: "pashta",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "קַדְמָא֙",
         name: "qadma",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "פַּשְׁטָא֙",
         name: "pashta",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "אַזְלָא֙",
         name: "azla",
-    },
+    }),
 };
 
 pub const CP_YETIV: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -281,22 +279,22 @@ pub const CP_YETIV: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT YETIV",
     symbol: "֚",
     position: AccentPosition::UnderPrePositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "יְ֚תִיב",
         name: "yetiv",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "יְ֚תִיב",
         name: "yetiv",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שׁ֚וֹפָר יְתִיב",
         name: "shophar yetiv",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "יְ֚תִיב",
         name: "yetiv",
-    },
+    }),
 };
 
 pub const CP_TEVIR: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -305,22 +303,22 @@ pub const CP_TEVIR: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT TEVIR",
     symbol: "֛",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּבִ֛יר",
         name: "tevir",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "תְּבִ֛יר",
         name: "tevir",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "תְּבִ֛יר",
         name: "tevir",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "תַּבְרָ֛א",
         name: "tavra",
-    },
+    }),
 };
 pub const CP_GERESH: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+059C",
@@ -328,47 +326,47 @@ pub const CP_GERESH: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT GERESH",
     symbol: "֜",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "גֵּ֜רֵשׁ",
         name: "geresh/azla",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "גְּרִ֜ישׁ",
         name: "gerish",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "גֵּ֜רֵשׁ",
         name: "geresh/azla",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "טָרֵ֜ס",
         name: "tares",
-    },
+    }),
 };
 
-// TODO
+// TODO CP_GERESH_MUQDAM
 // pub const CP_GERESH_MUQDAM: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+059D",
 //     hex_value: "0xd6 0x9d",
 //     name: "HEBREW ACCENT GERESH MUQDAM",
 //     symbol: "֝",
 //     position: AccentPosition::Above,
-//     ashkenazi: Tradition::Ashkenazi {
+//     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "גֵרֵשׁ מוּקְדָם",
 //         name: "geresh muqdam",
-//     },
-//     sephardi: Tradition::Ashkenazi {
+//     }),
+//     sephardi: Some(Tradition::Ashkenazi {
 //         hebrew: "גֵרֵשׁ מוּקְדָם",
 //         name: "geresh muqdam",
-//     },
-//     italian: Tradition::Ashkenazi {
+//     }),
+//     italian: Some(Tradition::Ashkenazi {
 //         hebrew: "גֵרֵשׁ מוּקְדָם",
 //         name: "geresh muqdam",
-//     },
-//     yemenite: Tradition::Ashkenazi {
+//     }),
+//     yemenite: Some(Tradition::Ashkenazi {
 //         hebrew: "גֵרֵשׁ מוּקְדָם",
 //         name: "geresh muqdam",
-//     },
+//     }),
 // };
 
 pub const CP_GERSHAYIM: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -377,22 +375,22 @@ pub const CP_GERSHAYIM: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT GERSHAYIM",
     symbol: "֞",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "גֵּרְשַׁ֞יִם",
         name: "gershayim",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "שְׁנֵי גְרִישִׁ֞ין",
         name: "shene gerishin",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שְׁנֵי גְרִישִׁ֞ין",
         name: "shene gerishin",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "טַרְסִ֞ין",
         name: "tarsin",
-    },
+    }),
 };
 
 pub const CP_QARNEY_PARA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -401,22 +399,22 @@ pub const CP_QARNEY_PARA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT QARNEY PARA",
     symbol: "֟",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "קַרְנֵי פָרָ֟ה",
         name: "qarne pharah / pazer gadol",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "קַרְנֵי פָרָ֟ה",
         name: "qarne pharah",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "קַרְנֵי פָרָ֟ה",
         name: "qarne pharah",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "קַרְנֵי פָרָ֟ה",
         name: "qarne pharah",
-    },
+    }),
 };
 
 pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -425,22 +423,22 @@ pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT TELISHA GEDOLA",
     symbol: "֠",
     position: AccentPosition::AbovePrePositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּ֠לִישָא גְדוֹלָה",
         name: "telisha gedolah",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "תִּ֠רְצָה",
         name: "tirtsah",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "תַּ֠לְשָׁא",
         name: "talsha",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "תְּ֠לִישָא גְדוֹלָה",
         name: "telisha gedolah",
-    },
+    }),
 };
 
 pub const CP_PAZER: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -449,51 +447,45 @@ pub const CP_PAZER: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT PAZER",
     symbol: "֡",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פָּזֵ֡ר",
         name: "pazer",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "פָּזֵר גָּד֡וֹל",
         name: "pazer gadol",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "פָּזֵר גָּד֡וֹל",
         name: "pazer gadol",
-    },
-    yemenite: Tradition::Yemenite {
-        hebrew: "unknown",
-        name: "unknown",
-    },
+    }),
+    yemenite: None,
 };
 
-// TODO
+// TODO CP_ATNAH_HAFUKH
 // pub const CP_ATNAH_HAFUKH: Utf8CodePointInfo = Utf8CodePointInfo {
 //     code_point: "U+05A2",
 //     hex_value: "0xd6 0xa2",
 //     name: "HEBREW ACCENT ATNAH HAFUKH",
 //     symbol: "֢",
 //     position: AccentPosition::Above,
-//     ashkenazi: Tradition::Ashkenazi {
+//     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "אתנח הפוך",
 //         name: "atnach haphukh",
-//     },
-//     sephardi: Tradition::Ashkenazi {
+//     }),
+//     sephardi: Some(Tradition::Ashkenazi {
 //         hebrew: "אתנח הפוך",
 //         name: "atnach haphukh",
-//     },
-//     italian: Tradition::Ashkenazi {
+//     }),
+//     italian: Some(Tradition::Ashkenazi {
 //         hebrew: "אתנח הפוך",
 //         name: "atnach haphukh",
-//     },
-//     yemenite: Tradition::Ashkenazi {
+//     }),
+//     yemenite: Some(Tradition::Ashkenazi {
 //         hebrew: "אתנח הפוך",
 //         name: "atnach haphukh",
-//     },
+//     }),
 // };
-
-// TODO
-//pub const CP_: Utf8CodePointInfo = Utf8CodePointInfo { code_point:"U+05A3", hex_value: "", name: "", symbol: "", position: AccentPosition::Above, ashkenazi: Tradition::Ashkenazi { hebrew: "מוּנַח לְגַרְמֵ֣הּ׀", name: "Munach legarmeh", }, sephardi: Tradition::Sephardi { hebrew: "פָּסֵ֣ק׀", name: "Paseq",  }, italian: Tradition::Italian { hebrew: "לְגַרְמֵ֣הּ׀", name: "Legarmeh",  }, yemenite: Tradition::Yemenite { hebrew: "unknown",name: "unknown",},};
 
 pub const CP_MUNAH: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05A3",
@@ -501,22 +493,19 @@ pub const CP_MUNAH: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT MUNAH",
     symbol: "֣",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מוּנַ֣ח",
         name: "munach",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "שׁוֹפָר הוֹלֵ֣ךְ",
         name: "shophar holech",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שׁוֹפָר עִלּ֣וּי",
         name: "shophar illuy",
-    },
-    yemenite: Tradition::Yemenite {
-        hebrew: "unknown",
-        name: "unknown",
-    },
+    }),
+    yemenite: None,
 };
 
 pub const CP_MAHAPAKH: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -525,22 +514,22 @@ pub const CP_MAHAPAKH: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT MAHAPAKH",
     symbol: "֤",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מַהְפַּ֤ך",
         name: "mahpach",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "שׁוֹפָר) מְהֻפָּ֤ךְ)",
         name: "(shophar) mehuppach",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "שׁוֹפָר הָפ֤וּךְ",
         name: "shophar haphuch",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "מְהֻפָּ֤ךְ",
         name: "mehuppach",
-    },
+    }),
 };
 
 pub const CP_MERKHA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -549,22 +538,22 @@ pub const CP_MERKHA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT MERKHA",
     symbol: "֥",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֵרְכָ֥א",
         name: "mercha",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "מַאֲרִ֥יךְ",
         name: "maarich",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "מַאֲרִ֥יךְ",
         name: "maarich",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "מַאֲרְכָ֥א",
         name: "maarcha",
-    },
+    }),
 };
 
 pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -573,22 +562,19 @@ pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT MERKHA KEFULA",
     symbol: "֦",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֵרְכָא כּפוּלָ֦ה",
         name: "mercha kefulah",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "תְּרֵי טַעֲמֵ֦י",
         name: "tere taame",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "תְּרֵין חוּטְרִ֦ין",
         name: "teren chutrin",
-    },
-    yemenite: Tradition::Yemenite {
-        hebrew: "unknown",
-        name: "unknown",
-    },
+    }),
+    yemenite: None,
 };
 
 pub const CP_DARGA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -597,22 +583,22 @@ pub const CP_DARGA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT DARGA",
     symbol: "֧",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "דַּרְגָּ֧א",
         name: "darga",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "דַּרְגָּ֧א",
         name: "darga",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "דַּרְגָּ֧א",
         name: "darga",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "דַּרְגָּ֧א",
         name: "darga",
-    },
+    }),
 };
 
 pub const CP_QADMA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -621,23 +607,19 @@ pub const CP_QADMA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT QADMA",
     symbol: "֨",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "קַדְמָ֨א",
         name: "qadma",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "אַזְלָ֨א",
         name: "azla",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "קַדְמָ֨א",
         name: "qadma",
-    },
-    yemenite: Tradition::Yemenite {
-        // unknown, meaning could not find any info yet
-        hebrew: "unknown",
-        name: "unknown",
-    },
+    }),
+    yemenite: None,
 };
 
 pub const CP_TELISHA_QETANA: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -646,22 +628,22 @@ pub const CP_TELISHA_QETANA: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT TELISHA QETANA",
     symbol: "֩",
     position: AccentPosition::AbovePostPositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּלִישָא קְטַנָּה֩",
         name: "telisha qetannah",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "תַּלְשָׁא֩",
         name: "talsha",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "תַּרְסָא֩",
         name: "tarsa",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "תְּלִישָא קְטַנָּה֩",
         name: "telisha qetannah",
-    },
+    }),
 };
 
 pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -670,22 +652,22 @@ pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT YERAH BEN YOMO",
     symbol: "֪",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "יֵרֶח בֶּן יוֹמ֪וֹ",
         name: "yerach ben yomo/ galgal",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "יֵרֶח בֶּן יוֹמ֪וֹ",
         name: "yerach ben yomo",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "יֵרֶח בֶּן יוֹמ֪וֹ",
         name: "yerach ben yomo",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "יֵרֶח בֶּן יוֹמ֪וֹ",
         name: "yerach ben yomo",
-    },
+    }),
 };
 
 pub const CP_OLE: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -694,22 +676,22 @@ pub const CP_OLE: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT OLE",
     symbol: "֫",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "עוֹלֶה",
         name: "oleh",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "עוֹלֶה",
         name: "oleh",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "עוֹלֶה",
         name: "oleh",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "עוֹלֶה",
         name: "oleh",
-    },
+    }),
 };
 
 pub const CP_ILUY: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -718,22 +700,22 @@ pub const CP_ILUY: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ILUY",
     symbol: "֬",
     position: AccentPosition::Above,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "עִלוּי",
         name: "iluy",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "עִלוּי",
         name: "iluy",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "עִלוּי",
         name: "iluy",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "עִלוּי",
         name: "iluy",
-    },
+    }),
 };
 
 pub const CP_DEHI: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -742,22 +724,22 @@ pub const CP_DEHI: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT DEHI",
     symbol: "֭",
     position: AccentPosition::UnderPrePositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "דחי",
         name: "dechi",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "דחי",
         name: "dechi",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "דחי",
         name: "dechi",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "דחי",
         name: "dechi",
-    },
+    }),
 };
 
 pub const CP_ZINOR: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -766,22 +748,22 @@ pub const CP_ZINOR: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW ACCENT ZINOR",
     symbol: "֮",
     position: AccentPosition::AbovePostPositive,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "צנור",
         name: "tsinor (zarqa above left)",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "צנור",
         name: "tsinor (zarqa above left)",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "צנור",
         name: "tsinor (zarqa above left)",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "צנור",
         name: "tsinor (zarqa above left)",
-    },
+    }),
 };
 
 pub const CP_SILLUQ: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -790,22 +772,22 @@ pub const CP_SILLUQ: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW POINT METEG",
     symbol: "ֽ",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "סוֹף פָּסֽוּק",
         name: "sof pasuq/ silluq",
-    },
-    sephardi: Tradition::Sephardi {
+    }),
+    sephardi: Some(Tradition::Sephardi {
         hebrew: "סוֹף פָּסֽוּק",
         name: "sof pasuq",
-    },
-    italian: Tradition::Italian {
+    }),
+    italian: Some(Tradition::Italian {
         hebrew: "סוֹף פָּסֽוּק",
         name: "sof pasuq",
-    },
-    yemenite: Tradition::Yemenite {
+    }),
+    yemenite: Some(Tradition::Yemenite {
         hebrew: "סִלּֽוּק",
         name: "silluq",
-    },
+    }),
 };
 
 pub const CP_METEG: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -814,47 +796,35 @@ pub const CP_METEG: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW POINT METEG",
     symbol: "ֽ",
     position: AccentPosition::Under,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֶתֶג",
         name: "meteg",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "מֶתֶג",
         name: "meteg",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "מֶתֶג",
         name: "meteg",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "מֶתֶג",
         name: "meteg",
-    },
+    }),
 };
 
-// pub const CP_MAQAF: Utf8CodePointInfo = Utf8CodePointInfo {
-//     code_point: "U+05BE",
-//     hex_value: "0xd6 0xbe",
-//     name: "HEBREW PUNCTUATION MAQAF",
-//     symbol: "־",
-//     position: AccentPosition::Above,
-//     ashkenazi: Tradition::Ashkenazi {
-//         hebrew: "מַקָּף",
-//         name: "maqqaph",
-//     },
-//     sephardi: Tradition::Ashkenazi {
-//         hebrew: "מַקָּף",
-//         name: "maqqaph",
-//     },
-//     italian: Tradition::Ashkenazi {
-//         hebrew: "מַקָּף",
-//         name: "maqqaph",
-//     },
-//     yemenite: Tradition::Ashkenazi {
-//         hebrew: "מַקָּף",
-//         name: "maqqaph",
-//     },
-// };
+pub const CP_MAQAF: Utf8CodePointInfo = Utf8CodePointInfo {
+    code_point: "U+05BE",
+    hex_value: "0xd6 0xbe",
+    name: "HEBREW PUNCTUATION MAQAF",
+    symbol: "־",
+    position: AccentPosition::End,
+    ashkenazi: None,
+    sephardi: None,
+    italian: None,
+    yemenite: None,
+};
 
 pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
     code_point: "U+05C0",
@@ -862,22 +832,22 @@ pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
     name: "HEBREW PUNCTUATION PASEQ",
     symbol: "׀",
     position: AccentPosition::End,
-    ashkenazi: Tradition::Ashkenazi {
+    ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פָּסֵק",
         name: "paseq",
-    },
-    sephardi: Tradition::Ashkenazi {
+    }),
+    sephardi: Some(Tradition::Ashkenazi {
         hebrew: "פָּסֵק",
         name: "paseq",
-    },
-    italian: Tradition::Ashkenazi {
+    }),
+    italian: Some(Tradition::Ashkenazi {
         hebrew: "פָּסֵק",
         name: "paseq",
-    },
-    yemenite: Tradition::Ashkenazi {
+    }),
+    yemenite: Some(Tradition::Ashkenazi {
         hebrew: "פָּסֵק",
         name: "paseq",
-    },
+    }),
 };
 
 // pub const CP_SOF_PASUQ: Utf8CodePointInfo = Utf8CodePointInfo {
@@ -886,20 +856,20 @@ pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
 //     name: "HEBREW PUNCTUATION SOF PASUQ",
 //     symbol: "׃",
 //     position: AccentPosition::Above,
-//     ashkenazi: Tradition::Ashkenazi {
+//     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
-//     },
-//     sephardi: Tradition::Ashkenazi {
+//     }),
+//     sephardi: Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
-//     },
-//     italian: Tradition::Ashkenazi {
+//     }),
+//     italian: Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
-//     },
-//     yemenite: Tradition::Ashkenazi {
+//     }),
+//     yemenite: Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
-//     },
+//     }),
 // };

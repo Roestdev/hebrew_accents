@@ -24,7 +24,7 @@ const OR: &str = r"|";
 // A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
 // Most of the time a sentence ends with Sof Pasuq (\u{05C3})
 // Some times a sentence ends with "samech" (U+05E1) or an "pey" (U+05E4).
-// Some times last words are connected by a Maqqef (\u{05BE})
+// Some times last words are connected by a Maqqeph (\u{05BE})
 //    FancyRegex::new(r"\u{05BD}(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s$?")
 pub static RE_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
     // `format!` creates a `String` from the constant fragments.
@@ -97,7 +97,7 @@ pub static RE_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
 });
 
 // A Mayela is a Tiphcha before Silluq or Atnach in the same word
-// or words connected with a Maqqef (\u{05BE})
+// or words connected with a Maqqeph (\u{05BE})
 // Tiphcha: U+0596
 // Atnach:  U+0591
 // Silluq:  U+05BD (Meteg in the last word)
@@ -152,7 +152,7 @@ pub static RE_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
 // - Geresh (\u{059C}) followed by
 // - Revia (\u{0597})
-// - Maqqef (\u{05BE})
+// - Maqqeph (\u{05BE})
 // - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
 // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 pub static RE_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
@@ -199,10 +199,14 @@ pub static RE_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 //     FancyRegex::new(r"(\u{05A8}\p{Hebrew}*?\u{05BE})|(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))")
 //         .unwrap()
 // });
-const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))";
+const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str =
+    r"(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))";
 pub static RE_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
     // `format!` creates a `String` from the constant fragments.
-    let pattern = format!("{}{}*?{}{}{}", AZLA, HEBREW_CHAR, MAQAF, OR, AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE);
+    let pattern = format!(
+        "{}{}*?{}{}{}",
+        AZLA, HEBREW_CHAR, MAQAF, OR, AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE
+    );
     // `Regex::new` takes a `&str`, so we borrow the `String` here.
     FancyRegex::new(&pattern).expect("invalid regex for Shalshelet Qetannah")
 });
