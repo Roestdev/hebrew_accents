@@ -7,7 +7,7 @@ mod regex;
 mod sentence_context;
 
 // export
-pub use crate::accent::AccentPosition;
+pub use crate::accent::CodePointPosition;
 pub use crate::accent::HebrewAccent;
 pub use crate::accent::PoetryAccent;
 pub use crate::accent::ProseAccent;

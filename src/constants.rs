@@ -1,4 +1,4 @@
-use crate::AccentPosition;
+use crate::CodePointPosition;
 use crate::Tradition;
 use crate::Utf8CodePointInfo;
 
@@ -65,7 +65,7 @@ pub const CP_ETNAHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x91",
     name: "HEBREW ACCENT ETNAHTA",
     symbol: "֑",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "אֶתְנַחְתָּ֑א",
         name: "etnachta",
@@ -89,7 +89,7 @@ pub const CP_SEGOL: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x92",
     name: "HEBREW ACCENT SEGOL",
     symbol: "֒",
-    position: AccentPosition::AbovePostPositive,
+    position: CodePointPosition::AbovePostPositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "סְגוֹל֒",
         name: "segol",
@@ -110,7 +110,7 @@ pub const CP_SHALSHELET: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x93",
     name: "HEBREW ACCENT SHALSHELET",
     symbol: "֓",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "שַׁלְשֶׁ֓לֶת",
         name: "shalshelet",
@@ -134,7 +134,7 @@ pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x94",
     name: "HEBREW ACCENT ZAQEF QATAN",
     symbol: "֔",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זָקֵף קָטָ֔ן",
         name: "zaqeph qatan",
@@ -158,7 +158,7 @@ pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x95",
     name: "HEBREW ACCENT ZAQEF GADOL",
     symbol: "֕",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זָקֵף גָּד֕וֹל",
         name: "zaqeph gadol",
@@ -182,7 +182,7 @@ pub const CP_TIPEHA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x96",
     name: "HEBREW ACCENT TIPEHA",
     symbol: "֖",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "טִפְחָ֖א",
         name: "tiphcha",
@@ -206,7 +206,7 @@ pub const CP_REVIA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x97",
     name: "HEBREW ACCENT REVIA",
     symbol: "֗",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "רְבִ֗יע",
         name: "revia/revi’i",
@@ -230,7 +230,7 @@ pub const CP_ZARQA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x98",
     name: "HEBREW ACCENT ZARQA",
     symbol: "֘",
-    position: AccentPosition::AbovePostPositive,
+    position: CodePointPosition::AbovePostPositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "זַרְקָא֘",
         name: "zarqa",
@@ -254,7 +254,7 @@ pub const CP_PASHTA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x99",
     name: "HEBREW ACCENT PASHTA",
     symbol: "֙",
-    position: AccentPosition::AbovePostPositive,
+    position: CodePointPosition::AbovePostPositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פַּשְׁטָא֙",
         name: "pashta",
@@ -278,7 +278,7 @@ pub const CP_YETIV: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x9a",
     name: "HEBREW ACCENT YETIV",
     symbol: "֚",
-    position: AccentPosition::UnderPrePositive,
+    position: CodePointPosition::UnderPrePositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "יְ֚תִיב",
         name: "yetiv",
@@ -302,7 +302,7 @@ pub const CP_TEVIR: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x9b",
     name: "HEBREW ACCENT TEVIR",
     symbol: "֛",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּבִ֛יר",
         name: "tevir",
@@ -325,7 +325,7 @@ pub const CP_GERESH: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x9c",
     name: "HEBREW ACCENT GERESH",
     symbol: "֜",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "גֵּ֜רֵשׁ",
         name: "geresh/azla",
@@ -350,7 +350,7 @@ pub const CP_GERESH: Utf8CodePointInfo = Utf8CodePointInfo {
 //     hex_value: "0xd6 0x9d",
 //     name: "HEBREW ACCENT GERESH MUQDAM",
 //     symbol: "֝",
-//     position: AccentPosition::Above,
+//     position: CodePointPosition::Above,
 //     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "גֵרֵשׁ מוּקְדָם",
 //         name: "geresh muqdam",
@@ -374,7 +374,7 @@ pub const CP_GERSHAYIM: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x9e",
     name: "HEBREW ACCENT GERSHAYIM",
     symbol: "֞",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "גֵּרְשַׁ֞יִם",
         name: "gershayim",
@@ -398,7 +398,7 @@ pub const CP_QARNEY_PARA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0x9f",
     name: "HEBREW ACCENT QARNEY PARA",
     symbol: "֟",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "קַרְנֵי פָרָ֟ה",
         name: "qarne pharah / pazer gadol",
@@ -422,7 +422,7 @@ pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa0",
     name: "HEBREW ACCENT TELISHA GEDOLA",
     symbol: "֠",
-    position: AccentPosition::AbovePrePositive,
+    position: CodePointPosition::AbovePrePositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּ֠לִישָא גְדוֹלָה",
         name: "telisha gedolah",
@@ -446,7 +446,7 @@ pub const CP_PAZER: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa1",
     name: "HEBREW ACCENT PAZER",
     symbol: "֡",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פָּזֵ֡ר",
         name: "pazer",
@@ -468,7 +468,7 @@ pub const CP_PAZER: Utf8CodePointInfo = Utf8CodePointInfo {
 //     hex_value: "0xd6 0xa2",
 //     name: "HEBREW ACCENT ATNAH HAFUKH",
 //     symbol: "֢",
-//     position: AccentPosition::Above,
+//     position: CodePointPosition::Above,
 //     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "אתנח הפוך",
 //         name: "atnach haphukh",
@@ -492,7 +492,7 @@ pub const CP_MUNAH: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa3",
     name: "HEBREW ACCENT MUNAH",
     symbol: "֣",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מוּנַ֣ח",
         name: "munach",
@@ -513,7 +513,7 @@ pub const CP_MAHAPAKH: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa4",
     name: "HEBREW ACCENT MAHAPAKH",
     symbol: "֤",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מַהְפַּ֤ך",
         name: "mahpach",
@@ -537,7 +537,7 @@ pub const CP_MERKHA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa5",
     name: "HEBREW ACCENT MERKHA",
     symbol: "֥",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֵרְכָ֥א",
         name: "mercha",
@@ -561,7 +561,7 @@ pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa6",
     name: "HEBREW ACCENT MERKHA KEFULA",
     symbol: "֦",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֵרְכָא כּפוּלָ֦ה",
         name: "mercha kefulah",
@@ -582,7 +582,7 @@ pub const CP_DARGA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa7",
     name: "HEBREW ACCENT DARGA",
     symbol: "֧",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "דַּרְגָּ֧א",
         name: "darga",
@@ -606,7 +606,7 @@ pub const CP_QADMA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa8",
     name: "HEBREW ACCENT QADMA",
     symbol: "֨",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "קַדְמָ֨א",
         name: "qadma",
@@ -627,7 +627,7 @@ pub const CP_TELISHA_QETANA: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xa9",
     name: "HEBREW ACCENT TELISHA QETANA",
     symbol: "֩",
-    position: AccentPosition::AbovePostPositive,
+    position: CodePointPosition::AbovePostPositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "תְּלִישָא קְטַנָּה֩",
         name: "telisha qetannah",
@@ -651,7 +651,7 @@ pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xaa",
     name: "HEBREW ACCENT YERAH BEN YOMO",
     symbol: "֪",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "יֵרֶח בֶּן יוֹמ֪וֹ",
         name: "yerach ben yomo/ galgal",
@@ -675,7 +675,7 @@ pub const CP_OLE: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xab",
     name: "HEBREW ACCENT OLE",
     symbol: "֫",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "עוֹלֶה",
         name: "oleh",
@@ -699,7 +699,7 @@ pub const CP_ILUY: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xac",
     name: "HEBREW ACCENT ILUY",
     symbol: "֬",
-    position: AccentPosition::Above,
+    position: CodePointPosition::Above,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "עִלוּי",
         name: "iluy",
@@ -723,7 +723,7 @@ pub const CP_DEHI: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xad",
     name: "HEBREW ACCENT DEHI",
     symbol: "֭",
-    position: AccentPosition::UnderPrePositive,
+    position: CodePointPosition::UnderPrePositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "דחי",
         name: "dechi",
@@ -747,7 +747,7 @@ pub const CP_ZINOR: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xae",
     name: "HEBREW ACCENT ZINOR",
     symbol: "֮",
-    position: AccentPosition::AbovePostPositive,
+    position: CodePointPosition::AbovePostPositive,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "צנור",
         name: "tsinor (zarqa above left)",
@@ -771,7 +771,7 @@ pub const CP_SILLUQ: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xbd",
     name: "HEBREW POINT METEG",
     symbol: "ֽ",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "סוֹף פָּסֽוּק",
         name: "sof pasuq/ silluq",
@@ -795,7 +795,7 @@ pub const CP_METEG: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xbd",
     name: "HEBREW POINT METEG",
     symbol: "ֽ",
-    position: AccentPosition::Under,
+    position: CodePointPosition::Under,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "מֶתֶג",
         name: "meteg",
@@ -819,7 +819,7 @@ pub const CP_MAQAF: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd6 0xbe",
     name: "HEBREW PUNCTUATION MAQAF",
     symbol: "־",
-    position: AccentPosition::End,
+    position: CodePointPosition::End,
     ashkenazi: None,
     sephardi: None,
     italian: None,
@@ -831,7 +831,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
     hex_value: "0xd7 0x80",
     name: "HEBREW PUNCTUATION PASEQ",
     symbol: "׀",
-    position: AccentPosition::End,
+    position: CodePointPosition::End,
     ashkenazi: Some(Tradition::Ashkenazi {
         hebrew: "פָּסֵק",
         name: "paseq",
@@ -855,7 +855,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = Utf8CodePointInfo {
 //     hex_value: "0xd7 0x83",
 //     name: "HEBREW PUNCTUATION SOF PASUQ",
 //     symbol: "׃",
-//     position: AccentPosition::Above,
+//     position: CodePointPosition::Above,
 //     ashkenazi: Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
