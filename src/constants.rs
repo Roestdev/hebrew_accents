@@ -36,9 +36,9 @@ pub const ZINOR: char = '\u{05AE}';
 pub const METEG: char = '\u{05BD}';
 pub const MAQAF: char = '\u{05BE}';
 //pub const RAFE:char = '\u{05BF}';
+
 pub const PASEQ: char = '\u{05C0}';
 pub const SOF_PASUQ: char = '\u{05C3}';
-
 pub const VERTICAL_LINE: char = '\u{007C}';
 
 // aliases

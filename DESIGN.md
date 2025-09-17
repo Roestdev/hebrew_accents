@@ -141,7 +141,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
    Prose, Poetry
 
 5. **Accent Type**  
-   Two type of accents: Primairy and Secundary
+   Two type of accents: Primary and Secundary
 
 6. **Accent Category**    
    Disjunctive, Conjunctive

@@ -93,7 +93,7 @@ pub struct HebrewAccentDetails {
 }
 
 /// Details on a specific UTF8 Unicode code-point
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Utf8CodePointInfo {
     pub code_point: &'static str,
     pub hex_value: &'static str,
@@ -106,7 +106,7 @@ pub struct Utf8CodePointInfo {
     pub yemenite: Option<Tradition>,
 }
 /// Names according one of four Hebrew Traditions
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum Tradition {
     Ashkenazi {
         hebrew: &'static str,
@@ -138,7 +138,7 @@ pub enum AccentCategory {
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentType {
     #[default]
-    Primairy,
+    Primary,
     // used for Meayla and Meteg
     Secondary,
     // used for Maqqeph
@@ -172,7 +172,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_SILLUQ,
                 code_point_2: None,
@@ -186,7 +186,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_ETNAHTA,
                 code_point_2: None,
@@ -199,7 +199,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_SEGOL,
                 code_point_2: None,
@@ -212,7 +212,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_SHALSHELET,
                 code_point_2: Some(CP_PASEQ),
@@ -225,7 +225,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Zaqeph Qatan".to_string()),
                 alt_bhs_hebrew: Some("זָקֵף קָטָן".to_string()),
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_ZAQEF_QATAN,
                 code_point_2: None,
@@ -238,7 +238,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_ZAQEF_GADOL,
                 code_point_2: None,
@@ -251,7 +251,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_REVIA,
                 code_point_2: None,
@@ -265,7 +265,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_TIPEHA,
                 code_point_2: None,
                 comment: Some("before Atnach and Silluq".to_string()),
@@ -278,7 +278,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_ZINOR,
                 code_point_2: None,
                 comment: Some("Ibefore  Segolta".to_string()),
@@ -291,7 +291,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_PASHTA,
                 code_point_2: None,
                 comment: Some("if you sound almost last (2 pasta’s in one word)".to_string()),
@@ -304,7 +304,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_YETIV,
                 code_point_2: None,
                 comment: Some("occasionally for a Pashta".to_string()),
@@ -317,7 +317,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_TEVIR,
                 code_point_2: None,
                 comment: None,
@@ -330,7 +330,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: Some("טֶרֶס".to_string()),
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Disjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_GERESH,
                 code_point_2: None,
                 comment: None,
@@ -342,7 +342,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_GERSHAYIM,
                 code_point_2: None,
@@ -355,7 +355,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Pazer Qatan".to_string()),
                 alt_bhs_hebrew: Some("פָּזֵר קָטָן".to_string()),
                 alt_bhs_meaning: Some("small lavish or scatter".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_PAZER,
                 code_point_2: None,
@@ -368,7 +368,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Qarne Pharah".to_string()),
                 alt_bhs_hebrew: Some("קַרְנֵי פָרָה".to_string()),
                 alt_bhs_meaning: Some("horns of a cow".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_QARNEY_PARA,
                 code_point_2: None,
@@ -381,7 +381,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_TELISHA_GEDOLA,
                 code_point_2: None,
@@ -394,7 +394,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Munach Legarmeh".to_string()),
                 alt_bhs_hebrew: Some("מוּנַח לְגַרְמֵ֣הּ".to_string()),
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_MUNAH,
                 code_point_2: Some(CP_PASEQ),
@@ -408,7 +408,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_MUNAH,
                 code_point_2: None,
@@ -421,7 +421,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Mehuppakh".to_string()),
                 alt_bhs_hebrew: Some("מְהֻפָּ֤ךְ".to_string()),
                 alt_bhs_meaning: Some("reversed".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_MAHAPAKH,
                 code_point_2: None,
@@ -434,7 +434,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_MERKHA,
                 code_point_2: None,
@@ -448,7 +448,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Conjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_MERKHA_KEFULA,
                 code_point_2: None,
                 comment: Some("Merkha duplex".to_string()),
@@ -461,7 +461,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Conjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_DARGA,
                 code_point_2: None,
                 comment: None,
@@ -474,7 +474,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Conjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_QADMA,
                 code_point_2: None,
                 comment: Some("When Geresh: Qadma".to_string()),
@@ -487,7 +487,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew:  None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Conjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_TELISHA_QETANA,
                 code_point_2: None,
                 comment: None,
@@ -500,7 +500,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Jerach Ben Jomo".to_string()),
                 alt_bhs_hebrew: Some("יֵרֶח בֶּן יוֹמוֹ".to_string()),
                 alt_bhs_meaning: Some("moon one day old".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_YERAH_BEN_YOMO,
                 code_point_2: None,
@@ -557,7 +557,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_OLE,
                 code_point_2: Some(CP_MAHAPAKH),
@@ -570,7 +570,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_REVIA,
                 code_point_2: None,
@@ -583,7 +583,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_GERESH,
                 code_point_2: Some(CP_REVIA),
@@ -596,7 +596,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_SHALSHELET,
                 code_point_2: Some(CP_PASEQ),
@@ -609,7 +609,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Zarqa".to_string()),
                 alt_bhs_hebrew: Some("זַרְקָא".to_string()),
                 alt_bhs_meaning: Some("to sprinkle, scatter".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_ZINOR,
                 code_point_2: None,
@@ -622,7 +622,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_REVIA,
                 code_point_2: None,
@@ -635,7 +635,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Tiphcha".to_string()),
                 alt_bhs_hebrew: Some("טִפְחָא".to_string()),
                 alt_bhs_meaning: Some("handbreadth or diagonal".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_DEHI,
                 code_point_2: None,
@@ -648,7 +648,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_MAHAPAKH,
                 code_point_2: Some(CP_PASEQ),
@@ -661,7 +661,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Disjunctive,
                 code_point_1: CP_QADMA,
                 code_point_2: Some(CP_PASEQ),
@@ -675,7 +675,7 @@ impl HebrewAccent {
         //         alt_bhs_name: None,
         //         alt_bhs_hebrew: None,
         //         alt_bhs_meaning: None,
-        //         acc_type: AccentType::Primairy,
+        //         acc_type: AccentType::Primary,
         //         acc_category: AccentCategory::Conjunctive,
         //         code_point_1: CP_MUNAH,
         //         code_point_2: None,
@@ -688,7 +688,7 @@ impl HebrewAccent {
             //     alt_bhs_name: None,
             //     alt_bhs_hebrew: None,
             //     alt_bhs_meaning: None,
-            //     acc_type: AccentType::Primairy,
+            //     acc_type: AccentType::Primary,
             //     acc_category: AccentCategory::Conjunctive,
             //     code_point_1: CP_MERKHA,
             //     code_point_2: None,
@@ -701,7 +701,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_ILUY,
                 code_point_2: None,
@@ -715,7 +715,7 @@ impl HebrewAccent {
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
                 acc_category: AccentCategory::Conjunctive,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 code_point_1: CP_TIPEHA,
                 code_point_2: None,
                 comment: None,
@@ -727,7 +727,7 @@ impl HebrewAccent {
             //     alt_bhs_name: Some("Mahpakh".to_string()),
             //     alt_bhs_hebrew: Some("מַהְפַּךְ".to_string()),
             //     alt_bhs_meaning: Some("turning round".to_string()),
-            //     acc_type: AccentType::Primairy,
+            //     acc_type: AccentType::Primary,
             //     acc_category: AccentCategory::Conjunctive,
             //     code_point_1: CP_MAHAPAKH,
             //     code_point_2: None,
@@ -740,7 +740,7 @@ impl HebrewAccent {
                 alt_bhs_name: Some("Qadma".to_string()),
                 alt_bhs_hebrew: Some("קַדְמָ֨א".to_string()),
                 alt_bhs_meaning: Some("antiquity or a former state".to_string()),
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_QADMA,
                 code_point_2: None,
@@ -753,7 +753,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_SHALSHELET,
                 code_point_2: None,
@@ -766,7 +766,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_ZARQA,
                 code_point_2: Some(CP_MERKHA),
@@ -779,7 +779,7 @@ impl HebrewAccent {
                 alt_bhs_name: None,
                 alt_bhs_hebrew: None,
                 alt_bhs_meaning: None,
-                acc_type: AccentType::Primairy,
+                acc_type: AccentType::Primary,
                 acc_category: AccentCategory::Conjunctive,
                 code_point_1: CP_ZARQA,
                 code_point_2: Some(CP_MAHAPAKH),
@@ -829,7 +829,7 @@ impl ProseAccent {
     }
     /// Returns detailsrmation about the accent.
     /// This can be expanded to include more details as needed.
-    // #[allow(unused)]
+    #[allow(unused)]
     fn details(&self) -> HebrewAccentDetails {
         match self {
             // Disjunctives
@@ -849,16 +849,22 @@ impl ProseAccent {
             ProseAccent::Gershayim => HebrewAccent::Prose(ProseAccent::Gershayim).details(),
             ProseAccent::Pazer => HebrewAccent::Prose(ProseAccent::Pazer).details(),
             ProseAccent::PazerGadol => HebrewAccent::Prose(ProseAccent::PazerGadol).details(),
-            ProseAccent::TelishaGedolah  => HebrewAccent::Prose(ProseAccent::TelishaGedolah).details(),
+            ProseAccent::TelishaGedolah => {
+                HebrewAccent::Prose(ProseAccent::TelishaGedolah).details()
+            }
             ProseAccent::Legarmeh => HebrewAccent::Prose(ProseAccent::Legarmeh).details(),
             // Conjunctives
             ProseAccent::Munach => HebrewAccent::Prose(ProseAccent::Munach).details(),
             ProseAccent::Mahpakh => HebrewAccent::Prose(ProseAccent::Mahpakh).details(),
             ProseAccent::Merkha => HebrewAccent::Prose(ProseAccent::Merkha).details(),
-            ProseAccent::MerkhaKephulah => HebrewAccent::Prose(ProseAccent::MerkhaKephulah).details(),
+            ProseAccent::MerkhaKephulah => {
+                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).details()
+            }
             ProseAccent::Darga => HebrewAccent::Prose(ProseAccent::Darga).details(),
             ProseAccent::Azla => HebrewAccent::Prose(ProseAccent::Azla).details(),
-            ProseAccent::TelishaQetannah => HebrewAccent::Prose(ProseAccent::TelishaQetannah).details(),
+            ProseAccent::TelishaQetannah => {
+                HebrewAccent::Prose(ProseAccent::TelishaQetannah).details()
+            }
             ProseAccent::Galgal => HebrewAccent::Prose(ProseAccent::Galgal).details(),
             ProseAccent::Mayela => HebrewAccent::Prose(ProseAccent::Mayela).details(),
             ProseAccent::Meteg => HebrewAccent::Prose(ProseAccent::Meteg).details(),
@@ -899,7 +905,7 @@ impl PoetryAccent {
             PoetryAccent::Maqqeph => 23,
         }
     }
-    // #[allow(unused)]
+    #[allow(unused)]
     fn details(&self) -> HebrewAccentDetails {
         match self {
             // Disjunctives
@@ -907,14 +913,22 @@ impl PoetryAccent {
             PoetryAccent::OlehWeYored => HebrewAccent::Poetry(PoetryAccent::OlehWeYored).details(),
             PoetryAccent::Atnach => HebrewAccent::Poetry(PoetryAccent::Atnach).details(),
             PoetryAccent::ReviaGadol => HebrewAccent::Poetry(PoetryAccent::ReviaGadol).details(),
-            PoetryAccent::ReviaMugrash => HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).details(),
-            PoetryAccent::ShalsheletGadol => HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).details(),
+            PoetryAccent::ReviaMugrash => {
+                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).details()
+            }
+            PoetryAccent::ShalsheletGadol => {
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).details()
+            }
             PoetryAccent::Tsinnor => HebrewAccent::Poetry(PoetryAccent::Tsinnor).details(),
             PoetryAccent::ReviaQaton => HebrewAccent::Poetry(PoetryAccent::ReviaQaton).details(),
             PoetryAccent::Dechi => HebrewAccent::Poetry(PoetryAccent::Dechi).details(),
             PoetryAccent::Pazer => HebrewAccent::Poetry(PoetryAccent::Pazer).details(),
-            PoetryAccent::MehuppakhLegarmeh => HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).details(),
-            PoetryAccent::AzlaLegarmeh => HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).details(),
+            PoetryAccent::MehuppakhLegarmeh => {
+                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).details()
+            }
+            PoetryAccent::AzlaLegarmeh => {
+                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).details()
+            }
             // Conjunctives
             PoetryAccent::Munach => HebrewAccent::Poetry(PoetryAccent::Munach).details(),
             PoetryAccent::Merkha => HebrewAccent::Poetry(PoetryAccent::Merkha).details(),
@@ -923,9 +937,15 @@ impl PoetryAccent {
             PoetryAccent::Galgal => HebrewAccent::Poetry(PoetryAccent::Galgal).details(),
             PoetryAccent::Mehuppakh => HebrewAccent::Poetry(PoetryAccent::Mehuppakh).details(),
             PoetryAccent::Azla => HebrewAccent::Poetry(PoetryAccent::Azla).details(),
-            PoetryAccent::ShalsheletQetannah => HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).details(),
-            PoetryAccent::TsinnoritMerkha => HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).details(),
-            PoetryAccent::TsinnoritMahpakh => HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).details(),
+            PoetryAccent::ShalsheletQetannah => {
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).details()
+            }
+            PoetryAccent::TsinnoritMerkha => {
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).details()
+            }
+            PoetryAccent::TsinnoritMahpakh => {
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).details()
+            }
             PoetryAccent::Meteg => HebrewAccent::Poetry(PoetryAccent::Meteg).details(),
             PoetryAccent::Maqqeph => HebrewAccent::Poetry(PoetryAccent::Maqqeph).details(),
         }
