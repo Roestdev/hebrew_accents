@@ -1,8 +1,8 @@
-use crate::constants::*;
+use crate::accent::PoetryAccent;
+use crate::accent::ProseAccent;
 use crate::regex::*;
 use crate::HebrewAccent;
-use crate::PoetryAccent;
-use crate::ProseAccent;
+use crate::char::*;
 
 /// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
