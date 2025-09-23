@@ -90,8 +90,6 @@ pub struct AccentInfo {
     pub first_code_point: &'static Utf8CodePointInfo,
     pub second_code_point: Option<&'static Utf8CodePointInfo>,
     pub comment: Option<&'static str>,
-
-
 }
 
 /// Details on a specific UTF8 Unicode code-point

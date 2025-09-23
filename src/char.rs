@@ -1,3 +1,5 @@
+// char constants are used inside regular expressions to make them more readable
+
 pub const ETNAHTA: char = '\u{0591}';
 pub const SEGOL: char = '\u{0592}';
 pub const SHALSHELET: char = '\u{0593}';
@@ -37,10 +39,17 @@ pub const SOF_PASUQ: char = '\u{05C3}';
 pub const VERTICAL_LINE: char = '\u{007C}';
 
 // aliases
+/// alias for ZARQA
 pub const TSINNORIT: char = ZARQA;
+/// alias for MERKHA
 pub const YORED: char = MERKHA;
+/// alias for QADMA
 pub const AZLA: char = QADMA;
+/// alias for METEG
 pub const SILLUQ: char = METEG;
+/// alias for TIPEHA
 pub const MEAYLA: char = TIPEHA;
+/// alias for ETNAHTA
 pub const ATNACH: char = ETNAHTA;
+/// alias for MAQAF
 pub const MAQQEPH: char = MAQAF;

@@ -1,22 +1,19 @@
-use crate::Tradition;
+/// Constants below are a mix of the following:
+/// - UTF8 code table (https://utf8-chartable.de/unicode-utf8-table.pl)
+/// - naming of the accents according different traditions, see p.e.
+///      https://en.wikipedia.org/wiki/Hebrew_cantillation
+///      http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim
+/// - the position of the accent relative to the related consonant
+///
+// Purpose: give more detailed information on the accents
+///
+/// Ordering of the list is based on the value of their Unicode code-point
 use crate::CodePointPosition;
 use crate::Utf8CodePointInfo;
+use crate::Tradition;
 
-// Constants below are a mix of the following:
-// - UTF8 code table (https://utf8-chartable.de/unicode-utf8-table.pl)
-// - naming of the accents according different traditions, see p.e.
-//      https://en.wikipedia.org/wiki/Hebrew_cantillation
-//      http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim
-// - the position of the accent relative to the related consonant
-//
-// Purpose: give more detailed information on the accents
-//
-// (ordering of the list is based on the value of their Unicode code-point)
-//  Static lookup table (reference‑based, zero‑copy)
-//  No macro – we construct the HashMap explicitly.
 
-// ---------------------------------------------------------------------------
-//  Constructor for a single code‑point description
+/// Constructor for a single code‑point description
 const fn cp(
     code_point: &'static str,
     hex_value: &'static str,

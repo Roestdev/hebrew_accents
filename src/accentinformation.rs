@@ -1,9 +1,8 @@
+
+
 use crate::accent::AccentInfo;
 use crate::codepoints::*;
 
-
-
-//////////////////////////////////////////////////////////////////////
 pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
