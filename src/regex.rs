@@ -1,7 +1,7 @@
+use crate::char::*;
 use fancy_regex::Regex as FancyRegex;
 use once_cell::sync::Lazy;
 use regex::Regex;
-use crate::char::*;
 
 const HEBREW_CHAR: &str = r"\p{Hebrew}";
 const OPTIONAL_SPACE: &str = r"\s?";

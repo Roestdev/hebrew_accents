@@ -81,15 +81,34 @@ pub enum PoetryAccent {
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct AccentInfo {
+    /// Primary identifiers – always present.
     pub english_name: &'static str,
     pub hebrew_name: &'static str,
     pub meaning: &'static str,
-    pub alt_english_name: Option<&'static str>,
-    pub alt_hebrew_name: Option<&'static str>,
-    pub alt_meaning: Option<&'static str>,
-    pub first_code_point: &'static Utf8CodePointInfo,
-    pub second_code_point: Option<&'static Utf8CodePointInfo>,
+    /// Optional alternate identifiers.
+    pub alternates: Option<Alternates>,
+    /// Indicates the accent type (Primary, Secundary)
+    pub accent_type: AccentType,
+    /// Optional alternate identifiers.
+    pub category: AccentCategory,
+    /// Unicode code‑point data.
+    pub code_points: CodePoints,
+    /// Free‑form comment (may be omitted).
     pub comment: Option<&'static str>,
+}
+
+/// Optional alternate representations for an accent.
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct Alternates {
+    pub english_name: &'static str,
+    pub hebrew_name: &'static str,
+    pub meaning: &'static str,
+}
+
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct CodePoints {
+    pub primary: &'static Utf8CodePointInfo,
+    pub secondary: Option<&'static Utf8CodePointInfo>,
 }
 
 /// Details on a specific UTF8 Unicode code-point
@@ -100,10 +119,11 @@ pub struct Utf8CodePointInfo {
     pub name: &'static str,
     pub symbol: &'static str,
     pub position: CodePointPosition,
-    pub ashkenazi: Option<Tradition>,
-    pub sephardi: Option<Tradition>,
-    pub italian: Option<Tradition>,
-    pub yemenite: Option<Tradition>,
+    pub traditions: &'static [Tradition],
+    //pub ashkenazi: Option<Tradition>,
+    //pub sephardi: Option<Tradition>,
+    //pub italian: Option<Tradition>,
+    //pub yemenite: Option<Tradition>,
 }
 /// Names according one of four Hebrew Traditions
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -167,10 +187,16 @@ pub trait Accent: Copy + Sized {
 
     // Convenience wrappers that expose the fields you used most.
     // #[inline] fn rank(self)        -> u8                 { self.details().rank }
-    //#[inline] fn category(self)    -> AccentCategory     { self.details().category }
-    //#[inline] fn accent_type(self) -> AccentType        { self.details().accent_type }
-    //#[inline] fn details(self)     -> &'static AccentInfo {
-    //    self.details().details
+    #[inline]
+    fn category(self) -> AccentCategory {
+        self.info().category
+    }
+    #[inline]
+    fn accent_type(self) -> AccentType {
+        self.info().accent_type
+    }
+    //#[inline] fn traditions(self)  -> &'static [Tradition] {
+    //   self.info().code_points.primary.traditions
     //}
 }
 
@@ -180,6 +206,18 @@ impl Accent for HebrewAccent {
         match self {
             HebrewAccent::Prose(p) => p.info(),
             HebrewAccent::Poetry(p) => p.info(),
+        }
+    }
+    fn category(self) -> AccentCategory {
+        match self {
+            HebrewAccent::Prose(p) => p.info().category,
+            HebrewAccent::Poetry(p) => p.info().category,
+        }
+    }
+    fn accent_type(self) -> AccentType {
+        match self {
+            HebrewAccent::Prose(p) => p.info().accent_type,
+            HebrewAccent::Poetry(p) => p.info().accent_type,
         }
     }
 }
@@ -258,61 +296,6 @@ impl Accent for PoetryAccent {
 
 impl ProseAccent {
     pub const COUNT: usize = 29;
-    pub const fn category(self) -> AccentCategory {
-        match self {
-            Self::Silluq
-            | Self::Atnach
-            | Self::Segolta
-            | Self::Shalshelet
-            | Self::ZaqephQaton
-            | Self::ZaqephGadol
-            | Self::Revia
-            | Self::Tiphcha
-            | Self::Zarqa
-            | Self::Pashta
-            | Self::Yetiv
-            | Self::Tevir
-            | Self::Geresh
-            | Self::Gershayim
-            | Self::Pazer
-            | Self::PazerGadol
-            | Self::TelishaGedolah
-            | Self::Legarmeh => AccentCategory::Disjunctive,
-            _ => AccentCategory::Conjunctive,
-        }
-    }
-    pub fn accent_type(self) -> AccentType {
-        match self {
-            Self::Silluq
-            | Self::Atnach
-            | Self::Segolta
-            | Self::Shalshelet
-            | Self::ZaqephQaton
-            | Self::ZaqephGadol
-            | Self::Revia
-            | Self::Tiphcha
-            | Self::Zarqa
-            | Self::Pashta
-            | Self::Yetiv
-            | Self::Tevir
-            | Self::Geresh
-            | Self::Gershayim
-            | Self::Pazer
-            | Self::PazerGadol
-            | Self::TelishaGedolah
-            | Self::Legarmeh
-            | Self::Munach
-            | Self::Mahpakh
-            | Self::Merkha
-            | Self::MerkhaKephulah
-            | Self::Darga
-            | Self::Azla
-            | Self::TelishaQetannah
-            | Self::Galgal => AccentType::Primary,
-            Self::Mayela | Self::Meteg => AccentType::Secondary,
-            Self::Maqqeph => AccentType::None,
-        }
-    }
     pub fn rank(&self) -> u8 {
         match self {
             // Disjunctives
@@ -348,59 +331,10 @@ impl ProseAccent {
             Self::Maqqeph => 29,
         }
     }
-    // Returns detail information about the accent.
-    // This can be expanded to include more details as needed.
-    // #[allow(unused)]
 }
 
 impl PoetryAccent {
     pub const COUNT: usize = 24;
-    pub const fn category(self) -> AccentCategory {
-        match self {
-            Self::Silluq
-            | Self::OlehWeYored
-            | Self::Atnach
-            | Self::ReviaGadol
-            | Self::ReviaMugrash
-            | Self::ShalsheletGadol
-            | Self::Tsinnor
-            | Self::ReviaQaton
-            | Self::Dechi
-            | Self::Pazer
-            | Self::MehuppakhLegarmeh
-            | Self::AzlaLegarmeh => AccentCategory::Disjunctive,
-            _ => AccentCategory::Conjunctive,
-        }
-    }
-    pub const fn accent_type(self) -> AccentType {
-        match self {
-            Self::Silluq |
-            Self::OlehWeYored |
-            Self::Atnach |
-            Self::ReviaGadol |
-            Self::ReviaMugrash |
-            Self::ShalsheletGadol |
-            Self::Tsinnor |
-            Self::ReviaQaton |
-            Self::Dechi |
-            Self::Pazer |
-            Self::MehuppakhLegarmeh |
-            Self::AzlaLegarmeh |
-            // Conjunctives
-            Self::Munach |
-            Self::Merkha |
-            Self::Illuy |
-            Self::Tarkha |
-            Self::Galgal |
-            Self::Mehuppakh |
-            Self::Azla |
-            Self::ShalsheletQetannah |
-            Self::TsinnoritMerkha |
-            Self::TsinnoritMahpakh  => AccentType::Primary,
-            Self::Meteg => AccentType::Secondary,
-            Self::Maqqeph => AccentType::None,
-        }
-    }
     pub fn rank(&self) -> u8 {
         match self {
             // Disjunctives
