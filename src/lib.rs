@@ -7,6 +7,7 @@ mod char;
 mod codepoints;
 mod regex;
 mod sentence_context;
+mod accent_display;
 
 // export
 pub use crate::accent::Accent;

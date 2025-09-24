@@ -1,6 +1,6 @@
 use crate::accentinformation::*;
 
-/// Hebrew Accent, either Prose or Poetry
+/// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum HebrewAccent {
     Prose(ProseAccent),
@@ -11,7 +11,7 @@ pub enum HebrewAccent {
 #[repr(u8)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum ProseAccent {
-    // 18 Disjunctives
+    /// Disjunctives (18x)
     #[default]
     Silluq,
     Atnach,
@@ -31,7 +31,7 @@ pub enum ProseAccent {
     PazerGadol,
     TelishaGedolah,
     Legarmeh,
-    // 11 Conjunctives
+    /// Conjunctives (11x)
     Munach,
     Mahpakh,
     Merkha,
@@ -49,7 +49,7 @@ pub enum ProseAccent {
 #[repr(u8)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum PoetryAccent {
-    // 12 Disjunctives
+    /// Disjunctives (12)
     #[default]
     Silluq,
     OlehWeYored,
@@ -63,7 +63,7 @@ pub enum PoetryAccent {
     Pazer,
     MehuppakhLegarmeh,
     AzlaLegarmeh,
-    // 12 Conjunctives
+    /// Conjunctives (12)
     Munach,
     Merkha,
     Illuy,
@@ -104,7 +104,7 @@ pub struct Alternates {
     pub hebrew_name: &'static str,
     pub meaning: &'static str,
 }
-
+/// Lists one or two UTF-8 code-point(s) from which the accent is constructed
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct CodePoints {
     pub primary: &'static Utf8CodePointInfo,
@@ -114,16 +114,18 @@ pub struct CodePoints {
 /// Details on a specific UTF8 Unicode code-point
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Utf8CodePointInfo {
+    /// UTF8 code-point, e.g. U+0591
     pub code_point: &'static str,
+    /// hex value of the UTF8 code-point
     pub hex_value: &'static str,
+    /// name of the UTF8 code-point
     pub name: &'static str,
+    /// symbol of the UTF8 code-point
     pub symbol: &'static str,
+    /// position of the code-point in relation to the consonant
     pub position: CodePointPosition,
+    /// array containing information of various Jewish traditions
     pub traditions: &'static [Tradition],
-    //pub ashkenazi: Option<Tradition>,
-    //pub sephardi: Option<Tradition>,
-    //pub italian: Option<Tradition>,
-    //pub yemenite: Option<Tradition>,
 }
 /// Names according one of four Hebrew Traditions
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -149,35 +151,39 @@ pub enum Tradition {
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentCategory {
+    /// accents that connect words
     Conjunctive,
     #[default]
+    /// accents that seperate words
     Disjunctive,
 }
 
-/// Hebrew Accent types
+/// Hebrew Accent types (Primary, secondary, None)
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum AccentType {
     #[default]
     Primary,
-    // used for Meayla and Meteg
+    /// used for Meayla and Meteg
     Secondary,
-    // used for Maqqeph
+    /// used for Maqqeph
     None,
 }
 
-/// Accent position, Indicating the location of the accent in relation to the consonant
+/// Accent position, indicating the location of the accent in relation to the consonant
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum CodePointPosition {
     #[default]
+    /// Accent is located above the consonant
     Above,
-    // above and after the consonant
+    /// Accent is located above and after the consonant
     AbovePostPositive,
-    // above and before the consonant
+    /// Accent is located above and before the consonant
     AbovePrePositive,
-    // at the end of the word (used for Paseq, Soph Pasuq and Maqqeph)
+    /// Accent is located end of the consonant (used for Paseq, Soph Pasuq and Maqqeph)
     End,
+    /// Accent is located under the consonant
     Under,
-    // under and after the consonant
+    /// Accent is located under and before the consonant
     UnderPrePositive,
 }
 
@@ -223,74 +229,14 @@ impl Accent for HebrewAccent {
 }
 
 impl Accent for ProseAccent {
-    #[inline]
     fn info(self) -> &'static AccentInfo {
-        match self {
-            ProseAccent::Silluq => &SILLUQ_INFO,
-            ProseAccent::Atnach => &ATNACH_INFO,
-            ProseAccent::Segolta => &SEGOLTA_INFO,
-            ProseAccent::Shalshelet => &SHALSHELET_INFO,
-            ProseAccent::ZaqephQaton => &ZAQEF_QATON_INFO,
-            ProseAccent::ZaqephGadol => &ZAQEPH_GADOL_INFO,
-            ProseAccent::Revia => &REVIA_INFO,
-            ProseAccent::Tiphcha => &TIPHCHA_INFO,
-            ProseAccent::Zarqa => &ZARQA_INFO,
-            ProseAccent::Pashta => &PASHTA_INFO,
-            ProseAccent::Yetiv => &YETIV_INFO,
-            ProseAccent::Tevir => &TEVIR_INFO,
-            ProseAccent::Geresh => &GERESH_INFO,
-            ProseAccent::Gershayim => &GERSHAYIM_INFO,
-            ProseAccent::Pazer => &PAZER_INFO,
-            ProseAccent::PazerGadol => &PAZER_GADOL_INFO,
-            ProseAccent::TelishaGedolah => &TELISHA_GEDOLAH_INFO,
-            ProseAccent::Legarmeh => &LEGARMEH_INFO,
-            // Conjunctives
-            ProseAccent::Munach => &MUNACH_INFO,
-            ProseAccent::Mahpakh => &MAHPAKH_INFO,
-            ProseAccent::Merkha => &MERKHA_INFO,
-            ProseAccent::MerkhaKephulah => &MERKHA_KEFULAH_INFO,
-            ProseAccent::Darga => &DARGA_INFO,
-            ProseAccent::Azla => &AZLA_INFO,
-            ProseAccent::TelishaQetannah => &TELISHA_QETANNAH_INFO,
-            ProseAccent::Galgal => &GALGAL_INFO,
-            ProseAccent::Mayela => &MAYELA_INFO,
-            ProseAccent::Meteg => &METEG_INFO,
-            ProseAccent::Maqqeph => &MAQQEPH_INFO,
-        }
+        PROSE_ACCENT_TABLE[self as usize] // panics if the index is out of range
     }
 }
 
 impl Accent for PoetryAccent {
-    #[inline]
     fn info(self) -> &'static AccentInfo {
-        match self {
-            // Disjunctives
-            PoetryAccent::Silluq => &SILLUQ_INFO,
-            PoetryAccent::OlehWeYored => &OLEH_WE_YORED_INFO,
-            PoetryAccent::Atnach => &ATNACH_INFO,
-            PoetryAccent::ReviaGadol => &REVIA_GADOL_INFO,
-            PoetryAccent::ReviaMugrash => &REVIA_MUGRASH_INFO,
-            PoetryAccent::ShalsheletGadol => &SHALSHELET_GADOL_INFO,
-            PoetryAccent::Tsinnor => &TSINNOR_INFO,
-            PoetryAccent::ReviaQaton => &REVIA_QATON_INFO,
-            PoetryAccent::Dechi => &DECHI_INFO,
-            PoetryAccent::Pazer => &PAZER_INFO,
-            PoetryAccent::MehuppakhLegarmeh => &MEHUPPAKH_LEGARMEH_INFO,
-            PoetryAccent::AzlaLegarmeh => &AZLA_LEGARMEH_INFO,
-            // Conjunctives
-            PoetryAccent::Munach => &MUNACH_INFO,
-            PoetryAccent::Merkha => &MERKHA_INFO,
-            PoetryAccent::Illuy => &ILLUY_INFO,
-            PoetryAccent::Tarkha => &TARCHA_INFO,
-            PoetryAccent::Galgal => &GALGAL_INFO,
-            PoetryAccent::Mehuppakh => &MEHUPPAKH_INFO,
-            PoetryAccent::Azla => &AZLA_INFO,
-            PoetryAccent::ShalsheletQetannah => &SHALSHELET_QETANNAH_INFO,
-            PoetryAccent::TsinnoritMerkha => &TSINNORIT_MERKHA_INFO,
-            PoetryAccent::TsinnoritMahpakh => &TSINNORIT_MAHPAKH_INFO,
-            PoetryAccent::Meteg => &METEG_INFO,
-            PoetryAccent::Maqqeph => &MAQQEPH_INFO,
-        }
+        POETRY_ACCENT_TABLE[self as usize] // panics if the index is out of range
     }
 }
 
@@ -370,6 +316,85 @@ impl PoetryAccent {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Helper that asserts the three most common accessor methods on any
+    /// `Accent` implementation give consistent results.
+    fn assert_accent_consistency<A: Accent>(accent: A, expected_meaning: &str) {
+        // 1️⃣  The static metadata must match the expected string.
+        assert_eq!(accent.info().meaning, expected_meaning);
+
+        // 2️⃣  Category and type are just forwarded to `info()`.
+        assert_eq!(accent.category(), accent.info().category);
+        assert_eq!(accent.accent_type(), accent.info().accent_type);
+    }
+
+    /// ----------------------------------------------------------------
+    /// 1️⃣  Simple sanity checks for a handful of *prose* accents
+    /// ----------------------------------------------------------------
+    #[test]
+    fn prose_accent_basic_properties() {
+        // Silluq – the very first disjunctive
+        let silluq = ProseAccent::Silluq;
+        assert_eq!(silluq.rank(), 1);
+        assert_accent_consistency(silluq, "close, cessation");
+
+        // Atnach – second disjunctive
+        let atnach = ProseAccent::Atnach;
+        assert_eq!(atnach.rank(), 2);
+        assert_accent_consistency(atnach, "a causing to rest");
+
+        // Galgal – a conjunctive (wheel, circle)
+        let galgal = ProseAccent::Galgal;
+        assert_eq!(galgal.rank(), 26);
+        assert_accent_consistency(galgal, "wheel, circle");
+    }
+
+    /// ----------------------------------------------------------------
+    /// 2️⃣  Parallel checks for *poetry* accents
+    /// ----------------------------------------------------------------
+    #[test]
+    fn poetry_accent_basic_properties() {
+        // Shalshelet – a disjunctive in poetry
+        let shalshelet = PoetryAccent::ShalsheletGadol;
+        assert_eq!(shalshelet.rank(), 6);
+        assert_accent_consistency(shalshelet, "large chain or link");
+
+        // Illuy – a conjunctive (elevation / raising)
+        let illuy = PoetryAccent::Illuy;
+        assert_eq!(illuy.rank(), 15);
+        assert_accent_consistency(illuy, "elevation or raising");
+    }
+
+    /// ----------------------------------------------------------------
+    /// 3️⃣  The high‑level `HebrewAccent` wrapper forwards correctly
+    /// ----------------------------------------------------------------
+    #[test]
+    fn hebrew_accent_dispatches_to_concrete_impls() {
+        // Prose variant
+        let ha_prose = HebrewAccent::Prose(ProseAccent::TelishaGedolah);
+        assert_eq!(ha_prose.info().english_name, "Telisha Gedolah");
+        assert_eq!(ha_prose.category(), AccentCategory::Disjunctive);
+        assert_eq!(ha_prose.accent_type(), AccentType::Primary);
+        assert_eq!(ha_prose.info().meaning, "great (long) detached");
+
+        // Poetry variant
+        let ha_poetry = HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh);
+        assert_eq!(ha_poetry.info().english_name, "Mehuppakh Legarmeh");
+        assert_eq!(ha_poetry.category(), AccentCategory::Disjunctive);
+        assert_eq!(ha_poetry.accent_type(), AccentType::Primary);
+        assert_eq!(ha_poetry.info().meaning, "reversed to its own");
+    }
+
+    /// ----------------------------------------------------------------
+    /// 4️⃣  Edge‑case sanity check – ensure the tables are sized correctly
+    /// ----------------------------------------------------------------
+    #[test]
+    fn tables_have_the_expected_length() {
+        // The `COUNT` constants should match the length of the static tables.
+        // If they diverge, the `info()` implementation would panic at runtime.
+        assert_eq!(ProseAccent::COUNT, PROSE_ACCENT_TABLE.len());
+        assert_eq!(PoetryAccent::COUNT, POETRY_ACCENT_TABLE.len());
+    }
 
     #[test]
     fn silluq() {
