@@ -1,6 +1,8 @@
+//use hebrew_accents::{PoetryAccent, ProseAccent};
 use hebrew_accents::{PoetryAccent, ProseAccent};
-
-fn main() {
+#[test]
+fn testing_prose_accent_ranks() {
+    // Disjunctives
     assert_eq!(ProseAccent::Silluq.rank(), 1);
     assert_eq!(ProseAccent::Atnach.rank(), 2);
     assert_eq!(ProseAccent::Segolta.rank(), 3);
@@ -31,31 +33,34 @@ fn main() {
     assert_eq!(ProseAccent::Mayela.rank(), 27);
     assert_eq!(ProseAccent::Meteg.rank(), 28);
     assert_eq!(ProseAccent::Maqqeph.rank(), 29);
+}
 
-
-                assert_eq!(PoetryAccent::Silluq.rank(), 1);
-            assert_eq!(PoetryAccent::OlehWeYored.rank(), 2,);
-            assert_eq!(PoetryAccent::Atnach.rank(), 3);
-            assert_eq!(PoetryAccent::ReviaGadol.rank(), 4);
-            assert_eq!(PoetryAccent::ReviaMugrash.rank(), 5);
-            assert_eq!(PoetryAccent::ShalsheletGadol.rank(), 6);
-            assert_eq!(PoetryAccent::Tsinnor.rank(), 7);
-            assert_eq!(PoetryAccent::ReviaQaton.rank(), 8);
-            assert_eq!(PoetryAccent::Dechi.rank(), 9);
-            assert_eq!(PoetryAccent::Pazer.rank(), 10);
-            assert_eq!(PoetryAccent::MehuppakhLegarmeh.rank(), 11);
-            assert_eq!(PoetryAccent::AzlaLegarmeh.rank(), 12);
-            // Conjunctives
-            assert_eq!(PoetryAccent::Munach.rank(), 13);
-            assert_eq!(PoetryAccent::Merkha.rank(), 14);
-            assert_eq!(PoetryAccent::Illuy.rank(), 15);
-            assert_eq!(PoetryAccent::Tarkha.rank(), 16);
-            assert_eq!(PoetryAccent::Galgal.rank(), 17);
-            assert_eq!(PoetryAccent::Mehuppakh.rank(), 18);
-            assert_eq!(PoetryAccent::Azla.rank(), 19);
-            assert_eq!(PoetryAccent::ShalsheletQetannah.rank(), 20);
-            assert_eq!(PoetryAccent::TsinnoritMerkha.rank(), 21);
-            assert_eq!(PoetryAccent::TsinnoritMahpakh.rank(), 21);
-            assert_eq!(PoetryAccent::Meteg.rank(), 22);
-            assert_eq!(PoetryAccent::Maqqeph.rank(), 23);
+#[test]
+fn testing_poetry_accent_ranks() {
+    // Disjunctives
+    assert_eq!(PoetryAccent::Silluq.rank(), 1);
+    assert_eq!(PoetryAccent::OlehWeYored.rank(), 2,);
+    assert_eq!(PoetryAccent::Atnach.rank(), 3);
+    assert_eq!(PoetryAccent::ReviaGadol.rank(), 4);
+    assert_eq!(PoetryAccent::ReviaMugrash.rank(), 5);
+    assert_eq!(PoetryAccent::ShalsheletGadol.rank(), 6);
+    assert_eq!(PoetryAccent::Tsinnor.rank(), 7);
+    assert_eq!(PoetryAccent::ReviaQaton.rank(), 8);
+    assert_eq!(PoetryAccent::Dechi.rank(), 9);
+    assert_eq!(PoetryAccent::Pazer.rank(), 10);
+    assert_eq!(PoetryAccent::MehuppakhLegarmeh.rank(), 11);
+    assert_eq!(PoetryAccent::AzlaLegarmeh.rank(), 12);
+    // Conjunctives
+    assert_eq!(PoetryAccent::Munach.rank(), 13);
+    assert_eq!(PoetryAccent::Merkha.rank(), 14);
+    assert_eq!(PoetryAccent::Illuy.rank(), 15);
+    assert_eq!(PoetryAccent::Tarkha.rank(), 16);
+    assert_eq!(PoetryAccent::Galgal.rank(), 17);
+    assert_eq!(PoetryAccent::Mehuppakh.rank(), 18);
+    assert_eq!(PoetryAccent::Azla.rank(), 19);
+    assert_eq!(PoetryAccent::ShalsheletQetannah.rank(), 20);
+    assert_eq!(PoetryAccent::TsinnoritMerkha.rank(), 21);
+    assert_eq!(PoetryAccent::TsinnoritMahpakh.rank(), 21);
+    assert_eq!(PoetryAccent::Meteg.rank(), 22);
+    assert_eq!(PoetryAccent::Maqqeph.rank(), 23);
 }
