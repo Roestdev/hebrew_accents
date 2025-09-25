@@ -1,7 +1,7 @@
 use once_cell::sync::Lazy;
 
 use crate::accent::{AccentCategory, AccentInfo, AccentType, Alternates, CodePoints};
-use crate::codepoints::*;
+use crate::accent_codepoints::*;
 
 pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo]> = Lazy::new(|| {
     &[

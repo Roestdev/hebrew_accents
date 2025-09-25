@@ -1,6 +1,6 @@
 /// Re‑export the tables so the helper functions can see them without pulling in the whole
 /// `crate::accent` hierarchy again.  Adjust the path if the tables live in a different module.
-use crate::accentinformation::*;
+use crate::accent_data::*;
 use crate::accent::*;
 /// Print every accent in the *prose* table.
 ///

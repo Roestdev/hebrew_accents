@@ -1,21 +1,17 @@
 #![doc = include_str!("../README.md")]
 
-//
+// static accent data 
 mod accent;
-mod accentinformation;
-mod char;
-mod codepoints;
-mod regex;
-mod sentence_context;
+mod accent_data;
+mod accent_codepoints;
 mod accent_display;
+// finding accents
+mod sentence_context;
+mod regex;
+mod char;
 
 // export
-pub use crate::accent::Accent;
-pub use crate::accent::CodePointPosition;
-pub use crate::accent::HebrewAccent;
-pub use crate::accent::PoetryAccent;
-pub use crate::accent::ProseAccent;
-pub use crate::accent::Tradition;
-pub use crate::accent::Utf8CodePointInfo;
-pub use crate::char::*;
-pub use crate::sentence_context::*;
+pub use accent::*;
+pub use sentence_context::*;
+pub use accent_display::*;
+

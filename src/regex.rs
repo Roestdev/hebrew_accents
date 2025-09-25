@@ -4,6 +4,7 @@ use regex::Regex;
 
 use crate::char::*;
 
+
 const HEBREW_CHAR: &str = r"\p{Hebrew}";
 const OPTIONAL_SPACE: &str = r"\s?";
 const ZERO_OR_ONE_SPACE: &str = r"\s?";
