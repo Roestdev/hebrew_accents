@@ -8,7 +8,7 @@ Managing Masoretic Hebrew Accents
 **This project is currently in the design/development mode.**
 
 #### DO NOT use in production
-There will be interface breakages.    
+There will be interface breakages regularly
 
 
 `Current Version:`  v0.0.2
@@ -26,11 +26,7 @@ There will be interface breakages.
   -  Secondairy accent Meteg is added 
   
 
-##### v0.0.3   
-
-  -  doc
-  -  doc test rank()
-  -  info() + doc + test
+see also TODO
   
 ## Description
  
