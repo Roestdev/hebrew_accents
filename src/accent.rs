@@ -434,37 +434,6 @@ mod tests {
         println!("\n{:#?}", ProseAccent::Galgal.info());
         println!("\n{:#?}", ProseAccent::Mayela.info());
     }
-    #[test]
-    fn no_test_just_print_rank() {
-        println!("\n{:#?}", ProseAccent::Silluq.rank());
-        println!("\n{:#?}", ProseAccent::Atnach.rank());
-        println!("\n{:#?}", ProseAccent::Segolta.rank());
-        println!("\n{:#?}", ProseAccent::Shalshelet.rank());
-        println!("\n{:#?}", ProseAccent::ZaqephQaton.rank());
-        println!("\n{:#?}", ProseAccent::ZaqephGadol.rank());
-        println!("\n{:#?}", ProseAccent::Revia.rank());
-        println!("\n{:#?}", ProseAccent::Tiphcha.rank());
-        println!("\n{:#?}", ProseAccent::Zarqa.rank());
-        println!("\n{:#?}", ProseAccent::Pashta.rank());
-        println!("\n{:#?}", ProseAccent::Yetiv.rank());
-        println!("\n{:#?}", ProseAccent::Tevir.rank());
-        println!("\n{:#?}", ProseAccent::Geresh.rank());
-        println!("\n{:#?}", ProseAccent::Gershayim.rank());
-        println!("\n{:#?}", ProseAccent::Pazer.rank());
-        println!("\n{:#?}", ProseAccent::PazerGadol.rank());
-        println!("\n{:#?}", ProseAccent::TelishaGedolah.rank());
-        println!("\n{:#?}", ProseAccent::Legarmeh.rank());
-        // Conjunctives
-        println!("\n{:#?}", ProseAccent::Munach.rank());
-        println!("\n{:#?}", ProseAccent::Mahpakh.rank());
-        println!("\n{:#?}", ProseAccent::Merkha.rank());
-        println!("\n{:#?}", ProseAccent::MerkhaKephulah.rank());
-        println!("\n{:#?}", ProseAccent::Darga.rank());
-        println!("\n{:#?}", ProseAccent::Azla.rank());
-        println!("\n{:#?}", ProseAccent::TelishaQetannah.rank());
-        println!("\n{:#?}", ProseAccent::Galgal.rank());
-        println!("\n{:#?}", ProseAccent::Mayela.rank());
-    }
 
     #[test]
     fn test_prose_accent_details() {

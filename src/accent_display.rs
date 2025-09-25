@@ -1,7 +1,7 @@
+use crate::accent::*;
 /// Re‑export the tables so the helper functions can see them without pulling in the whole
 /// `crate::accent` hierarchy again.  Adjust the path if the tables live in a different module.
 use crate::accent_data::*;
-use crate::accent::*;
 /// Print every accent in the *prose* table.
 ///
 /// The function simply iterates over the static slice and writes each `AccentInfo` to stdout.
@@ -55,13 +55,7 @@ mod tests {
         display_poetry_accent_table();
 
         // Or the generic version
-        display_accent_table(
-            "PROSE (generic)",
-            PROSE_ACCENT_TABLE.as_ref(),
-        );
-        display_accent_table(
-            "POETRY (generic)",
-            POETRY_ACCENT_TABLE.as_ref(),
-        );
+        display_accent_table("PROSE (generic)", PROSE_ACCENT_TABLE.as_ref());
+        display_accent_table("POETRY (generic)", POETRY_ACCENT_TABLE.as_ref());
     }
 }
