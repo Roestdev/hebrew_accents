@@ -3,7 +3,7 @@ use hebrew_accents::{Accent, AccentType, PoetryAccent, ProseAccent};
 #[test]
 fn testing_prose_accent_types() {
     // Disjunctives
-        assert_eq!(ProseAccent::Silluq.accent_type(), AccentType::Primary);
+    assert_eq!(ProseAccent::Silluq.accent_type(), AccentType::Primary);
     assert_eq!(ProseAccent::Atnach.accent_type(), AccentType::Primary);
     assert_eq!(ProseAccent::Segolta.accent_type(), AccentType::Primary);
     assert_eq!(ProseAccent::Shalshelet.accent_type(), AccentType::Primary);

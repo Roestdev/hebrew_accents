@@ -1,3 +1,4 @@
+
 use crate::accent_data::*;
 
 /// Hebrew Accent, either a Prose or Poetry accent
@@ -79,7 +80,7 @@ pub enum PoetryAccent {
 }
 
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct AccentInfo {
     /// Primary identifiers – always present.
     pub english_name: &'static str,
@@ -98,21 +99,21 @@ pub struct AccentInfo {
 }
 
 /// Optional alternate representations for an accent.
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct Alternates {
     pub english_name: &'static str,
     pub hebrew_name: &'static str,
     pub meaning: &'static str,
 }
 /// Lists one or two UTF-8 code-point(s) from which the accent is constructed
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct CodePoints {
     pub primary: &'static Utf8CodePointInfo,
     pub secondary: Option<&'static Utf8CodePointInfo>,
 }
 
 /// Details on a specific UTF8 Unicode code-point
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct Utf8CodePointInfo {
     /// UTF8 code-point, e.g. U+0591
     pub code_point: &'static str,
@@ -242,74 +243,54 @@ impl Accent for PoetryAccent {
 
 impl ProseAccent {
     pub const COUNT: usize = 29;
-    pub fn rank(&self) -> u8 {
-        match self {
-            // Disjunctives
-            Self::Silluq => 1,
-            Self::Atnach => 2,
-            Self::Segolta => 3,
-            Self::Shalshelet => 4,
-            Self::ZaqephQaton => 5,
-            Self::ZaqephGadol => 6,
-            Self::Revia => 7,
-            Self::Tiphcha => 8,
-            Self::Zarqa => 9,
-            Self::Pashta => 10,
-            Self::Yetiv => 11,
-            Self::Tevir => 12,
-            Self::Geresh => 13,
-            Self::Gershayim => 14,
-            Self::Pazer => 15,
-            Self::PazerGadol => 16,
-            Self::TelishaGedolah => 17,
-            Self::Legarmeh => 18,
-            // Conjunctives
-            Self::Munach => 19,
-            Self::Mahpakh => 20,
-            Self::Merkha => 21,
-            Self::MerkhaKephulah => 22,
-            Self::Darga => 23,
-            Self::Azla => 24,
-            Self::TelishaQetannah => 25,
-            Self::Galgal => 26,
-            Self::Mayela => 27,
-            Self::Meteg => 28,
-            Self::Maqqeph => 29,
-        }
+    #[inline]
+    pub fn rank(self) -> u8 {
+        // Discriminants start at 0; we want 1‑based ranks.
+        self as u8 + 1
     }
 }
 
+
+/// Mapping from the enum discriminant (as `usize`) to the logical rank.
+///
+/// The order **must** correspond exactly to the order of the variants
+/// declared in `PoetryAccent`.  If you add a new variant, extend this
+/// array accordingly – the `static_assertions` check below will remind you.
+pub const BHS_POETRY_RANK_MAP:[u8; PoetryAccent::COUNT]= [
+    // ---- Disjunctives ----------------------------------------------------
+    /* 0 */  1,  // Silluq
+    /* 1 */  2,  // OlehWeYored
+    /* 2 */  3,  // Atnach
+    /* 3 */  4,  // ReviaGadol
+    /* 4 */  5,  // ReviaMugrash
+    /* 5 */  6,  // ShalsheletGadol
+    /* 6 */  7,  // Tsinnor
+    /* 7 */  8,  // ReviaQaton
+    /* 8 */  9,  // Dechi
+    /* 9 */ 10,  // Pazer
+    /*10 */ 11,  // MehuppakhLegarmeh
+    /*11 */ 12,  // AzlaLegarmeh
+    // ---- Conjunctives ----------------------------------------------------
+    /*12 */ 13,  // Munach
+    /*13 */ 14,  // Merkha
+    /*14 */ 15,  // Illuy
+    /*15 */ 16,  // Tarkha
+    /*16 */ 17,  // Galgal
+    /*17 */ 18,  // Mehuppakh
+    /*18 */ 19,  // Azla
+    /*19 */ 20,  // ShalsheletQetannah
+    /*20 */ 21,  // TsinnoritMerkha
+    /*21 */ 21,  // TsinnoritMahpakh
+    /*22 */ 22,  // Meteg
+    /*23 */ 23,  // Maqqeph
+];
+
 impl PoetryAccent {
     pub const COUNT: usize = 24;
-    pub fn rank(&self) -> u8 {
-        match self {
-            // Disjunctives
-            Self::Silluq => 1,
-            Self::OlehWeYored => 2,
-            Self::Atnach => 3,
-            Self::ReviaGadol => 4,
-            Self::ReviaMugrash => 5,
-            Self::ShalsheletGadol => 6,
-            Self::Tsinnor => 7,
-            Self::ReviaQaton => 8,
-            Self::Dechi => 9,
-            Self::Pazer => 10,
-            Self::MehuppakhLegarmeh => 11,
-            Self::AzlaLegarmeh => 12,
-            // Conjunctives
-            Self::Munach => 13,
-            Self::Merkha => 14,
-            Self::Illuy => 15,
-            Self::Tarkha => 16,
-            Self::Galgal => 17,
-            Self::Mehuppakh => 18,
-            Self::Azla => 19,
-            Self::ShalsheletQetannah => 20,
-            Self::TsinnoritMerkha => 21,
-            Self::TsinnoritMahpakh => 21,
-            Self::Meteg => 22,
-            Self::Maqqeph => 23,
-        }
+    #[inline]
+    pub fn rank(self) -> u8 {
+        // Discriminants start at 0; we want 1‑based ranks.
+        BHS_POETRY_RANK_MAP[self as usize]
     }
 }
 
