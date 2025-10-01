@@ -7,27 +7,34 @@ Managing Masoretic Hebrew Accents
 
 **This project is currently in the design/development mode.**
 
-#### DO NOT use in production
-There will be interface breakages regularly
+#### DO NOT USE in production
+There will be breakages regularly.   
+For now all versions start with v0.0.x
 
+`Current Version:`  v0.0.3
 
-`Current Version:`  v0.0.2
+`Features:`  
 
-`Current feautures:`  
+##### v0.0.3    
 
-##### v0.0.1
+  -  Copy trait added to the public API
+  -  Trait Accent
 
-- new() ->  SentenceContext
-- contains_accent(SentenceContext, HebrewAccent) -> bool 
-- rank() -> number 
-
+     -  details() -> gives details of an accent
+     -  category() -> return the accent category
+     -  accent_type() -> return accent type
+  
 ##### v0.0.2    
 
   -  Secondairy accent Meteg is added 
   
+##### v0.0.1
 
-see also TODO
-  
+    type `SentenceContext`
+  - new() ->  SentenceContext
+  - contains_accent(SentenceContext, HebrewAccent) -> bool 
+  - rank() -> u8 (give the ranknumber of an accent for Prose and Poetry accents)
+
 ## Description
  
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.

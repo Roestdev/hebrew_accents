@@ -9,8 +9,8 @@ Below a todo list.
 #### `SentenceContext`
 
 - [x] contains_accent()
-- [ ] find_accent() 
-- [ ] tests for find_accent() 
+- [x] find_accent() 
+- [x] tests for find_accent() 
 - [ ] find_iter() 
 - [ ] tests for find_iter() 
 
@@ -18,17 +18,18 @@ Below a todo list.
 
 Accent
 - [x] info()
-- [ ] category()
-- [ ] accent_type()
+- [x] category()
+- [x] accent_type()
 
-#### `HebrewAccent`  
+#### `HebrewAccent` 
 - [ ] details()
 - [ ] test for details()
 
 #### `ProseAccent` and `PoetryAccent`
 - [x] rank()
 - [x] const COUNT
+- [x] Implement Accent trait
 - [x] info()
   - [x] rename to details()
-  - [X] Restructure the datamodel for details()
-  - [ ] Test for details()
+  - [x] Restructure the datamodel for details()
+  - [x] Test for details()

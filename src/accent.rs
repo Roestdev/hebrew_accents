@@ -190,53 +190,52 @@ pub enum CodePointPosition {
 
 pub trait Accent: Copy + Sized {
     /// Return the *static* metadata for this concrete accent.
-    fn info(self) -> &'static AccentInfo;
+    fn details(self) -> &'static AccentInfo;
 
-    // Convenience wrappers that expose the fields you used most.
-    // #[inline] fn rank(self)        -> u8                 { self.details().rank }
+    // Convenience wrappers.
     #[inline]
     fn category(self) -> AccentCategory {
-        self.info().category
+        self.details().category
     }
     #[inline]
     fn accent_type(self) -> AccentType {
-        self.info().accent_type
+        self.details().accent_type
     }
     //#[inline] fn traditions(self)  -> &'static [Tradition] {
-    //   self.info().code_points.primary.traditions
+    //   self.details().code_points.primary.traditions
     //}
 }
 
 impl Accent for HebrewAccent {
     #[inline]
-    fn info(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInfo {
         match self {
-            HebrewAccent::Prose(p) => p.info(),
-            HebrewAccent::Poetry(p) => p.info(),
+            HebrewAccent::Prose(p) => p.details(),
+            HebrewAccent::Poetry(p) => p.details(),
         }
     }
     fn category(self) -> AccentCategory {
         match self {
-            HebrewAccent::Prose(p) => p.info().category,
-            HebrewAccent::Poetry(p) => p.info().category,
+            HebrewAccent::Prose(p) => p.details().category,
+            HebrewAccent::Poetry(p) => p.details().category,
         }
     }
     fn accent_type(self) -> AccentType {
         match self {
-            HebrewAccent::Prose(p) => p.info().accent_type,
-            HebrewAccent::Poetry(p) => p.info().accent_type,
+            HebrewAccent::Prose(p) => p.details().accent_type,
+            HebrewAccent::Poetry(p) => p.details().accent_type,
         }
     }
 }
 
 impl Accent for ProseAccent {
-    fn info(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInfo {
         PROSE_ACCENT_TABLE[self as usize] // panics if the index is out of range
     }
 }
 
 impl Accent for PoetryAccent {
-    fn info(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInfo {
         POETRY_ACCENT_TABLE[self as usize] // panics if the index is out of range
     }
 }
@@ -302,11 +301,11 @@ mod tests {
     /// `Accent` implementation give consistent results.
     fn assert_accent_consistency<A: Accent>(accent: A, expected_meaning: &str) {
         // 1️⃣  The static metadata must match the expected string.
-        assert_eq!(accent.info().meaning, expected_meaning);
+        assert_eq!(accent.details().meaning, expected_meaning);
 
-        // 2️⃣  Category and type are just forwarded to `info()`.
-        assert_eq!(accent.category(), accent.info().category);
-        assert_eq!(accent.accent_type(), accent.info().accent_type);
+        // 2️⃣  Category and type are just forwarded to `details()`.
+        assert_eq!(accent.category(), accent.details().category);
+        assert_eq!(accent.accent_type(), accent.details().accent_type);
     }
 
     /// ----------------------------------------------------------------
@@ -353,17 +352,17 @@ mod tests {
     fn hebrew_accent_dispatches_to_concrete_impls() {
         // Prose variant
         let ha_prose = HebrewAccent::Prose(ProseAccent::TelishaGedolah);
-        assert_eq!(ha_prose.info().english_name, "Telisha Gedolah");
+        assert_eq!(ha_prose.details().english_name, "Telisha Gedolah");
         assert_eq!(ha_prose.category(), AccentCategory::Disjunctive);
         assert_eq!(ha_prose.accent_type(), AccentType::Primary);
-        assert_eq!(ha_prose.info().meaning, "great (long) detached");
+        assert_eq!(ha_prose.details().meaning, "great (long) detached");
 
         // Poetry variant
         let ha_poetry = HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh);
-        assert_eq!(ha_poetry.info().english_name, "Mehuppakh Legarmeh");
+        assert_eq!(ha_poetry.details().english_name, "Mehuppakh Legarmeh");
         assert_eq!(ha_poetry.category(), AccentCategory::Disjunctive);
         assert_eq!(ha_poetry.accent_type(), AccentType::Primary);
-        assert_eq!(ha_poetry.info().meaning, "reversed to its own");
+        assert_eq!(ha_poetry.details().meaning, "reversed to its own");
     }
 
     /// ----------------------------------------------------------------
@@ -372,7 +371,6 @@ mod tests {
     #[test]
     fn tables_have_the_expected_length() {
         // The `COUNT` constants should match the length of the static tables.
-        // If they diverge, the `info()` implementation would panic at runtime.
         assert_eq!(ProseAccent::COUNT, PROSE_ACCENT_TABLE.len());
         assert_eq!(PoetryAccent::COUNT, POETRY_ACCENT_TABLE.len());
     }
@@ -382,53 +380,52 @@ mod tests {
         let pa = ProseAccent::Silluq;
         let pa_silluq_ord = pa.rank();
         assert_eq!(1, pa_silluq_ord);
-        // let _details = a.details();
     }
     #[test]
     fn no_test_just_print_details() {
-        println!("\n{:#?}", ProseAccent::Silluq.info());
-        println!("\n{:#?}", ProseAccent::Atnach.info());
-        println!("\n{:#?}", ProseAccent::Segolta.info());
-        println!("\n{:#?}", ProseAccent::Shalshelet.info());
-        println!("\n{:#?}", ProseAccent::ZaqephQaton.info());
-        println!("\n{:#?}", ProseAccent::ZaqephGadol.info());
-        println!("\n{:#?}", ProseAccent::Revia.info());
-        println!("\n{:#?}", ProseAccent::Tiphcha.info());
-        println!("\n{:#?}", ProseAccent::Zarqa.info());
-        println!("\n{:#?}", ProseAccent::Pashta.info());
-        println!("\n{:#?}", ProseAccent::Yetiv.info());
-        println!("\n{:#?}", ProseAccent::Tevir.info());
-        println!("\n{:#?}", ProseAccent::Geresh.info());
-        println!("\n{:#?}", ProseAccent::Gershayim.info());
-        println!("\n{:#?}", ProseAccent::Pazer.info());
-        println!("\n{:#?}", ProseAccent::PazerGadol.info());
-        println!("\n{:#?}", ProseAccent::TelishaGedolah.info());
-        println!("\n{:#?}", ProseAccent::Legarmeh.info());
+        println!("\n{:#?}", ProseAccent::Silluq.details());
+        println!("\n{:#?}", ProseAccent::Atnach.details());
+        println!("\n{:#?}", ProseAccent::Segolta.details());
+        println!("\n{:#?}", ProseAccent::Shalshelet.details());
+        println!("\n{:#?}", ProseAccent::ZaqephQaton.details());
+        println!("\n{:#?}", ProseAccent::ZaqephGadol.details());
+        println!("\n{:#?}", ProseAccent::Revia.details());
+        println!("\n{:#?}", ProseAccent::Tiphcha.details());
+        println!("\n{:#?}", ProseAccent::Zarqa.details());
+        println!("\n{:#?}", ProseAccent::Pashta.details());
+        println!("\n{:#?}", ProseAccent::Yetiv.details());
+        println!("\n{:#?}", ProseAccent::Tevir.details());
+        println!("\n{:#?}", ProseAccent::Geresh.details());
+        println!("\n{:#?}", ProseAccent::Gershayim.details());
+        println!("\n{:#?}", ProseAccent::Pazer.details());
+        println!("\n{:#?}", ProseAccent::PazerGadol.details());
+        println!("\n{:#?}", ProseAccent::TelishaGedolah.details());
+        println!("\n{:#?}", ProseAccent::Legarmeh.details());
         // Conjunctives
-        println!("\n{:#?}", ProseAccent::Munach.info());
-        println!("\n{:#?}", ProseAccent::Mahpakh.info());
-        println!("\n{:#?}", ProseAccent::Merkha.info());
-        println!("\n{:#?}", ProseAccent::MerkhaKephulah.info());
-        println!("\n{:#?}", ProseAccent::Darga.info());
-        println!("\n{:#?}", ProseAccent::Azla.info());
-        println!("\n{:#?}", ProseAccent::TelishaQetannah.info());
-        println!("\n{:#?}", ProseAccent::Galgal.info());
-        println!("\n{:#?}", ProseAccent::Mayela.info());
+        println!("\n{:#?}", ProseAccent::Munach.details());
+        println!("\n{:#?}", ProseAccent::Mahpakh.details());
+        println!("\n{:#?}", ProseAccent::Merkha.details());
+        println!("\n{:#?}", ProseAccent::MerkhaKephulah.details());
+        println!("\n{:#?}", ProseAccent::Darga.details());
+        println!("\n{:#?}", ProseAccent::Azla.details());
+        println!("\n{:#?}", ProseAccent::TelishaQetannah.details());
+        println!("\n{:#?}", ProseAccent::Galgal.details());
+        println!("\n{:#?}", ProseAccent::Mayela.details());
     }
 
     #[test]
     fn test_prose_accent_details() {
         let pa = ProseAccent::Galgal;
-        assert_eq!("wheel, circle", pa.info().meaning);
+        assert_eq!("wheel, circle", pa.details().meaning);
     }
     #[test]
     fn test_poetry_accent_details() {
         let pa = PoetryAccent::Galgal;
-        assert_eq!("wheel, circle", pa.info().meaning);
+        assert_eq!("wheel, circle", pa.details().meaning);
     }
     #[test]
     fn test_hebrew_accent_details() {
         let ha = HebrewAccent::Prose(ProseAccent::Galgal);
-        assert_eq!("wheel, circle", ha.info().meaning);
+        assert_eq!("wheel, circle", ha.details().meaning);
     }
 }

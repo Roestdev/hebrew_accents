@@ -97,8 +97,6 @@ Hebrew accents as they occur in the Tanach are mostly, but not always exact the 
 
     (more details can be found in the code itself)
 
-</br>
-
 # Design
 
 Below the start of the design. Everything else will be build on top of it.
@@ -120,7 +118,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 3. `Revia Gadol`  and `Revia Qaton`
    Revia Gadol, Revia Qaton and Revia Mugrash all contain same the Unicode code-point **U+0597**.
 
-   Allthough the Revia Gadol and Revia Qaton are represented by the same Unicode code-point, the difference is based upon the position in the sentence and the relation to another accent ( `OleWeYored`).
+   Allthough the Revia Gadol and Revia Qaton are represented by the same Unicode code-point, the difference is based upon the position in the sentence and the relation to another accent ( `OlehWeYored`).
 
 ## Data structures
 
@@ -173,7 +171,13 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 - rank() 
    - gives the rank number of the accent
+- const COUNT (total number of accents)
 
-- info() **TODO**
+## Traits
+
+`Accent`
+
+- details()
     - gives additional information for a specific accent, e.g. accents position etc. etc.
-
+- accent_type()
+- category()
