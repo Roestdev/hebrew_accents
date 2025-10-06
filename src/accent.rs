@@ -1,8 +1,7 @@
-
 use crate::accent_data::*;
 
 /// Hebrew Accent, either a Prose or Poetry accent
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum HebrewAccent {
     Prose(ProseAccent),
     Poetry(PoetryAccent),
@@ -10,7 +9,7 @@ pub enum HebrewAccent {
 
 /// All variants of the Hebrew Prose Accents
 #[repr(u8)]
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum ProseAccent {
     /// Disjunctives (18x)
     #[default]
@@ -48,7 +47,7 @@ pub enum ProseAccent {
 
 /// All variants of the Hebrew Poetry Accents
 #[repr(u8)]
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum PoetryAccent {
     /// Disjunctives (12)
     #[default]
@@ -80,7 +79,7 @@ pub enum PoetryAccent {
 }
 
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct AccentInfo {
     /// Primary identifiers – always present.
     pub english_name: &'static str,
@@ -99,7 +98,7 @@ pub struct AccentInfo {
 }
 
 /// Optional alternate representations for an accent.
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Alternates {
     pub english_name: &'static str,
     pub hebrew_name: &'static str,
@@ -113,7 +112,7 @@ pub struct CodePoints {
 }
 
 /// Details on a specific UTF8 Unicode code-point
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Utf8CodePointInfo {
     /// UTF8 code-point, e.g. U+0591
     pub code_point: &'static str,
@@ -129,7 +128,7 @@ pub struct Utf8CodePointInfo {
     pub traditions: &'static [Tradition],
 }
 /// Names according one of four Hebrew Traditions
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum Tradition {
     Ashkenazi {
         hebrew: &'static str,
@@ -150,7 +149,7 @@ pub enum Tradition {
 }
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum AccentCategory {
     /// accents that connect words
     Conjunctive,
@@ -160,7 +159,7 @@ pub enum AccentCategory {
 }
 
 /// Hebrew Accent types (Primary, secondary, None)
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum AccentType {
     #[default]
     Primary,
@@ -171,7 +170,7 @@ pub enum AccentType {
 }
 
 /// Accent position, indicating the location of the accent in relation to the consonant
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum CodePointPosition {
     #[default]
     /// Accent is located above the consonant
@@ -204,6 +203,12 @@ pub trait Accent: Copy + Sized {
     //#[inline] fn traditions(self)  -> &'static [Tradition] {
     //   self.details().code_points.primary.traditions
     //}
+    // #[inline]
+    // fn rank(self) -> u8 {
+    //     self as u8 + 1
+    // }
+    //fn rank(self) -> u8;
+    //fn rank(self) -> u8 { self as u8 + 1 }
 }
 
 impl Accent for HebrewAccent {
@@ -226,62 +231,75 @@ impl Accent for HebrewAccent {
             HebrewAccent::Poetry(p) => p.details().accent_type,
         }
     }
+    // fn rank(self) -> u8 {
+    //     match self {
+    //         HebrewAccent::Prose(p) => p.rank(),
+    //         HebrewAccent::Poetry(p) => p.rank(),
+    //     }
+    // }
 }
 
 impl Accent for ProseAccent {
     fn details(self) -> &'static AccentInfo {
-        PROSE_ACCENT_TABLE[self as usize] // panics if the index is out of range
+        PROSE_ACCENT_TABLE[self as usize]
     }
+    // fn rank(self) -> u8 {
+    //     // Original logic: discriminant + 1 (1‑based)
+    //     self as u8 + 1
+    // }
 }
 
 impl Accent for PoetryAccent {
     fn details(self) -> &'static AccentInfo {
-        POETRY_ACCENT_TABLE[self as usize] // panics if the index is out of range
+        POETRY_ACCENT_TABLE[self as usize]
     }
+    // fn rank(self) -> u8 {
+    //     BHS_POETRY_RANK_MAP[self as usize]
+    // }
 }
 
 impl ProseAccent {
     pub const COUNT: usize = 29;
     #[inline]
     pub fn rank(self) -> u8 {
-        // Discriminants start at 0; we want 1‑based ranks.
         self as u8 + 1
     }
 }
-
 
 /// Mapping from the enum discriminant (as `usize`) to the logical rank.
 ///
 /// The order **must** correspond exactly to the order of the variants
 /// declared in `PoetryAccent`.  If you add a new variant, extend this
 /// array accordingly – the `static_assertions` check below will remind you.
-pub const BHS_POETRY_RANK_MAP:[u8; PoetryAccent::COUNT]= [
+pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     // ---- Disjunctives ----------------------------------------------------
-    /* 0 */  1,  // Silluq
-    /* 1 */  2,  // OlehWeYored
-    /* 2 */  3,  // Atnach
-    /* 3 */  4,  // ReviaGadol
-    /* 4 */  5,  // ReviaMugrash
-    /* 5 */  6,  // ShalsheletGadol
-    /* 6 */  7,  // Tsinnor
-    /* 7 */  8,  // ReviaQaton
-    /* 8 */  9,  // Dechi
-    /* 9 */ 10,  // Pazer
-    /*10 */ 11,  // MehuppakhLegarmeh
-    /*11 */ 12,  // AzlaLegarmeh
+    /* 0 */
+    1, // Silluq
+    /* 1 */ 2, // OlehWeYored
+    /* 2 */ 3, // Atnach
+    /* 3 */ 4, // ReviaGadol
+    /* 4 */ 5, // ReviaMugrash
+    /* 5 */ 6, // ShalsheletGadol
+    /* 6 */ 7, // Tsinnor
+    /* 7 */ 8, // ReviaQaton
+    /* 8 */ 9, // Dechi
+    /* 9 */ 10, // Pazer
+    /*10 */ 11, // MehuppakhLegarmeh
+    /*11 */ 12, // AzlaLegarmeh
     // ---- Conjunctives ----------------------------------------------------
-    /*12 */ 13,  // Munach
-    /*13 */ 14,  // Merkha
-    /*14 */ 15,  // Illuy
-    /*15 */ 16,  // Tarkha
-    /*16 */ 17,  // Galgal
-    /*17 */ 18,  // Mehuppakh
-    /*18 */ 19,  // Azla
-    /*19 */ 20,  // ShalsheletQetannah
-    /*20 */ 21,  // TsinnoritMerkha
-    /*21 */ 21,  // TsinnoritMahpakh
-    /*22 */ 22,  // Meteg
-    /*23 */ 23,  // Maqqeph
+    /*12 */
+    13, // Munach
+    /*13 */ 14, // Merkha
+    /*14 */ 15, // Illuy
+    /*15 */ 16, // Tarkha
+    /*16 */ 17, // Galgal
+    /*17 */ 18, // Mehuppakh
+    /*18 */ 19, // Azla
+    /*19 */ 20, // ShalsheletQetannah
+    /*20 */ 21, // TsinnoritMerkha
+    /*21 */ 21, // TsinnoritMahpakh
+    /*22 */ 22, // Meteg
+    /*23 */ 23, // Maqqeph
 ];
 
 impl PoetryAccent {
@@ -309,7 +327,7 @@ mod tests {
     }
 
     /// ----------------------------------------------------------------
-    /// 1️⃣  Simple sanity checks for a handful of *prose* accents
+    /// Simple sanity checks for a handful of *prose* accents
     /// ----------------------------------------------------------------
     #[test]
     fn prose_accent_basic_properties() {
@@ -330,7 +348,7 @@ mod tests {
     }
 
     /// ----------------------------------------------------------------
-    /// 2️⃣  Parallel checks for *poetry* accents
+    /// Parallel checks for *poetry* accents
     /// ----------------------------------------------------------------
     #[test]
     fn poetry_accent_basic_properties() {
@@ -346,7 +364,7 @@ mod tests {
     }
 
     /// ----------------------------------------------------------------
-    /// 3️⃣  The high‑level `HebrewAccent` wrapper forwards correctly
+    /// The high‑level `HebrewAccent` wrapper forwards correctly
     /// ----------------------------------------------------------------
     #[test]
     fn hebrew_accent_dispatches_to_concrete_impls() {
@@ -366,7 +384,7 @@ mod tests {
     }
 
     /// ----------------------------------------------------------------
-    /// 4️⃣  Edge‑case sanity check – ensure the tables are sized correctly
+    /// Edge‑case sanity check – ensure the tables are sized correctly
     /// ----------------------------------------------------------------
     #[test]
     fn tables_have_the_expected_length() {

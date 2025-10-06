@@ -30,7 +30,7 @@ For now all versions start with v0.0.x
   
 ##### v0.0.1
 
-    type `SentenceContext`
+  `SentenceContext`
   - new() ->  SentenceContext
   - contains_accent(SentenceContext, HebrewAccent) -> bool 
   - rank() -> u8 (give the ranknumber of an accent for Prose and Poetry accents)
