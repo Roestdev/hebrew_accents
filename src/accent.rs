@@ -1,5 +1,68 @@
 use crate::accent_data::*;
 
+pub trait Accent: Copy + Sized {
+    /// Return the *static* metadata for this concrete accent.
+    fn details(self) -> &'static AccentInfo;
+
+    // Convenience wrappers.
+    #[inline]
+    fn category(self) -> AccentCategory {
+        self.details().category
+    }
+    #[inline]
+    fn accent_type(self) -> AccentType {
+        self.details().accent_type
+    }
+    fn rank(self) -> u8;
+}
+
+impl Accent for HebrewAccent {
+    #[inline]
+    fn details(self) -> &'static AccentInfo {
+        match self {
+            HebrewAccent::Prose(p) => p.details(),
+            HebrewAccent::Poetry(p) => p.details(),
+        }
+    }
+    fn category(self) -> AccentCategory {
+        match self {
+            HebrewAccent::Prose(p) => p.details().category,
+            HebrewAccent::Poetry(p) => p.details().category,
+        }
+    }
+    fn accent_type(self) -> AccentType {
+        match self {
+            HebrewAccent::Prose(p) => p.details().accent_type,
+            HebrewAccent::Poetry(p) => p.details().accent_type,
+        }
+    }
+    fn rank(self) -> u8 {
+        match self {
+            HebrewAccent::Prose(p) => p.rank(),
+            HebrewAccent::Poetry(p) => p.rank(),
+        }
+    }
+}
+
+impl Accent for ProseAccent {
+    fn details(self) -> &'static AccentInfo {
+        PROSE_ACCENT_TABLE[self as usize]
+    }
+    fn rank(self) -> u8 {
+        self as u8 + 1
+    }
+}
+
+impl Accent for PoetryAccent {
+    fn details(self) -> &'static AccentInfo {
+        POETRY_ACCENT_TABLE[self as usize]
+    }
+    fn rank(self) -> u8 {
+        BHS_POETRY_RANK_MAP[self as usize]
+    }
+}
+
+
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum HebrewAccent {
@@ -8,10 +71,11 @@ pub enum HebrewAccent {
 }
 
 /// All variants of the Hebrew Prose Accents
+/// 18 Disjunctives and 11 Conjunctives.
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum ProseAccent {
-    /// Disjunctives (18x)
+    // Disjunctives
     #[default]
     Silluq,
     Atnach,
@@ -31,7 +95,7 @@ pub enum ProseAccent {
     PazerGadol,
     TelishaGedolah,
     Legarmeh,
-    /// Conjunctives (11x)
+    // Conjunctives
     Munach,
     Mahpakh,
     Merkha,
@@ -45,11 +109,20 @@ pub enum ProseAccent {
     Maqqeph,
 }
 
+impl ProseAccent {
+    pub const COUNT: usize = 29;
+    #[inline]
+    pub fn rank(self) -> u8 {
+        self as u8 + 1
+    }
+}
+
 /// All variants of the Hebrew Poetry Accents
+/// 12 Disjunctives and 12 Conjunctives.
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 pub enum PoetryAccent {
-    /// Disjunctives (12)
+    // Disjunctives
     #[default]
     Silluq,
     OlehWeYored,
@@ -63,7 +136,7 @@ pub enum PoetryAccent {
     Pazer,
     MehuppakhLegarmeh,
     AzlaLegarmeh,
-    /// Conjunctives (12)
+    // Conjunctives 
     Munach,
     Merkha,
     Illuy,
@@ -78,6 +151,14 @@ pub enum PoetryAccent {
     Maqqeph,
 }
 
+impl PoetryAccent {
+    pub const COUNT: usize = 24;
+    #[inline]
+    pub fn rank(self) -> u8 {
+        // Discriminants start at 0; we want 1‑based ranks.
+        BHS_POETRY_RANK_MAP[self as usize]
+    }
+}
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct AccentInfo {
@@ -187,84 +268,7 @@ pub enum CodePointPosition {
     UnderPrePositive,
 }
 
-pub trait Accent: Copy + Sized {
-    /// Return the *static* metadata for this concrete accent.
-    fn details(self) -> &'static AccentInfo;
 
-    // Convenience wrappers.
-    #[inline]
-    fn category(self) -> AccentCategory {
-        self.details().category
-    }
-    #[inline]
-    fn accent_type(self) -> AccentType {
-        self.details().accent_type
-    }
-    //#[inline] fn traditions(self)  -> &'static [Tradition] {
-    //   self.details().code_points.primary.traditions
-    //}
-    // #[inline]
-    // fn rank(self) -> u8 {
-    //     self as u8 + 1
-    // }
-    //fn rank(self) -> u8;
-    //fn rank(self) -> u8 { self as u8 + 1 }
-}
-
-impl Accent for HebrewAccent {
-    #[inline]
-    fn details(self) -> &'static AccentInfo {
-        match self {
-            HebrewAccent::Prose(p) => p.details(),
-            HebrewAccent::Poetry(p) => p.details(),
-        }
-    }
-    fn category(self) -> AccentCategory {
-        match self {
-            HebrewAccent::Prose(p) => p.details().category,
-            HebrewAccent::Poetry(p) => p.details().category,
-        }
-    }
-    fn accent_type(self) -> AccentType {
-        match self {
-            HebrewAccent::Prose(p) => p.details().accent_type,
-            HebrewAccent::Poetry(p) => p.details().accent_type,
-        }
-    }
-    // fn rank(self) -> u8 {
-    //     match self {
-    //         HebrewAccent::Prose(p) => p.rank(),
-    //         HebrewAccent::Poetry(p) => p.rank(),
-    //     }
-    // }
-}
-
-impl Accent for ProseAccent {
-    fn details(self) -> &'static AccentInfo {
-        PROSE_ACCENT_TABLE[self as usize]
-    }
-    // fn rank(self) -> u8 {
-    //     // Original logic: discriminant + 1 (1‑based)
-    //     self as u8 + 1
-    // }
-}
-
-impl Accent for PoetryAccent {
-    fn details(self) -> &'static AccentInfo {
-        POETRY_ACCENT_TABLE[self as usize]
-    }
-    // fn rank(self) -> u8 {
-    //     BHS_POETRY_RANK_MAP[self as usize]
-    // }
-}
-
-impl ProseAccent {
-    pub const COUNT: usize = 29;
-    #[inline]
-    pub fn rank(self) -> u8 {
-        self as u8 + 1
-    }
-}
 
 /// Mapping from the enum discriminant (as `usize`) to the logical rank.
 ///
@@ -302,14 +306,7 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     /*23 */ 23, // Maqqeph
 ];
 
-impl PoetryAccent {
-    pub const COUNT: usize = 24;
-    #[inline]
-    pub fn rank(self) -> u8 {
-        // Discriminants start at 0; we want 1‑based ranks.
-        BHS_POETRY_RANK_MAP[self as usize]
-    }
-}
+
 
 #[cfg(test)]
 mod tests {
