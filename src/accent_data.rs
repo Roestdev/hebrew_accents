@@ -1,9 +1,9 @@
 use once_cell::sync::Lazy;
 
-use crate::accent::{AccentCategory, AccentInfo, AccentType, Alternates, CodePoints};
+use crate::accent::{AccentCategory, AccentInfo, AccentType, Alternates, CodePoints,ProseAccent,PoetryAccent};
 use crate::accent_codepoints::*;
 
-pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo]> = Lazy::new(|| {
+pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo;ProseAccent::COUNT]> = Lazy::new(|| {
     &[
         &SILLUQ_INFO,
         &ATNACH_INFO,
@@ -37,7 +37,7 @@ pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo]> = Lazy::new(
         &MAQQEPH_INFO,
     ]
 });
-pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo]> = Lazy::new(|| {
+pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo;PoetryAccent::COUNT]> = Lazy::new(|| {
     &[
         &SILLUQ_INFO,
         &OLEH_WE_YORED_INFO,
