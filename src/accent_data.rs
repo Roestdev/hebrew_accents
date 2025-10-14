@@ -1,71 +1,75 @@
 use once_cell::sync::Lazy;
 
-use crate::accent::{AccentCategory, AccentInfo, AccentType, Alternates, CodePoints,ProseAccent,PoetryAccent};
+use crate::accent::{
+    AccentCategory, AccentInfo, AccentType, Alternates, CodePoints, PoetryAccent, ProseAccent,
+};
 use crate::accent_codepoints::*;
 
-pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo;ProseAccent::COUNT]> = Lazy::new(|| {
-    &[
-        &SILLUQ_INFO,
-        &ATNACH_INFO,
-        &SEGOLTA_INFO,
-        &SHALSHELET_INFO,
-        &ZAQEF_QATON_INFO,
-        &ZAQEPH_GADOL_INFO,
-        &REVIA_INFO,
-        &TIPHCHA_INFO,
-        &ZARQA_INFO,
-        &PASHTA_INFO,
-        &YETIV_INFO,
-        &TEVIR_INFO,
-        &GERESH_INFO,
-        &GERSHAYIM_INFO,
-        &PAZER_INFO,
-        &PAZER_GADOL_INFO,
-        &TELISHA_GEDOLAH_INFO,
-        &LEGARMEH_INFO,
-        // Conjunctives
-        &MUNACH_INFO,
-        &MAHPAKH_INFO,
-        &MERKHA_INFO,
-        &MERKHA_KEFULAH_INFO,
-        &DARGA_INFO,
-        &AZLA_INFO,
-        &TELISHA_QETANNAH_INFO,
-        &GALGAL_INFO,
-        &MAYELA_INFO,
-        &METEG_INFO,
-        &MAQQEPH_INFO,
-    ]
-});
-pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo;PoetryAccent::COUNT]> = Lazy::new(|| {
-    &[
-        &SILLUQ_INFO,
-        &OLEH_WE_YORED_INFO,
-        &ATNACH_INFO,
-        &REVIA_GADOL_INFO,
-        &REVIA_MUGRASH_INFO,
-        &SHALSHELET_GADOL_INFO,
-        &TSINNOR_INFO,
-        &REVIA_QATON_INFO,
-        &DECHI_INFO,
-        &PAZER_INFO,
-        &MEHUPPAKH_LEGARMEH_INFO,
-        &AZLA_LEGARMEH_INFO,
-        // Conjunctives
-        &MUNACH_INFO,
-        &MERKHA_INFO,
-        &ILLUY_INFO,
-        &TARCHA_INFO,
-        &GALGAL_INFO,
-        &MEHUPPAKH_INFO,
-        &AZLA_INFO,
-        &SHALSHELET_QETANNAH_INFO,
-        &TSINNORIT_MERKHA_INFO,
-        &TSINNORIT_MAHPAKH_INFO,
-        &METEG_INFO,
-        &MAQQEPH_INFO,
-    ]
-});
+pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; ProseAccent::COUNT]> =
+    Lazy::new(|| {
+        &[
+            &SILLUQ_INFO,
+            &ATNACH_INFO,
+            &SEGOLTA_INFO,
+            &SHALSHELET_INFO,
+            &ZAQEF_QATON_INFO,
+            &ZAQEPH_GADOL_INFO,
+            &REVIA_INFO,
+            &TIPHCHA_INFO,
+            &ZARQA_INFO,
+            &PASHTA_INFO,
+            &YETIV_INFO,
+            &TEVIR_INFO,
+            &GERESH_INFO,
+            &GERSHAYIM_INFO,
+            &PAZER_INFO,
+            &PAZER_GADOL_INFO,
+            &TELISHA_GEDOLAH_INFO,
+            &LEGARMEH_INFO,
+            // Conjunctives
+            &MUNACH_INFO,
+            &MAHPAKH_INFO,
+            &MERKHA_INFO,
+            &MERKHA_KEFULAH_INFO,
+            &DARGA_INFO,
+            &AZLA_INFO,
+            &TELISHA_QETANNAH_INFO,
+            &GALGAL_INFO,
+            &MAYELA_INFO,
+            &METEG_INFO,
+            &MAQQEPH_INFO,
+        ]
+    });
+pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PoetryAccent::COUNT]> =
+    Lazy::new(|| {
+        &[
+            &SILLUQ_INFO,
+            &OLEH_WE_YORED_INFO,
+            &ATNACH_INFO,
+            &REVIA_GADOL_INFO,
+            &REVIA_MUGRASH_INFO,
+            &SHALSHELET_GADOL_INFO,
+            &TSINNOR_INFO,
+            &REVIA_QATON_INFO,
+            &DECHI_INFO,
+            &PAZER_INFO,
+            &MEHUPPAKH_LEGARMEH_INFO,
+            &AZLA_LEGARMEH_INFO,
+            // Conjunctives
+            &MUNACH_INFO,
+            &MERKHA_INFO,
+            &ILLUY_INFO,
+            &TARCHA_INFO,
+            &GALGAL_INFO,
+            &MEHUPPAKH_INFO,
+            &AZLA_INFO,
+            &SHALSHELET_QETANNAH_INFO,
+            &TSINNORIT_MERKHA_INFO,
+            &TSINNORIT_MAHPAKH_INFO,
+            &METEG_INFO,
+            &MAQQEPH_INFO,
+        ]
+    });
 
 pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Silluq",

@@ -6,7 +6,6 @@
 /// - the position of the accent relative to the related consonant
 ///
 // Purpose: give more detailed information on the accents
-///
 /// Ordering of the list is based on the value of their Unicode code-point
 use crate::CodePointPosition;
 use crate::Tradition;
@@ -1009,3 +1008,42 @@ pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
 //         name: "soph pasuq",
 //     }),
 // );
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn assert_tradition(trad: &Tradition, exp_hebrew: &str, exp_name: &str) {
+        match trad {
+            Tradition::Ashkenazi { hebrew, name }
+            | Tradition::Sephardi { hebrew, name }
+            | Tradition::Italian { hebrew, name }
+            | Tradition::Yemenite { hebrew, name } => {
+                assert_eq!(hebrew, &exp_hebrew);
+                assert_eq!(name, &exp_name);
+            }
+        }
+    }
+
+    #[test]
+    fn utf8_cp_constructor_behaves_as_expected() {
+        let created = utf8_cp(
+            "U+1234",
+            "0x12 0x34",
+            "DUMMY NAME",
+            "✱",
+            CodePointPosition::Above,
+            &[Tradition::Ashkenazi {
+                hebrew: "דוגמה",
+                name: "example",
+            }],
+        );
+
+        assert_eq!(created.code_point, "U+1234");
+        assert_eq!(created.hex_value, "0x12 0x34");
+        assert_eq!(created.name, "DUMMY NAME");
+        assert_eq!(created.symbol, "✱");
+        assert_eq!(created.position, CodePointPosition::Above);
+        assert_eq!(created.traditions.len(), 1);
+        assert_tradition(&created.traditions[0], "דוגמה", "example");
+    }
+}

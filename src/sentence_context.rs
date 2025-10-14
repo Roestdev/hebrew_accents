@@ -80,7 +80,8 @@ impl SentenceContext {
                 self.sentence.contains(REVIA)
             }
             HebrewAccent::Prose(ProseAccent::Tiphcha)
-            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self.sentence.contains(TIPEHA),
+            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => 
+            self.sentence.contains(TIPEHA),
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.context == Context::Prosaic => {
                 self.sentence.contains(ZARQA)
             }
@@ -221,121 +222,172 @@ impl SentenceContext {
         }
     }
 
-    pub fn find_accent(&self, accent: HebrewAccent) -> Option<usize> {
-        // let haystack = "Hello, world! This is a test.";
-        // let pattern = r"world"; // The regex pattern to search for
-        // let re = Regex::new(pattern).unwrap();
-        // if let Some(matched) = re.find(haystack) {
-        //     println!("Found match at position: {:?}", matched.start());
-        // } else {
-        //     println!("No match found.");
-        // }
+    pub fn find_accent(self, accent: HebrewAccent) -> Option<usize> {
         match accent {
-            // Prose Disjunctives
+            /* **********************************************************
+             *                          PROSE
+             * *********************************************************/
+            // Disjunctives
             HebrewAccent::Prose(ProseAccent::Silluq)
-            | HebrewAccent::Poetry(PoetryAccent::Silluq) => None,
-            HebrewAccent::Prose(ProseAccent::Atnach)
-            | HebrewAccent::Poetry(PoetryAccent::Atnach) => None,
-            HebrewAccent::Prose(ProseAccent::Segolta) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.context == Context::Prosaic => {
+            | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
+                RE_COMMON_SILLUQ.is_match(&self.sentence).unwrap();
                 None
+            }
+            HebrewAccent::Prose(ProseAccent::Atnach)
+            | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.find(ETNAHTA),
+            HebrewAccent::Prose(ProseAccent::Segolta) if self.context == Context::Prosaic => {
+                self.sentence.find(SEGOL)
+            }
+            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.context == Context::Prosaic => {
+                RE_COMMON_SHALSHELET.is_match(&self.sentence);None
             }
             HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.context == Context::Prosaic => {
-                None
+                self.sentence.find(ZAQEF_QATAN)
             }
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.context == Context::Prosaic => {
-                None
+                self.sentence.find(ZAQEF_GADOL)
             }
-            HebrewAccent::Prose(ProseAccent::Revia) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Tiphcha) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Zarqa) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Pashta) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Yetiv) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Tevir) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Geresh) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Gershayim) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Pazer) if self.context == Context::Prosaic => None,
+            HebrewAccent::Prose(ProseAccent::Revia) if self.context == Context::Prosaic => {
+                self.sentence.find(REVIA)
+            }
+            HebrewAccent::Prose(ProseAccent::Tiphcha)
+            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => 
+            self.sentence.find(TIPEHA),
+            HebrewAccent::Prose(ProseAccent::Zarqa) if self.context == Context::Prosaic => {
+                self.sentence.find(ZARQA)
+            }
+            HebrewAccent::Prose(ProseAccent::Pashta) if self.context == Context::Prosaic => {
+                self.sentence.find(PASHTA)
+            }
+            HebrewAccent::Prose(ProseAccent::Yetiv) if self.context == Context::Prosaic => {
+                self.sentence.find(YETIV)
+            }
+            HebrewAccent::Prose(ProseAccent::Tevir) if self.context == Context::Prosaic => {
+                self.sentence.find(TEVIR)
+            }
+            HebrewAccent::Prose(ProseAccent::Geresh) if self.context == Context::Prosaic => {
+                self.sentence.find(GERESH)
+            }
+            HebrewAccent::Prose(ProseAccent::Gershayim) if self.context == Context::Prosaic => {
+                self.sentence.find(GERSHAYIM)
+            }
+            HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
+                self.sentence.find(PAZER)
+            }
             HebrewAccent::Prose(ProseAccent::PazerGadol) if self.context == Context::Prosaic => {
-                None
+                self.sentence.find(QARNEY_PARA)
             }
             HebrewAccent::Prose(ProseAccent::TelishaGedolah)
                 if self.context == Context::Prosaic =>
             {
-                None
+                self.sentence.find(TELISHA_GEDOLA)
             }
-            HebrewAccent::Prose(ProseAccent::Legarmeh) if self.context == Context::Prosaic => None,
-            // Prose Conjunctives
-            HebrewAccent::Prose(ProseAccent::Munach) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Mahpakh) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Merkha) if self.context == Context::Prosaic => None,
+            HebrewAccent::Prose(ProseAccent::Legarmeh) => {
+                RE_PROSE_LEGARMEH.is_match(&self.sentence);None
+            }
+            // Conjunctives
+            HebrewAccent::Prose(ProseAccent::Munach) if self.context == Context::Prosaic => {
+                RE_PROSE_MUNACH.is_match(&self.sentence).unwrap();None
+            }
+            HebrewAccent::Prose(ProseAccent::Mahpakh) if self.context == Context::Prosaic => {
+                self.sentence.find(MAHPAKH)
+            }
+            HebrewAccent::Prose(ProseAccent::Merkha) if self.context == Context::Prosaic => {
+                self.sentence.find(MERKHA)
+            }
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah)
                 if self.context == Context::Prosaic =>
             {
-                None
+                self.sentence.find(MERKHA_KEFULA)
             }
-            HebrewAccent::Prose(ProseAccent::Darga) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Azla) if self.context == Context::Prosaic => None,
+            HebrewAccent::Prose(ProseAccent::Darga) if self.context == Context::Prosaic => {
+                self.sentence.find(DARGA)
+            }
+            HebrewAccent::Prose(ProseAccent::Azla) if self.context == Context::Prosaic => {
+                self.sentence.find(QADMA)
+            }
             HebrewAccent::Prose(ProseAccent::TelishaQetannah)
                 if self.context == Context::Prosaic =>
             {
-                None
+                self.sentence.find(TELISHA_QETANA)
             }
-            HebrewAccent::Prose(ProseAccent::Galgal) if self.context == Context::Prosaic => None,
-            HebrewAccent::Prose(ProseAccent::Mayela) if self.context == Context::Prosaic => None,
-            // Poetry Disjunctives
+            HebrewAccent::Prose(ProseAccent::Galgal)
+            | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.find(YERAH_BEN_YOMO),
+            HebrewAccent::Prose(ProseAccent::Mayela) if self.context == Context::Prosaic => {
+                RE_PROSE_MEAYLA.is_match(&self.sentence);None
+            }
+            HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
+                RE_COMMON_METEG.is_match(&self.sentence).unwrap();None
+            }
+            HebrewAccent::Prose(ProseAccent::Maqqeph)
+            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => self.sentence.find(MAQQEPH),
+            /* **********************************************************
+             *                          POETRY
+             * *********************************************************/
+            // Disjunctives
             HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.context == Context::Poetic => {
-                None
+                RE_POETRY_OLEH_WE_YORED.is_match(&self.sentence);None
             }
-            //HebrewAccent::Poetry(PoetryAccent::Atnach) if self.context == Context::Poetic => None,
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.context == Context::Poetic => {
-                None
+                contains_poetry_revia_gadol(&self.sentence);None
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.context == Context::Poetic => {
-                None
+                RE_POETRY_REVIA_MUGRASH.is_match(&self.sentence);None
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol)
                 if self.context == Context::Poetic =>
             {
-                None
+                RE_COMMON_SHALSHELET.is_match(&self.sentence);None
             }
-            HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.context == Context::Poetic => None,
+            HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.context == Context::Poetic => {
+                self.sentence.find(ZINOR)
+            }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.context == Context::Poetic => {
-                None
+                contains_poetry_revia_qaton(&self.sentence);None
             }
-            HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Pazer) if self.context == Context::Poetic => None,
+            HebrewAccent::Poetry(PoetryAccent::Dechi) if self.context == Context::Poetic => {
+                self.sentence.find(DEHI)
+            }
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.context == Context::Poetic =>
             {
-                None
+                RE_POETRY_MEHUPPAKH_LEGARMEH.is_match(&self.sentence);None
             }
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.context == Context::Poetic => {
-                None
+                RE_POETRY_AZLA_LEGARMEH.is_match(&self.sentence);None
             }
             // Conjunctives
-            HebrewAccent::Poetry(PoetryAccent::Munach) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Tarkha) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Galgal) if self.context == Context::Poetic => None,
-            HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.context == Context::Poetic => {
-                None
+            HebrewAccent::Poetry(PoetryAccent::Munach) if self.context == Context::Poetic => {
+                self.sentence.find(MUNAH)
             }
-            HebrewAccent::Poetry(PoetryAccent::Azla) if self.context == Context::Poetic => None,
+            HebrewAccent::Poetry(PoetryAccent::Merkha) if self.context == Context::Poetic => {
+                contains_poetry_merkha(&self.sentence);None
+            }
+            HebrewAccent::Poetry(PoetryAccent::Illuy) if self.context == Context::Poetic => {
+                self.sentence.find(ILUY)
+            }
+            HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.context == Context::Poetic => {
+                contains_poetry_mehuppakh(&self.sentence);None
+            }
+            HebrewAccent::Poetry(PoetryAccent::Azla) if self.context == Context::Poetic => {
+                RE_POETRY_AZLA.is_match(&self.sentence).unwrap();None
+            }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah)
                 if self.context == Context::Poetic =>
             {
-                None
+                RE_POETRY_SHALSHELET_QETANNAH
+                    .is_match(&self.sentence)
+                    .unwrap();None
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha)
                 if self.context == Context::Poetic =>
             {
-                None
+                RE_POETRY_TSINNORIT_MERKHA.is_match(&self.sentence);None
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh)
                 if self.context == Context::Poetic =>
             {
-                None
+                RE_POETRY_TSINNORIT_MAHPAKH.is_match(&self.sentence);None
             }
             _ => None,
         }

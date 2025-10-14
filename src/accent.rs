@@ -63,7 +63,6 @@ impl Accent for PoetryAccent {
     }
 }
 
-
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum HebrewAccent {
@@ -147,7 +146,7 @@ pub enum PoetryAccent {
     Pazer,
     MehuppakhLegarmeh,
     AzlaLegarmeh,
-    // Conjunctives 
+    // Conjunctives
     Munach,
     Merkha,
     Illuy,
@@ -279,8 +278,6 @@ pub enum CodePointPosition {
     UnderPrePositive,
 }
 
-
-
 /// Mapping from the enum discriminant (as `usize`) to the logical rank.
 ///
 /// The order **must** correspond exactly to the order of the variants
@@ -316,8 +313,6 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     /*22 */ 22, // Meteg
     /*23 */ 23, // Maqqeph
 ];
-
-
 
 #[cfg(test)]
 mod tests {
