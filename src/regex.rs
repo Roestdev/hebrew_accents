@@ -10,7 +10,7 @@ pub const HEBREW: &str = r"\p{Hebrew}";
 /// Zero or one ordinary space.
 pub const OPTIONAL_SPACE: &str = r"\s?";
 
-/// One or more spaces (greedy).
+// One or more spaces (greedy).
 // pub const ONE_OR_MORE_SPACES: &str = r"\s+";
 
 /// Any character that is **not** a space nor Maqqeph (U+05BE).

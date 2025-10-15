@@ -110,6 +110,8 @@ use hebrew_accents::ProseAccent;
 
 let newsc = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃", Context::Prosaic,);
 assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
+// or
+assert!(newsc.contains_accent(ProseAccent::Tiphcha.into()));
 ```
 
 ``` rust
