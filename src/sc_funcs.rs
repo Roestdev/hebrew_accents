@@ -219,7 +219,10 @@ pub(crate) fn is_part_of_two_code_point_accent_look_behind(
     false
 }
 
-pub(crate) fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[char]) -> bool {
+pub(crate) fn is_part_of_mahpakh_legarmeh_look_ahead(
+    index_target_char: usize,
+    sentence: &[char],
+) -> bool {
     if index_target_char >= sentence.len() {
         return false;
     }

@@ -10,9 +10,9 @@ mod accent_data;
 mod accent_display;
 
 // finding accents
-mod sentence_context;
-mod sc_regex;
 mod sc_funcs;
+mod sc_regex;
+mod sentence_context;
 
 // exports
 pub use accent::*;

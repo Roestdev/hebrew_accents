@@ -5,39 +5,39 @@ use regex::Regex;
 use crate::char::*;
 
 /// Any Hebrew character (Unicode property).
-pub const HEBREW: &str = r"\p{Hebrew}";
+const HEBREW: &str = r"\p{Hebrew}";
 
 /// Zero or one ordinary space.
-pub const OPTIONAL_SPACE: &str = r"\s?";
+const OPTIONAL_SPACE: &str = r"\s?";
 
 // One or more spaces (greedy).
 // pub const ONE_OR_MORE_SPACES: &str = r"\s+";
 
 /// Any character that is **not** a space nor Maqqeph (U+05BE).
-pub const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
+const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
 
 /// Either a space **or** a Maqqeph.
-pub const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
+const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
-pub const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
+const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
 
 /// Geresh (U+059C) OR Geresh‑Muqdam (U+059D).
-pub const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
+const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
 
 /// Negative look‑ahead: *not* followed by Hebrew chars, optional spaces,
 /// and then a paseq or vertical line.
-pub const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}+?\s*[\u{05C0}\u{007C}])";
+const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}+?\s*[\u{05C0}\u{007C}])";
 
 /// Negative look‑ahead: *not* followed by a Hebrew chars, a maqaf, and another
 /// Hebrew run.  This is used to exclude “maqqaf‑connected” sequences.
-pub const NOT_FOLLOWED_BY_MAQAF: &str = r"(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)";
+const NOT_FOLLOWED_BY_MAQAF: &str = r"(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)";
 
 /// Zero or one of the Samech OR Pey characters (U+05E4, U+05E1).
-pub const ZERO_OR_ONE_SAMECH_OR_PEY: &str = r"[\u{05E4}\u{05E1}]?";
+const ZERO_OR_ONE_SAMECH_OR_PEY: &str = r"[\u{05E4}\u{05E1}]?";
 
 /// Simple pipe character for building alternations inside `format!`.
-pub const OR: &str = "|";
+const OR: &str = "|";
 
 // A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
 // Most of the time a sentence ends with Sof Pasuq (\u{05C3})
@@ -48,7 +48,7 @@ pub(crate) static RE_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!(
         "{SILLUQ}{NOT_FOLLOWED_BY_MAQAF}{HEBREW}*{OPTIONAL_SPACE}{SOF_PASUQ}{OPTIONAL_SPACE}{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}$"
     );
-    FancyRegex::new(&pattern).expect("Invalid pattern for SILLUQ regex")
+    FancyRegex::new(&pattern).expect("Failed to compile  RE_COMMON_SILLUQ")
 });
 
 // A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
@@ -59,7 +59,7 @@ pub(crate) static RE_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
 pub(crate) static RE_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern).expect("Invalid pattern for SHALSHELET regex")
+    Regex::new(&pattern).expect("Failed to compile RE_COMMON_SHALSHELET")
 });
 
 // A 'Legarmeh' consists of the following two UTF-8 code-points:
@@ -71,7 +71,7 @@ pub(crate) static RE_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}"
     );
-    Regex::new(&pattern).expect("Invalid pattern for LEGARMEH regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_PROSE_LEGARMEH")
 });
 
 // A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
@@ -82,7 +82,7 @@ pub(crate) static RE_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 // FancyRegex::new(r"\u{05A3}(?!\p{Hebrew}*?\s*?[\u{05C0}\u{007C}])").unwrap());
 pub(crate) static RE_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!("{MUNAH}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
-    FancyRegex::new(&pattern).expect("Invalid pattern for MUNACH regex")
+    FancyRegex::new(&pattern).expect("Failed to compile  RE_PROSE_MUNACH")
 });
 
 // A Mayela is a Tiphcha before Silluq or Atnach in the same word
@@ -95,7 +95,7 @@ pub(crate) static RE_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{MEAYLA}{HEBREW}+{ATNACH}{OR}{MEAYLA}{HEBREW}*?{SILLUQ}{HEBREW}?{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}"
     );
-    Regex::new(&pattern).expect("Invalid pattern for MEAYLA regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_PROSE_MEAYLA")
 });
 
 // TODO
@@ -106,7 +106,7 @@ const NAAMVERZINNEN: &str =
     r"(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)";
 pub(crate) static RE_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!("{}{}", METEG, NAAMVERZINNEN,);
-    FancyRegex::new(&pattern).expect("Invalid pattern for METEG regex")
+    FancyRegex::new(&pattern).expect("Failed to compile  RE_COMMON_METEG")
 });
 
 // An 'Ole We Yored' consists of the following two UTF-8 code-points
@@ -116,7 +116,7 @@ pub(crate) static RE_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
 // Regex::new(r"\u{05AB}\p{Hebrew}+\s?\p{Hebrew}*\u{05A5}").unwrap());
 pub(crate) static RE_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{}{}+{}{}*{}", OLEH, HEBREW, OPTIONAL_SPACE, HEBREW, YORED);
-    Regex::new(&pattern).expect("Invalid pattern for OLEH-WE-YORED regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_POETRY_OLEH_WE_YORED")
 });
 
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
@@ -127,7 +127,7 @@ pub(crate) static RE_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
 // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 pub(crate) static RE_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
-    Regex::new(&pattern).expect("Invalid pattern for RREVIA-MUGRASH regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_POETRY_REVIA_MUGRASH")
 });
 
 // An 'Mehuppakh Legarmeh' consists of the following two UTF-8 code-points:
@@ -137,7 +137,7 @@ pub(crate) static RE_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
 // Lazy::new(|| Regex::new(r"\u{05A4}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap());
 pub(crate) static RE_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{MAHPAKH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern).expect("Invalid pattern for MEHUPPAKH-LEGARMEH regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_POETRY_MEHUPPAKH_LEGARMEH")
 });
 
 // An 'Azla Legarmeh' consists of the following two UTF-8 code-points:
@@ -147,7 +147,7 @@ pub(crate) static RE_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 // Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{05A8}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap()
 pub(crate) static RE_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{AZLA}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern).expect("Invalid pattern for AZLA-LEGARMEH regex")
+    Regex::new(&pattern).expect("Failed to compile  RE_POETRY_AZLA_LEGARMEH")
 });
 
 // pub(crate) static RE_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
@@ -159,7 +159,7 @@ const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str =
 pub(crate) static RE_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern =
         format!("{AZLA}{HEBREW}*?{MAQAF}{OR}{AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
-    FancyRegex::new(&pattern).expect("Invalid pattern for AZLA regex")
+    FancyRegex::new(&pattern).expect("Failed to compile RE_POETRY_AZLA")
 });
 
 // A Shalshalet NOT followed by a Sof Passuq (or a vertical line)
@@ -167,7 +167,7 @@ pub(crate) static RE_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
 pub(crate) static RE_POETRY_SHALSHELET_QETANNAH: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!("{SHALSHELET}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
 
-    FancyRegex::new(&pattern).expect("Invalid pattern for SHALSHELET-QETANNAH regex")
+    FancyRegex::new(&pattern).expect("Failed to compile RE_POETRY_SHALSHELET_QETANNAH")
 });
 
 // A Tsinnorit Merkha consists of the following two UTF-8 code-points
@@ -179,7 +179,7 @@ pub(crate) static RE_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}"
     );
-    Regex::new(&pattern).expect("Invalid pattern for TSINNORIT-MERKHA regex")
+    Regex::new(&pattern).expect("Failed to compile RE_POETRY_TSINNORIT_MERKHA")
 });
 
 // A Tsinnorit Mahpakh consists of the following two UTF-8 code-points
@@ -191,5 +191,5 @@ pub(crate) static RE_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}"
     );
-    Regex::new(&pattern).expect("Invalid pattern for TSINNORIT-MAHPAKH")
+    Regex::new(&pattern).expect("Failed to compile RE_POETRY_TSINNORIT_MAHPAKH")
 });
