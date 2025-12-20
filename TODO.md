@@ -26,7 +26,7 @@ Accent
 - [ ] test for details()
 
 #### `ProseAccent` and `PoetryAccent`
-- [x] rank()
+- [x] relative_strength()
 - [x] const COUNT
 - [x] Implement Accent trait
 - [x] info()

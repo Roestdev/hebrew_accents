@@ -1,3 +1,5 @@
+//! The [`Word`] trait, its super traits and its implementations for all signed integer types.
+//!
 use crate::accent_data::*;
 
 pub trait Accent: Copy + Sized {
@@ -13,8 +15,8 @@ pub trait Accent: Copy + Sized {
     fn accent_type(self) -> AccentType {
         self.details().accent_type
     }
-    /// indicates the rank of a selected accent
-    fn rank(self) -> u8;
+    /// indicates the relative_strength of a selected accent
+    fn relative_strength(self) -> u8;
 }
 
 impl Accent for HebrewAccent {
@@ -37,10 +39,10 @@ impl Accent for HebrewAccent {
             HebrewAccent::Poetry(p) => p.details().accent_type,
         }
     }
-    fn rank(self) -> u8 {
+    fn relative_strength(self) -> u8 {
         match self {
-            HebrewAccent::Prose(p) => p.rank(),
-            HebrewAccent::Poetry(p) => p.rank(),
+            HebrewAccent::Prose(p) => p.relative_strength(),
+            HebrewAccent::Poetry(p) => p.relative_strength(),
         }
     }
 }
@@ -49,7 +51,7 @@ impl Accent for ProseAccent {
     fn details(self) -> &'static AccentInfo {
         PROSE_ACCENT_TABLE[self as usize]
     }
-    fn rank(self) -> u8 {
+    fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
 }
@@ -58,7 +60,7 @@ impl Accent for PoetryAccent {
     fn details(self) -> &'static AccentInfo {
         POETRY_ACCENT_TABLE[self as usize]
     }
-    fn rank(self) -> u8 {
+    fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
     }
 }
@@ -122,7 +124,7 @@ pub enum ProseAccent {
 impl ProseAccent {
     pub const COUNT: usize = 29;
     #[inline]
-    pub fn rank(self) -> u8 {
+    pub fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
 }
@@ -164,8 +166,8 @@ pub enum PoetryAccent {
 impl PoetryAccent {
     pub const COUNT: usize = 24;
     #[inline]
-    pub fn rank(self) -> u8 {
-        // Discriminants start at 0; we want 1‑based ranks.
+    pub fn relative_strength(self) -> u8 {
+        // Discriminants start at 0; we want 1‑based relative_strengths.
         BHS_POETRY_RANK_MAP[self as usize]
     }
 }
@@ -278,7 +280,7 @@ pub enum CodePointPosition {
     UnderPrePositive,
 }
 
-/// Mapping from the enum discriminant (as `usize`) to the logical rank.
+/// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
 ///
 /// The order **must** correspond exactly to the order of the variants
 /// declared in `PoetryAccent`.  If you add a new variant, extend this
@@ -336,17 +338,17 @@ mod tests {
     fn prose_accent_basic_properties() {
         // Silluq – the very first disjunctive
         let silluq = ProseAccent::Silluq;
-        assert_eq!(silluq.rank(), 1);
+        assert_eq!(silluq.relative_strength(), 1);
         assert_accent_consistency(silluq, "close, cessation");
 
         // Atnach – second disjunctive
         let atnach = ProseAccent::Atnach;
-        assert_eq!(atnach.rank(), 2);
+        assert_eq!(atnach.relative_strength(), 2);
         assert_accent_consistency(atnach, "a causing to rest");
 
         // Galgal – a conjunctive (wheel, circle)
         let galgal = ProseAccent::Galgal;
-        assert_eq!(galgal.rank(), 26);
+        assert_eq!(galgal.relative_strength(), 26);
         assert_accent_consistency(galgal, "wheel, circle");
     }
 
@@ -357,12 +359,12 @@ mod tests {
     fn poetry_accent_basic_properties() {
         // Shalshelet – a disjunctive in poetry
         let shalshelet = PoetryAccent::ShalsheletGadol;
-        assert_eq!(shalshelet.rank(), 6);
+        assert_eq!(shalshelet.relative_strength(), 6);
         assert_accent_consistency(shalshelet, "large chain or link");
 
         // Illuy – a conjunctive (elevation / raising)
         let illuy = PoetryAccent::Illuy;
-        assert_eq!(illuy.rank(), 15);
+        assert_eq!(illuy.relative_strength(), 15);
         assert_accent_consistency(illuy, "elevation or raising");
     }
 
@@ -389,7 +391,7 @@ mod tests {
     #[test]
     fn silluq() {
         let pa = ProseAccent::Silluq;
-        let pa_silluq_ord = pa.rank();
+        let pa_silluq_ord = pa.relative_strength();
         assert_eq!(1, pa_silluq_ord);
     }
 

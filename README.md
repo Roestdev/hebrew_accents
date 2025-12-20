@@ -33,7 +33,7 @@ For now all versions start with v0.0.x
   `SentenceContext`
   - new() ->  SentenceContext
   - contains_accent(SentenceContext, HebrewAccent) -> bool 
-  - rank() -> u8 (give the ranknumber of an accent for Prose and Poetry accents)
+  - relative_strength() -> u8 (give the relative_strengthnumber of an accent for Prose and Poetry accents)
 
 ## Description
  
@@ -128,20 +128,20 @@ assert!(newsc.contains_accent(HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol
 
 TODO
 
-### Usage rank()
+### Usage relative_strength()
 
 ``` rust
 use hebrew_accents::ProseAccent;
 
 let prose_accent = ProseAccent::TelishaGedolah;
-assert_eq!(17, prose_accent.rank());
+assert_eq!(17, prose_accent.relative_strength());
 ```
 
 ``` rust
 use hebrew_accents::PoetryAccent;
 
 let poetry_accent = PoetryAccent::ShalsheletGadol;
-assert_eq!(6, poetry_accent.rank());
+assert_eq!(6, poetry_accent.relative_strength());
 ```
 
 

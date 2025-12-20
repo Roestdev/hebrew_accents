@@ -169,8 +169,8 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 #### For `ProseAccent` and `PoetryAccents`
 
-- rank() 
-   - gives the rank number of the accent
+- relative_strength() 
+   - gives the relative_strength number of the accent
 - const COUNT (total number of accents)
 
 ## Traits

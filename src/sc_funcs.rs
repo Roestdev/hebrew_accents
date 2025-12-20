@@ -37,7 +37,7 @@ pub(crate) fn contains_poetry_merkha(sentence: &str) -> bool {
 
 pub(crate) fn contains_poetry_mehuppakh(sentence: &str) -> bool {
     // Mehupppakh (as a poetry accent)
-    //   not part of Mehuppakh Legarmeh (needs Negative Forward)
+    //   not part of Mehuppakh Legarmeh (needs Negative Lookahead)
     //   AND
     //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
     let target_char = MAHPAKH;
@@ -83,7 +83,7 @@ pub(crate) fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     // Revia Gadol is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
-    //   not followed by an Oleh We Yored (needs Positive LookAhead)
+    //   not followed by an Oleh We Yored (needs Negative Lookahead)
     let target_char = REVIA;
     let possible_combinations_lookbehind = [GERESH];
 
