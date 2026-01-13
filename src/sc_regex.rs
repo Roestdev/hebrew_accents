@@ -1,6 +1,12 @@
 /// The following crates are used for handling strings:
 ///   - regex       ( const definitions start with RE_...... )
 ///   - fancy_regex ( const definitions start with FA_RE_...... )
+///     ( used for LookAround )
+///
+/// LookAhead,
+/// LookAheadNeg,
+/// LookBehind,
+/// LookBehindNeg,
 ///
 use fancy_regex::Regex as FancyRegex;
 use once_cell::sync::Lazy;
@@ -23,17 +29,20 @@ const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
 /// Either a space **or** a Maqqeph.
 const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
+// Either a space **or** a Maqqeph.
+// const HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
+
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
 const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
 
 /// Geresh (U+059C) OR Geresh‑Muqdam (U+059D).
 const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
 
-/// Negative look‑ahead: *not* followed by Hebrew chars, optional spaces,
+/// Negative LookAhead: *not* followed by Hebrew chars, optional spaces,
 /// and then a paseq or vertical line.
 const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}+?\s*[\u{05C0}\u{007C}])";
 
-/// Negative look‑ahead: *not* followed by a Hebrew chars, a maqaf, and another
+/// Negative LookAhead: *not* followed by a Hebrew chars, a maqaf, and another
 /// Hebrew run.  This is used to exclude “maqqaf‑connected” sequences.
 const NOT_FOLLOWED_BY_MAQAF: &str = r"(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)";
 
@@ -89,6 +98,12 @@ pub(crate) static RE_OUTER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_LEGARMEH: {}", &pattern))
 });
 
+pub(crate) static RE_INNER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
+    let pattern = format!("{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
+    Regex::new(&pattern)
+        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_PROSE_LEGARMEH: {}", &pattern))
+});
+
 // A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
 // Otherwise is called a 'Legarmeh'
 //      - Munach (\u{05A3})
@@ -127,6 +142,14 @@ pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
         .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", &pattern))
 });
 
+// Two UCP's: u{05BD} -> at least the first one is a Meteg
+// \u{05BD}[\p{Hebrew}\s]*?\u{05BD}
+//pub(crate) static RE_OUTER_COMMON_METEG: Lazy<Regex> = Lazy::new(|| {
+//    let pattern = format!("{}{}*?{}", METEG, HEBREW_OR_SPACE, METEG);
+//     Regex::new(&pattern)
+//         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_METEG: {}", &pattern))
+// });
+
 // An 'Ole We Yored' consists of the following two UTF-8 code-points
 //      - Ole (\u{05AB}) followed by
 //      - Yored (\u{05A5}) aka Merkha
@@ -145,7 +168,8 @@ pub(crate) static RE_OUTER_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
 // - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
 // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
+    //let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
+    let pattern = format!("{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
     Regex::new(&pattern)
         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", &pattern))
 });

@@ -223,7 +223,19 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Silluq)
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
                 //FA_RE_OUTER_COMMON_SILLUQ.is_match(&self.sentence).unwrap();
-                None // TODO
+                if let Some(outer_match) = FA_RE_OUTER_COMMON_SILLUQ.find(&self.sentence).unwrap() {
+                    println!(
+                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                        outer_match.start(),
+                        outer_match.end(),
+                        outer_match.as_str()
+                    );
+                    let outer_start = outer_match.start();
+                    Some(outer_start)
+                } else {
+                    println!("Outer pattern not found for SILLUQ.");
+                    None
+                }
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.find(ETNAHTA),
@@ -233,8 +245,9 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 if let Some(outer_match) = RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
+                    println!("RE_OUTER_COMMON_SHALSHELET: FOUND!");
                     println!(
-                        "{}‑{}‑{}",
+                        "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
                         outer_match.start(),
                         outer_match.end(),
                         outer_match.as_str()
@@ -243,13 +256,15 @@ impl SentenceContext {
                     if let Some(inner_match) = RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str())
                     {
                         println!(
-                            "{}‑{}‑{}",
+                            "INNER MATCH--start():{}‑-end():{}‑-asstr():  {}",
                             inner_match.start(),
                             inner_match.end(),
                             inner_match.as_str()
                         );
                         let absolute_inner_start = outer_start + inner_match.start();
+                        let absolute_inner_end = outer_start + inner_match.end();
                         println!("Absolute start in `hay`: {}", absolute_inner_start);
+                        println!("Absolute end in `hay`: {}", absolute_inner_end);
                         Some(absolute_inner_start)
                     } else {
                         println!("Narrow pattern not found inside the first match.");
@@ -272,6 +287,7 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Tiphcha)
             | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self.sentence.find(TIPEHA),
+
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => {
                 self.sentence.find(ZARQA)
             }
@@ -300,26 +316,51 @@ impl SentenceContext {
                 self.sentence.find(TELISHA_GEDOLA)
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) => {
-                //RE_OUTER_PROSE_LEGARMEH.is_match(&self.sentence);
-                match RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
-                    Some(m) => {
-                        println!("Found RE_OUTER_PROSE_LEGARMEH!");
-                        println!("Matched text: {}", m.as_str());
-                        println!("Starts at byte index: {}", m.start());
-                        println!("Ends at byte index: {}", m.end());
-                        Some(m.start())
-                    }
-                    None => {
-                        println!("No match found for RE_OUTER_PROSE_LEGARMEH.");
+                if let Some(outer_match) = RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
+                    println!(
+                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                        outer_match.start(),
+                        outer_match.end(),
+                        outer_match.as_str()
+                    );
+                    let outer_start = outer_match.start();
+                    if let Some(inner_match) = RE_INNER_PROSE_LEGARMEH.find(outer_match.as_str()) {
+                        println!(
+                            "INNER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                            inner_match.start(),
+                            inner_match.end(),
+                            inner_match.as_str()
+                        );
+                        let absolute_inner_start = outer_start + inner_match.start();
+                        let absolute_inner_end = outer_start + inner_match.end();
+                        println!("Absolute start in `hay`: {}", absolute_inner_start);
+                        println!("Absolute end in `hay`: {}", absolute_inner_end);
+                        Some(absolute_inner_start)
+                    } else {
+                        println!("Narrow pattern not found inside the first match.");
                         None
                     }
+                } else {
+                    println!("No shalshelet character found in the input.");
+                    None
                 }
-                //None
             }
             // Conjunctives
             HebrewAccent::Prose(ProseAccent::Munach) if self.ctx == Context::Prosaic => {
                 //FA_RE_OUTER_PROSE_MUNACH.is_match(&self.sentence).unwrap();
-                None // TODO
+                if let Some(outer_match) = FA_RE_OUTER_PROSE_MUNACH.find(&self.sentence).unwrap() {
+                    println!(
+                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                        outer_match.start(),
+                        outer_match.end(),
+                        outer_match.as_str()
+                    );
+                    let outer_start = outer_match.start();
+                    Some(outer_start)
+                } else {
+                    println!("Outer pattern not found for MUNACH (Prose).");
+                    None
+                }
             }
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => {
                 self.sentence.find(MAHPAKH)
@@ -341,6 +382,7 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
             | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.find(YERAH_BEN_YOMO),
+
             HebrewAccent::Prose(ProseAccent::Mayela) if self.ctx == Context::Prosaic => {
                 //RE_OUTER_PROSE_MEAYLA.is_match(&self.sentence);
                 match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
@@ -356,12 +398,25 @@ impl SentenceContext {
                         None
                     }
                 }
-                //None
             }
+
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
-                //FA_RE_OUTER_COMMON_METEG.is_match(&self.sentence).unwrap();
-                None // TODO
+                if let Some(outer_match) = FA_RE_OUTER_COMMON_METEG.find(&self.sentence).unwrap() {
+                    println!("FA_RE_OUTER_COMMON_METEG: FOUND!");
+                    println!(
+                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                        outer_match.start(),
+                        outer_match.end(),
+                        outer_match.as_str()
+                    );
+                    let outer_start = outer_match.start();
+                    Some(outer_start)
+                } else {
+                    println!("FA_RE_OUTER_COMMON_METEG: NOT FOUND!");
+                    None
+                }
             }
+
             HebrewAccent::Prose(ProseAccent::Maqqeph)
             | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => self.sentence.find(MAQQEPH),
             /* **********************************************************
@@ -369,47 +424,47 @@ impl SentenceContext {
              * *********************************************************/
             // Disjunctives
             HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.ctx == Context::Poetic => {
-                //RE_OUTER_POETRY_OLEH_WE_YORED.find(&self.sentence);
                 match RE_OUTER_POETRY_OLEH_WE_YORED.find(&self.sentence) {
                     Some(m) => {
-                        println!("Found RE_OUTER_POETRY_OLEH_WE_YORED!");
+                        println!("RE_OUTER_POETRY_OLEH_WE_YORED: FOUND!");
                         println!("Matched text: {}", m.as_str());
                         println!("Starts at byte index: {}", m.start());
                         println!("Ends at byte index: {}", m.end());
                         Some(m.start())
                     }
                     None => {
-                        println!("No match found for RE_OUTER_POETRY_OLEH_WE_YORED.");
+                        println!("RE_OUTER_POETRY_OLEH_WE_YORED: NOT FOUND!");
                         None
                     }
                 }
-                //None
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.ctx == Context::Poetic => {
                 //contains_poetry_revia_gadol(&self.sentence);
-                None // TODO
+                Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.ctx == Context::Poetic => {
-                //RE_OUTER_POETRY_REVIA_MUGRASH.is_match(&self.sentence);
                 match RE_OUTER_POETRY_REVIA_MUGRASH.find(&self.sentence) {
-                    Some(m) => {
-                        println!("Found RE_OUTER_POETRY_REVIA_MUGRASH!");
-                        println!("Matched text: {}", m.as_str());
-                        println!("Starts at byte index: {}", m.start());
-                        println!("Ends at byte index: {}", m.end());
-                        Some(m.start())
+                    Some(outer_match) => {
+                        println!("RE_OUTER_POETRY_REVIA_MUGRASH: FOUND!");
+                        println!(
+                            "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
+                            outer_match.start(),
+                            outer_match.end(),
+                            outer_match.as_str()
+                        );
+                        Some(outer_match.start())
                     }
                     None => {
-                        println!("No match found for RE_OUTER_POETRY_REVIA_MUGRASH.");
+                        println!("RE_OUTER_POETRY_REVIA_MUGRASH: NOT FOUND!");
                         None
                     }
                 }
-                //None
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol) if self.ctx == Context::Poetic => {
                 if let Some(outer_match) = RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
+                    println!("RE_OUTER_COMMON_SHALSHELET: FOUND!");
                     println!(
-                        "{}‑{}‑{}",
+                        "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
                         outer_match.start(),
                         outer_match.end(),
                         outer_match.as_str()
@@ -417,14 +472,17 @@ impl SentenceContext {
                     let outer_start = outer_match.start();
                     if let Some(inner_match) = RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str())
                     {
+                        println!("RE_INNER_COMMON_SHALSHELET: FOUND!");
                         println!(
-                            "{}‑{}‑{}",
+                            "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
                             inner_match.start(),
                             inner_match.end(),
                             inner_match.as_str()
                         );
                         let absolute_inner_start = outer_start + inner_match.start();
+                        let absolute_inner_end = outer_start + inner_match.end();
                         println!("Absolute start in `hay`: {}", absolute_inner_start);
+                        println!("Absolute end in `hay`: {}", absolute_inner_end);
                         Some(absolute_inner_start)
                     } else {
                         println!("Narrow pattern not found inside the first match.");
@@ -440,7 +498,7 @@ impl SentenceContext {
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
                 //contains_poetry_revia_qaton(&self.sentence);
-                None // TODO
+                Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => {
                 self.sentence.find(DEHI)
@@ -462,7 +520,6 @@ impl SentenceContext {
                         None
                     }
                 }
-                //None
             }
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.ctx == Context::Poetic => {
                 //RE_OUTER_POETRY_AZLA_LEGARMEH.is_match(&self.sentence);
@@ -479,7 +536,6 @@ impl SentenceContext {
                         None
                     }
                 }
-                //None
             }
             // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => {
@@ -487,18 +543,30 @@ impl SentenceContext {
             }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
                 //contains_poetry_merkha(&self.sentence);
-                None // TODO
+                Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => {
                 self.sentence.find(ILUY)
             }
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.ctx == Context::Poetic => {
                 //contains_poetry_mehuppakh(&self.sentence);
-                None // TODO
+                Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.ctx == Context::Poetic => {
                 //FA_RE_OUTER_POETRY_AZLA.is_match(&self.sentence).unwrap();
-                None // TODO
+                match FA_RE_OUTER_POETRY_AZLA.find(&self.sentence).unwrap() {
+                    Some(m) => {
+                        println!("Found RE_OUTER_POETRY_REVIA_MUGRASH!");
+                        println!("Matched text: {}", m.as_str());
+                        println!("Starts at byte index: {}", m.start());
+                        println!("Ends at byte index: {}", m.end());
+                        Some(m.start())
+                    }
+                    None => {
+                        println!("No match found for FA_RE_OUTER_POETRY_AZLA.");
+                        None
+                    }
+                }
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah)
                 if self.ctx == Context::Poetic =>
@@ -506,41 +574,37 @@ impl SentenceContext {
                 // FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
                 //     .is_match(&self.sentence)
                 //     .unwrap();
-                None // TODO
+                Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha) if self.ctx == Context::Poetic => {
-                //RE_OUTER_POETRY_TSINNORIT_MERKHA.is_match(&self.sentence);
                 match RE_OUTER_POETRY_TSINNORIT_MERKHA.find(&self.sentence) {
                     Some(m) => {
-                        println!("Found RE_OUTER_POETRY_TSINNORIT_MERKHA!");
+                        println!("RE_OUTER_POETRY_TSINNORIT_MERKHA: FOUND!");
                         println!("Matched text: {}", m.as_str());
                         println!("Starts at byte index: {}", m.start());
                         println!("Ends at byte index: {}", m.end());
                         Some(m.start())
                     }
                     None => {
-                        println!("No match found for RE_OUTER_POETRY_TSINNORIT_MERKHA.");
+                        println!("RE_OUTER_POETRY_TSINNORIT_MERKHA: NOT FOUND!");
                         None
                     }
                 }
-                //None
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh) if self.ctx == Context::Poetic => {
-                //RE_OUTER_POETRY_TSINNORIT_MAHPAKH.is_match(&self.sentence);
                 match RE_OUTER_POETRY_TSINNORIT_MAHPAKH.find(&self.sentence) {
                     Some(m) => {
-                        println!("Found RE_OUTER_POETRY_TSINNORIT_MAHPAKH");
+                        println!("RE_OUTER_POETRY_TSINNORIT_MAHPAKH: FOUND");
                         println!("Matched text: {}", m.as_str());
                         println!("Starts at byte index: {}", m.start());
                         println!("Ends at byte index: {}", m.end());
                         Some(m.start())
                     }
                     None => {
-                        println!("No match found for RE_OUTER_POETRY_TSINNORIT_MAHPAKH.");
+                        println!("RE_OUTER_POETRY_TSINNORIT_MAHPAKH: NOT FOUND");
                         None
                     }
                 }
-                //None
             }
             _ => None,
         }
@@ -1338,26 +1402,26 @@ mod find {
     #[test]
     fn test_find_prose_poetry_silluq() {
         // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
-        let sc = SentenceContext::new(" וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי־אֽוֹר׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Silluq.into()), None);
-        // ProseAccent, with Soph Paseq, no Pey or Samech
+        let sc = SentenceContext::new("הִי אֽוֹר׃", Context::Prosaic);
+        assert_eq!(sc.find_accent(ProseAccent::Silluq.into()), Some(9));
+        // ProseAccent, with Soph Pasuq, no Pey or Samech
         let sc = SentenceContext::new(
             "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃",
             Context::Prosaic,
         );
-        assert_eq!(sc.find_accent(ProseAccent::Silluq.into()), None);
+        assert_eq!(sc.find_accent(ProseAccent::Silluq.into()), Some(159));
         // ProseAccent, no Soph Paseq, with Pey
         let sc = SentenceContext::new(
             "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ס ",
             Context::Poetic,
         );
-        assert_eq!(sc.find_accent(PoetryAccent::Silluq.into()), None);
+        assert_eq!(sc.find_accent(PoetryAccent::Silluq.into()), Some(165));
         // PoetryAccent with Soph Paseq and Peh
         let sc = SentenceContext::new(
             "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",
             Context::Poetic,
         );
-        assert_eq!(sc.find_accent(PoetryAccent::Silluq.into()), None);
+        assert_eq!(sc.find_accent(PoetryAccent::Silluq.into()), Some(159));
         // Meteg not in the last word of the sentence
         let sc = SentenceContext::new(
             "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵׁם׃ ס ",
@@ -1406,11 +1470,9 @@ mod find {
         // Shalshelet, with Vertical Bar + one space
         let sc = SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Shalshelet.into()), Some(16));
-        // TODO:assert_eq!(sc.find_accent(PoetryAccent::ShalsheletGadol.into()),None);
         // Missing Paseq or Vertical Bar
         let sc = SentenceContext::new("בְּהִ֑ים֓ אֵ֥ץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Shalshelet.into()), None);
-        // TODO:assert_eq!(sc.find_accent(PoetryAccent::ShalsheletGadol.into()),None);
     }
     #[test]
     fn test_find_prose_zaqeph_qaton() {
@@ -1511,19 +1573,19 @@ mod find {
     fn test_find_prose_legarmeh() {
         // Legarmeh, with Paseq
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(40)); // 40 - 60
+        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(52)); //  - 60
                                                                             // Legarmeh with a space + Paseq
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים ׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(40)); // 40 - 61
+        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(52)); // 40 - 61
                                                                             // Legarmeh with two spaces + Paseq
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים  ׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), None);
         // Legarmeh, with Vertical Bar
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים|  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(40)); // 40 - 59
+        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(52)); // 40 - 59
                                                                             // Legarmeh, with space + Vertical Bar
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים |  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(40)); // 40 - 60
+        assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(52)); // 40 - 60
                                                                             // Legarmeh, with two spaces + Vertical Bar
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים  |  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), None);
@@ -1536,7 +1598,7 @@ mod find {
     fn test_find_prose_munnach() {
         // Single Munach
         let sc = SentenceContext::new("בּראשׁית בּרא א֣להים את השּׁמים ואת הארץ׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Munach.into()), None);
+        assert_eq!(sc.find_accent(ProseAccent::Munach.into()), Some(28));
         // Munach part of Legarmeh (Paseq)
         let sc = SentenceContext::new("בּראשׁית בּרא א֣להים׀  את השּׁמים ואת הארץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Munach.into()), None);
@@ -1546,7 +1608,7 @@ mod find {
         // Munach part of Legarmeh (Vertical Bar)
         let sc = SentenceContext::new("בּראשׁית בּרא א֣להים|  את השּׁמים ואת הארץ׃׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Munach.into()), None);
-        // Munach part of Legarmeh (space +Vertical Bar)
+        // Munach part of Legarmeh (space + Vertical Bar)
         let sc = SentenceContext::new("בּראשׁית בּרא א֣להים  |  את השּׁמים ואת הארץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Munach.into()), None);
     }
@@ -1618,34 +1680,40 @@ mod find {
         assert_eq!(sc.find_accent(ProseAccent::Mayela.into()), None);
     }
     #[test]
-    fn test_find_prose_meteg() {
+    fn test_find_prose_poetry_meteg() {
         // Only Silluq, No Meteg
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Prosaic);
         assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), None);
         // Meteg and Siluq, separated by a Maqqeph
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Prosaic);
-        assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), None);
+        assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), Some(48));
         // Meteg and Siluq in separate words
         let sc = SentenceContext::new(
             "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
-            Context::Prosaic,
+            Context::Poetic,
         );
-        assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), None);
+        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), Some(30));
         // Only Meteg, no Silluq
-        let sc = SentenceContext::new(
-            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ",
-            Context::Prosaic,
-        );
-        assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), None);
+        let sc = SentenceContext::new("וֽיהי־ב֖קר י֥ום שׁני׃ פ", Context::Prosaic);
+        assert_eq!(sc.find_accent(ProseAccent::Meteg.into()), Some(2));
+        // Two Meteg's, no Silluq
+        let sc = SentenceContext::new("ום וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ", Context::Poetic);
+        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), Some(7));
     }
     #[test]
-    fn test_find_prose_maqqeph() {
+    fn test_find_prose_poetry_maqqeph() {
         // No Maqqeph
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(ProseAccent::Maqqeph.into()), None);
         // One Maqqeph
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
         assert_eq!(sc.find_accent(ProseAccent::Maqqeph.into()), Some(56));
+        // No Maqqeph
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), None);
+        // One Maqqeph
+        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), Some(56));
     }
     /* **********************************************************
      *                          POETRY
@@ -1688,12 +1756,12 @@ mod find {
     }
     #[test]
     fn test_find_poetry_revia_mugrash() {
-        // Revia and Geresh
-        let sc = SentenceContext::new(
-            " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
-            Context::Poetic,
-        );
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaMugrash.into()), Some(75));
+        // Revia and Geresh (Ps 32:3)
+        let sc = SentenceContext::new("בְּ֝שַׁאֲגָתִ֗י", Context::Poetic);
+        assert_eq!(sc.find_accent(PoetryAccent::ReviaMugrash.into()), Some(6));
+        // Revia and Geresh (Ps 110:6) - accent on a single character
+        let sc = SentenceContext::new("יָדִ֣ין בַּ֭גּוֹיִם מָלֵ֣א גְוִיּ֑וֹת מָ֥חַץ רֹ֝֗אשׁ עַל־אֶ֥רֶץ רַבָּֽה׃", Context::Poetic);
+        assert_eq!(sc.find_accent(PoetryAccent::ReviaMugrash.into()), Some(89));
         // Only Revia
         let sc = SentenceContext::new(
             " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃",
@@ -1709,32 +1777,33 @@ mod find {
     }
     #[test]
     fn test_find_poetry_shalshelet_gadol() {
-        // ShalsheletGadol, with Paseq - no space
+        // Shalshelet Gadol, with Paseq - no space
         let sc = SentenceContext::new("בְּהִ֑ים֓׀ אֵ֥ץ׃", Context::Poetic);
         assert_eq!(
             sc.find_accent(PoetryAccent::ShalsheletGadol.into()),
             Some(16)
         );
-        // ShalsheletGadol, with Paseq + one space
+        // Shalshelet Gadol, with Paseq + one space
         let sc = SentenceContext::new("בְּהִ֑ים֓ ׀ אֵ֥ץ׃", Context::Poetic);
         assert_eq!(
             sc.find_accent(PoetryAccent::ShalsheletGadol.into()),
             Some(16)
         );
-        // ShalsheletGadol, with Vertical Bar - no space
+        // Shalshelet Gadol, with Vertical Bar - no space
         let sc = SentenceContext::new("בְּהִ֑ים֓| אֵ֥ץ׃", Context::Poetic);
         assert_eq!(
             sc.find_accent(PoetryAccent::ShalsheletGadol.into()),
             Some(16)
         );
-        // ShalsheletGadol, with Vertical Bar + one space
-        // TODO:let sc = &SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Poetic);
-        // TODO:assert_eq!(sc.find_accent(PoetryAccent::ShalsheletGadol.into()),None);
-        // TODO:assert_eq!(sc.find_accent(ProseAccent::Shalshelet.into()),None);
+        // Shalshelet Gadol, with Vertical Bar + one space
+        let sc = SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Poetic);
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ShalsheletGadol.into()),
+            Some(16)
+        );
         // Missing Paseq or Vertical Bar
         let sc = SentenceContext::new("בְּהִ֑ים֓ אֵ֥ץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::ShalsheletGadol.into()), None);
-        // TODO:assert_eq!(sc.find_accent(ProseAccent::Shalshelet.into()),None);
     }
     #[test]
     fn test_find_poetry_tsinnor() {
@@ -1788,10 +1857,16 @@ mod find {
     fn test_find_poetry_mehuppakh_legarmeh() {
         // MehuppakhLegarmeh, with Paseq
         let sc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into()), Some(17));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into()),
+            Some(17)
+        );
         // MehuppakhLegarmeh, with Vertical Bar
         let sc = SentenceContext::new(" את־אברהם֤ | מזמ֗ור", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into()), Some(17));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into()),
+            Some(17)
+        );
         // Mehuppakh only
         let sc = SentenceContext::new(" את־אברהם֤ מזמ֗ור", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into()), None);
@@ -1981,7 +2056,10 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMerkha.into()), None);
         // accent in two words
         let sc = SentenceContext::new("את־א֘בם ב֥רהם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMerkha.into()), Some(0));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::TsinnoritMerkha.into()),
+            Some(0)
+        );
         // accent in two words, without Tsinnorit
         let sc = SentenceContext::new("את־א֘בם ברהם", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMerkha.into()), None);
@@ -1996,7 +2074,10 @@ mod find {
     fn test_find_poetry_tsinnorit_mahpakh() {
         // accent in a single word
         let sc = SentenceContext::new("את־א֘ב֤רהם אהם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), Some(0));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()),
+            Some(0)
+        );
         // accent in a single word
         let sc = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
@@ -2005,7 +2086,10 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
         // accent in two words seperated by Maqqeph, without Mahpakh
         let sc = SentenceContext::new("אא֘ת־אב֤רהם אהם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), Some(0));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()),
+            Some(0)
+        );
         // accent in two words seperated by Maqqeph, without Tsinnorit
         let sc = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
@@ -2014,7 +2098,10 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
         // accent in two words
         let sc = SentenceContext::new("את־א֘ברהם אהאב֤ם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), Some(0));
+        assert_eq!(
+            sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()),
+            Some(0)
+        );
         // accent in two words, without Tsinnorit
         let sc = SentenceContext::new("את־אברהם אהאב֤ם", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
@@ -2026,34 +2113,4 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
     }
 
-    #[test]
-    fn test_find_poetry_meteg() {
-        // Only Silluq, No Meteg
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), None);
-        // Meteg and Siluq, separated by a Maqqeph
-        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), None);
-        // Meteg and Siluq in separate words
-        let sc = SentenceContext::new(
-            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
-            Context::Poetic,
-        );
-        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), None);
-        // Only Meteg, no Silluq
-        let sc = SentenceContext::new(
-            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ",
-            Context::Poetic,
-        );
-        assert_eq!(sc.find_accent(PoetryAccent::Meteg.into()), None);
-    }
-    #[test]
-    fn test_find_poetry_maqqeph() {
-        // No Maqqeph
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), None);
-        // One Maqqeph
-        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), Some(56));
-    }
 }
