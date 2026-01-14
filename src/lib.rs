@@ -10,8 +10,8 @@ mod accent_data;
 mod accent_display;
 
 // finding accents
-mod sc_funcs;
-mod sc_regex;
+mod sentence_ctx_funcs;
+mod sentence_ctx_regex;
 mod sentence_context;
 
 // exports

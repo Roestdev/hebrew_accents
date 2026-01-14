@@ -4,11 +4,9 @@
 use crate::accent::PoetryAccent;
 use crate::accent::ProseAccent;
 use crate::char::*;
-use crate::sc_funcs::*;
-use crate::sc_regex::*;
+use crate::sentence_ctx_funcs::*;
+use crate::sentence_ctx_regex::*;
 use crate::HebrewAccent;
-//use regex::Match;
-//use fancy_regex::Match;
 
 /// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
