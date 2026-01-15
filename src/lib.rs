@@ -3,16 +3,18 @@
 // common
 mod char;
 
+// finding accents
+mod sentence_context;
+mod sentence_ctx_contains;
+mod sentence_ctx_find;
+mod sentence_ctx_funcs;
+mod sentence_ctx_regex;
+
 // static accent data
 mod accent;
 mod accent_codepoints;
 mod accent_data;
 mod accent_display;
-
-// finding accents
-mod sentence_ctx_funcs;
-mod sentence_ctx_regex;
-mod sentence_context;
 
 // exports
 pub use accent::*;
