@@ -1,20 +1,33 @@
-use crate::accent::PoetryAccent;
-use crate::accent::ProseAccent;
-use crate::char::*;
-use crate::sentence_ctx_funcs::*;
-use crate::sentence_ctx_regex::*;
-use crate::HebrewAccent;
-use crate::{Context, SentenceContext};
+// Standard library
+
+// External crates
+
+// Local modules / crate‑internal
+use crate::char::{
+    DARGA, DEHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MERKHA, MERKHA_KEFULA, MUNAH,
+    PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLA, TELISHA_QETANA, TEVIR, TIPEHA,
+    YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
+};
+use crate::sentence_ctx_funcs::{
+    contains_poetry_mehuppakh, contains_poetry_merkha, contains_poetry_revia_gadol,
+    contains_poetry_revia_qaton,
+};
+use crate::sentence_ctx_regex::{
+    FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
+    FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_OUTER_COMMON_SHALSHELET,
+    RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
+    RE_OUTER_POETRY_OLEH_WE_YORED, RE_OUTER_POETRY_REVIA_MUGRASH,
+    RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
+    RE_OUTER_PROSE_MEAYLA,
+};
+use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, SentenceContext};
 
 impl SentenceContext {
     /// Checks the creation a neew instance of SentenContext.
-    ///  /// ```
-    /// use hebrew_accents::SentenceContext;
-    /// use hebrew_accents::Context;
-    /// use hebrew_accents::HebrewAccent;
-    /// use hebrew_accents::ProseAccent;
-    ///
+    ///  
     /// # Example
+    /// ```
+    /// use hebrew_accents::{SentenceContext,Context,HebrewAccent,ProseAccent};
     ///
     /// let sentence_context = SentenceContext::new("וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",Context::Prosaic,);
     /// assert!(sentence_context.contains_accent(ProseAccent::Silluq.into()));

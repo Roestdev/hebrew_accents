@@ -1,7 +1,13 @@
+// Standard library
+
+// External crates
+
+// Local modules / crate‑internal
 use crate::accent::*;
+use crate::accent_data::*;
 /// Re‑export the tables so the helper functions can see them without pulling in the whole
 /// `crate::accent` hierarchy again.  Adjust the path if the tables live in a different module.
-use crate::accent_data::*;
+///
 /// Print every accent in the *prose* table.
 ///
 /// The function simply iterates over the static slice and writes each `AccentInfo` to stdout.

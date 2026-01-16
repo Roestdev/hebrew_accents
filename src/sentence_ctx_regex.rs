@@ -1,18 +1,15 @@
-/// The following crates are used for handling strings:
-///   - regex       ( const definitions start with RE_...... )
-///   - fancy_regex ( const definitions start with FA_RE_...... )
-///     ( used for LookAround )
-///
-/// LookAhead,
-/// LookAheadNeg,
-/// LookBehind,
-/// LookBehindNeg,
-///
-use fancy_regex::Regex as FancyRegex;
+// Standard library
 use once_cell::sync::Lazy;
+
+// External crates
+use fancy_regex::Regex as FancyRegex;
 use regex::Regex;
 
-use crate::char::*;
+// Local modules / crate‑internal
+use crate::char::{
+    ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
+    SOF_PASUQ, TSINNORIT, YORED,
+};
 
 /// Any Hebrew character (Unicode property).
 const HEBREW: &str = r"\p{Hebrew}";
@@ -21,7 +18,7 @@ const HEBREW: &str = r"\p{Hebrew}";
 const OPTIONAL_SPACE: &str = r"\s?";
 
 // One or more spaces (greedy).
-// pub const ONE_OR_MORE_SPACES: &str = r"\s+";
+// ONE_OR_MORE_SPACES: &str = r"\s+";
 
 /// Any character that is **not** a space nor Maqqeph (U+05BE).
 const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";

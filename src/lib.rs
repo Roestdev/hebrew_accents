@@ -4,14 +4,14 @@
 mod char;
 
 // finding accents
-mod sentence_context;
+mod sentence_context; // main entry
 mod sentence_ctx_contains;
 mod sentence_ctx_find;
 mod sentence_ctx_funcs;
 mod sentence_ctx_regex;
 
 // static accent data
-mod accent;
+mod accent; // main entry
 mod accent_codepoints;
 mod accent_data;
 mod accent_display;

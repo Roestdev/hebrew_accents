@@ -1,4 +1,11 @@
-use crate::char::*;
+// Standard library
+
+// External crates
+
+// Local modules / crate‑internal
+use crate::char::{
+    GERESH, MAHPAKH, MAQQEPH, MERKHA, OLEH, PASEQ, REVIA, TSINNORIT, VERTICAL_LINE, YORED, ZARQA,
+};
 
 pub(crate) fn contains_poetry_merkha(sentence: &str) -> bool {
     // Merkha (as a poetry accent) is

@@ -1,5 +1,8 @@
-//! The [`Word`] trait, its super traits and its implementations for all signed integer types.
-//!
+// Standard library
+
+// External crates
+
+// Local modules / crate‑internal
 use crate::accent_data::*;
 
 pub trait Accent: Copy + Sized {

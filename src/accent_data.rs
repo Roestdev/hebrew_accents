@@ -1,5 +1,9 @@
+// Standard library
 use once_cell::sync::Lazy;
 
+// External crates
+
+// Local modules / crate‑internal
 use crate::accent::{
     AccentCategory, AccentInfo, AccentType, Alternates, CodePoints, PoetryAccent, ProseAccent,
 };
