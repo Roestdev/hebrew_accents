@@ -172,6 +172,7 @@ pub(crate) fn contains_poetry_revia_qaton(sentence: &str) -> bool {
     false
 }
 
+// helper functions
 pub(crate) fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
     sentence
         .iter()

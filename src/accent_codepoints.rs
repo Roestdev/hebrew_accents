@@ -7,8 +7,6 @@
 ///
 // Purpose: give more detailed information on the accents
 /// Ordering of the list is based on the value of their Unicode code-point
-
-
 // Standard library
 
 // External crates

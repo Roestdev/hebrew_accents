@@ -10,11 +10,11 @@ use crate::char::{
 };
 use crate::sentence_ctx_regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
-    FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET, RE_INNER_PROSE_LEGARMEH,
-    RE_OUTER_COMMON_SHALSHELET, RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
-    RE_OUTER_POETRY_OLEH_WE_YORED, RE_OUTER_POETRY_REVIA_MUGRASH,
-    RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
-    RE_OUTER_PROSE_MEAYLA,
+    FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
+    RE_INNER_PROSE_LEGARMEH, RE_OUTER_COMMON_SHALSHELET, RE_OUTER_POETRY_AZLA_LEGARMEH,
+    RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH, RE_OUTER_POETRY_OLEH_WE_YORED,
+    RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
+    RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, SentenceContext};
 
@@ -359,10 +359,9 @@ impl SentenceContext {
                 Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.ctx == Context::Poetic => {
-                //FA_RE_OUTER_POETRY_AZLA.is_match(&self.sentence).unwrap();
                 match FA_RE_OUTER_POETRY_AZLA.find(&self.sentence).unwrap() {
                     Some(m) => {
-                        println!("Found RE_OUTER_POETRY_REVIA_MUGRASH!");
+                        println!("Found FA_RE_OUTER_POETRY_AZLA!");
                         println!("Matched text: {}", m.as_str());
                         println!("Starts at byte index: {}", m.start());
                         println!("Ends at byte index: {}", m.end());
@@ -377,10 +376,24 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah)
                 if self.ctx == Context::Poetic =>
             {
-                // FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
-                //     .is_match(&self.sentence)
-                //     .unwrap();
-                Some(10000) // TODO
+             if let Some(outer_match) = FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
+                    .find(&self.sentence)
+                    .unwrap()
+                {
+                                            println!("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH FOUND!");
+println!(
+                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
+                        outer_match.start(),
+                        outer_match.end(),
+                        outer_match.as_str()
+                    );
+                    let outer_start = outer_match.start();
+                    Some(outer_start)
+                } else {
+                    println!("Outer pattern not found for FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH.");
+                    None
+                }
+                //Some(10000) // TODO
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha) if self.ctx == Context::Poetic => {
                 match RE_OUTER_POETRY_TSINNORIT_MERKHA.find(&self.sentence) {
@@ -1011,10 +1024,10 @@ mod find {
     fn test_find_poetry_azla() {
         // contains Azla
         let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Azla.into()), None);
+        assert_eq!(sc.find_accent(PoetryAccent::Azla.into()), Some(15));
         // contains Azla and Azla Legarmeh
         let sc = SentenceContext::new(" אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Azla.into()), None);
+        assert_eq!(sc.find_accent(PoetryAccent::Azla.into()), Some(5));
         // Azla Legarmeh, with space + Paseq
         let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Azla.into()), None);
@@ -1034,7 +1047,7 @@ mod find {
         let sc = SentenceContext::new("יצחק אל־יעק֓ב ויברך", Context::Poetic);
         assert_eq!(
             sc.find_accent(PoetryAccent::ShalsheletQetannah.into()),
-            None
+            Some(21)
         );
         // Shalshelet Gadol, with Paseq
         let sc = SentenceContext::new("יצחק אל־יעק֓ב ׀ ויברך", Context::Poetic);
