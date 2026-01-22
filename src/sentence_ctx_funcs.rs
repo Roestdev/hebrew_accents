@@ -27,7 +27,7 @@ pub(crate) fn contains_poetry_merkha(sentence: &str) -> bool {
     for &index in &indices {
         let is_part_of = is_part_of_two_code_point_accent_look_behind(
             &char_vec,
-            &target_char,
+            target_char,
             index,
             &possible_combinations_lookbehind,
             2,
@@ -65,7 +65,7 @@ pub(crate) fn contains_poetry_mehuppakh(sentence: &str) -> bool {
         //println!("\nNegative Looking Backward");
         let two_code_points_behind = is_part_of_two_code_point_accent_look_behind(
             &char_vec,
-            &target_char,
+            target_char,
             index,
             &possible_combinations_lookbehind,
             2,
@@ -103,7 +103,7 @@ pub(crate) fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     for index in indices {
         let two_code_points_behind = is_part_of_two_code_point_accent_look_behind(
             &char_vec,
-            &target_char,
+            target_char,
             index,
             &possible_combinations_lookbehind,
             1,
@@ -146,7 +146,7 @@ pub fn contains_poetry_revia_qaton(sentence: &str) -> bool {
         // println!("Negative Looking Backward");
         let two_code_points_behind = is_part_of_two_code_point_accent_look_behind(
             &char_vec,
-            &target_char,
+            target_char,
             index,
             &possible_combinations_lookbehind,
             1,
@@ -186,85 +186,81 @@ fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
 
 fn is_part_of_two_code_point_accent_look_behind(
     sentence: &[char],
-    target_char: &char,
-    index_target_char: usize,
-    possible_combinations_lookbehind: &[char],
+    target_char: char,
+    idx_target: usize,
+    lookbehind_combos: &[char],
     max_word_span: usize,
 ) -> bool {
-    // the word containing the accent is the first word
-    //println!("\n==> LOOKING BACKWARDS");
-    let mut word_count: usize = 0;
-    if index_target_char == 0 {
-        //println!("LB::Target character is found at the first position");
-        // Early exit if the position is at the start
+    // Nothing to look at if the target is the very first character.
+    if idx_target == 0 {
         return false;
     }
-    // backwards search
-    for current_index in (0..index_target_char).rev() {
-        let current_char = sentence[current_index];
-        // println!(
-        //     "LB::Current character [ {current_char} ] at index {current_index} - word_count: {word_count}"
-        // );
-        if current_char == ' ' || current_char == MAQQEPH {
-            word_count += 1;
-            //println!("LB::new word_count: {word_count}");
-            if word_count == max_word_span {
-                //println!("LB::Max word count reached");
+
+    // Number of word separators we have passed while scanning backwards.
+    let mut word_breaks = 0usize;
+
+    // Scan the slice backwards, stopping before `idx_target`.
+    for i in (0..idx_target).rev() {
+        let c = sentence[i];
+
+        // Treat space and the special separator `MAQQEPH` as word boundaries.
+        if c == ' ' || c == MAQQEPH {
+            word_breaks += 1;
+            // If we have crossed the allowed number of word spans, stop.
+            if word_breaks >= max_word_span {
                 return false;
             }
+            continue;
         }
-        // Check for the second directly following target character
-        if current_char == *target_char {
-            // println!(
-            //     "LB::Found target character [{current_char}] at position {current_index}  ==> return false"
-            // );
+
+        // If we encounter the same target character again, the current
+        // occurrence cannot be part of a two‑code‑point accent.
+        if c == target_char {
             return false;
         }
-        // Check for possible combinations
-        if possible_combinations_lookbehind.contains(&current_char) {
-            //println!("LB::Part of two code-point accent ==> return true");
+
+        // If the character belongs to the set of possible look‑behind
+        // combinations, we have a match.
+        if lookbehind_combos.contains(&c) {
             return true;
         }
     }
-    //println!("LB::End of look behind ==> return false");
+
+    // Exhausted the slice without finding a matching combination.
     false
 }
-
-fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[char]) -> bool {
-    if index_target_char >= sentence.len() {
+fn is_part_of_mahpakh_legarmeh_look_ahead(
+    idx_target: usize,
+    sentence: &[char],
+) -> bool {
+    // Guard against out‑of‑range indices.
+    if idx_target >= sentence.len() {
         return false;
     }
-    let mut word_count: usize = 0;
-    // Start iterating from the next character after the target character
-    for current_char in sentence.iter().skip(index_target_char + 1) {
-        match (*current_char, word_count) {
-            // max word count
-            (_, 2) => {
-                //println!("MAX wordcount");
-                return false;
-            }
-            // space found -> count ++
-            (' ', _) => {
-                word_count += 1;
-            }
-            // mahpakh found
-            (PASEQ, 0 | 1) => {
-                //println!("PASEQ found");
-                return true;
-            }
-            (VERTICAL_LINE, 0 | 1) => {
-                //println!("VERTICAL_LINE found");
-                return true;
-            }
-            // PASEQ or VERTICAL_LINE not found as first character in the second word
-            (_, 1) => {
-                //println!("No PASEQ found as the first char 2nd word");
-                return false;
-            }
-            // default
-            (_, _) => {}
+
+    // How many word separators (spaces) we have seen while scanning ahead.
+    let mut word_breaks = 0usize;
+
+    // Iterate over the characters *after* the target index.
+    for &c in sentence.iter().skip(idx_target + 1) {
+        // Stop once we have crossed the allowed span of two words.
+        if word_breaks >= 2 {
+            return false;
+        }
+
+        match c {
+            // Space – counts as a word boundary.
+            ' ' => word_breaks += 1,
+
+            // Acceptable mahpakh symbols, but only while we are still in the
+            // first or second word (i.e. before we have seen two spaces).
+            PASEQ | VERTICAL_LINE => return true,
+
+            // Anything else does not affect the outcome; just continue.
+            _ => {}
         }
     }
+    // No qualifying mahpakh found within the permitted range.
     false
 }
 
