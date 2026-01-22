@@ -20,7 +20,7 @@ pub(crate) fn contains_poetry_merkha(sentence: &str) -> bool {
         return false;
     }
     // Convert the sentence into a Vec<char> for character indexing
-    let char_vec: Vec<char> = sentence.chars().collect();
+    let char_vec: Vec<char> = as_char_slice(sentence);
     // Find the indices of the target character within the sentence
     let indices = indexes_target_char(target_char, &char_vec);
     // loop over all character positions
@@ -49,14 +49,13 @@ pub(crate) fn contains_poetry_mehuppakh(sentence: &str) -> bool {
     //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
     let target_char = MAHPAKH;
     let possible_combinations_lookbehind = [ZARQA];
-
     // check if the target character is present in the sentence
     if !&sentence.contains(target_char) {
         //println!("MEHUPPAKH not found in the senctence at all  -> return false");
         return false;
     }
     // turn sentence into a Vec of chars for indexing
-    let char_vec: Vec<char> = sentence.chars().collect();
+    let char_vec: Vec<char> = as_char_slice(sentence);
     // retrieve character positions of the target character
     let indices: Vec<usize> = indexes_target_char(target_char, &char_vec);
     println!("positions found at: {indices:?}");
@@ -72,7 +71,6 @@ pub(crate) fn contains_poetry_mehuppakh(sentence: &str) -> bool {
             2,
         );
         let is_part_of_mahpakh_legarmeh = is_part_of_mahpakh_legarmeh_look_ahead(index, &char_vec);
-
         // println!("\nResult: Negative Looking Backward = {two_code_points_behind}");
         // println!("Result: Negative Looking Forward = {is_part_of_mahpakh_legarmeh}");
         if !two_code_points_behind && !is_part_of_mahpakh_legarmeh {
@@ -93,13 +91,12 @@ pub(crate) fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     //   not followed by an Oleh We Yored (needs Negative Lookahead)
     let target_char = REVIA;
     let possible_combinations_lookbehind = [GERESH];
-
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
         return false;
     }
     // turn sentence into a Vec of chars for indexing
-    let char_vec: Vec<char> = sentence.chars().collect();
+    let char_vec: Vec<char> = as_char_slice(sentence);
     // retrieve character positions of the target character
     let indices: Vec<usize> = indexes_target_char(target_char, &char_vec);
     // loop over all character positions
@@ -127,21 +124,20 @@ pub(crate) fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     false
 }
 
-pub(crate) fn contains_poetry_revia_qaton(sentence: &str) -> bool {
+pub fn contains_poetry_revia_qaton(sentence: &str) -> bool {
     // Revia Qaton is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
     //   followed by an Oleh We Yored (needs Positive LookAhead)
     let target_char = REVIA;
     let possible_combinations_lookbehind = [GERESH];
-
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
         println!("REVIA not found in the senctence at all  -> return false");
         return false;
     }
     // turn sentence into a Vec of chars for indexing
-    let char_vec: Vec<char> = sentence.chars().collect();
+    let char_vec: Vec<char> = as_char_slice(sentence);
     // retrieve character positions of the target character
     let indices: Vec<usize> = indexes_target_char(target_char, &char_vec);
     // loop over all character positions
@@ -172,8 +168,15 @@ pub(crate) fn contains_poetry_revia_qaton(sentence: &str) -> bool {
     false
 }
 
-// helper functions
-pub(crate) fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
+/*
+helper functions
+*/
+
+fn as_char_slice(s: &str) -> Vec<char> {
+    s.chars().collect()
+}
+
+fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
     sentence
         .iter()
         .enumerate()
@@ -181,7 +184,7 @@ pub(crate) fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<u
         .collect()
 }
 
-pub(crate) fn is_part_of_two_code_point_accent_look_behind(
+fn is_part_of_two_code_point_accent_look_behind(
     sentence: &[char],
     target_char: &char,
     index_target_char: usize,
@@ -227,10 +230,7 @@ pub(crate) fn is_part_of_two_code_point_accent_look_behind(
     false
 }
 
-pub(crate) fn is_part_of_mahpakh_legarmeh_look_ahead(
-    index_target_char: usize,
-    sentence: &[char],
-) -> bool {
+fn is_part_of_mahpakh_legarmeh_look_ahead(index_target_char: usize, sentence: &[char]) -> bool {
     if index_target_char >= sentence.len() {
         return false;
     }
@@ -270,7 +270,7 @@ pub(crate) fn is_part_of_mahpakh_legarmeh_look_ahead(
 
 // Check if a character is followed by an Oleh We Yored
 // Note: Oleh We Yored may be distributed over two words
-pub(crate) fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) -> bool {
+fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) -> bool {
     //println!("\n==> LOOKING FORWARD - is_followed_by_oleh_we_yored");
     if index_of_target_char >= sentence.len() {
         return false; // Early exit if the position is at the end of the sentence

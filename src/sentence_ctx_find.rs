@@ -376,12 +376,12 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah)
                 if self.ctx == Context::Poetic =>
             {
-             if let Some(outer_match) = FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
+                if let Some(outer_match) = FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
                     .find(&self.sentence)
                     .unwrap()
                 {
-                                            println!("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH FOUND!");
-println!(
+                    println!("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH FOUND!");
+                    println!(
                         "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
                         outer_match.start(),
                         outer_match.end(),
