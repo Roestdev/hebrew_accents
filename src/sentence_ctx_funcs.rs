@@ -238,6 +238,7 @@ fn is_part_of_two_code_point_accent_look_behind(
     // Exhausted the slice without finding a matching combination.
     false
 }
+
 fn is_part_of_mahpakh_legarmeh_look_ahead(idx_target: usize, sentence: &[char]) -> bool {
     // Guard against out‑of‑range indices.
     if idx_target >= sentence.len() {
@@ -277,22 +278,23 @@ fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) 
     if index_of_target_char >= sentence.len() {
         return false; // Early exit if the position is at the end of the sentence
     }
-    let mut word_count: usize = 0;
-    let mut oleh_found = false;
-    let mut yored_found = false;
+    let mut word_count: usize = 0usize;
+    let mut oleh_seen = false;
+    let mut yored_seen = false;
+
     // Start iterating from the next character after the target character
-    for current_char in sentence.iter().skip(index_of_target_char + 1) {
+    for &current_char in sentence.iter().skip(index_of_target_char + 1) {
         //println!("\ncurr_char: {current_char} - word_count: {word_count}");
-        match (*current_char, word_count) {
+        match (current_char, word_count) {
             // return if Oleh We Yored is found
-            (_, _) if oleh_found & yored_found => {
+            (_, _) if oleh_seen & yored_seen => {
                 //println!("OLEH WE YORED found!");
-                return oleh_found && yored_found;
+                return oleh_seen && yored_seen;
             }
             // return if maximum word count is reached
             (_, 3) => {
                 //println!("MAX word count reached");
-                return oleh_found && yored_found;
+                return oleh_seen && yored_seen;
             }
             // update word count after a space
             (' ', _) => word_count += 1,
@@ -301,18 +303,79 @@ fn is_followed_by_oleh_we_yored(index_of_target_char: usize, sentence: &[char]) 
             // check for Oleh in the next word
             (OLEH, 1) => {
                 //println!("found Oleh");
-                oleh_found = true;
+                oleh_seen = true;
             }
             // check for Yored in the next or second word
-            (YORED, 1 | 2) if oleh_found => {
+            (YORED, 1 | 2) if oleh_seen => {
                 //println!("found YORED");
-                yored_found = true;
+                yored_seen = true;
             }
             // default
             (_, _) => {}
         }
         // println!("curr_char: {current_char} - word_count:  {word_count}");
     }
-    // println!("==> Result: \n\toleh_found: {oleh_found}\tyored_found: {yored_found}");
-    oleh_found && yored_found
+    // println!("==> Result: \n\toleh_seen: {oleh_seen}\tyored_seen: {yored_seen}");
+    oleh_seen && yored_seen
 }
+// lumo
+
+// / Returns `true` if, after `target_idx`, the characters contain the
+// / sequence **Oleh We Yored** within the next three words.
+// /
+// / A *word* is delimited by a normal space `' '` or by the special
+// / separator `MAQQEPH`. The function stops scanning after three word
+// / boundaries because the sequence is not allowed to stretch farther.
+// /
+// / # Arguments
+// /
+// / * `target_idx` – Index of the character we are checking *after*.
+// / * `sentence`   – Slice of characters representing the whole sentence.
+// /
+// / # Returns
+// /
+// / * `true`  – Both `OLEH` and `YORED` were found in the correct order.
+// / * `false` – The sequence was not found or the slice ended before it could be completed.
+
+// fn _is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
+//     // Guard against an out‑of‑range index.
+//     if target_idx >= sentence.len() {
+//         return false;
+//     }
+
+//     // Word‑boundary counter: a boundary is either a regular space or the
+//     // special separator `MAQQEPH`.
+//     let mut word_boundary_cnt = 0usize;
+//     let mut oleh_seen = false;
+//     let mut yored_seen = false;
+
+//     // Iterate over the characters *after* the target character.
+//     for &c in sentence.iter().skip(target_idx + 1) {
+//         // Stop once we have examined three word boundaries.
+//         if word_boundary_cnt == 3 {
+//             break;
+//         }
+
+//         match c {
+//             // Word boundaries increment the counter.
+//             ' ' | MAQQEPH => word_boundary_cnt += 1,
+
+//             // The first word after the target may contain `OLEH`.
+//             OLEH if word_boundary_cnt == 1 => oleh_seen = true,
+
+//             // `YORED` may appear in the first or second word *after* we have
+//             // already seen `OLEH`.
+//             YORED if (word_boundary_cnt == 1 || word_boundary_cnt == 2) && oleh_seen => {
+//                 yored_seen = true;
+//                 // Both parts are present → we can return early.
+//                 return true;
+//             }
+
+//             // Any other character does not affect the state.
+//             _ => {}
+//         }
+//     }
+
+//     // If we exit the loop without having seen both parts, the sequence is absent.
+//     false
+// }
