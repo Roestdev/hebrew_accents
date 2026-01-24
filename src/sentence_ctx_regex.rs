@@ -240,6 +240,16 @@ pub(crate) static RE_OUTER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
     })
 });
 
+pub(crate) static RE_INNER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
+    let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}");
+    Regex::new(&pattern).unwrap_or_else(|_| {
+        panic!(
+            "Invalid regex RE_INNER_POETRY_TSINNORIT_MERKHA: {}",
+            &pattern
+        )
+    })
+});
+
 // A Tsinnorit Mahpakh consists of the following two UTF-8 code-points
 //      - Tsinnorit (\u{0598}) followed by
 //      - Mahpakh (\u{05A4})
@@ -249,6 +259,16 @@ pub(crate) static RE_OUTER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| 
     let pattern = format!(
         "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}"
     );
+    Regex::new(&pattern).unwrap_or_else(|_| {
+        panic!(
+            "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
+            &pattern
+        )
+    })
+});
+
+pub(crate) static RE_INNER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
+    let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}");
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",

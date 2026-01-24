@@ -13,6 +13,7 @@ pub(crate) fn contains_poetry_merkha(sentence: &str) -> bool {
     //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
+    // define possible combinations
     let possible_combinations_lookbehind = [TSINNORIT, OLEH];
 
     // Check for the existence of the target character in the sentence
@@ -48,6 +49,7 @@ pub(crate) fn contains_poetry_mehuppakh(sentence: &str) -> bool {
     //   AND
     //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
     let target_char = MAHPAKH;
+    // define possible combinations
     let possible_combinations_lookbehind = [ZARQA];
     // check if the target character is present in the sentence
     if !&sentence.contains(target_char) {
@@ -90,6 +92,7 @@ pub(crate) fn contains_poetry_revia_gadol(sentence: &str) -> bool {
     //   AND
     //   not followed by an Oleh We Yored (needs Negative Lookahead)
     let target_char = REVIA;
+    // define possible combinations
     let possible_combinations_lookbehind = [GERESH];
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
@@ -130,6 +133,7 @@ pub fn contains_poetry_revia_qaton(sentence: &str) -> bool {
     //   AND
     //   followed by an Oleh We Yored (needs Positive LookAhead)
     let target_char = REVIA;
+    // define possible combinations
     let possible_combinations_lookbehind = [GERESH];
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
@@ -229,10 +233,7 @@ fn is_part_of_two_code_point_accent_look_behind(
     // Exhausted the slice without finding a matching combination.
     false
 }
-fn is_part_of_mahpakh_legarmeh_look_ahead(
-    idx_target: usize,
-    sentence: &[char],
-) -> bool {
+fn is_part_of_mahpakh_legarmeh_look_ahead(idx_target: usize, sentence: &[char]) -> bool {
     // Guard against out‑of‑range indices.
     if idx_target >= sentence.len() {
         return false;
