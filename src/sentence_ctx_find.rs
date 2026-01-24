@@ -8,6 +8,7 @@ use crate::char::{
     PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLA, TELISHA_QETANA, TEVIR, TIPEHA,
     YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
+use crate::sentence_ctx_funcs::find_poetry_merkha;
 use crate::sentence_ctx_regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
@@ -17,7 +18,7 @@ use crate::sentence_ctx_regex::{
     RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
     RE_OUTER_PROSE_MEAYLA,
 };
-use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, SentenceContext};
+use crate::{Context, HebrewAccent, Match, PoetryAccent, ProseAccent, SentenceContext};
 
 impl SentenceContext {
     // TODO examples
@@ -368,7 +369,7 @@ impl SentenceContext {
                 .find(ZINOR)
                 .map(|index| Match::new("TODO: insert single character", index, index + 2)),
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
-                //contains_poetry_revia_qaton(&self.sentence);
+                //find_poetry_revia_qaton(&self.sentence);
                 Some(Match::new("TODO", 333, 777))
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => self
@@ -421,8 +422,7 @@ impl SentenceContext {
                 .find(MUNAH)
                 .map(|index| Match::new("TODO: insert single character", index, index + 2)),
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
-                //contains_poetry_merkha(&self.sentence);
-                Some(Match::new("TODO", 333, 777))
+                find_poetry_merkha(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => self
                 .sentence
@@ -1702,129 +1702,3 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
     }
 }
-
-// TODO add description
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-pub struct Match<'h> {
-    pub haystack: &'h str,
-    pub start: usize,
-    pub end: usize,
-}
-
-impl<'h> Match<'h> {
-    /// Returns the byte offset of the start of the match in the haystack. The
-    /// start of the match corresponds to the position where the match begins
-    /// and includes the first byte in the match.
-    ///
-    /// It is guaranteed that `Match::start() <= Match::end()`.
-    ///
-    /// This is guaranteed to fall on a valid UTF-8 codepoint boundary. That
-    /// is, it will never be an offset that appears between the UTF-8 code
-    /// units of a UTF-8 encoded Unicode scalar value. Consequently, it is
-    /// always safe to slice the corresponding haystack using this offset.
-    #[inline]
-    pub fn start(&self) -> usize {
-        self.start
-    }
-
-    /// Returns the byte offset of the end of the match in the haystack. The
-    /// end of the match corresponds to the byte immediately following the last
-    /// byte in the match. This means that `&slice[start..end]` works as one
-    /// would expect.
-    ///
-    /// It is guaranteed that `Match::start() <= Match::end()`.
-    ///
-    /// This is guaranteed to fall on a valid UTF-8 codepoint boundary. That
-    /// is, it will never be an offset that appears between the UTF-8 code
-    /// units of a UTF-8 encoded Unicode scalar value. Consequently, it is
-    /// always safe to slice the corresponding haystack using this offset.
-    #[inline]
-    pub fn end(&self) -> usize {
-        self.end
-    }
-
-    /// Returns true if and only if this match has a length of zero.
-    ///
-    /// Note that an empty match can only occur when the regex itself can
-    /// match the empty string. Here are some examples of regexes that can
-    /// all match the empty string: `^`, `^$`, `\b`, `a?`, `a*`, `a{0}`,
-    /// `(foo|\d+|quux)?`.
-    #[inline]
-    pub fn is_empty(&self) -> bool {
-        self.start == self.end
-    }
-
-    /// Returns the length, in bytes, of this match.
-    #[inline]
-    pub fn len(&self) -> usize {
-        self.end - self.start
-    }
-
-    /// Returns the range over the starting and ending byte offsets of the
-    /// match in the haystack.
-    ///
-    /// It is always correct to slice the original haystack searched with this
-    /// range. That is, because the offsets are guaranteed to fall on valid
-    /// UTF-8 boundaries, the range returned is always valid.
-    #[inline]
-    pub fn range(&self) -> core::ops::Range<usize> {
-        self.start..self.end
-    }
-
-    /// Returns the substring of the haystack that matched.
-    #[inline]
-    pub fn as_str(&self) -> &'h str {
-        &self.haystack[self.range()]
-    }
-
-    /// Creates a new match from the given haystack and byte offsets.
-    #[inline]
-    fn new(haystack: &'h str, start: usize, end: usize) -> Match<'h> {
-        Match {
-            haystack,
-            start,
-            end,
-        }
-    }
-}
-
-// impl<'h> core::fmt::Debug for Match<'h> {
-//     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-//         f.debug_struct("Match")
-//             .field("start", &self.start)
-//             .field("end", &self.end)
-//             .field("string", &self.as_str())
-//             .finish()
-//     }
-// }
-
-impl<'h> From<Match<'h>> for &'h str {
-    fn from(m: Match<'h>) -> &'h str {
-        m.as_str()
-    }
-}
-
-impl<'h> From<Match<'h>> for core::ops::Range<usize> {
-    fn from(m: Match<'h>) -> core::ops::Range<usize> {
-        m.range()
-    }
-}
-
-// TODO add description
-// fn option_index: Option<usize>) -> Option<Match<'static>> {
-//     if let Some(index) = option_index {
-//         // all single characters accents consists two bytes, so
-//         // the next character will be located at index+2'
-//         Some(Match::new(
-//             "TODO: insert single character",
-//             index,
-//             index + 2,
-//         ))
-//     } else {
-//         None
-//     }
-//}
-
-// fn option_index: Option<usize>) -> Option<Match<'static>> {
-//     option_index.map(|index| Match::new("TODO: insert single character", index, index + 2))
-// }

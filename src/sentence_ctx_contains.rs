@@ -9,8 +9,7 @@ use crate::char::{
     YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
 use crate::sentence_ctx_funcs::{
-    contains_poetry_mehuppakh, contains_poetry_merkha, contains_poetry_revia_gadol,
-    contains_poetry_revia_qaton,
+    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
 };
 use crate::sentence_ctx_regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
@@ -131,7 +130,7 @@ impl SentenceContext {
                 RE_OUTER_POETRY_OLEH_WE_YORED.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.ctx == Context::Poetic => {
-                contains_poetry_revia_gadol(&self.sentence)
+                find_poetry_revia_gadol(&self.sentence).is_some()
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.ctx == Context::Poetic => {
                 RE_OUTER_POETRY_REVIA_MUGRASH.is_match(&self.sentence)
@@ -143,7 +142,7 @@ impl SentenceContext {
                 self.sentence.contains(ZINOR)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
-                contains_poetry_revia_qaton(&self.sentence)
+                find_poetry_revia_qaton(&self.sentence).is_some()
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => {
                 self.sentence.contains(DEHI)
@@ -161,13 +160,13 @@ impl SentenceContext {
                 self.sentence.contains(MUNAH)
             }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
-                contains_poetry_merkha(&self.sentence)
+                find_poetry_merkha(&self.sentence).is_some()
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => {
                 self.sentence.contains(ILUY)
             }
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.ctx == Context::Poetic => {
-                contains_poetry_mehuppakh(&self.sentence)
+                find_poetry_mehuppakh(&self.sentence).is_some()
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.ctx == Context::Poetic => {
                 FA_RE_OUTER_POETRY_AZLA.is_match(&self.sentence).unwrap()
