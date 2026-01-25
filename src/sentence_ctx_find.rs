@@ -8,7 +8,9 @@ use crate::char::{
     PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLA, TELISHA_QETANA, TEVIR, TIPEHA,
     YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
-use crate::sentence_ctx_funcs::find_poetry_merkha;
+use crate::sentence_ctx_funcs::{
+    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
+};
 use crate::sentence_ctx_regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
@@ -51,14 +53,23 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => {
                 //self.sentence.find(ETNAHTA))
-                self.sentence
-                    .find(ETNAHTA)
-                    .map(|index| Match::new("TODO: insert single character", index, index + ETNAHTA.len_utf8()))
+                self.sentence.find(ETNAHTA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ETNAHTA.len_utf8(),
+                    )
+                })
             }
-            HebrewAccent::Prose(ProseAccent::Segolta) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(SEGOL)
-                .map(|index| Match::new("TODO: insert single character", index, index + SEGOL.len_utf8())),
+            HebrewAccent::Prose(ProseAccent::Segolta) if self.ctx == Context::Prosaic => {
+                self.sentence.find(SEGOL).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + SEGOL.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 if let Some(outer_match) = RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
@@ -96,60 +107,123 @@ impl SentenceContext {
                     None
                 }
             }
-            HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(ZAQEF_QATAN)
-                .map(|index| Match::new("TODO: insert single character", index, index + ZAQEF_QATAN.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(ZAQEF_GADOL)
-                .map(|index| Match::new("TODO: insert single character", index, index + ZAQEF_GADOL.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Revia) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(REVIA)
-                .map(|index| Match::new("TODO: insert single character", index, index + REVIA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Tiphcha)
-            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self
-                .sentence
-                .find(TIPEHA)
-                .map(|index| Match::new("TODO: insert single character", index, index + TIPEHA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(ZARQA)
-                .map(|index| Match::new("TODO: insert single character", index, index + ZARQA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(PASHTA)
-                .map(|index| Match::new("TODO: insert single character", index, index + PASHTA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(YETIV)
-                .map(|index| Match::new("TODO: insert single character", index, index + YETIV.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Tevir) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(TEVIR)
-                .map(|index| Match::new("TODO: insert single character", index, index + TEVIR.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Geresh) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(GERESH)
-                .map(|index| Match::new("TODO: insert single character", index, index + GERESH.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Gershayim) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(GERSHAYIM)
-                .map(|index| Match::new("TODO: insert single character", index, index + GERSHAYIM.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
-                self.sentence
-                    .find(PAZER)
-                    .map(|index| Match::new("TODO: insert single character", index, index + PAZER.len_utf8()))
+            HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.ctx == Context::Prosaic => {
+                self.sentence.find(ZAQEF_QATAN).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ZAQEF_QATAN.len_utf8(),
+                    )
+                })
             }
-            HebrewAccent::Prose(ProseAccent::PazerGadol) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(QARNEY_PARA)
-                .map(|index| Match::new("TODO: insert single character", index, index + QARNEY_PARA.len_utf8())),
+            HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => {
+                self.sentence.find(ZAQEF_GADOL).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ZAQEF_GADOL.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Revia) if self.ctx == Context::Prosaic => {
+                self.sentence.find(REVIA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + REVIA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Tiphcha)
+            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => {
+                self.sentence.find(TIPEHA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + TIPEHA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => {
+                self.sentence.find(ZARQA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ZARQA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => {
+                self.sentence.find(PASHTA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + PASHTA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => {
+                self.sentence.find(YETIV).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + YETIV.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Tevir) if self.ctx == Context::Prosaic => {
+                self.sentence.find(TEVIR).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + TEVIR.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Geresh) if self.ctx == Context::Prosaic => {
+                self.sentence.find(GERESH).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + GERESH.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Gershayim) if self.ctx == Context::Prosaic => {
+                self.sentence.find(GERSHAYIM).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + GERSHAYIM.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
+                self.sentence.find(PAZER).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + PAZER.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::PazerGadol) if self.ctx == Context::Prosaic => {
+                self.sentence.find(QARNEY_PARA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + QARNEY_PARA.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Prose(ProseAccent::TelishaGedolah) if self.ctx == Context::Prosaic => {
-                self.sentence
-                    .find(TELISHA_GEDOLA)
-                    .map(|index| Match::new("TODO: insert single character", index, index + TELISHA_GEDOLA.len_utf8()))
+                self.sentence.find(TELISHA_GEDOLA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + TELISHA_GEDOLA.len_utf8(),
+                    )
+                })
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) => {
                 if let Some(outer_match) = RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
@@ -206,37 +280,70 @@ impl SentenceContext {
                     None
                 }
             }
-            HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(MAHPAKH)
-                .map(|index| Match::new("TODO: insert single character", index, index + MAHPAKH.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Merkha) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(MERKHA)
-                .map(|index| Match::new("TODO: insert single character", index, index + MERKHA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::MerkhaKephulah) if self.ctx == Context::Prosaic => {
-                self.sentence
-                    .find(MERKHA_KEFULA)
-                    .map(|index| Match::new("TODO: insert single character", index, index + MERKHA_KEFULA.len_utf8()))
+            HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => {
+                self.sentence.find(MAHPAKH).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + MAHPAKH.len_utf8(),
+                    )
+                })
             }
-            HebrewAccent::Prose(ProseAccent::Darga) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(DARGA)
-                .map(|index| Match::new("TODO: insert single character", index, index + DARGA.len_utf8())),
-            HebrewAccent::Prose(ProseAccent::Azla) if self.ctx == Context::Prosaic => self
-                .sentence
-                .find(QADMA)
-                .map(|index| Match::new("TODO: insert single character", index, index + QADMA.len_utf8())),
+            HebrewAccent::Prose(ProseAccent::Merkha) if self.ctx == Context::Prosaic => {
+                self.sentence.find(MERKHA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + MERKHA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::MerkhaKephulah) if self.ctx == Context::Prosaic => {
+                self.sentence.find(MERKHA_KEFULA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + MERKHA_KEFULA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Darga) if self.ctx == Context::Prosaic => {
+                self.sentence.find(DARGA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + DARGA.len_utf8(),
+                    )
+                })
+            }
+            HebrewAccent::Prose(ProseAccent::Azla) if self.ctx == Context::Prosaic => {
+                self.sentence.find(QADMA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + QADMA.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Prose(ProseAccent::TelishaQetannah) if self.ctx == Context::Prosaic => {
-                self.sentence
-                    .find(TELISHA_QETANA)
-                    .map(|index| Match::new("TODO: insert single character", index, index + TELISHA_QETANA.len_utf8()))
+                self.sentence.find(TELISHA_QETANA).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + TELISHA_QETANA.len_utf8(),
+                    )
+                })
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
-            | HebrewAccent::Poetry(PoetryAccent::Galgal) => self
-                .sentence
-                .find(YERAH_BEN_YOMO)
-                .map(|index| Match::new("TODO: insert single character", index, index + YERAH_BEN_YOMO.len_utf8())),
+            | HebrewAccent::Poetry(PoetryAccent::Galgal) => {
+                self.sentence.find(YERAH_BEN_YOMO).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + YERAH_BEN_YOMO.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Prose(ProseAccent::Mayela) if self.ctx == Context::Prosaic => {
                 match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
                     Some(outer_match) => {
@@ -276,10 +383,15 @@ impl SentenceContext {
                 }
             }
             HebrewAccent::Prose(ProseAccent::Maqqeph)
-            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => self
-                .sentence
-                .find(MAQQEPH)
-                .map(|index| Match::new("TODO: insert single character", index, index + MAQQEPH.len_utf8())),
+            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => {
+                self.sentence.find(MAQQEPH).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + MAQQEPH.len_utf8(),
+                    )
+                })
+            }
             /* **********************************************************
              *                          POETRY
              * *********************************************************/
@@ -304,7 +416,7 @@ impl SentenceContext {
                 }
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.ctx == Context::Poetic => {
-                Some(Match::new("TODO", 333, 777))
+                find_poetry_revia_gadol(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.ctx == Context::Poetic => {
                 match RE_OUTER_POETRY_REVIA_MUGRASH.find(&self.sentence) {
@@ -364,18 +476,27 @@ impl SentenceContext {
                     None
                 }
             }
-            HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.ctx == Context::Poetic => self
-                .sentence
-                .find(ZINOR)
-                .map(|index| Match::new("TODO: insert single character", index, index + ZINOR.len_utf8())),
-            HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
-                //find_poetry_revia_qaton(&self.sentence);
-                Some(Match::new("TODO", 333, 777))
+            HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.ctx == Context::Poetic => {
+                self.sentence.find(ZINOR).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ZINOR.len_utf8(),
+                    )
+                })
             }
-            HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => self
-                .sentence
-                .find(DEHI)
-                .map(|index| Match::new("TODO: insert single character", index, index + DEHI.len_utf8())),
+            HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
+                find_poetry_revia_qaton(&self.sentence)
+            }
+            HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => {
+                self.sentence.find(DEHI).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + DEHI.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.ctx == Context::Poetic =>
             {
@@ -417,20 +538,29 @@ impl SentenceContext {
                 }
             }
             // Conjunctives
-            HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
-                .sentence
-                .find(MUNAH)
-                .map(|index| Match::new("TODO: insert single character", index, index + MUNAH.len_utf8())),
+            HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => {
+                self.sentence.find(MUNAH).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + MUNAH.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
                 find_poetry_merkha(&self.sentence)
             }
-            HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => self
-                .sentence
-                .find(ILUY)
-                .map(|index| Match::new("TODO: insert single character", index, index + ILUY.len_utf8())),
+            HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => {
+                self.sentence.find(ILUY).map(|index| {
+                    Match::new(
+                        "TODO: insert single character",
+                        index,
+                        index + ILUY.len_utf8(),
+                    )
+                })
+            }
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.ctx == Context::Poetic => {
-                //contains_poetry_mehuppakh(&self.sentence);
-                Some(Match::new("TODO", 333, 777))
+                find_poetry_mehuppakh(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Azla) if self.ctx == Context::Poetic => {
                 match FA_RE_OUTER_POETRY_AZLA.find(&self.sentence).unwrap() {
@@ -1171,7 +1301,15 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
         // Two Revia's
         let sc = SentenceContext::new("בּר֗אשׁית בּרא אלהים את השּׁ֗מים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
+        let expected = Match {
+            haystack: "\u{597}",
+            start: 3,
+            end: 5,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ReviaGadol.into()),
+            Some(expected)
+        );
         // Revia followed by Oleh We Yored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫ר֥א אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
@@ -1180,10 +1318,26 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
         // Revia followed by 'Oleh We Yored' (3 words)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
+        let expected = Match {
+            haystack: "\u{597}",
+            start: 3,
+            end: 5,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ReviaGadol.into()),
+            Some(expected)
+        );
         // Revia not directly followed by Oleh We Yored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּרא אלה֫י֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaGadol.into()), None);
+        let expected = Match {
+            haystack: "\u{597}",
+            start: 3,
+            end: 5,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ReviaGadol.into()),
+            Some(expected)
+        );
     }
     #[test]
     fn test_find_poetry_revia_mugrash() {
@@ -1294,10 +1448,26 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::ReviaQaton.into()), None);
         // Revia directly followed by Oleh We Yored (1 word)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמי֥ם ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaQaton.into()), None);
+        let expected = Match {
+            haystack: "\u{597}",
+            start: 21,
+            end: 23,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ReviaQaton.into()),
+            Some(expected)
+        );
         // Revia directly followed by Oleh We Yored (2 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::ReviaQaton.into()), None);
+        let expected = Match {
+            haystack: "\u{597}",
+            start: 21,
+            end: 23,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::ReviaQaton.into()),
+            Some(expected)
+        );
         // Revia directly followed by 'Oleh We Yored' (3 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים ואת האר֥ץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::ReviaQaton.into()), None);
@@ -1432,7 +1602,12 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
         // One Merkha
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
+        let expected = Match {
+            haystack: "\u{5a5}",
+            start: 21,
+            end: 23,
+        };
+        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), Some(expected));
         // Tsinnorit + Merkha (1w)
         let sc = SentenceContext::new("בּראשׁית בּרא א֘להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
@@ -1441,7 +1616,12 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
         // Tsinnorit + Merkha (3w)
         let sc = SentenceContext::new("בּראשׁית בּר֘א אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
+        let expected = Match {
+            haystack: "\u{5a5}",
+            start: 22,
+            end: 24,
+        };
+        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), Some(expected));
         // Oleh + Merkha (1w)
         let sc = SentenceContext::new("בּראשׁית בּרא א֫להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
@@ -1450,7 +1630,12 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
         // Oleh + Merkha (3w)
         let sc = SentenceContext::new("בּראשׁית בּר֫א אלהים א֥ת השּׁ֥מים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), None);
+        let expected = Match {
+            haystack: "\u{5a5}",
+            start: 22,
+            end: 24,
+        };
+        assert_eq!(sc.find_accent(PoetryAccent::Merkha.into()), Some(expected));
     }
 
     #[test]
@@ -1496,7 +1681,15 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
         // One Mehuppach
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
+        let expected = Match {
+            haystack: "\u{5a4}",
+            start: 21,
+            end: 23,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::Mehuppakh.into()),
+            Some(expected)
+        );
         // One Mehuppach, part of Tsinnorit Mappach (one word)
         let sc = SentenceContext::new("בּראשׁית בּרא א֘להי֤ם את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
@@ -1505,12 +1698,19 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
         // One Mehuppach, part of Tsinnorit Mappach (three words)
         let sc = SentenceContext::new("בּראשׁית בּ֘רא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
-
-        // One Mehuppach, part of Mehuppach Legarmeh (no space) TODO
+        let expected = Match {
+            haystack: "\u{5a4}",
+            start: 22,
+            end: 24,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::Mehuppakh.into()),
+            Some(expected)
+        );
+        // One Mehuppach, part of Mehuppach Legarmeh (no space)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת׀ הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
-        // One Mehuppach, part of Mehuppach Legarmeh (one space) TODO
+        // One Mehuppach, part of Mehuppach Legarmeh (one space)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת ׀ הארץ׃", Context::Poetic);
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
         // One Mehuppach, part of Mehuppach Legarmeh (no space - vertical line)
@@ -1521,13 +1721,37 @@ mod find {
         assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
         // One Mehuppach, part of 'Mehuppach Legarmeh' (too many spaces)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת    ׀ הארץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
-        //One Mehuppach, part of Mehuppach Legarmeh (no space), followed with a Mehuppach
+        let expected = Match {
+            haystack: "\u{5a4}",
+            start: 33,
+            end: 35,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::Mehuppakh.into()),
+            Some(expected)
+        );
+        // //One Mehuppach, part of Mehuppach Legarmeh (no space), followed with a Mehuppach
         let sc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת׀ האר֤ץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
+        let expected = Match {
+            haystack: "\u{5a4}",
+            start: 4,
+            end: 6,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::Mehuppakh.into()),
+            Some(expected)
+        );
         // One Mehuppach, part of Mehuppach Legarmeh (one space), followed with a Mehuppach
         let sc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת ׀ האר֤ץ׃", Context::Poetic);
-        assert_eq!(sc.find_accent(PoetryAccent::Mehuppakh.into()), None);
+        let expected = Match {
+            haystack: "\u{5a4}",
+            start: 4,
+            end: 6,
+        };
+        assert_eq!(
+            sc.find_accent(PoetryAccent::Mehuppakh.into()),
+            Some(expected)
+        );
     }
 
     #[test]

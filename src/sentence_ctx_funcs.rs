@@ -38,8 +38,8 @@ pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
             // println!(
             //     "Found at least one target char, not part of another aaccent:: BREAK the loop"
             // );
-            let mercha = "\u{05A5}";
-            return Some(Match::new(mercha, 333, 777));
+            let merkha = "\u{05A5}";
+            return Some(Match::new(merkha, index, index + MERKHA.len_utf8()));
         }
     }
     None
@@ -82,8 +82,8 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<Match<'static>> {
             //     "\nResult for index {index}:\n\ttwo_code_points_behind: {two_code_points_behind}\n\tis_part_of_mahpakh_legarmeh: {is_part_of_mahpakh_legarmeh}"
             // );
             // println!("Found target char, not part of another accent. Returning TRUE");
-            let mahpah = "\u{05A4}";
-            return Some(Match::new(mahpah, 333, 777));
+            let mahpakh = "\u{05A4}";
+            return Some(Match::new(mahpakh, index, index + MAHPAKH.len_utf8()));
         }
     }
     None
@@ -125,7 +125,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
         // );
         if !two_code_points_behind && !followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, 333, 777));
+            return Some(Match::new(revia, index, index + REVIA.len_utf8()));
         }
     }
     None
@@ -171,7 +171,7 @@ pub fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> {
         // );
         if !two_code_points_behind && followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, 333, 777));
+            return Some(Match::new(revia, index, index + REVIA.len_utf8()));
         }
     }
     None
