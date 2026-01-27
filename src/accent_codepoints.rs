@@ -80,7 +80,7 @@ pub const CP_SEGOL: Utf8CodePointInfo = utf8_cp(
     "0xd6 0x92",
     "HEBREW ACCENT SEGOL",
     "֒",
-    CodePointPosition::AbovePostPositive,
+    CodePointPosition::Above,
     &[TR_SEGOL_ASHKENAZI, TR_SEGOL_SEPHARDI, TR_SEGOL_ITALIAN],
 );
 
@@ -257,7 +257,7 @@ pub const CP_ZARQA: Utf8CodePointInfo = utf8_cp(
     "0xd6 0x98",
     "HEBREW ACCENT ZARQA",
     "֘",
-    CodePointPosition::AbovePostPositive,
+    CodePointPosition::Above,
     &[
         TR_ZARQA_ASHKENAZI,
         TR_ZARQA_SEPHARDI,
@@ -287,7 +287,7 @@ pub const CP_PASHTA: Utf8CodePointInfo = utf8_cp(
     "0xd6 0x99",
     "HEBREW ACCENT PASHTA",
     "֙",
-    CodePointPosition::AbovePostPositive,
+    CodePointPosition::Above,
     &[
         TR_PASHTA_ASHKENAZI,
         TR_PASHTA_SEPHARDI,
@@ -317,7 +317,7 @@ pub const CP_YETIV: Utf8CodePointInfo = utf8_cp(
     "0xd6 0x9a",
     "HEBREW ACCENT YETIV",
     "֚",
-    CodePointPosition::UnderPrePositive,
+    CodePointPosition::Under,
     &[
         TR_YETIV_ASHKENAZI,
         TR_YETIV_SEPHARDI,
@@ -492,7 +492,7 @@ pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = utf8_cp(
     "0xd6 0xa0",
     "HEBREW ACCENT TELISHA GEDOLA",
     "֠",
-    CodePointPosition::AbovePrePositive,
+    CodePointPosition::Above,
     &[
         TR_TELISHA_GEDOLA_ASHKENAZI,
         TR_TELISHA_GEDOLA_SEPHARDI,
@@ -729,7 +729,7 @@ pub const CP_TELISHA_QETANA: Utf8CodePointInfo = utf8_cp(
     "0xd6 0xa9",
     "HEBREW ACCENT TELISHA QETANA",
     "֩",
-    CodePointPosition::AbovePostPositive,
+    CodePointPosition::Above,
     &[
         TR_TELISHA_QETANA_ASHKENAZI,
         TR_TELISHA_QETANA_SEPHARDI,
@@ -849,7 +849,7 @@ pub const CP_DEHI: Utf8CodePointInfo = utf8_cp(
     "0xd6 0xad",
     "HEBREW ACCENT DEHI",
     "֭",
-    CodePointPosition::UnderPrePositive,
+    CodePointPosition::Under,
     &[
         TR_DEHI_ASHKENAZI,
         TR_DEHI_SEPHARDI,
@@ -879,7 +879,7 @@ pub const CP_ZINOR: Utf8CodePointInfo = utf8_cp(
     "0xd6 0xae",
     "HEBREW ACCENT ZINOR",
     "֮",
-    CodePointPosition::AbovePostPositive,
+    CodePointPosition::Above,
     &[
         TR_ZINOR_ASHKENAZI,
         TR_ZINOR_SEPHARDI,
@@ -954,7 +954,7 @@ pub const CP_MAQAF: Utf8CodePointInfo = utf8_cp(
     "0xd6 0xbe",
     "HEBREW PUNCTUATION MAQAF",
     "־",
-    CodePointPosition::End,
+    CodePointPosition::After,
     &[],
 );
 
@@ -979,7 +979,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
     "0xd7 0x80",
     "HEBREW PUNCTUATION PASEQ",
     "׀",
-    CodePointPosition::End,
+    CodePointPosition::After,
     &[
         TR_PASEQ_ASHKENAZI,
         TR_PASEQ_SEPHARDI,
@@ -993,7 +993,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
 //     "0xd7 0x83",
 //     "HEBREW PUNCTUATION SOF PASUQ",
 //     "׃",
-//     position: CodePointPosition::Above,
+//     position: CodePointPosition::After,
 //     Some(Tradition::Ashkenazi {
 //         hebrew: "סוֹף פָּסֽוּק",
 //         name: "soph pasuq",
@@ -1011,6 +1011,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
 //         name: "soph pasuq",
 //     }),
 // );
+
 #[cfg(test)]
 mod tests {
     use super::*;

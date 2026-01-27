@@ -272,21 +272,31 @@ pub enum AccentType {
 
 /// Accent position, indicating the location of the accent in relation to the consonant
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
 pub enum CodePointPosition {
     #[default]
     /// Accent is located above the consonant
     Above,
-    /// Accent is located above and after the consonant
-    AbovePostPositive,
-    /// Accent is located above and before the consonant
-    AbovePrePositive,
-    /// Accent is located end of the consonant (used for Paseq, Soph Pasuq and Maqqeph)
-    End,
     /// Accent is located under the consonant
     Under,
-    /// Accent is located under and before the consonant
-    UnderPrePositive,
+    /// Used for Paseq, Soph Pasuq and Maqqeph
+    After,
 }
+
+/// WordStress, indicating the location of the accent in relation to the consonant
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
+pub enum WordStress {
+    #[default]
+    /// The accent is located above the stressed syllable
+    ImPositive,
+    /// The accent is NOT located above the stressed syllable, but at the very end of the word
+    PostPositive,
+    /// The accent is NOT located above the stressed syllable, but at the very beginning of the word
+    PrePositive,
+    /// 
+    NotApplicable
+   }
 
 /// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
 ///
