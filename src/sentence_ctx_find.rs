@@ -685,4 +685,3 @@ impl SentenceContext {
         }
     }
 }
-

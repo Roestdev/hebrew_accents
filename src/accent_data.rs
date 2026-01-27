@@ -6,6 +6,7 @@ use once_cell::sync::Lazy;
 // Local modules / crate‑internal
 use crate::accent::{
     AccentCategory, AccentInfo, AccentType, Alternates, CodePoints, PoetryAccent, ProseAccent,
+    WordStress,
 };
 use crate::accent_codepoints::*;
 
@@ -82,6 +83,7 @@ pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_SILLUQ,
         secondary: None,
@@ -97,6 +99,7 @@ pub const ATNACH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ETNAHTA,
         secondary: None,
@@ -110,6 +113,7 @@ pub const SEGOLTA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_SEGOL,
         secondary: None,
@@ -123,6 +127,7 @@ pub const SHALSHELET_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
         secondary: Some(&CP_PASEQ),
@@ -140,6 +145,7 @@ pub const ZAQEF_QATON_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZAQEF_QATAN,
         secondary: None,
@@ -153,6 +159,7 @@ pub const ZAQEPH_GADOL_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZAQEF_GADOL,
         secondary: None,
@@ -166,6 +173,7 @@ pub const REVIA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_REVIA,
         secondary: None,
@@ -179,6 +187,7 @@ pub const TIPHCHA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TIPEHA,
         secondary: None,
@@ -192,6 +201,7 @@ pub const ZARQA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -205,6 +215,7 @@ pub const PASHTA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_PASHTA,
         secondary: None,
@@ -218,6 +229,7 @@ pub const YETIV_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_YETIV,
         secondary: None,
@@ -231,6 +243,7 @@ pub const TEVIR_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TEVIR,
         secondary: None,
@@ -248,6 +261,7 @@ pub const GERESH_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_GERESH,
         secondary: None,
@@ -261,6 +275,7 @@ pub const GERSHAYIM_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_GERSHAYIM,
         secondary: None,
@@ -278,6 +293,7 @@ pub const PAZER_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_PAZER,
         secondary: None,
@@ -295,6 +311,7 @@ pub const PAZER_GADOL_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_QARNEY_PARA,
         secondary: None,
@@ -308,6 +325,7 @@ pub const TELISHA_GEDOLAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TELISHA_GEDOLA,
         secondary: None,
@@ -325,6 +343,7 @@ pub const LEGARMEH_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MUNAH,
         secondary: Some(&CP_PASEQ),
@@ -339,6 +358,7 @@ pub const MUNACH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MUNAH,
         secondary: None,
@@ -356,6 +376,7 @@ pub const MAHPAKH_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
         secondary: None,
@@ -369,6 +390,7 @@ pub const MERKHA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MERKHA,
         secondary: None,
@@ -382,6 +404,7 @@ pub const MERKHA_KEFULAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MERKHA_KEFULA,
         secondary: None,
@@ -395,6 +418,7 @@ pub const DARGA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_DARGA,
         secondary: None,
@@ -412,6 +436,7 @@ pub const AZLA_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_QADMA,
         secondary: None,
@@ -425,6 +450,7 @@ pub const TELISHA_QETANNAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TELISHA_QETANA,
         secondary: None,
@@ -442,6 +468,7 @@ pub const GALGAL_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_YERAH_BEN_YOMO,
         secondary: None,
@@ -459,6 +486,7 @@ pub const MAYELA_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Secondary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TIPEHA,
         secondary: None,
@@ -472,6 +500,7 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Secondary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_METEG,
         secondary: None,
@@ -485,7 +514,8 @@ pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::None,
     category: AccentCategory::Conjunctive,
-    code_points: CodePoints {
+    word_stress: WordStress::ImPositive,
+code_points: CodePoints {
         primary: &CP_MAQAF,
         secondary: None,
     },
@@ -513,7 +543,8 @@ pub const OLEH_WE_YORED_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
-    code_points: CodePoints {
+    word_stress: WordStress::ImPositive,
+code_points: CodePoints {
         primary: &CP_OLE,
         secondary: Some(&CP_MERKHA),
     },
@@ -529,6 +560,7 @@ pub const REVIA_GADOL_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_REVIA,
         secondary: None,
@@ -542,6 +574,7 @@ pub const REVIA_MUGRASH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_GERESH,
         secondary: Some(&CP_REVIA),
@@ -555,6 +588,7 @@ pub const SHALSHELET_GADOL_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
         secondary: Some(&CP_PASEQ),
@@ -572,6 +606,7 @@ pub const TSINNOR_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -585,6 +620,7 @@ pub const REVIA_QATON_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_REVIA,
         secondary: None,
@@ -602,6 +638,7 @@ pub const DECHI_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_DEHI,
         secondary: None,
@@ -618,6 +655,7 @@ pub const MEHUPPAKH_LEGARMEH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
         secondary: Some(&CP_PASEQ),
@@ -631,6 +669,7 @@ pub const AZLA_LEGARMEH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Disjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_QADMA,
         secondary: Some(&CP_PASEQ),
@@ -649,6 +688,7 @@ pub const ILLUY_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ILUY,
         secondary: None,
@@ -662,6 +702,7 @@ pub const TARCHA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_TIPEHA,
         secondary: None,
@@ -682,6 +723,7 @@ pub const MEHUPPAKH_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
         secondary: None,
@@ -698,6 +740,7 @@ pub const SHALSHELET_QETANNAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
         secondary: None,
@@ -711,6 +754,7 @@ pub const TSINNORIT_MERKHA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZARQA,
         secondary: Some(&CP_MERKHA),
@@ -724,6 +768,7 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: AccentType::Primary,
     category: AccentCategory::Conjunctive,
+    word_stress: WordStress::ImPositive,
     code_points: CodePoints {
         primary: &CP_ZARQA,
         secondary: Some(&CP_MAHAPAKH),

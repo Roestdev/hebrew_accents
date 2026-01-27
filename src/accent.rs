@@ -179,19 +179,22 @@ impl PoetryAccent {
 /// (non)technical details of a Hebrew Accent like category, type, UTF8 Unicode code-point(s etc.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct AccentInfo {
-    /// Primary identifiers – always present.
+    /// Primary identifiers – always present
     pub english_name: &'static str,
     pub hebrew_name: &'static str,
+    /// Meaning of the hebrew name he accent
     pub meaning: &'static str,
-    /// Optional alternate identifiers.
+    /// Optional alternate identifiers
     pub alternates: Option<Alternates>,
     /// Indicates the accent type (Primary, Secundary)
     pub accent_type: AccentType,
-    /// Optional alternate identifiers.
+    /// Optional alternate identifiers
     pub category: AccentCategory,
+    /// Indicates if the accent is on the stressed syllable
+    pub word_stress: WordStress,
     /// Unicode code‑point data.
     pub code_points: CodePoints,
-    /// Free‑form comment (may be omitted).
+    /// Free‑form comment (may be omitted)
     pub comment: Option<&'static str>,
 }
 
@@ -292,11 +295,11 @@ pub enum WordStress {
     ImPositive,
     /// The accent is NOT located above the stressed syllable, but at the very end of the word
     PostPositive,
-    /// The accent is NOT located above the stressed syllable, but at the very beginning of the word
+    /// Accent is NOT located above the stressed syllable, but at the very beginning of the word
     PrePositive,
-    /// 
-    NotApplicable
-   }
+    ///
+    NotApplicable,
+}
 
 /// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
 ///
