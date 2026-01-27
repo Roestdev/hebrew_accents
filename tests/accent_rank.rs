@@ -1,5 +1,5 @@
-//use hebrew_accents::{PoetryAccent, ProseAccent};
 use hebrew_accents::{PoetryAccent, ProseAccent};
+
 #[test]
 fn testing_prose_accent_relative_strengths() {
     // Disjunctives

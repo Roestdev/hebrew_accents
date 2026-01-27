@@ -1,6 +1,5 @@
 use hebrew_accents::display_poetry_accent_table;
 use hebrew_accents::display_prose_accent_table;
-//use hebrew_accents::display_accent_table;
 
 #[test]
 fn show_tables() {
