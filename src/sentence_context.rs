@@ -11,6 +11,7 @@ pub struct SentenceContext {
 
 /// Describes the context of a sentence (poetic or prosaic)
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+#[non_exhaustive]
 pub enum Context {
     /// The sentence follows a poetic structure (e.g., meter, rhyme).
     Poetic,

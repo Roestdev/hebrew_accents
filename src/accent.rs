@@ -89,6 +89,7 @@ impl From<PoetryAccent> for HebrewAccent {
 /// 18 Disjunctives and 11 Conjunctives.
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
 pub enum ProseAccent {
     // Disjunctives
     #[default]
@@ -136,6 +137,7 @@ impl ProseAccent {
 /// 12 Disjunctives and 12 Conjunctives.
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
 pub enum PoetryAccent {
     // Disjunctives
     #[default]
@@ -225,6 +227,7 @@ pub struct Utf8CodePointInfo {
 }
 /// Names according one of four Hebrew Traditions
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[non_exhaustive]
 pub enum Tradition {
     Ashkenazi {
         hebrew: &'static str,
@@ -246,6 +249,7 @@ pub enum Tradition {
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
 pub enum AccentCategory {
     /// accents that connect words
     Conjunctive,
@@ -256,6 +260,7 @@ pub enum AccentCategory {
 
 /// Hebrew Accent types (Primary, secondary, None)
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
 pub enum AccentType {
     #[default]
     Primary,
