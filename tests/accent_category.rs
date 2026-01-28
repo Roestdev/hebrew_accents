@@ -1,132 +1,232 @@
-use hebrew_accents::{Accent, AccentCategory, PoetryAccent, ProseAccent};
+use hebrew_accents::{Accent, AccentCategory, PoetryAccent, ProseAccent, PseudoAccent};
 
 #[test]
 fn testing_prose_accent_categories() {
     // Disjunctives
-    assert_eq!(ProseAccent::Silluq.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Atnach.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Segolta.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        ProseAccent::Silluq.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Atnach.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Segolta.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         ProseAccent::Shalshelet.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         ProseAccent::ZaqephQaton.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         ProseAccent::ZaqephGadol.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
-    assert_eq!(ProseAccent::Revia.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Tiphcha.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Zarqa.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Pashta.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Yetiv.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Tevir.category(), AccentCategory::Disjunctive);
-    assert_eq!(ProseAccent::Geresh.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        ProseAccent::Revia.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Tiphcha.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Zarqa.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Pashta.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Yetiv.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Tevir.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Geresh.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         ProseAccent::Gershayim.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
-    assert_eq!(ProseAccent::Pazer.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        ProseAccent::Pazer.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         ProseAccent::PazerGadol.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         ProseAccent::TelishaGedolah.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         ProseAccent::Legarmeh.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     // Conjunctives
-    assert_eq!(ProseAccent::Munach.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Mahpakh.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Merkha.category(), AccentCategory::Conjunctive);
+    assert_eq!(
+        ProseAccent::Munach.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Mahpakh.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Merkha.category(),
+        Some(AccentCategory::Conjunctive)
+    );
     assert_eq!(
         ProseAccent::MerkhaKephulah.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
-    assert_eq!(ProseAccent::Darga.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Azla.category(), AccentCategory::Conjunctive);
+    assert_eq!(
+        ProseAccent::Darga.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Azla.category(),
+        Some(AccentCategory::Conjunctive)
+    );
     assert_eq!(
         ProseAccent::TelishaQetannah.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
-    assert_eq!(ProseAccent::Galgal.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Mayela.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Meteg.category(), AccentCategory::Conjunctive);
-    assert_eq!(ProseAccent::Maqqeph.category(), AccentCategory::Conjunctive);
+    assert_eq!(
+        ProseAccent::Galgal.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Mayela.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        ProseAccent::Meteg.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        PseudoAccent::Maqqeph.category(),
+        Some(AccentCategory::Conjunctive)
+    );
 }
 
 #[test]
 fn testing_poetry_accent_categories() {
     // Disjunctives
-    assert_eq!(PoetryAccent::Silluq.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        PoetryAccent::Silluq.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         PoetryAccent::OlehWeYored.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
-    assert_eq!(PoetryAccent::Atnach.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        PoetryAccent::Atnach.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         PoetryAccent::ReviaGadol.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         PoetryAccent::ReviaMugrash.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         PoetryAccent::ShalsheletGadol.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         PoetryAccent::Tsinnor.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         PoetryAccent::ReviaQaton.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
-    assert_eq!(PoetryAccent::Dechi.category(), AccentCategory::Disjunctive);
-    assert_eq!(PoetryAccent::Pazer.category(), AccentCategory::Disjunctive);
+    assert_eq!(
+        PoetryAccent::Dechi.category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        PoetryAccent::Pazer.category(),
+        Some(AccentCategory::Disjunctive)
+    );
     assert_eq!(
         PoetryAccent::MehuppakhLegarmeh.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
         PoetryAccent::AzlaLegarmeh.category(),
-        AccentCategory::Disjunctive
+        Some(AccentCategory::Disjunctive)
     );
     // Conjunctives
-    assert_eq!(PoetryAccent::Munach.category(), AccentCategory::Conjunctive);
-    assert_eq!(PoetryAccent::Merkha.category(), AccentCategory::Conjunctive);
-    assert_eq!(PoetryAccent::Illuy.category(), AccentCategory::Conjunctive);
-    assert_eq!(PoetryAccent::Tarkha.category(), AccentCategory::Conjunctive);
-    assert_eq!(PoetryAccent::Galgal.category(), AccentCategory::Conjunctive);
+    assert_eq!(
+        PoetryAccent::Munach.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        PoetryAccent::Merkha.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        PoetryAccent::Illuy.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        PoetryAccent::Tarkha.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        PoetryAccent::Galgal.category(),
+        Some(AccentCategory::Conjunctive)
+    );
     assert_eq!(
         PoetryAccent::Mehuppakh.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
-    assert_eq!(PoetryAccent::Azla.category(), AccentCategory::Conjunctive);
+    assert_eq!(
+        PoetryAccent::Azla.category(),
+        Some(AccentCategory::Conjunctive)
+    );
     assert_eq!(
         PoetryAccent::ShalsheletQetannah.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
     assert_eq!(
         PoetryAccent::TsinnoritMerkha.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
     assert_eq!(
         PoetryAccent::TsinnoritMahpakh.category(),
-        AccentCategory::Conjunctive
+        Some(AccentCategory::Conjunctive)
     );
-    assert_eq!(PoetryAccent::Meteg.category(), AccentCategory::Conjunctive);
     assert_eq!(
-        PoetryAccent::Maqqeph.category(),
-        AccentCategory::Conjunctive
+        PoetryAccent::Meteg.category(),
+        Some(AccentCategory::Conjunctive)
     );
+    assert_eq!(
+        PseudoAccent::Maqqeph.category(),
+        Some(AccentCategory::Conjunctive)
+    );
+}
+
+#[test]
+fn testing_pseudo_accent_categories() {
+    assert_eq!(PseudoAccent::SophPasuq.category(), None);
+    assert_eq!(PseudoAccent::Maqqeph.category(), None);
+    assert_eq!(PseudoAccent::Paseq.category(), None);
 }

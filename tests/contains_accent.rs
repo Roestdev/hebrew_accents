@@ -1,4 +1,4 @@
-use hebrew_accents::{Context, PoetryAccent, ProseAccent, SentenceContext};
+use hebrew_accents::{Context, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext};
 
 #[test]
 fn test_contains_prose_poetry_silluq() {
@@ -314,10 +314,10 @@ fn test_contains_prose_meteg() {
 fn test_contains_prose_maqqeph() {
     // No Maqqeph
     let sentence_c = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-    assert!(!sentence_c.contains_accent(ProseAccent::Maqqeph.into()));
+    assert!(!sentence_c.contains_accent(PseudoAccent::Maqqeph.into()));
     // One Maqqeph
     let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
-    assert!(sentence_c.contains_accent(ProseAccent::Maqqeph.into()));
+    assert!(sentence_c.contains_accent(PseudoAccent::Maqqeph.into()));
 }
 /* **********************************************************
  *                          POETRY
@@ -700,8 +700,8 @@ fn test_contains_poetry_meteg() {
 fn test_contains_poetry_maqqeph() {
     // No Maqqeph
     let sentence_c = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-    assert!(!sentence_c.contains_accent(PoetryAccent::Maqqeph.into()));
+    assert!(!sentence_c.contains_accent(PseudoAccent::Maqqeph.into()));
     // One Maqqeph
     let sentence_c = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
-    assert!(sentence_c.contains_accent(PoetryAccent::Maqqeph.into()));
+    assert!(sentence_c.contains_accent(PseudoAccent::Maqqeph.into()));
 }

@@ -19,17 +19,20 @@ use crate::sentence_ctx_regex::{
     RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
     RE_OUTER_PROSE_MEAYLA,
 };
-use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, SentenceContext};
+use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext};
 
 impl SentenceContext {
-    /// Checks the creation a neew instance of SentenContext.
+    /// Returns true if the accent is present in the sentence
+    /// taking into account the context
     ///  
     /// # Example
     /// ```
-    /// use hebrew_accents::{SentenceContext,Context,HebrewAccent,ProseAccent};
+    /// use hebrew_accents::{SentenceContext,Context,HebrewAccent,ProseAccent,PoetryAccent};
     ///
     /// let sentence_context = SentenceContext::new("וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",Context::Prosaic,);
     /// assert!(sentence_context.contains_accent(ProseAccent::Silluq.into()));
+    /// assert!(!sentence_context.contains_accent(ProseAccent::Segolta.into()));
+    /// assert!(!sentence_context.contains_accent(PoetryAccent::ReviaGadol.into()));
     /// ```
     pub fn contains_accent(&self, accent: HebrewAccent) -> bool {
         match accent {
@@ -120,8 +123,7 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
                 FA_RE_OUTER_COMMON_METEG.is_match(&self.sentence).unwrap()
             }
-            HebrewAccent::Prose(ProseAccent::Maqqeph)
-            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => self.sentence.contains(MAQQEPH),
+            HebrewAccent::Pseudo(PseudoAccent::Maqqeph) => self.sentence.contains(MAQQEPH),
             /* **********************************************************
              *                          POETRY
              * *********************************************************/

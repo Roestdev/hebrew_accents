@@ -1,0 +1,216 @@
+use hebrew_accents::{Accent, PoetryAccent, ProseAccent, PseudoAccent, WordStress};
+
+#[test]
+fn testing_prose_accent_word_stress() {
+    assert_eq!(
+        ProseAccent::Silluq.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Atnach.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Segolta.word_stress(),
+        Some(WordStress::PostPositive)
+    );
+    assert_eq!(
+        ProseAccent::Shalshelet.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::ZaqephQaton.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::ZaqephGadol.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Revia.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Tiphcha.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Zarqa.word_stress(),
+        Some(WordStress::PostPositive)
+    );
+    assert_eq!(
+        ProseAccent::Pashta.word_stress(),
+        Some(WordStress::PostPositive)
+    );
+    assert_eq!(
+        ProseAccent::Yetiv.word_stress(),
+        Some(WordStress::PrePositive)
+    );
+    assert_eq!(
+        ProseAccent::Tevir.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Geresh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Gershayim.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Pazer.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::PazerGadol.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::TelishaGedolah.word_stress(),
+        Some(WordStress::PrePositive)
+    );
+    assert_eq!(
+        ProseAccent::Legarmeh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    // Some(WordStress::ImPositive)s
+    assert_eq!(
+        ProseAccent::Munach.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Mahpakh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Merkha.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::MerkhaKephulah.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Darga.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::Azla.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        ProseAccent::TelishaQetannah.word_stress(),
+        Some(WordStress::PostPositive)
+    );
+    assert_eq!(
+        ProseAccent::Galgal.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(ProseAccent::Mayela.word_stress(), None);
+    assert_eq!(ProseAccent::Meteg.word_stress(), None);
+    assert_eq!(PseudoAccent::Maqqeph.word_stress(), None);
+}
+
+#[test]
+fn testing_poetry_accent_word_stress() {
+    // ImPositives
+    assert_eq!(
+        PoetryAccent::Silluq.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::OlehWeYored.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Atnach.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::ReviaGadol.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::ReviaMugrash.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::ShalsheletGadol.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Tsinnor.word_stress(),
+        Some(WordStress::PostPositive)
+    );
+    assert_eq!(
+        PoetryAccent::ReviaQaton.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Dechi.word_stress(),
+        Some(WordStress::PrePositive)
+    );
+    assert_eq!(
+        PoetryAccent::Pazer.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::MehuppakhLegarmeh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::AzlaLegarmeh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    // Some(WordStress::ImPositive)s
+    assert_eq!(
+        PoetryAccent::Munach.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Merkha.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Illuy.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Tarkha.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Galgal.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Mehuppakh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::Azla.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::ShalsheletQetannah.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::TsinnoritMerkha.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(
+        PoetryAccent::TsinnoritMahpakh.word_stress(),
+        Some(WordStress::ImPositive)
+    );
+    assert_eq!(PoetryAccent::Meteg.word_stress(), None);
+    assert_eq!(PseudoAccent::Maqqeph.word_stress(), None);
+}
+
+#[test]
+fn testing_pseudo_accent_word_stress() {
+    assert_eq!(PseudoAccent::SophPasuq.word_stress(), None);
+    assert_eq!(PseudoAccent::Maqqeph.word_stress(), None);
+    assert_eq!(PseudoAccent::Paseq.word_stress(), None);
+}

@@ -5,7 +5,9 @@
 /// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
 pub struct SentenceContext {
+    /// The sentence
     pub sentence: String,
+    /// The context of the sentence
     pub ctx: Context,
 }
 
@@ -40,11 +42,16 @@ impl SentenceContext {
     }
 }
 
-// TODO add description
+/// Returns true if the accent is present in the sentence
+/// taking into account the context of the sentence
+/// Represents a single match if the accent is found
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
+    /// The matched HebrewAccent
     pub haystack: &'h str,
+    /// Start byte of the match
     pub start: usize,
+    /// End byte of the match
     pub end: usize,
 }
 

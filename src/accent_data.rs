@@ -8,7 +8,7 @@ use crate::accent::{
     AccentCategory, AccentInfo, AccentType, Alternates, CodePoints, PoetryAccent, ProseAccent,
     WordStress,
 };
-use crate::accent_codepoints::*;
+use crate::{accent_codepoints::*, PseudoAccent};
 
 pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; ProseAccent::COUNT]> =
     Lazy::new(|| {
@@ -42,7 +42,6 @@ pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; ProseAccent::
             &GALGAL_INFO,
             &MAYELA_INFO,
             &METEG_INFO,
-            &MAQQEPH_INFO,
         ]
     });
 pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PoetryAccent::COUNT]> =
@@ -72,17 +71,19 @@ pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PoetryAccent
             &TSINNORIT_MERKHA_INFO,
             &TSINNORIT_MAHPAKH_INFO,
             &METEG_INFO,
-            &MAQQEPH_INFO,
         ]
     });
+
+pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PseudoAccent::COUNT]> =
+    Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO,&PASEQ_INFO]);
 
 pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
     meaning: "close, cessation",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive), // TODO check/update all wordstress info
     code_points: CodePoints {
         primary: &CP_SILLUQ,
@@ -97,8 +98,8 @@ pub const ATNACH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "אתְנָח",
     meaning: "a causing to rest",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ETNAHTA,
@@ -111,9 +112,9 @@ pub const SEGOLTA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "סְגֹולְתָּא",
     meaning: "a little grape-bunch",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PostPositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_SEGOL,
         secondary: None,
@@ -125,8 +126,8 @@ pub const SHALSHELET_INFO: AccentInfo = AccentInfo {
     hebrew_name: "שַׁלְשֶׁלֶת",
     meaning: "chain or link",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
@@ -143,8 +144,8 @@ pub const ZAQEF_QATON_INFO: AccentInfo = AccentInfo {
         hebrew_name: "זָקֵף קָטָן",
         meaning: "todo",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZAQEF_QATAN,
@@ -157,8 +158,8 @@ pub const ZAQEPH_GADOL_INFO: AccentInfo = AccentInfo {
     hebrew_name: "זָקֵף גָּדוֹל",
     meaning: "large upright",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZAQEF_GADOL,
@@ -171,8 +172,8 @@ pub const REVIA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "רְבִיעַ",
     meaning: "fourth [in a sequence]",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_REVIA,
@@ -185,8 +186,8 @@ pub const TIPHCHA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "טִפְחָא",
     meaning: "handbreadth or diagonal",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TIPEHA,
@@ -199,9 +200,9 @@ pub const ZARQA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "זַרְקָא",
     meaning: "to sprinkle, scatter",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PostPositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -213,9 +214,9 @@ pub const PASHTA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "פַּשְׁטָא",
     meaning: "extending, stretching out in length",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PostPositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_PASHTA,
         secondary: None,
@@ -227,9 +228,9 @@ pub const YETIV_INFO: AccentInfo = AccentInfo {
     hebrew_name: "יְתִיב",
     meaning: "resting or sitting",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PrePositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_YETIV,
         secondary: None,
@@ -241,8 +242,8 @@ pub const TEVIR_INFO: AccentInfo = AccentInfo {
     hebrew_name: "תְּבִיר",
     meaning: "broken, downward tumble",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TEVIR,
@@ -259,8 +260,8 @@ pub const GERESH_INFO: AccentInfo = AccentInfo {
         hebrew_name: "טֶרֶס",
         meaning: "todo",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_GERESH,
@@ -273,8 +274,8 @@ pub const GERSHAYIM_INFO: AccentInfo = AccentInfo {
     hebrew_name: "גֵּרְשַׁיִם",
     meaning: "double of expulsion, driving out, divorce",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_GERSHAYIM,
@@ -291,8 +292,8 @@ pub const PAZER_INFO: AccentInfo = AccentInfo {
         hebrew_name: "פָּזֵר קָטָן",
         meaning: "small lavish or scatter",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_PAZER,
@@ -309,8 +310,8 @@ pub const PAZER_GADOL_INFO: AccentInfo = AccentInfo {
         hebrew_name: "קַרְנֵי פָרָה",
         meaning: "horns of a cow",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_QARNEY_PARA,
@@ -323,9 +324,9 @@ pub const TELISHA_GEDOLAH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
     meaning: "great (long) detached",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PrePositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TELISHA_GEDOLA,
         secondary: None,
@@ -341,8 +342,8 @@ pub const LEGARMEH_INFO: AccentInfo = AccentInfo {
         hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
         meaning: "todo",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MUNAH,
@@ -356,8 +357,8 @@ pub const MUNACH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "מוּנַ֣ח",
     meaning: "resting or placed",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MUNAH,
@@ -374,8 +375,8 @@ pub const MAHPAKH_INFO: AccentInfo = AccentInfo {
         hebrew_name: "מְהֻפָּ֤ךְ",
         meaning: "reversed",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
@@ -388,8 +389,8 @@ pub const MERKHA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "מֵרְכָא",
     meaning: "lengthener, prolonging",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MERKHA,
@@ -402,8 +403,8 @@ pub const MERKHA_KEFULAH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "מֵרְכָא כְּפוּלָה",
     meaning: "double lengthener",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MERKHA_KEFULA,
@@ -416,8 +417,8 @@ pub const DARGA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "דַּרְגָּא",
     meaning: "stairstep",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_DARGA,
@@ -434,8 +435,8 @@ pub const AZLA_INFO: AccentInfo = AccentInfo {
         hebrew_name: "קַדְמָ֨א",
         meaning: "antiquity or a former state",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_QADMA,
@@ -448,9 +449,9 @@ pub const TELISHA_QETANNAH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "תְּלִישָא קְטַנָּה",
     meaning: "small (short) detached",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
-    word_stress: Some(WordStress::PostPositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TELISHA_QETANA,
         secondary: None,
@@ -466,8 +467,8 @@ pub const GALGAL_INFO: AccentInfo = AccentInfo {
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         meaning: "moon one day old",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_YERAH_BEN_YOMO,
@@ -484,9 +485,9 @@ pub const MAYELA_INFO: AccentInfo = AccentInfo {
         hebrew_name: "מְאַיְּלָא",
         meaning: "todo",
     }),
-    accent_type: AccentType::Secondary,
-    category: AccentCategory::Conjunctive,
-    word_stress: None,
+    accent_type: Some(AccentType::Secondary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TIPEHA,
         secondary: None,
@@ -498,25 +499,53 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
     hebrew_name: "מֶתֶג",
     meaning: "accent or mark",
     alternates: None,
-    accent_type: AccentType::Secondary,
-    category: AccentCategory::Conjunctive,
-    word_stress: None,
+    accent_type: Some(AccentType::Secondary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_METEG,
         secondary: None,
     },
     comment: None,
 };
+pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
+    english_name: "Soph Pasuq",
+    hebrew_name: "end of the verse",
+    meaning:"binder",
+    alternates: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
+        primary: &CP_SOPH_PASUQ,
+        secondary: None,
+    },
+    comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
+};
 pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
     english_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
     meaning:"binder",
     alternates: None,
-    accent_type: AccentType::None,
-    category: AccentCategory::Conjunctive,
-    word_stress: Some(WordStress::ImPositive),
-code_points: CodePoints {
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
         primary: &CP_MAQAF,
+        secondary: None,
+    },
+    comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
+};
+pub const PASEQ_INFO: AccentInfo = AccentInfo {
+    english_name: "Maqqeph",
+    hebrew_name: "מַקֵּף",
+    meaning:"binder",
+    alternates: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
+        primary: &CP_PASEQ,
         secondary: None,
     },
     comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
@@ -541,8 +570,8 @@ pub const OLEH_WE_YORED_INFO: AccentInfo = AccentInfo {
     hebrew_name: "עוֹלֶה וְיוֹרֵד",
     meaning: "ascending and descending",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
 code_points: CodePoints {
         primary: &CP_OLE,
@@ -558,8 +587,8 @@ pub const REVIA_GADOL_INFO: AccentInfo = AccentInfo {
     hebrew_name: "רְבִיעַ גּדוֹל",
     meaning: "big fourth",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_REVIA,
@@ -572,8 +601,8 @@ pub const REVIA_MUGRASH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
     meaning: "exiled fourth",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_GERESH,
@@ -586,8 +615,8 @@ pub const SHALSHELET_GADOL_INFO: AccentInfo = AccentInfo {
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
     meaning: "large chain or link",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
@@ -604,9 +633,9 @@ pub const TSINNOR_INFO: AccentInfo = AccentInfo {
         hebrew_name: "זַרְקָא",
         meaning: "to sprinkle, scatter",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PostPositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -618,8 +647,8 @@ pub const REVIA_QATON_INFO: AccentInfo = AccentInfo {
     hebrew_name: "רְבִיעַ קָטוֹן",
     meaning: "small fourth",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_REVIA,
@@ -636,9 +665,9 @@ pub const DECHI_INFO: AccentInfo = AccentInfo {
         hebrew_name: "טִפְחָא",
         meaning: "handbreadth or diagonal",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
-    word_stress: Some(WordStress::PrePositive),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_DEHI,
         secondary: None,
@@ -653,8 +682,8 @@ pub const MEHUPPAKH_LEGARMEH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
     meaning: "reversed to its own",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
@@ -667,8 +696,8 @@ pub const AZLA_LEGARMEH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
     meaning: "goes to its own",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Disjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_QADMA,
@@ -686,8 +715,8 @@ pub const ILLUY_INFO: AccentInfo = AccentInfo {
     hebrew_name: "עִלּוּי",
     meaning: "elevation or raising",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ILUY,
@@ -700,8 +729,8 @@ pub const TARCHA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "טַרְחָא",
     meaning: "handbreadth or diagonal", //todo
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_TIPEHA,
@@ -721,8 +750,8 @@ pub const MEHUPPAKH_INFO: AccentInfo = AccentInfo {
         hebrew_name: "מַהְפַּךְ",
         meaning: "turning round",
     }),
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_MAHAPAKH,
@@ -738,8 +767,8 @@ pub const SHALSHELET_QETANNAH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
     meaning: "small chain",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_SHALSHELET,
@@ -752,8 +781,8 @@ pub const TSINNORIT_MERKHA_INFO: AccentInfo = AccentInfo {
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
     meaning: "pipe of continuation",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZARQA,
@@ -766,8 +795,8 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInfo = AccentInfo {
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
     meaning: "pipe of reversal",
     alternates: None,
-    accent_type: AccentType::Primary,
-    category: AccentCategory::Conjunctive,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
     word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_ZARQA,

@@ -1,4 +1,4 @@
-use hebrew_accents::{Context, Match, PoetryAccent, ProseAccent, SentenceContext};
+use hebrew_accents::{Context, Match, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext};
 
 #[test]
 fn test_find_prose_poetry_silluq() {
@@ -550,7 +550,7 @@ fn test_find_prose_poetry_meteg() {
 fn test_find_prose_poetry_maqqeph() {
     // No Maqqeph
     let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-    assert_eq!(sc.find_accent(ProseAccent::Maqqeph.into()), None);
+    assert_eq!(sc.find_accent(PseudoAccent::Maqqeph.into()), None);
     // One Maqqeph
     let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
     let expected = Match {
@@ -558,10 +558,10 @@ fn test_find_prose_poetry_maqqeph() {
         start: 56,
         end: 58,
     };
-    assert_eq!(sc.find_accent(ProseAccent::Maqqeph.into()), Some(expected));
+    assert_eq!(sc.find_accent(PseudoAccent::Maqqeph.into()), Some(expected));
     // No Maqqeph
     let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-    assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), None);
+    assert_eq!(sc.find_accent(PseudoAccent::Maqqeph.into()), None);
     // One Maqqeph
     let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
     let expected = Match {
@@ -569,7 +569,7 @@ fn test_find_prose_poetry_maqqeph() {
         start: 56,
         end: 58,
     };
-    assert_eq!(sc.find_accent(PoetryAccent::Maqqeph.into()), Some(expected));
+    assert_eq!(sc.find_accent(PseudoAccent::Maqqeph.into()), Some(expected));
 }
 /* **********************************************************
  *                          POETRY

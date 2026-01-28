@@ -20,10 +20,21 @@ use crate::sentence_ctx_regex::{
     RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
     RE_OUTER_PROSE_MEAYLA,
 };
-use crate::{Context, HebrewAccent, Match, PoetryAccent, ProseAccent, SentenceContext};
+use crate::{
+    Context, HebrewAccent, Match, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext,
+};
 
 impl SentenceContext {
-    // TODO examples
+    /// This routine searches for the first match of a HebrewAccent in the sentence
+    /// taking into account the context.
+    /// If found, it returns a [`Match`]. The `Match` provides access to both
+    /// the byte offsets of the match and the actual substring that matched.
+    ///
+    /// Note if you just want to test the existence of a HebrewAccent,
+    /// it's potentially faster to use `hebrew_accent::find_accent(HebrewAccent)`
+    /// instead of `hebrew_accent::find_accent(HebrewAccent).is_some()`.
+    ///
+    /// # Example // TODO
     pub fn find_accent(self, accent: HebrewAccent) -> Option<Match<'static>> {
         match accent {
             /* **********************************************************
@@ -32,7 +43,6 @@ impl SentenceContext {
             // Disjunctives
             HebrewAccent::Prose(ProseAccent::Silluq)
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
-                //FA_RE_OUTER_COMMON_SILLUQ.is_match(&self.sentence).unwrap();
                 if let Some(outer_match) = FA_RE_OUTER_COMMON_SILLUQ.find(&self.sentence).unwrap() {
                     println!(
                         "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
@@ -52,7 +62,6 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => {
-                //self.sentence.find(ETNAHTA))
                 self.sentence.find(ETNAHTA).map(|index| {
                     Match::new(
                         "TODO: insert single character",
@@ -382,8 +391,7 @@ impl SentenceContext {
                     None
                 }
             }
-            HebrewAccent::Prose(ProseAccent::Maqqeph)
-            | HebrewAccent::Poetry(PoetryAccent::Maqqeph) => {
+            HebrewAccent::Pseudo(PseudoAccent::Maqqeph) => {
                 self.sentence.find(MAQQEPH).map(|index| {
                     Match::new(
                         "TODO: insert single character",
