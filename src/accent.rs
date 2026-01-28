@@ -191,7 +191,7 @@ pub struct AccentInfo {
     /// Optional alternate identifiers
     pub category: AccentCategory,
     /// Indicates if the accent is on the stressed syllable
-    pub word_stress: WordStress,
+    pub word_stress: Option<WordStress>,
     /// Unicode code‑point data.
     pub code_points: CodePoints,
     /// Free‑form comment (may be omitted)
