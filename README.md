@@ -5,11 +5,11 @@
 <p align="center">
   <a href="https://docs.rs/hebrew_accents"> 
     Documentation
-  </a> | <a href="hhttps://github.com/Roestdev/hebrew_accents/">
+  </a> | <a href="https://github.com/Roestdev/hebrew_accents/">
     Website
-  </a> | <a href="hhttps://github.com/Roestdev/hebrew_accents/BACKGROUND.md">
+  </a> | <a href="https://github.com/Roestdev/hebrew_accents/BACKGROUND.md">
     Introduction & References
-  </a> | <a href="hhttps://github.com/Roestdev/hebrew_accents/DESIGN.md">
+  </a> | <a href="https://github.com/Roestdev/hebrew_accents/DESIGN.md">
     Design
   </a>
 </p>
