@@ -1,6 +1,3 @@
-#![warn(missing_docs)]
-// #![doc = include_str!("../README.md")]
-
 //!Managing Masoretic Hebrew Accents
 //!
 //!## Project Status 
@@ -165,6 +162,8 @@
 //!
 //!TODO
 //!
+
+#![warn(missing_docs)]
 
 // common
 mod char;
