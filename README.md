@@ -1,6 +1,6 @@
 ### hebrew_accents
 
-Managing Masoretic Hebrew Accents
+Managing Hebrew Accents as used in the Masoretic text
 
 ### Why this crate
  
@@ -8,7 +8,8 @@ The reason this library was created is because the Hebrew accents used in Tanach
 
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
 
-If you want to use the Hebrew UTF8 code points directly you could have alook at [hebrew_unicode_point](<https://crates.io/crates/hebrew_unicode_script>>
+If you want to use the Hebrew UTF8 code points directly you could have alook at [hebrew_unicode_point](<https://crates.io/crates/hebrew_unicode_script>)
+
 ### Goals
 
 The main goal is to write a library that can be used to learn the Masoretic Hebrew accents.
