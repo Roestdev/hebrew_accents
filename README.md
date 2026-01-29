@@ -31,12 +31,11 @@ Sub-goals:
 
 ### Project Status 
 
-<span style="color: #2ECC71;">✅ Success: Build passed</span>  
-<span style="color: #E74C3C;">❌ Error: Test failed</span>  
 <span style="color: #F39C12;">⚠️ Warning: This project is currently in the design/development mode</span> 
 
-#### DO NOT USE in production!
-There will be breakages regularly.
+<span style="color: #E74C3C;">❌ DO NOT USE in production! There will be breakages regularly.</span> 
+
+<span style="color: #2ECC71;">✅ Success: All tests passed</span>  
 
 ### License
 
