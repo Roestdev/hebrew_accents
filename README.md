@@ -29,7 +29,14 @@ Sub-goals:
 - Determine the type of text based on the identified accents.
 - Achieve absolute accuracy.
 
-## License
+### Project Status 
+
+**This project is currently in the design/development mode.**
+
+#### DO NOT USE in production!
+There will be breakages regularly.
+
+### License
 
 The `hebrew_accents` library is distributed under either of
 
@@ -42,16 +49,14 @@ The `hebrew_accents` library is distributed under either of
 
 at your option.
 
-### Contribution
+#### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 
-## Project Status 
+<!-- 1️⃣ Inline HTML -->
+<span style="color:#ff4500;">orange text</span>
 
-**This project is currently in the design/development mode.**
-
-#### DO NOT USE in production!
-There will be breakages regularly.
-
+<!-- 2️⃣ Legacy <font> -->
+<font color="green">green text</font>
