@@ -20,11 +20,13 @@ Managing Hebrew accents as used in the Masoretic texts.
  
 The reason this library was created is because the Hebrew accents used in Masoretic texts always exactly the same as UTF-8 code points.
 
-The system of accents employed is complex and nuanced, presenting a challenging area of study for scholars and researchers. Several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
+The system of accents employed is complex and nuanced, several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
 - There are **two** different accent systems
 - Accents may consists of one or two UTF-8 code points
-- Different Hebrew accent names can use the same accent symbol
+- Different Hebrew accent names can use the same symbol
 - Not all accents are part of both accent systems
+- Disagreement among scholars
+- Some accents are disjuntive in one system and conjunctive in the other system 
 
 If you want to use the Hebrew UTF8 code points directly you could have a look at [hebrew_unicode_script](<https://crates.io/crates/hebrew_unicode_script>)
 
