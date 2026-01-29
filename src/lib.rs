@@ -1,8 +1,6 @@
 #![warn(missing_docs)]
 // #![doc = include_str!("../README.md")]
 
-//!# hebrew_accents
-//!
 //!Managing Masoretic Hebrew Accents
 //!
 //!## Project Status 

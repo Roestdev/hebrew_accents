@@ -1,17 +1,11 @@
-# hebrew_accents
+## hebrew_accents
 
 Managing Masoretic Hebrew Accents
 
-## Project Status 
-
-**This project is currently in the design/development mode.**
-
-#### DO NOT USE in production
-There will be breakages regularly.   
-
-
-## Description
+## Why?
  
+The reason this library was created is because the Hebrew accents used in Tanach are not the same as UTF-8 code points.
+
 This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
 
 Be aware that the Hebrew accents are not exactly the same as the UTF8 Hebrew Unicode code-points!
@@ -49,3 +43,11 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
+
+## Project Status 
+
+**This project is currently in the design/development mode.**
+
+#### DO NOT USE in production!
+There will be breakages regularly.   
+
