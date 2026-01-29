@@ -56,7 +56,7 @@ for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 
 <!-- 1️⃣ Inline HTML -->
-<span style="color:#ff4500;">orange text</span>
+##<span style="color:#ff4500;">orange text</span>
 
 <!-- 2️⃣ Legacy <font> -->
-<font color="green">green text</font>
+##<font color="green">green text</font>
