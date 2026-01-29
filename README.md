@@ -1,14 +1,18 @@
 ### hebrew_accents
 
-Managing Hebrew Accents as used in the Masoretic text
+Managing Hebrew accents as used in the Masoretic texts.
 
-### Why this crate
+### Why this crate?
  
-The reason this library was created is because the Hebrew accents used in Tanach are not the same as UTF-8 code points. 
+The reason this library was created is because the Hebrew accents used in Masoretic texts always exactly the same as UTF-8 code points.
 
-This crate will serve as a library for finding, filtering, and displaying Hebrew accents, specifically focusing on the Tiberian accent system as documented by the Masoretes.
+The accents used in the Masoretic texts have been (are) the subject of extensive scholarly research and discussion, with numerous books and articles written on the topic over the years. The system of accents employed is complex and nuanced, presenting a challenging area of study for scholars and researchers.
 
-If you want to use the Hebrew UTF8 code points directly you could have alook at [hebrew_unicode_point](<https://crates.io/crates/hebrew_unicode_script>)
+Several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
+- Two seperate accent systems
+- Accents may consists of two UTF8 code points
+
+If you want to use the Hebrew UTF8 code points directly you could have a look at [hebrew_unicode_script](<https://crates.io/crates/hebrew_unicode_script>)
 
 ### Goals
 
