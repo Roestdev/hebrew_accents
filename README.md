@@ -31,7 +31,9 @@ Sub-goals:
 
 ### Project Status 
 
-**This project is currently in the design/development mode.**
+<span style="color: #2ECC71;">✅ Success: Build passed</span>  
+<span style="color: #E74C3C;">❌ Error: Test failed</span>  
+<span style="color: #F39C12;">⚠️ Warning: This project is currently in the design/development mode</span> 
 
 #### DO NOT USE in production!
 There will be breakages regularly.
@@ -54,17 +56,3 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
-
-<!-- 1️⃣ Inline HTML -->
-<span style="color:#ff4500;">orange text</span>
-
- <span style="color:#6f42c1;">red</span>
-
-<!-- 2️⃣ Legacy <font> -->
-<font color="green">green text</font>
-
-<span style="background-color: #0074D9; color: white; padding: 0.2em 0.4em; border-radius: 3px;">Info: New feature released</span>  
-
-<span style="color: #2ECC71;">✅ Success: Build passed</span>  
-<span style="color: #E74C3C;">❌ Error: Test failed</span>  
-<span style="color: #F39C12;">⚠️ Warning: Deprecated API</span> 
