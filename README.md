@@ -8,7 +8,7 @@
   </a> | <a href="https://github.com/Roestdev/hebrew_accents/">
     Website
   </a> | <a href="https://github.com/Roestdev/hebrew_accents/BACKGROUND.md">
-    Introduction & References
+    Intro & Ref
   </a> | <a href="https://github.com/Roestdev/hebrew_accents/DESIGN.md">
     Design
   </a>
@@ -16,7 +16,7 @@
 
 Managing Hebrew accents as used in the Masoretic texts.
 
-### Why this crate?
+### Why this crate
  
 The reason this library was created is because the Hebrew accents used in Masoretic texts always exactly the same as UTF-8 code points.
 
@@ -28,15 +28,19 @@ The system of accents employed is complex and nuanced, several factors contribut
 - Disagreement among scholars
 - Some accents are disjuntive in one system and conjunctive in the other system 
 
-If you want to use the Hebrew UTF8 code points directly you could have a look at [hebrew_unicode_script](<https://crates.io/crates/hebrew_unicode_script>)
+If you want to use the Hebrew UTF8 code points directly you could have a look at my other crate [hebrew_unicode_script](<https://crates.io/crates/hebrew_unicode_script>)
 
-### Usage
+### When to use
+
+
+
+### How to use
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-hebrew_accents = "0.0.2"  // or a newer version
+hebrew_accents = "0.0.3"  // or a newer version
 ```
 
 Then, in your `main.rs`:
@@ -50,11 +54,13 @@ assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 // or
 assert!(newsc.contains_accent(ProseAccent::Tiphcha.into()));
 ```
+
 ### Goals
 
 The main goal is to write a library that can be used to learn the Masoretic Hebrew accents.
 
 Sub-goals:
+
 - Identify Hebrew accents within the provided text.
 - Locate specific Hebrew accents.
 - Supply some statistical information.
@@ -73,8 +79,6 @@ Sub-goals:
  There will be breakages regularly.
 
 <span style="color: #2ECC71;">✅ Success: All tests passed</span>  
-
-
 
 ### License
 

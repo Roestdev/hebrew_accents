@@ -75,7 +75,7 @@ pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PoetryAccent
     });
 
 pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PseudoAccent::COUNT]> =
-    Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO,&PASEQ_INFO]);
+    Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO, &PASEQ_INFO]);
 
 pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Silluq",
@@ -114,7 +114,7 @@ pub const SEGOLTA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PostPositive),
     code_points: CodePoints {
         primary: &CP_SEGOL,
         secondary: None,
@@ -202,7 +202,7 @@ pub const ZARQA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PostPositive),
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -216,7 +216,7 @@ pub const PASHTA_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PostPositive),
     code_points: CodePoints {
         primary: &CP_PASHTA,
         secondary: None,
@@ -230,7 +230,7 @@ pub const YETIV_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PrePositive),
     code_points: CodePoints {
         primary: &CP_YETIV,
         secondary: None,
@@ -326,7 +326,7 @@ pub const TELISHA_GEDOLAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PrePositive),
     code_points: CodePoints {
         primary: &CP_TELISHA_GEDOLA,
         secondary: None,
@@ -451,7 +451,7 @@ pub const TELISHA_QETANNAH_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PostPositive),
     code_points: CodePoints {
         primary: &CP_TELISHA_QETANA,
         secondary: None,
@@ -487,7 +487,7 @@ pub const MAYELA_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: Some(AccentType::Secondary),
     category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: None,
     code_points: CodePoints {
         primary: &CP_TIPEHA,
         secondary: None,
@@ -501,7 +501,7 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Secondary),
     category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: None,
     code_points: CodePoints {
         primary: &CP_METEG,
         secondary: None,
@@ -635,7 +635,7 @@ pub const TSINNOR_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PostPositive),
     code_points: CodePoints {
         primary: &CP_ZINOR,
         secondary: None,
@@ -667,7 +667,7 @@ pub const DECHI_INFO: AccentInfo = AccentInfo {
     }),
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive),
+    word_stress: Some(WordStress::PrePositive),
     code_points: CodePoints {
         primary: &CP_DEHI,
         secondary: None,

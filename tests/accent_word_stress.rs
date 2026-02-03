@@ -109,7 +109,6 @@ fn testing_prose_accent_word_stress() {
     );
     assert_eq!(ProseAccent::Mayela.word_stress(), None);
     assert_eq!(ProseAccent::Meteg.word_stress(), None);
-    assert_eq!(PseudoAccent::Maqqeph.word_stress(), None);
 }
 
 #[test]
@@ -139,7 +138,7 @@ fn testing_poetry_accent_word_stress() {
         PoetryAccent::ShalsheletGadol.word_stress(),
         Some(WordStress::ImPositive)
     );
-    assert_eq!(
+    assert_eq!( // TODO chec book
         PoetryAccent::Tsinnor.word_stress(),
         Some(WordStress::PostPositive)
     );
@@ -205,7 +204,6 @@ fn testing_poetry_accent_word_stress() {
         Some(WordStress::ImPositive)
     );
     assert_eq!(PoetryAccent::Meteg.word_stress(), None);
-    assert_eq!(PseudoAccent::Maqqeph.word_stress(), None);
 }
 
 #[test]

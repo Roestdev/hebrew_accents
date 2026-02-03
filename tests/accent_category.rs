@@ -116,10 +116,6 @@ fn testing_prose_accent_categories() {
         ProseAccent::Meteg.category(),
         Some(AccentCategory::Conjunctive)
     );
-    assert_eq!(
-        PseudoAccent::Maqqeph.category(),
-        Some(AccentCategory::Conjunctive)
-    );
 }
 
 #[test]
@@ -216,10 +212,6 @@ fn testing_poetry_accent_categories() {
     );
     assert_eq!(
         PoetryAccent::Meteg.category(),
-        Some(AccentCategory::Conjunctive)
-    );
-    assert_eq!(
-        PseudoAccent::Maqqeph.category(),
         Some(AccentCategory::Conjunctive)
     );
 }

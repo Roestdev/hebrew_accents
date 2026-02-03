@@ -427,6 +427,8 @@ pub enum WordStress {
     PostPositive,
     /// Accent is NOT located above the stressed syllable, but at the very beginning of the word
     PrePositive,
+    /// None, used for the secondary accents like Meteg
+    None,
 }
 
 /// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.

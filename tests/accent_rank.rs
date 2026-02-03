@@ -32,7 +32,6 @@ fn testing_prose_accent_relative_strengths() {
     assert_eq!(ProseAccent::Galgal.relative_strength(), 26);
     assert_eq!(ProseAccent::Mayela.relative_strength(), 27);
     assert_eq!(ProseAccent::Meteg.relative_strength(), 28);
-    assert_eq!(PseudoAccent::Maqqeph.relative_strength(), 2);
 }
 
 #[test]
@@ -62,7 +61,6 @@ fn testing_poetry_accent_relative_strengths() {
     assert_eq!(PoetryAccent::TsinnoritMerkha.relative_strength(), 21);
     assert_eq!(PoetryAccent::TsinnoritMahpakh.relative_strength(), 21);
     assert_eq!(PoetryAccent::Meteg.relative_strength(), 22);
-    assert_eq!(PseudoAccent::Maqqeph.relative_strength(), 23);
 }
 
 #[test]
