@@ -3,36 +3,43 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.rs/hebrew_accents"> 
-    Documentation
-  </a> | <a href="https://github.com/Roestdev/hebrew_accents/">
-    Website
-  </a> | <a href="https://github.com/Roestdev/hebrew_accents/BACKGROUND.md">
-    Intro & Ref
-  </a> | <a href="https://github.com/Roestdev/hebrew_accents/DESIGN.md">
-    Design
+  <a href="https://docs.rs/hebrew_accents">
+    📚 Documentation
+  </a> |
+  <a href="https://github.com/Roestdev/hebrew_accents/">
+    🌐 Repository
+  </a> |
+  <a href="https://github.com/Roestdev/hebrew_accents/BACKGROUND.md">
+    📖 Background & References
+  </a> |
+  <a href="https://github.com/Roestdev/hebrew_accents/DESIGN.md">
+    🛠️ Design
   </a>
 </p>
 
-Managing Hebrew accents as used in the Masoretic texts.
 
-### Why this crate
+### What is this crate?
+
+`hebrew_accents` provides a **Rust library for working with the Masoretic Hebrew cantillation marks** (the “accents” that appear in the Tanach). This crate abstracts the complexities of the Masoretic Hebrew cantillation marks (see the file [BACKGROUND](BACKGROUND) for more insight in the complexities) 
+
+### Why this crate?
  
-The reason this library was created is because the Hebrew accents used in Masoretic texts always exactly the same as UTF-8 code points.
+The reason this library was created is because the Hebrew accents used in Masoretic texts **not** always exactly the same as UTF-8 code points. The system of accents employed is complex and nuanced, several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
 
-The system of accents employed is complex and nuanced, several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
 - There are **two** different accent systems
 - Accents may consists of one or two UTF-8 code points
 - Different Hebrew accent names can use the same symbol
 - Not all accents are part of both accent systems
 - Disagreement among scholars
-- Some accents are disjuntive in one system and conjunctive in the other system 
-
-If you want to use the Hebrew UTF8 code points directly you could have a look at my other crate [hebrew_unicode_script](<https://crates.io/crates/hebrew_unicode_script>)
+ 
+If you only need raw Unicode code points, see my other companion crate [`hebrew_unicode_script`](https://crates.io/crates/hebrew_unicode_script).
 
 ### When to use
 
+There are two main reasons for use this crate:
 
+1. Explore the more detailed properties of each Masoretic accent.
+2. Programmatically inspect Biblical texts for research or tooling.
 
 ### How to use
 
@@ -43,27 +50,26 @@ Add this to your `Cargo.toml`:
 hebrew_accents = "0.0.3"  // or a newer version
 ```
 
-Then, in your `main.rs`:
+Then import and use the API in your `main.rs`:
 
 ``` rust
 use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent};
-
-let newsc = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",Context::Prosaic);
-
-assert!(newsc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
+// create a new SentenceContext (String,Context)
+let sc = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",Context::Prosaic);
+assert!(sc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 // or
-assert!(newsc.contains_accent(ProseAccent::Tiphcha.into()));
+assert!(sc.contains_accent(ProseAccent::Tiphcha.into()));
 ```
 
 ### Goals
 
-The main goal is to write a library that can be used to learn the Masoretic Hebrew accents.
+The main goal is to write a library that can be used to learn more about the Masoretic Hebrew accents as used in the Tanach
 
 Sub-goals:
 
-- Identify Hebrew accents within the provided text.
-- Locate specific Hebrew accents.
-- Supply some statistical information.
+- Locate every accent token in a supplied string.
+- Check whether a particular accent occurs.
+- Gather simple statistics (counts, distribution, etc.).
 
 ### Non-Goals
 
