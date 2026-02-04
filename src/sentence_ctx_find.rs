@@ -144,7 +144,7 @@ impl SentenceContext {
                 })
             }
             HebrewAccent::Prose(ProseAccent::Tiphcha)
-            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => {
+            | HebrewAccent::Poetry(PoetryAccent::Tarcha) => {
                 self.sentence.find(TIPEHA).map(|index| {
                     Match::new(
                         "TODO: insert single character",

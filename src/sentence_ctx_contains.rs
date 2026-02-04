@@ -62,7 +62,7 @@ impl SentenceContext {
                 self.sentence.contains(REVIA)
             }
             HebrewAccent::Prose(ProseAccent::Tiphcha)
-            | HebrewAccent::Poetry(PoetryAccent::Tarkha) => self.sentence.contains(TIPEHA),
+            | HebrewAccent::Poetry(PoetryAccent::Tarcha) => self.sentence.contains(TIPEHA),
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => {
                 self.sentence.contains(ZARQA)
             }

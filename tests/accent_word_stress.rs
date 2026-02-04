@@ -138,7 +138,8 @@ fn testing_poetry_accent_word_stress() {
         PoetryAccent::ShalsheletGadol.word_stress(),
         Some(WordStress::ImPositive)
     );
-    assert_eq!( // TODO chec book
+    assert_eq!(
+        // TODO chec book
         PoetryAccent::Tsinnor.word_stress(),
         Some(WordStress::PostPositive)
     );
@@ -176,7 +177,7 @@ fn testing_poetry_accent_word_stress() {
         Some(WordStress::ImPositive)
     );
     assert_eq!(
-        PoetryAccent::Tarkha.word_stress(),
+        PoetryAccent::Tarcha.word_stress(),
         Some(WordStress::ImPositive)
     );
     assert_eq!(

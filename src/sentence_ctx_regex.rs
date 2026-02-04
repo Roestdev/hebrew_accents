@@ -1,5 +1,5 @@
-//! 
-//! 
+//!
+//!
 
 // Standard library
 use once_cell::sync::Lazy;

@@ -53,7 +53,7 @@ fn testing_poetry_accent_relative_strengths() {
     assert_eq!(PoetryAccent::Munach.relative_strength(), 13);
     assert_eq!(PoetryAccent::Merkha.relative_strength(), 14);
     assert_eq!(PoetryAccent::Illuy.relative_strength(), 15);
-    assert_eq!(PoetryAccent::Tarkha.relative_strength(), 16);
+    assert_eq!(PoetryAccent::Tarcha.relative_strength(), 16);
     assert_eq!(PoetryAccent::Galgal.relative_strength(), 17);
     assert_eq!(PoetryAccent::Mehuppakh.relative_strength(), 18);
     assert_eq!(PoetryAccent::Azla.relative_strength(), 19);

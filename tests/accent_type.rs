@@ -132,7 +132,7 @@ fn testing_poetry_accent_types() {
     );
     assert_eq!(PoetryAccent::Illuy.accent_type(), Some(AccentType::Primary));
     assert_eq!(
-        PoetryAccent::Tarkha.accent_type(),
+        PoetryAccent::Tarcha.accent_type(),
         Some(AccentType::Primary)
     );
     assert_eq!(

@@ -962,16 +962,16 @@ fn test_find_poetry_illuy() {
     assert_eq!(sc.find_accent(PoetryAccent::Illuy.into()), None);
 }
 #[test]
-fn test_find_poetry_tarkha() {
+fn test_find_poetry_tarcha() {
     let sc = SentenceContext::new("את־אבר֖הם", Context::Poetic);
     let expected = Match {
         haystack: "TODO: insert single character",
         start: 12,
         end: 14,
     };
-    assert_eq!(sc.find_accent(PoetryAccent::Tarkha.into()), Some(expected));
+    assert_eq!(sc.find_accent(PoetryAccent::Tarcha.into()), Some(expected));
     let sc = SentenceContext::new("את־אברהם", Context::Poetic);
-    assert_eq!(sc.find_accent(PoetryAccent::Tarkha.into()), None);
+    assert_eq!(sc.find_accent(PoetryAccent::Tarcha.into()), None);
 }
 #[test]
 fn test_find_poetry_galgal() {

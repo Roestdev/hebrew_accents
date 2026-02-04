@@ -7,26 +7,42 @@ use crate::accent_data::*;
 
 /// Gets accent information
 pub trait Accent: Copy + Sized {
+    /// indicates the relative_strength of a selected accent (1 is the strongest)
+    fn relative_strength(self) -> u8;
+
     /// Return the *static* metadata for this concrete accent.
     fn details(self) -> &'static AccentInfo;
     // Convenience wrappers.
-    /// accenttrypr
+    /// English name of the accent
+    #[inline]
+    fn english_name(self) -> &'static str {
+        self.details().english_name
+    }
+    /// Hebrew name of the accent
+    #[inline]
+    fn hebrew_name(self) -> &'static str {
+        self.details().hebrew_name
+    }
+    /// meaning of the Hebrew name
+    #[inline]
+    fn meaning(self) -> &'static str {
+        self.details().meaning
+    }
+    /// accent type
     #[inline]
     fn accent_type(self) -> Option<AccentType> {
         self.details().accent_type
     }
-    /// accenttrypr
+    /// accent category
     #[inline]
     fn category(self) -> Option<AccentCategory> {
         self.details().category
     }
-    /// accenttrypr
+    /// accent word stress
     #[inline]
     fn word_stress(self) -> Option<WordStress> {
         self.details().word_stress
     }
-    /// indicates the relative_strength of a selected accent
-    fn relative_strength(self) -> u8;
 }
 
 impl Accent for HebrewAccent {
@@ -36,6 +52,27 @@ impl Accent for HebrewAccent {
             HebrewAccent::Prose(p) => p.details(),
             HebrewAccent::Poetry(p) => p.details(),
             HebrewAccent::Pseudo(p) => p.details(),
+        }
+    }
+    fn english_name(self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.details().english_name,
+            HebrewAccent::Poetry(p) => p.details().english_name,
+            HebrewAccent::Pseudo(p) => p.details().english_name,
+        }
+    }
+    fn hebrew_name(self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.details().hebrew_name,
+            HebrewAccent::Poetry(p) => p.details().hebrew_name,
+            HebrewAccent::Pseudo(p) => p.details().hebrew_name,
+        }
+    }
+    fn meaning(self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.details().meaning,
+            HebrewAccent::Poetry(p) => p.details().meaning,
+            HebrewAccent::Pseudo(p) => p.details().meaning,
         }
     }
     fn accent_type(self) -> Option<AccentType> {
@@ -233,8 +270,8 @@ pub enum PoetryAccent {
     Merkha,
     /// Conjunctive prose accent Illuy,
     Illuy,
-    /// Conjunctive prose accent Tarkha
-    Tarkha,
+    /// Conjunctive prose accent Tarcha
+    Tarcha,
     /// Conjunctive prose accent Galgal
     Galgal,
     /// Conjunctive prose accent Mehuppakh
@@ -288,11 +325,11 @@ impl PseudoAccent {
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct AccentInfo {
-    /// Primary identifiers – always present
+    /// Primary identifiers
     pub english_name: &'static str,
-    /// Hebrew name of the accent – always present
+    /// Hebrew name of the accent
     pub hebrew_name: &'static str,
-    /// The meaning of the hebrew the accent – always present
+    /// The meaning of the hebrew the accent
     pub meaning: &'static str,
     /// Optional alternate identifiers
     pub alternates: Option<Alternates>,
@@ -321,22 +358,22 @@ pub struct Alternates {
 /// Lists one or two UTF-8 code-point(s) from which the accent is constructed
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct CodePoints {
-    /// Primary UTF8 code point
+    /// Primary UTF-8 code point
     pub primary: &'static Utf8CodePointInfo,
-    /// Secondary UTF8 code point, if applicable
+    /// Secondary UTF-8 code point, if applicable
     pub secondary: Option<&'static Utf8CodePointInfo>,
 }
 
-/// Details on a specific UTF8 Unicode code-point
+/// Details on a specific UTF-8 Unicode code-point
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Utf8CodePointInfo {
-    /// UTF8 code-point, e.g. U+0591
+    /// UTF-8 code-point, e.g. U+0591
     pub code_point: &'static str,
-    /// The hex value of the UTF8 code-point
+    /// The hex value of the UTF-8 code-point
     pub hex_value: &'static str,
-    /// The name of the UTF8 code-point as mentioned in the UTF8 code tables
+    /// The name of the UTF-8 code-point as mentioned in the UTF-8 code tables
     pub name: &'static str,
-    /// The symbol of the UTF8 code-point
+    /// The symbol of the UTF-8 code-point
     pub symbol: &'static str,
     /// The position of the code-point in relation to the consonant
     pub position: CodePointPosition,
@@ -405,14 +442,14 @@ pub enum AccentType {
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
 #[non_exhaustive]
 pub enum CodePointPosition {
-    /// UTF8 code point is located above the consonant
+    /// UTF-8 code point is located above the consonant
     Above,
-    /// UTF8 code point is located above the consonant
+    /// UTF-8 code point is located above the consonant
     /// Used for Paseq, Soph Pasuq and Maqqeph
     After,
-    /// UTF8 code point is located in between two words
+    /// UTF-8 code point is located in between two words
     InBetween,
-    /// UTF8 code point is located under the consonant
+    /// UTF-8 code point is located under the consonant
     #[default]
     Under,
 }
@@ -456,7 +493,7 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     13, // Munach
     /*13 */ 14, // Merkha
     /*14 */ 15, // Illuy
-    /*15 */ 16, // Tarkha
+    /*15 */ 16, // Tarcha
     /*16 */ 17, // Galgal
     /*17 */ 18, // Mehuppakh
     /*18 */ 19, // Azla

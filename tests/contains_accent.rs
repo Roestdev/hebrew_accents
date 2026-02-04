@@ -520,11 +520,11 @@ fn test_contains_poetry_illuy() {
     assert!(!sentence_c.contains_accent(PoetryAccent::Illuy.into()));
 }
 #[test]
-fn test_contains_poetry_tarkha() {
+fn test_contains_poetry_tarcha() {
     let sentence_c = SentenceContext::new("את־אבר֖הם", Context::Poetic);
-    assert!(sentence_c.contains_accent(PoetryAccent::Tarkha.into()));
+    assert!(sentence_c.contains_accent(PoetryAccent::Tarcha.into()));
     let sentence_c = SentenceContext::new("את־אברהם", Context::Poetic);
-    assert!(!sentence_c.contains_accent(PoetryAccent::Tarkha.into()));
+    assert!(!sentence_c.contains_accent(PoetryAccent::Tarcha.into()));
 }
 #[test]
 fn test_contains_poetry_galgal() {

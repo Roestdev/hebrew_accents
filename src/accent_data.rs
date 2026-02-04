@@ -510,8 +510,8 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
 };
 pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Soph Pasuq",
-    hebrew_name: "end of the verse",
-    meaning:"binder",
+    hebrew_name: "todo", // TODO
+    meaning:"end of the verse", // TODO
     alternates: None,
     accent_type: None,
     category: None,
@@ -525,7 +525,7 @@ pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
 pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
     english_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
-    meaning:"binder",
+    meaning:"binder", // TODO
     alternates: None,
     accent_type: None,
     category: None,
@@ -537,9 +537,9 @@ pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
     comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
 };
 pub const PASEQ_INFO: AccentInfo = AccentInfo {
-    english_name: "Maqqeph",
-    hebrew_name: "מַקֵּף",
-    meaning:"binder",
+    english_name: "Paseq",
+    hebrew_name: "todo", // TODO
+    meaning:"binder", // TODO
     alternates: None,
     accent_type: None,
     category: None,
@@ -727,7 +727,7 @@ pub const ILLUY_INFO: AccentInfo = AccentInfo {
 pub const TARCHA_INFO: AccentInfo = AccentInfo {
     english_name: "Tarcha",
     hebrew_name: "טַרְחָא",
-    meaning: "handbreadth or diagonal", //todo
+    meaning: "handbreadth or diagonal", //TODO
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Conjunctive),
@@ -807,4 +807,4 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInfo = AccentInfo {
 
 // METEG see PROSE
 
-//MAQQEPH see PROSE
+// MAQQEPH see PROSE

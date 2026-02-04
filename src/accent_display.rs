@@ -33,6 +33,17 @@ pub fn display_poetry_accent_table() {
     println!("=== END OF POETRY TABLE ===\n");
 }
 
+/// Print every accent in the *pseudo* table.
+///
+/// Works exactly like `display_pseudo_accent_table` but walks `POETRY_ACCENT_TABLE`.
+pub fn display_pseudo_accent_table() {
+    println!("=== PSEUDO ACCENT TABLE ===");
+    for (idx, info) in PSEUDO_ACCENT_TABLE.iter().enumerate() {
+        println!("{:02}.  {:#?}", idx + 1, info);
+    }
+    println!("=== END OF PSEUDO TABLE ===\n");
+}
+
 /* -------------------------------------------------------------------------- */
 /* Optional convenience: a generic printer that works for any `&[&AccentInfo]`. */
 /* -------------------------------------------------------------------------- */
@@ -47,7 +58,7 @@ pub fn display_accent_table(name: &str, table: &[&AccentInfo]) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Example usage (you can put this in `main.rs` or any test harness).          */
+/* Example usage (you can put this in `main.rs` or any test harness).         */
 /* -------------------------------------------------------------------------- */
 
 #[cfg(test)]
@@ -55,13 +66,28 @@ mod tests {
     use super::*;
 
     #[test]
-    fn show_tables() {
-        // Direct calls
+    fn show_prose_table() {
+        // Direct call
         display_prose_accent_table();
-        display_poetry_accent_table();
+    }
 
-        // Or the generic version
+    #[test]
+    fn show_poetry_table() {
+        // Direct call
+        display_poetry_accent_table();
+    }
+
+    #[test]
+    fn show_pseudo_table() {
+        // Direct call
+        display_pseudo_accent_table();
+    }
+
+    #[test]
+    // Or the generic version
+    fn show_tables_generic() {
         display_accent_table("PROSE (generic)", PROSE_ACCENT_TABLE.as_ref());
         display_accent_table("POETRY (generic)", POETRY_ACCENT_TABLE.as_ref());
+        display_accent_table("PSEUDO (generic)", PSEUDO_ACCENT_TABLE.as_ref());
     }
 }
