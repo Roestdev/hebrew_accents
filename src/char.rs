@@ -1,6 +1,15 @@
+//! Static data for 'char const'
+//! Used inside regular expressions, in order to make them more readable
 
+// Standard library
+// N/A
 
-// char constants are used inside regular expressions to make them more readable
+// External crates
+// N/A
+
+// Crate‑internal (local modules)
+// N/A
+
 pub const ETNAHTA: char = '\u{0591}';
 pub const SEGOL: char = '\u{0592}';
 pub const SHALSHELET: char = '\u{0593}';
@@ -34,13 +43,11 @@ pub const ZINOR: char = '\u{05AE}';
 pub const METEG: char = '\u{05BD}';
 pub const MAQAF: char = '\u{05BE}';
 //pub const RAFE:char = '\u{05BF}';
-
 pub const PASEQ: char = '\u{05C0}';
 pub const SOF_PASUQ: char = '\u{05C3}';
 /// Sometimes used as a PASEQ in computer text
 pub const VERTICAL_LINE: char = '\u{007C}';
-
-// aliases
+// list of aliases
 /// alias for ZARQA
 pub const TSINNORIT: char = ZARQA;
 /// alias for MERKHA

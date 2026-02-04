@@ -1,9 +1,18 @@
+//! THis file contains the ma
+//!
+//!
+//!
+
 // Standard library
+// N/A
 
 // External crates
+// N/A
 
-// Local modules / crate‑internal
-use crate::accent_data::*;
+// Crate‑internal (local modules)
+use crate::accent_data::{
+    BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
+};
 
 /// Gets accent information
 pub trait Accent: Copy + Sized {
@@ -467,41 +476,6 @@ pub enum WordStress {
     /// None, used for the secondary accents like Meteg
     None,
 }
-
-/// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
-///
-/// The order **must** correspond exactly to the order of the variants
-/// declared in `PoetryAccent`.  If you add a new variant, extend this
-/// array accordingly – the `static_assertions` check below will remind you.
-pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
-    // ---- Disjunctives ----------------------------------------------------
-    /* 0 */
-    1, // Silluq
-    /* 1 */ 2, // OlehWeYored
-    /* 2 */ 3, // Atnach
-    /* 3 */ 4, // ReviaGadol
-    /* 4 */ 5, // ReviaMugrash
-    /* 5 */ 6, // ShalsheletGadol
-    /* 6 */ 7, // Tsinnor
-    /* 7 */ 8, // ReviaQaton
-    /* 8 */ 9, // Dechi
-    /* 9 */ 10, // Pazer
-    /*10 */ 11, // MehuppakhLegarmeh
-    /*11 */ 12, // AzlaLegarmeh
-    // ---- Conjunctives ----------------------------------------------------
-    /*12 */
-    13, // Munach
-    /*13 */ 14, // Merkha
-    /*14 */ 15, // Illuy
-    /*15 */ 16, // Tarcha
-    /*16 */ 17, // Galgal
-    /*17 */ 18, // Mehuppakh
-    /*18 */ 19, // Azla
-    /*19 */ 20, // ShalsheletQetannah
-    /*20 */ 21, // TsinnoritMerkha
-    /*21 */ 21, // TsinnoritMahpakh
-    /*22 */ 22, // Meteg
-];
 
 #[cfg(test)]
 mod tests {

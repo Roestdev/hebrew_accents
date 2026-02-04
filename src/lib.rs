@@ -164,34 +164,23 @@
 
 #![warn(missing_docs)]
 #[cfg_attr(doctest, doc = include_str!("../README.md"))]
-
 // common items
 mod char;
 
-// finding accents
+// finding Hebrew Accents
 mod sentence_context; // main entry
 mod sentence_ctx_contains;
 mod sentence_ctx_find;
 mod sentence_ctx_funcs;
 mod sentence_ctx_regex;
 
-// static accent data
+// static 'Hebrew Accent' data
 mod accent; // main entry
 mod accent_codepoints;
 mod accent_data;
 mod accent_display;
 
 // exports
-/// # Geometry Module
-///
-/// This module provides types and functions for working with
-/// geometric shapes and calculations.
-///
-/// ## Features
-///
-/// - 2D point representation
-/// - Distance calculations
-/// - Area and perimeter calculations for common shapes
 pub use accent::*;
 pub use accent_display::*;
 pub use sentence_context::*;

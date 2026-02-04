@@ -1,6 +1,5 @@
 use hebrew_accents::{Accent, AccentCategory, PoetryAccent, ProseAccent, PseudoAccent};
 
-
 #[test]
 fn testing_prose_accent_categories() {
     // Disjunctives

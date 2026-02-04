@@ -1,9 +1,12 @@
+//! This file contains all static data of 'Hebrew Accents'
+
 // Standard library
 use once_cell::sync::Lazy;
 
 // External crates
+// N/A
 
-// Local modules / crate‑internal
+// Crate‑internal (local modules)
 use crate::accent::{
     AccentCategory, AccentInfo, AccentType, Alternates, CodePoints, PoetryAccent, ProseAccent,
     WordStress,
@@ -76,6 +79,41 @@ pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PoetryAccent
 
 pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInfo; PseudoAccent::COUNT]> =
     Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO, &PASEQ_INFO]);
+
+/// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
+///
+/// The order **must** correspond exactly to the order of the variants
+/// declared in `PoetryAccent`.  If you add a new variant, extend this
+/// array accordingly – the `static_assertions` check below will remind you.
+pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
+    // ---- Disjunctives ----------------------------------------------------
+    /* 0 */
+    1, // Silluq
+    /* 1 */ 2, // OlehWeYored
+    /* 2 */ 3, // Atnach
+    /* 3 */ 4, // ReviaGadol
+    /* 4 */ 5, // ReviaMugrash
+    /* 5 */ 6, // ShalsheletGadol
+    /* 6 */ 7, // Tsinnor
+    /* 7 */ 8, // ReviaQaton
+    /* 8 */ 9, // Dechi
+    /* 9 */ 10, // Pazer
+    /*10 */ 11, // MehuppakhLegarmeh
+    /*11 */ 12, // AzlaLegarmeh
+    // ---- Conjunctives ----------------------------------------------------
+    /*12 */
+    13, // Munach
+    /*13 */ 14, // Merkha
+    /*14 */ 15, // Illuy
+    /*15 */ 16, // Tarcha
+    /*16 */ 17, // Galgal
+    /*17 */ 18, // Mehuppakh
+    /*18 */ 19, // Azla
+    /*19 */ 20, // ShalsheletQetannah
+    /*20 */ 21, // TsinnoritMerkha (Same rank as TsinnoritMahpakh!)
+    /*21 */ 21, // TsinnoritMahpakh (Same rank as TsinnoritMerkha!)
+    /*22 */ 22, // Meteg
+];
 
 pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Silluq",
@@ -424,6 +462,7 @@ pub const DARGA_INFO: AccentInfo = AccentInfo {
         primary: &CP_DARGA,
         secondary: None,
     },
+
     comment: None,
 };
 pub const AZLA_INFO: AccentInfo = AccentInfo {

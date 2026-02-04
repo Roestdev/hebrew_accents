@@ -1,6 +1,5 @@
-//! sdf [`asfd`] dff
+//! Main file
 //!
-//! iyuFDMFOPOKPOMOIPSADSS  ssdf sdf sf weew fweflwf wel
 
 /// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]

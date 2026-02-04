@@ -1,5 +1,4 @@
-//!
-//!
+//! Regex that are used for finding 'Hebrew Accents'
 
 // Standard library
 use once_cell::sync::Lazy;
@@ -8,7 +7,7 @@ use once_cell::sync::Lazy;
 use fancy_regex::Regex as FancyRegex;
 use regex::Regex;
 
-// Local modules / crate‑internal
+// Crate‑internal (local modules)
 use crate::char::{
     ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
     SOF_PASUQ, TSINNORIT, YORED,
@@ -63,7 +62,6 @@ pub(crate) static FA_RE_OUTER_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
     );
     FancyRegex::new(&pattern)
         .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", &pattern))
-    // unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",&pattern))
 });
 
 // A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
@@ -82,7 +80,6 @@ pub(crate) static RE_INNER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
     Regex::new(&pattern)
         .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", &pattern))
-    //Regex::new(pat).unwrap_or_else(|_| panic!("invalid poetry regex: {pat}"))
 });
 
 // A 'Legarmeh' consists of the following two UTF-8 code-points:
@@ -204,6 +201,7 @@ pub(crate) static RE_OUTER_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 //     FancyRegex::new(r"(\u{05A8}\p{Hebrew}*?\u{05BE})|(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))")
 //         .unwrap()
 // });
+
 const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str =
     r"(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))";
 pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {

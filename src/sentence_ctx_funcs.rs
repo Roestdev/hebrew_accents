@@ -1,8 +1,10 @@
 // Standard library
+// N/A
 
 // External crates
+// N/A
 
-// Local modules / crate‑internal
+// Crate‑internal (local modules)
 use crate::char::{
     GERESH, MAHPAKH, MAQQEPH, MERKHA, OLEH, PASEQ, REVIA, TSINNORIT, VERTICAL_LINE, YORED, ZARQA,
 };

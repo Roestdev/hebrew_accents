@@ -2,9 +2,10 @@
 
 // External crates
 
-// Local modules / crate‑internal
-use crate::accent::*;
-use crate::accent_data::*;
+// Crate‑internal (local modules)
+use crate::accent_data::{POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE};
+use crate::AccentInfo;
+
 /// Re‑export the tables so the helper functions can see them without pulling in the whole
 /// `crate::accent` hierarchy again.  Adjust the path if the tables live in a different module.
 ///
@@ -35,7 +36,11 @@ pub fn display_poetry_accent_table() {
 
 /// Print every accent in the *pseudo* table.
 ///
-/// Works exactly like `display_pseudo_accent_table` but walks `POETRY_ACCENT_TABLE`.
+/// Works exactly like `display_pseudo_accent_table` but walks `PSEUDO_ACCENT_TABLE
+///
+///
+///
+/// `.
 pub fn display_pseudo_accent_table() {
     println!("=== PSEUDO ACCENT TABLE ===");
     for (idx, info) in PSEUDO_ACCENT_TABLE.iter().enumerate() {
@@ -43,10 +48,6 @@ pub fn display_pseudo_accent_table() {
     }
     println!("=== END OF PSEUDO TABLE ===\n");
 }
-
-/* -------------------------------------------------------------------------- */
-/* Optional convenience: a generic printer that works for any `&[&AccentInfo]`. */
-/* -------------------------------------------------------------------------- */
 
 /// Generic printer – handy if you ever add more tables.
 pub fn display_accent_table(name: &str, table: &[&AccentInfo]) {
@@ -57,10 +58,7 @@ pub fn display_accent_table(name: &str, table: &[&AccentInfo]) {
     println!("=== END OF {name} ===\n");
 }
 
-/* -------------------------------------------------------------------------- */
-/* Example usage (you can put this in `main.rs` or any test harness).         */
-/* -------------------------------------------------------------------------- */
-
+// Example usage
 #[cfg(test)]
 mod tests {
     use super::*;

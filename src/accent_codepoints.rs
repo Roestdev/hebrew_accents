@@ -1,15 +1,19 @@
+//! This file contains all static data of 'UTF-8 code point'
+//!
 //! Constants below are a mix of the following:
-//! - UTF8 code table (<https://utf8-chartable.de/unicode-utf8-table.pl>)
-//! - naming of the accents according different traditions, see p.e.
-//!   <https://en.wikipedia.org/wiki/Hebrew_cantillation>
-//!   <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
+//! - UTF-8 code table (<https://utf8-chartable.de/unicode-utf8-table.pl>)
+//! - naming of the accents according different traditions, see:
+//!   - <https://en.wikipedia.org/wiki/Hebrew_cantillation>
+//!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
 //! - the position of the accent relative to the related consonant
 
 // Standard library
+// N/A
 
 // External crates
+// N/A
 
-// Local modules / crate‑internal
+// Crate‑internal (local modules)
 use crate::CodePointPosition;
 use crate::Tradition;
 use crate::Utf8CodePointInfo;
