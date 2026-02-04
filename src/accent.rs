@@ -22,12 +22,12 @@ pub trait Accent: Copy + Sized {
     /// Return the *static* metadata for this concrete accent.
     fn details(self) -> &'static AccentInfo;
     // Convenience wrappers.
-    /// English name of the accent
+    /// English name of the Hebrew Accent
     #[inline]
     fn english_name(self) -> &'static str {
         self.details().english_name
     }
-    /// Hebrew name of the accent
+    /// Hebrew name of the Hebrew Accent
     #[inline]
     fn hebrew_name(self) -> &'static str {
         self.details().hebrew_name
@@ -37,25 +37,34 @@ pub trait Accent: Copy + Sized {
     fn meaning(self) -> &'static str {
         self.details().meaning
     }
-    /// accent type
+    /// Hebrew Accent type
     #[inline]
     fn accent_type(self) -> Option<AccentType> {
         self.details().accent_type
     }
-    /// accent category
+    /// category of the Hebrew Accent
     #[inline]
     fn category(self) -> Option<AccentCategory> {
         self.details().category
     }
-    /// accent word stress
+    /// word-stress of the Hebrew Accent
     #[inline]
     fn word_stress(self) -> Option<WordStress> {
         self.details().word_stress
     }
+    /// number of UTF-8 code points of the Hebrew Accent
+    fn code_points(self) -> u8;
 }
 
 impl Accent for HebrewAccent {
     #[inline]
+    fn relative_strength(self) -> u8 {
+        match self {
+            HebrewAccent::Prose(p) => p.relative_strength(),
+            HebrewAccent::Poetry(p) => p.relative_strength(),
+            HebrewAccent::Pseudo(p) => p.relative_strength(),
+        }
+    }
     fn details(self) -> &'static AccentInfo {
         match self {
             HebrewAccent::Prose(p) => p.details(),
@@ -105,11 +114,29 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.details().word_stress,
         }
     }
-    fn relative_strength(self) -> u8 {
+    fn code_points(self) -> u8 {
         match self {
-            HebrewAccent::Prose(p) => p.relative_strength(),
-            HebrewAccent::Poetry(p) => p.relative_strength(),
-            HebrewAccent::Pseudo(p) => p.relative_strength(),
+            HebrewAccent::Prose(p) => {
+                if p.details().code_points.secondary.is_none() {
+                    1
+                } else {
+                    2
+                }
+            }
+            HebrewAccent::Poetry(p) => {
+                if p.details().code_points.secondary.is_none() {
+                    1
+                } else {
+                    2
+                }
+            }
+            HebrewAccent::Pseudo(p) => {
+                if p.details().code_points.secondary.is_none() {
+                    1
+                } else {
+                    2
+                }
+            }
         }
     }
 }
@@ -121,6 +148,13 @@ impl Accent for ProseAccent {
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
+    fn code_points(self) -> u8 {
+        if self.details().code_points.secondary.is_none() {
+            1
+        } else {
+            2
+        }
+    }
 }
 
 impl Accent for PoetryAccent {
@@ -130,6 +164,13 @@ impl Accent for PoetryAccent {
     fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
     }
+    fn code_points(self) -> u8 {
+        if self.details().code_points.secondary.is_none() {
+            1
+        } else {
+            2
+        }
+    }
 }
 
 impl Accent for PseudoAccent {
@@ -138,6 +179,13 @@ impl Accent for PseudoAccent {
     }
     fn relative_strength(self) -> u8 {
         self as u8 + 1
+    }
+    fn code_points(self) -> u8 {
+        if self.details().code_points.secondary.is_none() {
+            1
+        } else {
+            2
+        }
     }
 }
 
