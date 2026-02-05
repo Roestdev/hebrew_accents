@@ -5,8 +5,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
----
-
 ## [v0.0.3] – 2026‑?-?
 ### Added
 - TBD 
@@ -33,10 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - changed dummy method find_accent() for `SentenceContext`
 
 ### Fixed
-- TBD 
+- N/A 
 
 ### Deprecated
-- TBD
+- N/A
 
 ---
 
@@ -59,10 +57,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update Cargo.toml
 
 ### Fixed
-- NA
+- N/A
 
 ### Deprecated
-- NA
+- N/A
 
 ---
 
@@ -72,10 +70,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - lib.rs (placeholder only)
 
 ### Changed
-- NA
+- N/A
 
 ### Fixed
-- NA 
+- N/A 
 
 ### Deprecated
-- NA
+- N/A
