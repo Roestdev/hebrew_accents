@@ -1,14 +1,5 @@
 //! Static data for 'char const'
-//! Used inside regular expressions, in order to make them more readable
-
-// Standard library
-// N/A
-
-// External crates
-// N/A
-
-// Crate‑internal (local modules)
-// N/A
+//! Used in various places in this crate
 
 pub const ETNAHTA: char = '\u{0591}';
 pub const SEGOL: char = '\u{0592}';

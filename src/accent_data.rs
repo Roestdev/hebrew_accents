@@ -550,7 +550,7 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
 pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
     english_name: "Soph Pasuq",
     hebrew_name: "todo", // TODO
-    meaning:"end of the verse", // TODO
+    meaning:"end of verse", // TODO
     alternates: None,
     accent_type: None,
     category: None,

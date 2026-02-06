@@ -14,7 +14,199 @@ use crate::accent_data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
 };
 
-/// Gets accent information
+
+/// Hebrew Accent, either a Prose or Poetry accent
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub enum HebrewAccent {
+    /// TODO
+    Prose(ProseAccent),
+    /// TODO
+    Poetry(PoetryAccent),
+    /// TODO
+    Pseudo(PseudoAccent),
+}
+
+impl From<ProseAccent> for HebrewAccent {
+    fn from(a: ProseAccent) -> Self {
+        HebrewAccent::Prose(a)
+    }
+}
+impl From<PoetryAccent> for HebrewAccent {
+    fn from(a: PoetryAccent) -> Self {
+        HebrewAccent::Poetry(a)
+    }
+}
+impl From<PseudoAccent> for HebrewAccent {
+    fn from(a: PseudoAccent) -> Self {
+        HebrewAccent::Pseudo(a)
+    }
+}
+/// All variants of the Hebrew Prose Accents
+/// 18 Disjunctives and 11 Conjunctives.
+#[repr(u8)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
+pub enum ProseAccent {
+    #[default]
+    /// Disjunctive prose accent Silluq
+    Silluq,
+    /// Disjunctive prose accent Atnach
+    Atnach,
+    /// Disjunctive prose accent Segolta
+    Segolta,
+    /// Disjunctive prose accent Shalshelet
+    Shalshelet,
+    /// Disjunctive prose accent Zaqeph Qaton
+    ZaqephQaton,
+    /// Disjunctive prose accent Zaqeph Gadol
+    ZaqephGadol,
+    /// Disjunctive prose accent Revia
+    Revia,
+    /// Disjunctive prose accent Tiphcha,
+    Tiphcha,
+    /// Disjunctive prose accent Zarqa
+    Zarqa,
+    /// Disjunctive prose accent Pashta
+    Pashta,
+    /// Disjunctive prose accent Yetiv
+    Yetiv,
+    /// Disjunctive prose accent Tevir
+    Tevir,
+    /// Disjunctive prose accent Geresh
+    Geresh,
+    /// Disjunctive prose accent Gershayim
+    Gershayim,
+    /// Disjunctive prose accent Pazer
+    Pazer,
+    /// Disjunctive prose accent Pazer Gadol
+    PazerGadol,
+    /// Disjunctive prose accent Telisha Gedolah
+    TelishaGedolah,
+    /// Disjunctive prose accent Legarmeh
+    Legarmeh,
+    /// Conjunctive prose accent Munach
+    Munach,
+    /// Conjunctive prose accent Mahpakh
+    Mahpakh,
+    /// Conjunctive prose accent Merkha
+    Merkha,
+    /// Conjunctive prose accent Merkha Kephulah
+    MerkhaKephulah,
+    /// Conjunctive prose accent Darga
+    Darga,
+    /// Conjunctive prose accent Azla
+    Azla,
+    /// Conjunctive prose accent Telisha Qetannah
+    TelishaQetannah,
+    /// Conjunctive prose accent Galgal
+    Galgal,
+    /// Conjunctive prose accent Mayela
+    Mayela,
+    /// Conjunctive prose accent Meteg
+    Meteg,
+}
+
+impl ProseAccent {
+    /// The total number of prose accents
+    pub const COUNT: usize = 28;
+    ///  TODO
+    #[inline]
+    pub fn relative_strength(self) -> u8 {
+        self as u8 + 1
+    }
+}
+
+/// All variants of the Hebrew Poetry Accents
+/// 12 Disjunctives and 12 Conjunctives.
+#[repr(u8)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
+pub enum PoetryAccent {
+    #[default]
+    /// Disjunctive prose accent Silluq
+    Silluq,
+    /// Disjunctive prose accent Oleh We Yored
+    OlehWeYored,
+    /// Disjunctive prose accent Atnach
+    Atnach,
+    /// Disjunctive prose accent Revia Gadol
+    ReviaGadol,
+    /// Disjunctive prose accent     Revia Mugrash,
+    ReviaMugrash,
+    /// Disjunctive prose accent ShalsheletGadol
+    ShalsheletGadol,
+    /// Disjunctive prose accent Tsinnor
+    Tsinnor,
+    /// Disjunctive prose accent Revia Qaton
+    ReviaQaton,
+    /// Disjunctive prose accent     Dechi,
+    Dechi,
+    /// Disjunctive prose accent Pazer
+    Pazer,
+    /// Disjunctive prose accent MehuppakhLegarmeh
+    MehuppakhLegarmeh,
+    /// Disjunctive prose accent AzlaLegarmeh
+    AzlaLegarmeh,
+    /// Conjunctive prose accent Munach
+    Munach,
+    /// Conjunctive prose accent Merkha
+    Merkha,
+    /// Conjunctive prose accent Illuy,
+    Illuy,
+    /// Conjunctive prose accent Tarcha
+    Tarcha,
+    /// Conjunctive prose accent Galgal
+    Galgal,
+    /// Conjunctive prose accent Mehuppakh
+    Mehuppakh,
+    /// Conjunctive prose accent Azla
+    Azla,
+    /// Conjunctive prose accent Shalshelet Qetannah
+    ShalsheletQetannah,
+    /// Conjunctive prose accent Tsinnorit Merkha
+    TsinnoritMerkha,
+    /// Conjunctive prose accent Tsinnorit Mahpakh
+    TsinnoritMahpakh,
+    /// Conjunctive prose accent Meteg
+    Meteg,
+}
+
+impl PoetryAccent {
+    /// Total count of all poetry accents,including some 'non-accents'
+    pub const COUNT: usize = 23;
+    #[inline]
+    /// Indicates a level of importancy
+    pub fn relative_strength(self) -> u8 {
+        // Discriminants start at 0; we want 1‑based relative_strengths.
+        BHS_POETRY_RANK_MAP[self as usize]
+    }
+}
+
+/// Hebrew marks that are close related to the Hebrew accents
+#[repr(u8)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
+#[non_exhaustive]
+pub enum PseudoAccent {
+    #[default]
+    /// Marks the end of a sentence (like the period), but not always
+    SophPasuq,
+    /// Joins multiple words (like a hyphen), mostly leaving 1 accent for the joined words
+    Maqqeph,
+    /// Can be part of a Hebrew Accent, but not as an individual accent
+    Paseq,
+}
+
+impl PseudoAccent {
+    /// Total count of all pseudo accents
+    pub const COUNT: usize = 3;
+    #[inline]
+    /// Indicates a level of importancy
+    pub fn relative_strength(self) -> u8 {
+        self as u8 + 1
+    }
+}
+
+/// Used for retrieving information
 pub trait Accent: Copy + Sized {
     /// indicates the relative_strength of a selected accent (1 is the strongest)
     fn relative_strength(self) -> u8;
@@ -189,196 +381,6 @@ impl Accent for PseudoAccent {
     }
 }
 
-/// Hebrew Accent, either a Prose or Poetry accent
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub enum HebrewAccent {
-    /// TODO
-    Prose(ProseAccent),
-    /// TODO
-    Poetry(PoetryAccent),
-    /// TODO
-    Pseudo(PseudoAccent),
-}
-
-impl From<ProseAccent> for HebrewAccent {
-    fn from(a: ProseAccent) -> Self {
-        HebrewAccent::Prose(a)
-    }
-}
-impl From<PoetryAccent> for HebrewAccent {
-    fn from(a: PoetryAccent) -> Self {
-        HebrewAccent::Poetry(a)
-    }
-}
-impl From<PseudoAccent> for HebrewAccent {
-    fn from(a: PseudoAccent) -> Self {
-        HebrewAccent::Pseudo(a)
-    }
-}
-/// All variants of the Hebrew Prose Accents
-/// 18 Disjunctives and 11 Conjunctives.
-#[repr(u8)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
-#[non_exhaustive]
-pub enum ProseAccent {
-    #[default]
-    /// Disjunctive prose accent Silluq
-    Silluq,
-    /// Disjunctive prose accent Atnach
-    Atnach,
-    /// Disjunctive prose accent Segolta
-    Segolta,
-    /// Disjunctive prose accent Shalshelet
-    Shalshelet,
-    /// Disjunctive prose accent Zaqeph Qaton
-    ZaqephQaton,
-    /// Disjunctive prose accent Zaqeph Gadol
-    ZaqephGadol,
-    /// Disjunctive prose accent Revia
-    Revia,
-    /// Disjunctive prose accent Tiphcha,
-    Tiphcha,
-    /// Disjunctive prose accent Zarqa
-    Zarqa,
-    /// Disjunctive prose accent Pashta
-    Pashta,
-    /// Disjunctive prose accent Yetiv
-    Yetiv,
-    /// Disjunctive prose accent Tevir
-    Tevir,
-    /// Disjunctive prose accent Geresh
-    Geresh,
-    /// Disjunctive prose accent Gershayim
-    Gershayim,
-    /// Disjunctive prose accent Pazer
-    Pazer,
-    /// Disjunctive prose accent Pazer Gadol
-    PazerGadol,
-    /// Disjunctive prose accent Telisha Gedolah
-    TelishaGedolah,
-    /// Disjunctive prose accent Legarmeh
-    Legarmeh,
-    /// Conjunctive prose accent Munach
-    Munach,
-    /// Conjunctive prose accent Mahpakh
-    Mahpakh,
-    /// Conjunctive prose accent Merkha
-    Merkha,
-    /// Conjunctive prose accent Merkha Kephulah
-    MerkhaKephulah,
-    /// Conjunctive prose accent Darga
-    Darga,
-    /// Conjunctive prose accent Azla
-    Azla,
-    /// Conjunctive prose accent Telisha Qetannah
-    TelishaQetannah,
-    /// Conjunctive prose accent Galgal
-    Galgal,
-    /// Conjunctive prose accent Mayela
-    Mayela,
-    /// Conjunctive prose accent Meteg
-    Meteg,
-}
-
-impl ProseAccent {
-    /// The total number of prose accents
-    pub const COUNT: usize = 28;
-    ///  TODO
-    #[inline]
-    pub fn relative_strength(self) -> u8 {
-        self as u8 + 1
-    }
-}
-
-/// All variants of the Hebrew Poetry Accents
-/// 12 Disjunctives and 12 Conjunctives.
-#[repr(u8)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
-#[non_exhaustive]
-pub enum PoetryAccent {
-    #[default]
-    /// Disjunctive prose accent Silluq
-    Silluq,
-    /// Disjunctive prose accent Oleh We Yored
-    OlehWeYored,
-    /// Disjunctive prose accent Atnach
-    Atnach,
-    /// Disjunctive prose accent Revia Gadol
-    ReviaGadol,
-    /// Disjunctive prose accent     Revia Mugrash,
-    ReviaMugrash,
-    /// Disjunctive prose accent ShalsheletGadol
-    ShalsheletGadol,
-    /// Disjunctive prose accent Tsinnor
-    Tsinnor,
-    /// Disjunctive prose accent Revia Qaton
-    ReviaQaton,
-    /// Disjunctive prose accent     Dechi,
-    Dechi,
-    /// Disjunctive prose accent Pazer
-    Pazer,
-    /// Disjunctive prose accent MehuppakhLegarmeh
-    MehuppakhLegarmeh,
-    /// Disjunctive prose accent AzlaLegarmeh
-    AzlaLegarmeh,
-    /// Conjunctive prose accent Munach
-    Munach,
-    /// Conjunctive prose accent Merkha
-    Merkha,
-    /// Conjunctive prose accent Illuy,
-    Illuy,
-    /// Conjunctive prose accent Tarcha
-    Tarcha,
-    /// Conjunctive prose accent Galgal
-    Galgal,
-    /// Conjunctive prose accent Mehuppakh
-    Mehuppakh,
-    /// Conjunctive prose accent Azla
-    Azla,
-    /// Conjunctive prose accent Shalshelet Qetannah
-    ShalsheletQetannah,
-    /// Conjunctive prose accent Tsinnorit Merkha
-    TsinnoritMerkha,
-    /// Conjunctive prose accent Tsinnorit Mahpakh
-    TsinnoritMahpakh,
-    /// Conjunctive prose accent Meteg
-    Meteg,
-}
-
-impl PoetryAccent {
-    /// Total count of all poetry accents,including some 'non-accents'
-    pub const COUNT: usize = 23;
-    #[inline]
-    /// Indicates a level of importancy
-    pub fn relative_strength(self) -> u8 {
-        // Discriminants start at 0; we want 1‑based relative_strengths.
-        BHS_POETRY_RANK_MAP[self as usize]
-    }
-}
-
-/// Hebrew marks that are related to the Hebrew accents
-#[repr(u8)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default)]
-#[non_exhaustive]
-pub enum PseudoAccent {
-    #[default]
-    /// TODO
-    SophPasuq,
-    /// TODO
-    Maqqeph,
-    /// TODO
-    Paseq,
-}
-
-impl PseudoAccent {
-    /// Total count of all pseudo accents
-    pub const COUNT: usize = 3;
-    #[inline]
-    /// Indicates a level of importancy
-    pub fn relative_strength(self) -> u8 {
-        self as u8 + 1
-    }
-}
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct AccentInfo {

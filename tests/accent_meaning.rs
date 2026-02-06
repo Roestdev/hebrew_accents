@@ -101,7 +101,7 @@ fn testing_poetry_accent_meaning() {
 
 #[test]
 fn testing_pseudo_accent_meaning() {
-    assert_eq!(PseudoAccent::SophPasuq.meaning(), "end of the verse");
+    assert_eq!(PseudoAccent::SophPasuq.meaning(), "end of verse");
     assert_eq!(PseudoAccent::Maqqeph.meaning(), "binder");
     assert_eq!(PseudoAccent::Paseq.meaning(), "binder");
 }
