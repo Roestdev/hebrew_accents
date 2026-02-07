@@ -56,13 +56,6 @@ impl<'h> Match<'h> {
     /// Returns the byte offset of the start of the match in the haystack. The
     /// start of the match corresponds to the position where the match begins
     /// and includes the first byte in the match.
-    ///
-    /// It is guaranteed that `Match::start() <= Match::end()`.
-    ///
-    /// This is guaranteed to fall on a valid UTF-8 codepoint boundary. That
-    /// is, it will never be an offset that appears between the UTF-8 code
-    /// units of a UTF-8 encoded Unicode scalar value. Consequently, it is
-    /// always safe to slice the corresponding haystack using this offset.
     #[inline]
     pub fn start(&self) -> usize {
         self.start
@@ -72,24 +65,12 @@ impl<'h> Match<'h> {
     /// end of the match corresponds to the byte immediately following the last
     /// byte in the match. This means that `&slice[start..end]` works as one
     /// would expect.
-    ///
-    /// It is guaranteed that `Match::start() <= Match::end()`.
-    ///
-    /// This is guaranteed to fall on a valid UTF-8 codepoint boundary. That
-    /// is, it will never be an offset that appears between the UTF-8 code
-    /// units of a UTF-8 encoded Unicode scalar value. Consequently, it is
-    /// always safe to slice the corresponding haystack using this offset.
     #[inline]
     pub fn end(&self) -> usize {
         self.end
     }
 
     /// Returns true if and only if this match has a length of zero.
-    ///
-    /// Note that an empty match can only occur when the regex itself can
-    /// match the empty string. Here are some examples of regexes that can
-    /// all match the empty string: `^`, `^$`, `\b`, `a?`, `a*`, `a{0}`,
-    /// `(foo|\d+|quux)?`.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.start == self.end
@@ -103,10 +84,6 @@ impl<'h> Match<'h> {
 
     /// Returns the range over the starting and ending byte offsets of the
     /// match in the haystack.
-    ///
-    /// It is always correct to slice the original haystack searched with this
-    /// range. That is, because the offsets are guaranteed to fall on valid
-    /// UTF-8 boundaries, the range returned is always valid.
     #[inline]
     pub fn range(&self) -> core::ops::Range<usize> {
         self.start..self.end
@@ -151,7 +128,6 @@ impl<'h> From<Match<'h>> for core::ops::Range<usize> {
     }
 }
 
-// TODO add description
 // fn option_index: Option<usize>) -> Option<Match<'static>> {
 //     if let Some(index) = option_index {
 //         // all single characters accents consists two bytes, so

@@ -34,7 +34,18 @@ impl SentenceContext {
     /// it's potentially faster to use `hebrew_accent::find_accent(HebrewAccent)`
     /// instead of `hebrew_accent::find_accent(HebrewAccent).is_some()`.
     ///
-    /// # Example // TODO
+    /// # Example
+    /// ```rust
+    /// use hebrew_accents::{SentenceContext, Context,Match};
+    /// 
+    /// let sc = SentenceContext::new("הִי אֽוֹר׃", Context::Prosaic);
+    /// let expected = Match {
+    ///    haystack: "TODO::Outermatch",
+    ///    start: 9,
+    ///    end: 19,
+    /// };
+    /// ```
+
     pub fn find_accent(self, accent: HebrewAccent) -> Option<Match<'static>> {
         match accent {
             /* **********************************************************

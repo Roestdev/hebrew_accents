@@ -65,7 +65,7 @@ fn testing_poetry_accent_hebrew_name() {
 
 #[test]
 fn testing_pseudo_accent_hebrew_name() {
-    assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "todo");
+    assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
     assert_eq!(PseudoAccent::Maqqeph.hebrew_name(), "מַקֵּף");
-    assert_eq!(PseudoAccent::Paseq.hebrew_name(), "todo");
+    assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
 }

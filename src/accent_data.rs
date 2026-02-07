@@ -122,7 +122,7 @@ pub const SILLUQ_INFO: AccentInfo = AccentInfo {
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::ImPositive), // TODO check/update all wordstress info
+    word_stress: Some(WordStress::ImPositive),
     code_points: CodePoints {
         primary: &CP_SILLUQ,
         secondary: None,
@@ -131,6 +131,7 @@ pub const SILLUQ_INFO: AccentInfo = AccentInfo {
         "The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.",
     ),
 };
+
 pub const ATNACH_INFO: AccentInfo = AccentInfo {
     english_name: "Atnach",
     hebrew_name: "אתְנָח",
@@ -145,6 +146,7 @@ pub const ATNACH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const SEGOLTA_INFO: AccentInfo = AccentInfo {
     english_name: "Segolta",
     hebrew_name: "סְגֹולְתָּא",
@@ -159,6 +161,7 @@ pub const SEGOLTA_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const SHALSHELET_INFO: AccentInfo = AccentInfo {
     english_name: "Shalshelet",
     hebrew_name: "שַׁלְשֶׁלֶת",
@@ -173,6 +176,7 @@ pub const SHALSHELET_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const ZAQEF_QATON_INFO: AccentInfo = AccentInfo {
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
@@ -191,6 +195,7 @@ pub const ZAQEF_QATON_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const ZAQEPH_GADOL_INFO: AccentInfo = AccentInfo {
     english_name: "Zaqeph Gadol",
     hebrew_name: "זָקֵף גָּדוֹל",
@@ -205,6 +210,7 @@ pub const ZAQEPH_GADOL_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const REVIA_INFO: AccentInfo = AccentInfo {
     english_name: "Revia",
     hebrew_name: "רְבִיעַ",
@@ -219,6 +225,7 @@ pub const REVIA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("probably due to its four-note tune."),
 };
+
 pub const TIPHCHA_INFO: AccentInfo = AccentInfo {
     english_name: "Tiphcha", // ADD TARCHA
     hebrew_name: "טִפְחָא",
@@ -233,6 +240,7 @@ pub const TIPHCHA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("before Atnach and Silluq"),
 };
+
 pub const ZARQA_INFO: AccentInfo = AccentInfo {
     english_name: "Zarqa",
     hebrew_name: "זַרְקָא",
@@ -247,6 +255,7 @@ pub const ZARQA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("before  Segolta"),
 };
+
 pub const PASHTA_INFO: AccentInfo = AccentInfo {
     english_name: "Pashta",
     hebrew_name: "פַּשְׁטָא",
@@ -261,6 +270,7 @@ pub const PASHTA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("if you sound almost last (2 pasta’s in one word)"),
 };
+
 pub const YETIV_INFO: AccentInfo = AccentInfo {
     english_name: "Yetiv",
     hebrew_name: "יְתִיב",
@@ -275,6 +285,7 @@ pub const YETIV_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("occasionally for a Pashta"),
 };
+
 pub const TEVIR_INFO: AccentInfo = AccentInfo {
     english_name: "Tevir",
     hebrew_name: "תְּבִיר",
@@ -289,6 +300,7 @@ pub const TEVIR_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const GERESH_INFO: AccentInfo = AccentInfo {
     english_name: "Geresh",
     hebrew_name: "גֵּרֵישׁ",
@@ -307,6 +319,7 @@ pub const GERESH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const GERSHAYIM_INFO: AccentInfo = AccentInfo {
     english_name: "Gershayim",
     hebrew_name: "גֵּרְשַׁיִם",
@@ -321,6 +334,7 @@ pub const GERSHAYIM_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const PAZER_INFO: AccentInfo = AccentInfo {
     english_name: "Pazer",
     hebrew_name: "פָּזֶר",
@@ -339,6 +353,7 @@ pub const PAZER_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const PAZER_GADOL_INFO: AccentInfo = AccentInfo {
     english_name: "Pazer Gadol",
     hebrew_name: "פָּזֶר גּדוֹל",
@@ -357,6 +372,7 @@ pub const PAZER_GADOL_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const TELISHA_GEDOLAH_INFO: AccentInfo = AccentInfo {
     english_name: "Telisha Gedolah",
     hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
@@ -371,6 +387,7 @@ pub const TELISHA_GEDOLAH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const LEGARMEH_INFO: AccentInfo = AccentInfo {
     english_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
@@ -404,6 +421,7 @@ pub const MUNACH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const MAHPAKH_INFO: AccentInfo = AccentInfo {
     english_name: "Mahpakh",
     hebrew_name: "מַהְפַּךְ",
@@ -422,6 +440,7 @@ pub const MAHPAKH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const MERKHA_INFO: AccentInfo = AccentInfo {
     english_name: "Merkha",
     hebrew_name: "מֵרְכָא",
@@ -436,6 +455,7 @@ pub const MERKHA_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const MERKHA_KEFULAH_INFO: AccentInfo = AccentInfo {
     english_name: "Merkha Kephulah",
     hebrew_name: "מֵרְכָא כְּפוּלָה",
@@ -450,6 +470,7 @@ pub const MERKHA_KEFULAH_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("Merkha duplex"),
 };
+
 pub const DARGA_INFO: AccentInfo = AccentInfo {
     english_name: "Darga",
     hebrew_name: "דַּרְגָּא",
@@ -465,6 +486,7 @@ pub const DARGA_INFO: AccentInfo = AccentInfo {
 
     comment: None,
 };
+
 pub const AZLA_INFO: AccentInfo = AccentInfo {
     english_name: "Azla",
     hebrew_name: "אַזְלָא",
@@ -483,6 +505,7 @@ pub const AZLA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("When Geresh: Qadma"),
 };
+
 pub const TELISHA_QETANNAH_INFO: AccentInfo = AccentInfo {
     english_name: "Telisha Qetannah",
     hebrew_name: "תְּלִישָא קְטַנָּה",
@@ -497,6 +520,7 @@ pub const TELISHA_QETANNAH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const GALGAL_INFO: AccentInfo = AccentInfo {
     english_name: "Galgal",
     hebrew_name: "גַּלְגַּל",
@@ -515,6 +539,7 @@ pub const GALGAL_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const MAYELA_INFO: AccentInfo = AccentInfo {
     english_name: "Mayela",
     hebrew_name: "מָאיְלָא",
@@ -533,6 +558,7 @@ pub const MAYELA_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("Name given to a Tiphcha, when in the same word as Atnach or Silluq"),
 };
+
 pub const METEG_INFO: AccentInfo = AccentInfo {
     english_name: "Meteg",
     hebrew_name: "מֶתֶג",
@@ -547,62 +573,23 @@ pub const METEG_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
-pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
-    english_name: "Soph Pasuq",
-    hebrew_name: "todo", // TODO
-    meaning:"end of verse", // TODO
-    alternates: None,
-    accent_type: None,
-    category: None,
-    word_stress: None,
-    code_points: CodePoints {
-        primary: &CP_SOPH_PASUQ,
-        secondary: None,
-    },
-    comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
-};
-pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
-    english_name: "Maqqeph",
-    hebrew_name: "מַקֵּף",
-    meaning:"binder", // TODO
-    alternates: None,
-    accent_type: None,
-    category: None,
-    word_stress: None,
-    code_points: CodePoints {
-        primary: &CP_MAQAF,
-        secondary: None,
-    },
-    comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
-};
-pub const PASEQ_INFO: AccentInfo = AccentInfo {
-    english_name: "Paseq",
-    hebrew_name: "todo", // TODO
-    meaning:"binder", // TODO
-    alternates: None,
-    accent_type: None,
-    category: None,
-    word_stress: None,
-    code_points: CodePoints {
-        primary: &CP_PASEQ,
-        secondary: None,
-    },
-    comment: Some("The Maqqeph (in Biblical Hebrew), can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
-};
+
 /*
-Shene pashtin 	 ב֨ב   	U+0599, U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
-Shene pashtin 	תְּרֵ֨י קַדְמִין֙
+Shene Pashtin 	 ב֨ב   	U+0599, U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
+Shene Pashtin 	תְּרֵ֨י קַדְמִין֙
 Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
 (Shene) pashtin
+
+ example: Genesis 28:20
+ וּשְׁמָרַ֨נִי֙
 */
-// example: Genesis 28:20
-//   וּשְׁמָרַ֨נִי֙
-/*********************************************************
+
+/********************************************************
  *                          POETRY
  *******************************************************/
 // Disjunctives
 
-// SILLUQ see PROSE
+// SILLUQ see PROSE section above
 
 pub const OLEH_WE_YORED_INFO: AccentInfo = AccentInfo {
     english_name: "Oleh We Yored",
@@ -619,7 +606,7 @@ code_points: CodePoints {
     comment: Some("The primary CodePoint is Mehuppakh, but located above the consonant. It is then called OLE."),
 };
 
-// ATNACH see PROSE
+// ATNACH see PROSE section above
 
 pub const REVIA_GADOL_INFO: AccentInfo = AccentInfo {
     english_name: "Revia Gadol",
@@ -635,6 +622,7 @@ pub const REVIA_GADOL_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const REVIA_MUGRASH_INFO: AccentInfo = AccentInfo {
     english_name: "Revia Mugrash",
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
@@ -649,6 +637,7 @@ pub const REVIA_MUGRASH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const SHALSHELET_GADOL_INFO: AccentInfo = AccentInfo {
     english_name: "Shalshelet Gadol",
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
@@ -663,6 +652,7 @@ pub const SHALSHELET_GADOL_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const TSINNOR_INFO: AccentInfo = AccentInfo {
     english_name: "Tsinnor",
     hebrew_name: "צִנּוֹר",
@@ -681,6 +671,7 @@ pub const TSINNOR_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const REVIA_QATON_INFO: AccentInfo = AccentInfo {
     english_name: "Revia Qaton",
     hebrew_name: "רְבִיעַ קָטוֹן",
@@ -695,6 +686,7 @@ pub const REVIA_QATON_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("After that occurs Oleh We Yored"),
 };
+
 pub const DECHI_INFO: AccentInfo = AccentInfo {
     english_name: "Dechi",
     hebrew_name: "דֶּחִי",
@@ -714,7 +706,7 @@ pub const DECHI_INFO: AccentInfo = AccentInfo {
     comment: None,
 };
 
-// PAZER see PROSE section
+// PAZER see PROSE section above
 
 pub const MEHUPPAKH_LEGARMEH_INFO: AccentInfo = AccentInfo {
     english_name: "Mehuppakh Legarmeh",
@@ -730,6 +722,7 @@ pub const MEHUPPAKH_LEGARMEH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const AZLA_LEGARMEH_INFO: AccentInfo = AccentInfo {
     english_name: "Azla Legarmeh",
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
@@ -745,9 +738,9 @@ pub const AZLA_LEGARMEH_INFO: AccentInfo = AccentInfo {
     comment: None,
 };
 
-// MUNACH see PROSE
+// MUNACH see PROSE section above
 
-// MERCHA see PROSE
+// MERCHA see PROSE section above
 
 pub const ILLUY_INFO: AccentInfo = AccentInfo {
     english_name: "Illuy",
@@ -763,10 +756,11 @@ pub const ILLUY_INFO: AccentInfo = AccentInfo {
     },
     comment: Some("also called Munach superior"),
 };
+
 pub const TARCHA_INFO: AccentInfo = AccentInfo {
     english_name: "Tarcha",
     hebrew_name: "טַרְחָא",
-    meaning: "handbreadth or diagonal", //TODO
+    meaning: "trouble, difficulty, hardship, toil",
     alternates: None,
     accent_type: Some(AccentType::Primary),
     category: Some(AccentCategory::Conjunctive),
@@ -775,10 +769,10 @@ pub const TARCHA_INFO: AccentInfo = AccentInfo {
         primary: &CP_TIPEHA,
         secondary: None,
     },
-    comment: None,
+    comment: Some("it refers to the effort, strain, or inconvenience involved in doing something."),
 };
 
-// GALGAL see PROSE
+// GALGAL see PROSE section above
 
 pub const MEHUPPAKH_INFO: AccentInfo = AccentInfo {
     english_name: "Mehuppakh",
@@ -799,7 +793,7 @@ pub const MEHUPPAKH_INFO: AccentInfo = AccentInfo {
     comment: None,
 };
 
-// AZLA see PROSE
+// AZLA see PROSE section above
 
 pub const SHALSHELET_QETANNAH_INFO: AccentInfo = AccentInfo {
     english_name: "Shalshelet Qetannah",
@@ -815,6 +809,7 @@ pub const SHALSHELET_QETANNAH_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const TSINNORIT_MERKHA_INFO: AccentInfo = AccentInfo {
     english_name: "Tsinnorit Merkha",
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
@@ -829,6 +824,7 @@ pub const TSINNORIT_MERKHA_INFO: AccentInfo = AccentInfo {
     },
     comment: None,
 };
+
 pub const TSINNORIT_MAHPAKH_INFO: AccentInfo = AccentInfo {
     english_name: "Tsinnorit Mahpakh",
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
@@ -844,6 +840,54 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInfo = AccentInfo {
     comment: None,
 };
 
-// METEG see PROSE
+/********************************************************
+ *                      PSEUDO ACCENT
+ *******************************************************/
+pub const SOPH_PASUQ_INFO: AccentInfo = AccentInfo {
+    english_name: "Soph Pasuq",
+    hebrew_name: "סוֹף פָּסוּק",
+    meaning: "end of verse",
+    alternates: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
+        primary: &CP_SOPH_PASUQ,
+        secondary: None,
+    },
+    comment: Some(
+        "it doesn’t carry any theological or interpretive meaning beyond marking a boundary",
+    ),
+};
 
-// MAQQEPH see PROSE
+pub const MAQQEPH_INFO: AccentInfo = AccentInfo {
+    english_name: "Maqqeph",
+    hebrew_name: "מַקֵּף",
+    meaning:"binder",
+    alternates: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
+        primary: &CP_MAQAF,
+        secondary: None,
+    },
+    comment: Some("Can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
+};
+
+pub const PASEQ_INFO: AccentInfo = AccentInfo {
+    english_name: "Paseq",
+    hebrew_name: "פָּסֵק",
+    meaning: "to pause, to stop or to interrupt",
+    alternates: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
+    code_points: CodePoints {
+        primary: &CP_PASEQ,
+        secondary: None,
+    },
+    comment: Some(
+        "It’s indicating that someone or something is stopping temporarily or creating a pause.",
+    ),
+};

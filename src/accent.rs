@@ -14,15 +14,14 @@ use crate::accent_data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
 };
 
-
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum HebrewAccent {
-    /// TODO
+    /// Prose variant
     Prose(ProseAccent),
-    /// TODO
+    /// Poetry variant
     Poetry(PoetryAccent),
-    /// TODO
+    /// Pseudo variant
     Pseudo(PseudoAccent),
 }
 
@@ -109,7 +108,13 @@ pub enum ProseAccent {
 impl ProseAccent {
     /// The total number of prose accents
     pub const COUNT: usize = 28;
-    ///  TODO
+    /// Indication of how an strong an accent is relativly speaking
+    /// 
+    /// The stronger, the longer the pause/break when reading
+    /// The strongest accent has a relative strength of 1
+    /// 
+    /// Note: For now all Hebrew Accents have this property for now
+    ///       It is only valid for disjunctive accents.
     #[inline]
     pub fn relative_strength(self) -> u8 {
         self as u8 + 1

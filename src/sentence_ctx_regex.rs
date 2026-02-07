@@ -127,7 +127,6 @@ pub(crate) static RE_OUTER_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", &pattern))
 });
 
-// TODO
 // A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
 // A Silluq is not a Meteg
 //  FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)")
