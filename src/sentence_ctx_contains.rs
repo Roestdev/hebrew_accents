@@ -52,7 +52,7 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 RE_OUTER_COMMON_SHALSHELET.is_match(&self.sentence)
             }
-            HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.ctx == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => {
                 self.sentence.contains(ZAQEF_QATAN)
             }
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => {

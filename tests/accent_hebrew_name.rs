@@ -7,7 +7,7 @@ fn testing_prose_accent_hebrew_name() {
     assert_eq!(ProseAccent::Atnach.hebrew_name(), "אתְנָח");
     assert_eq!(ProseAccent::Segolta.hebrew_name(), "סְגֹולְתָּא");
     assert_eq!(ProseAccent::Shalshelet.hebrew_name(), "שַׁלְשֶׁלֶת");
-    assert_eq!(ProseAccent::ZaqephQaton.hebrew_name(), "זָקֵף קָטוֹן");
+    assert_eq!(ProseAccent::ZaqephQatan.hebrew_name(), "זָקֵף קָטוֹן");
     assert_eq!(ProseAccent::ZaqephGadol.hebrew_name(), "זָקֵף גָּדוֹל");
     assert_eq!(ProseAccent::Revia.hebrew_name(), "רְבִיעַ");
     assert_eq!(ProseAccent::Tiphcha.hebrew_name(), "טִפְחָא");

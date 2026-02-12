@@ -6,8 +6,10 @@
 
 // Crate‑internal (local modules)
 use crate::char::{
-    GERESH, MAHPAKH, MAQQEPH, MERKHA, OLEH, PASEQ, REVIA, TSINNORIT, VERTICAL_LINE, YORED, ZARQA,
+    GERESH_AS_CHAR, MAHPAKH, MAQQEPH_AS_CHAR, MERKHA, OLEH_AS_CHAR, PASEQ_AS_CHAR, REVIA,
+    TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YORED_AS_CHAR, ZARQA_AS_CHAR,
 };
+use crate::sentence_ctx_find::ACCENT_LEN_UTF8;
 use crate::Match;
 
 pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
@@ -17,7 +19,7 @@ pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
     // define possible combinations
-    let possible_combinations_lookbehind = [TSINNORIT, OLEH];
+    let possible_combinations_lookbehind = [TSINNORIT_AS_CHAR, OLEH_AS_CHAR];
 
     // Check for the existence of the target character in the sentence
     if !&sentence.contains(target_char) {
@@ -41,7 +43,7 @@ pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
             //     "Found at least one target char, not part of another aaccent:: BREAK the loop"
             // );
             let merkha = "\u{05A5}";
-            return Some(Match::new(merkha, index, index + MERKHA.len_utf8()));
+            return Some(Match::new(merkha, index, index + ACCENT_LEN_UTF8));
         }
     }
     None
@@ -54,7 +56,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<Match<'static>> {
     //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
     let target_char = MAHPAKH;
     // define possible combinations
-    let possible_combinations_lookbehind = [ZARQA];
+    let possible_combinations_lookbehind = [ZARQA_AS_CHAR];
     // check if the target character is present in the sentence
     if !&sentence.contains(target_char) {
         //println!("MEHUPPAKH not found in the senctence at all  -> return None");
@@ -85,7 +87,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<Match<'static>> {
             // );
             // println!("Found target char, not part of another accent. Returning TRUE");
             let mahpakh = "\u{05A4}";
-            return Some(Match::new(mahpakh, index, index + MAHPAKH.len_utf8()));
+            return Some(Match::new(mahpakh, index, index + ACCENT_LEN_UTF8));
         }
     }
     None
@@ -98,7 +100,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
     //   not followed by an Oleh We Yored (needs Negative Lookahead)
     let target_char = REVIA;
     // define possible combinations
-    let possible_combinations_lookbehind = [GERESH];
+    let possible_combinations_lookbehind = [GERESH_AS_CHAR];
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
         return None;
@@ -127,7 +129,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
         // );
         if !two_code_points_behind && !followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, index, index + REVIA.len_utf8()));
+            return Some(Match::new(revia, index, index + ACCENT_LEN_UTF8));
         }
     }
     None
@@ -140,7 +142,7 @@ pub fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> {
     //   followed by an Oleh We Yored (needs Positive LookAhead)
     let target_char = REVIA;
     // define possible combinations
-    let possible_combinations_lookbehind = [GERESH];
+    let possible_combinations_lookbehind = [GERESH_AS_CHAR];
     // check if the target character is present in the senctence
     if !&sentence.contains(target_char) {
         println!("REVIA not found in the senctence at all  -> return None");
@@ -173,7 +175,7 @@ pub fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> {
         // );
         if !two_code_points_behind && followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, index, index + REVIA.len_utf8()));
+            return Some(Match::new(revia, index, index + ACCENT_LEN_UTF8));
         }
     }
     None
@@ -187,21 +189,55 @@ fn as_char_slice(s: &str) -> Vec<char> {
     s.chars().collect()
 }
 
-fn indexes_target_char(target_char: char, sentence: &[char]) -> Vec<usize> {
+fn indexes_target_char(target_char: &str, sentence: &[char]) -> Vec<usize> {
+    // --------------------------------------------------------------
+    // 1️⃣  Convert the incoming `&str` to a single `char`.
+    // --------------------------------------------------------------
+    // `chars()` iterates over Unicode scalar values.
+    // We take the first one and make sure there isn’t a second.
+    let target = match target_char.chars().next() {
+        // No characters at all → nothing can match.
+        None => return Vec::new(),
+        Some(ch) => {
+            // If there is a second character, the caller gave us a
+            // multi‑character string, which we treat as “no match”.
+            if target_char.chars().nth(1).is_some() {
+                return Vec::new();
+            }
+            ch
+        }
+    };
     sentence
         .iter()
         .enumerate()
-        .filter_map(|(index, &c)| if c == target_char { Some(index) } else { None })
+        .filter_map(|(index, &c)| if c == target { Some(index) } else { None })
         .collect()
 }
 
 fn is_part_of_two_code_point_accent_look_behind(
     sentence: &[char],
-    target_char: char,
+    target_char: &str,
     idx_target: usize,
     lookbehind_combos: &[char],
     max_word_span: usize,
 ) -> bool {
+    // 1️⃣  Convert the incoming `&str` to a single `char`.
+    // --------------------------------------------------------------
+    // `chars()` iterates over Unicode scalar values.
+    // We take the first one and make sure there isn’t a second.
+    let target = match target_char.chars().next() {
+        // No characters at all → nothing can match.
+        None => return false,
+        Some(ch) => {
+            // If there is a second character, the caller gave us a
+            // multi‑character string, which we treat as “no match”.
+            if target_char.chars().nth(1).is_some() {
+                return false;
+            }
+            ch
+        }
+    };
+
     // Nothing to look at if the target is the very first character.
     if idx_target == 0 {
         return false;
@@ -215,7 +251,7 @@ fn is_part_of_two_code_point_accent_look_behind(
         let c = sentence[i];
 
         // Treat space and the special separator `MAQQEPH` as word boundaries.
-        if c == ' ' || c == MAQQEPH {
+        if c == ' ' || c == MAQQEPH_AS_CHAR {
             word_breaks += 1;
             // If we have crossed the allowed number of word spans, stop.
             if word_breaks >= max_word_span {
@@ -226,7 +262,7 @@ fn is_part_of_two_code_point_accent_look_behind(
 
         // If we encounter the same target character again, the current
         // occurrence cannot be part of a two‑code‑point accent.
-        if c == target_char {
+        if c == target {
             return false;
         }
 
@@ -263,7 +299,7 @@ fn is_part_of_mahpakh_legarmeh_look_ahead(idx_target: usize, sentence: &[char]) 
 
             // Acceptable mahpakh symbols, but only while we are still in the
             // first or second word (i.e. before we have seen two spaces).
-            PASEQ | VERTICAL_LINE => return true,
+            PASEQ_AS_CHAR | VERTICAL_LINE_AS_CHAR => return true,
 
             // Anything else does not affect the outcome; just continue.
             _ => {}
@@ -293,14 +329,14 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
 
         match c {
             // Word boundaries increment the counter.
-            ' ' | MAQQEPH => word_boundary_cnt += 1,
+            ' ' | MAQQEPH_AS_CHAR => word_boundary_cnt += 1,
 
             // The first word after the target may contain `OLEH`.
-            OLEH if word_boundary_cnt == 1 => oleh_seen = true,
+            OLEH_AS_CHAR if word_boundary_cnt == 1 => oleh_seen = true,
 
             // `YORED` may appear in the first or second word *after* we have
             // already seen `OLEH`.
-            YORED if (word_boundary_cnt == 1 || word_boundary_cnt == 2) && oleh_seen => {
+            YORED_AS_CHAR if (word_boundary_cnt == 1 || word_boundary_cnt == 2) && oleh_seen => {
                 // Both parts are present → we can return early.
                 return true;
             }

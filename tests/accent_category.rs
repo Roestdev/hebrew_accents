@@ -20,7 +20,7 @@ fn testing_prose_accent_categories() {
         Some(AccentCategory::Disjunctive)
     );
     assert_eq!(
-        ProseAccent::ZaqephQaton.category(),
+        ProseAccent::ZaqephQatan.category(),
         Some(AccentCategory::Disjunctive)
     );
     assert_eq!(

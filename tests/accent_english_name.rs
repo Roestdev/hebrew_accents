@@ -7,7 +7,7 @@ fn testing_prose_accent_english_name() {
     assert_eq!(ProseAccent::Atnach.english_name(), "Atnach");
     assert_eq!(ProseAccent::Segolta.english_name(), "Segolta");
     assert_eq!(ProseAccent::Shalshelet.english_name(), "Shalshelet");
-    assert_eq!(ProseAccent::ZaqephQaton.english_name(), "Zaqeph Qaton");
+    assert_eq!(ProseAccent::ZaqephQatan.english_name(), "Zaqeph Qaton");
     assert_eq!(ProseAccent::ZaqephGadol.english_name(), "Zaqeph Gadol");
     assert_eq!(ProseAccent::Revia.english_name(), "Revia");
     assert_eq!(ProseAccent::Tiphcha.english_name(), "Tiphcha");

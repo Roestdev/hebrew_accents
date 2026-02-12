@@ -7,7 +7,7 @@ fn testing_prose_accent_relative_strengths() {
     assert_eq!(ProseAccent::Atnach.relative_strength(), 2);
     assert_eq!(ProseAccent::Segolta.relative_strength(), 3);
     assert_eq!(ProseAccent::Shalshelet.relative_strength(), 4);
-    assert_eq!(ProseAccent::ZaqephQaton.relative_strength(), 5);
+    assert_eq!(ProseAccent::ZaqephQatan.relative_strength(), 5);
     assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), 6);
     assert_eq!(ProseAccent::Revia.relative_strength(), 7);
     assert_eq!(ProseAccent::Tiphcha.relative_strength(), 8);

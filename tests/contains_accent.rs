@@ -80,9 +80,9 @@ fn test_contains_prose_shalshelet() {
 #[test]
 fn test_contains_prose_zaqeph_qaton() {
     let sentence_c = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֔ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-    assert!(sentence_c.contains_accent(ProseAccent::ZaqephQaton.into()));
+    assert!(sentence_c.contains_accent(ProseAccent::ZaqephQatan.into()));
     let sentence_c = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-    assert!(!sentence_c.contains_accent(ProseAccent::ZaqephQaton.into()));
+    assert!(!sentence_c.contains_accent(ProseAccent::ZaqephQatan.into()));
 }
 #[test]
 fn test_contains_prose_zaqeph_gadol() {

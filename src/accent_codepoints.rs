@@ -1037,18 +1037,34 @@ mod tests {
             "DUMMY NAME",
             "✱",
             CodePointPosition::Above,
-            &[Tradition::Ashkenazi {
-                hebrew_name: "דוגמה",
-                english_name: "example",
-            }],
+            &[
+                Tradition::Ashkenazi {
+                    hebrew_name: "אשכנזי",
+                    english_name: "example for: Ashkenazi",
+                },
+                Tradition::Sephardi {
+                    hebrew_name: "ספרדי",
+                    english_name: "example for: Sephardi",
+                },
+                Tradition::Italian {
+                    hebrew_name: "איטלקי",
+                    english_name: "example for: Italian",
+                },
+                Tradition::Yemenite {
+                    hebrew_name: "תימני",
+                    english_name: "example for: Yemenite",
+                },
+            ],
         );
-
         assert_eq!(created.code_point, "U+1234");
         assert_eq!(created.hex_value, "0x12 0x34");
         assert_eq!(created.name, "DUMMY NAME");
         assert_eq!(created.symbol, "✱");
         assert_eq!(created.position, CodePointPosition::Above);
-        assert_eq!(created.traditions.len(), 1);
-        assert_tradition(&created.traditions[0], "דוגמה", "example");
+        assert_eq!(created.traditions.len(), 4);
+        assert_tradition(&created.traditions[0], "אשכנזי", "example for: Ashkenazi");
+        assert_tradition(&created.traditions[1], "ספרדי", "example for: Sephardi");
+        assert_tradition(&created.traditions[2], "איטלקי", "example for: Italian");
+        assert_tradition(&created.traditions[3], "תימני", "example for: Yemenite");
     }
 }

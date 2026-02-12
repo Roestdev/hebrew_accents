@@ -145,3 +145,22 @@ impl<'h> From<Match<'h>> for core::ops::Range<usize> {
 // fn option_index: Option<usize>) -> Option<Match<'static>> {
 //     option_index.map(|index| Match::new("TODO: insert single character", index, index + 2))
 // }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_match_parameters() {
+        let m_atch = Match::new("hooiberg", 2, 6);
+        assert_eq!(m_atch.start(), 2);
+        assert_eq!(m_atch.end(), 6);
+        assert_eq!(m_atch.len(), 4);
+        assert_eq!(m_atch.as_str(),"oibe");
+        assert!(!m_atch.is_empty());
+        let r_ange = m_atch.range();
+        assert_eq!(r_ange.start, 2);
+        assert_eq!(r_ange.end, 6);
+        
+    }
+}

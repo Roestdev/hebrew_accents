@@ -56,7 +56,7 @@ pub enum ProseAccent {
     /// Disjunctive prose accent Shalshelet
     Shalshelet,
     /// Disjunctive prose accent Zaqeph Qaton
-    ZaqephQaton,
+    ZaqephQatan,
     /// Disjunctive prose accent Zaqeph Gadol
     ZaqephGadol,
     /// Disjunctive prose accent Revia
@@ -109,10 +109,10 @@ impl ProseAccent {
     /// The total number of prose accents
     pub const COUNT: usize = 28;
     /// Indication of how an strong an accent is relativly speaking
-    /// 
+    ///
     /// The stronger, the longer the pause/break when reading
     /// The strongest accent has a relative strength of 1
-    /// 
+    ///
     /// Note: For now all Hebrew Accents have this property for now
     ///       It is only valid for disjunctive accents.
     #[inline]

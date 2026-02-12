@@ -14,7 +14,7 @@ fn testing_prose_accent_types() {
         Some(AccentType::Primary)
     );
     assert_eq!(
-        ProseAccent::ZaqephQaton.accent_type(),
+        ProseAccent::ZaqephQatan.accent_type(),
         Some(AccentType::Primary)
     );
     assert_eq!(

@@ -7,7 +7,7 @@ fn testing_prose_accent_meaning() {
     assert_eq!(ProseAccent::Atnach.meaning(), "a causing to rest");
     assert_eq!(ProseAccent::Segolta.meaning(), "a little grape-bunch");
     assert_eq!(ProseAccent::Shalshelet.meaning(), "chain or link");
-    assert_eq!(ProseAccent::ZaqephQaton.meaning(), "small upright");
+    assert_eq!(ProseAccent::ZaqephQatan.meaning(), "small upright");
     assert_eq!(ProseAccent::ZaqephGadol.meaning(), "large upright");
     assert_eq!(ProseAccent::Revia.meaning(), "fourth [in a sequence]");
     assert_eq!(ProseAccent::Tiphcha.meaning(), "handbreadth or diagonal");
@@ -83,7 +83,10 @@ fn testing_poetry_accent_meaning() {
     assert_eq!(PoetryAccent::Munach.meaning(), "resting or placed");
     assert_eq!(PoetryAccent::Merkha.meaning(), "lengthener, prolonging");
     assert_eq!(PoetryAccent::Illuy.meaning(), "elevation or raising");
-    assert_eq!(PoetryAccent::Tarcha.meaning(), "trouble, difficulty, hardship, toil");
+    assert_eq!(
+        PoetryAccent::Tarcha.meaning(),
+        "trouble, difficulty, hardship, toil"
+    );
     assert_eq!(PoetryAccent::Galgal.meaning(), "wheel, circle");
     assert_eq!(PoetryAccent::Mehuppakh.meaning(), "reversed");
     assert_eq!(
@@ -103,5 +106,8 @@ fn testing_poetry_accent_meaning() {
 fn testing_pseudo_accent_meaning() {
     assert_eq!(PseudoAccent::SophPasuq.meaning(), "end of verse");
     assert_eq!(PseudoAccent::Maqqeph.meaning(), "binder");
-    assert_eq!(PseudoAccent::Paseq.meaning(), "to pause, to stop or to interrupt");
+    assert_eq!(
+        PseudoAccent::Paseq.meaning(),
+        "to pause, to stop or to interrupt"
+    );
 }

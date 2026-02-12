@@ -7,7 +7,7 @@ fn testing_prose_accent_code_points() {
     assert_eq!(ProseAccent::Atnach.code_points(), 1);
     assert_eq!(ProseAccent::Segolta.code_points(), 1);
     assert_eq!(ProseAccent::Shalshelet.code_points(), 2);
-    assert_eq!(ProseAccent::ZaqephQaton.code_points(), 1);
+    assert_eq!(ProseAccent::ZaqephQatan.code_points(), 1);
     assert_eq!(ProseAccent::ZaqephGadol.code_points(), 1);
     assert_eq!(ProseAccent::Revia.code_points(), 1);
     assert_eq!(ProseAccent::Tiphcha.code_points(), 1);

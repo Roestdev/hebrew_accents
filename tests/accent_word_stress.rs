@@ -19,7 +19,7 @@ fn testing_prose_accent_word_stress() {
         Some(WordStress::ImPositive)
     );
     assert_eq!(
-        ProseAccent::ZaqephQaton.word_stress(),
+        ProseAccent::ZaqephQatan.word_stress(),
         Some(WordStress::ImPositive)
     );
     assert_eq!(
