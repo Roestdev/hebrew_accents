@@ -1,3 +1,5 @@
+//! Implementation of find_accent() for 'SentenceContext'
+
 // Standard library
 
 // External crates
@@ -78,42 +80,57 @@ impl SentenceContext {
                 .sentence
                 .find(SEGOLTA)
                 .map(|index| Match::new(SEGOLTA, index, index + ACCENT_LEN_UTF8)),
-            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
-                if let Some(outer_match) = RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
-                    println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
-                    println!(
-                        "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    let outer_start = outer_match.start();
-                    if let Some(inner_match) = RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str())
-                    {
-                        println!("\n==> RE_INNER_COMMON_SHALSHELET: found!");
-                        println!(
-                            "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                            inner_match.start(),
-                            inner_match.end(),
-                            inner_match.as_str()
-                        );
-                        let absolute_inner_start = outer_start + inner_match.start();
-                        let absolute_inner_end = outer_start + inner_match.end();
-                        println!("Absolute start in `hay`: {}", absolute_inner_start);
-                        println!("Absolute end in `hay`: {}", absolute_inner_end);
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            absolute_inner_start,
-                            absolute_inner_end,
-                        ))
-                    } else {
-                        println!("ProseAccent::Shalshelet is not found (inner match");
-                        None
-                    }
-                } else {
-                    println!("ProseAccent::Shalshelet is not found (outer match).");
-                    None
+
+            // TODOnnew code
+            HebrewAccent::Prose(ProseAccent::Shalshelet) => {
+                if self.ctx != Context::Prosaic {
+                    // wrong context, early return
+                    return None;
                 }
+                let outer = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
+                    Some(m) => {
+                        println!(
+                            "\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!\n\
+                                OUTER MATCH :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("ProseAccent::Shalshelet is not found (outer match).");
+                        return None;
+                    }
+                };
+                let inner = match RE_INNER_COMMON_SHALSHELET.find(outer.as_str()) {
+                    Some(m) => {
+                        println!(
+                            "\n==> RE_INNER_COMMON_SHALSHELET: found!\n\
+                                INNER MATCH :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("ProseAccent::Shalshelet is not found (inner match).");
+                        return None;
+                    }
+                };
+                let outer_start = outer.start();
+                let abs_start = outer_start + inner.start();
+                let abs_end = outer_start + inner.end();
+
+                println!("Absolute start in `hay`: {}", abs_start);
+                println!("Absolute end   in `hay`: {}", abs_end);
+
+                Some(Match::new(
+                    "2CodePoints", // TODO: replace with the real identifier
+                    abs_start,
+                    abs_end,
+                ))
             }
             HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => self
                 .sentence

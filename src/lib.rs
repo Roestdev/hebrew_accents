@@ -82,7 +82,7 @@
 //!
 //! - new() -> `SentenceContext`
 //! - contains_accent(HebrewAccent) -> bool
-//! - find_accent(HebrewAccent) -> Option<Match>
+//! - find_accent(HebrewAccent) -> `Option<Match>`
 //!
 //!
 //! ### Accent metadata
@@ -93,13 +93,19 @@
 //!  - hebrew_name          (the Hebrew name)
 //!  - meaning              (the meaning of the Hebrew name)
 //!  - english_name         (the English name, a transliteration of the Hebrew)
-//!  - accent_type          (Primary, Secondary - optional)
-//!  - category             (Disjunctive, Conjunctive - optional)
-//!  - word_stress          (ImPositive, PostPositive, PrePositive - optional)
-//!  - UTF-8 code_points    (1 or 2)
+//!  - Number of UTF-8 code_points    (1 or 2)
 //!  - relative_strength    (lowest number has relative more weight)
 //!  - count                (the number of all accents in a specific category)
-//!  - details              (only used for debugging at this moment)
+//!
+//!  Optional attributes:
+//!
+//!  - accent_type          (Primary, Secondary)
+//!  - category             (Disjunctive, Conjunctive)
+//!  - word_stress          (ImPositive, PostPositive, PrePositive)
+//!
+//!  For debugging purposes:
+//!
+//!  - details    
 //!
 //! ## Examples
 //! todo

@@ -53,48 +53,36 @@ pub struct Match<'h> {
 }
 
 impl<'h> Match<'h> {
-    /// Returns the byte offset of the start of the match in the haystack. The
-    /// start of the match corresponds to the position where the match begins
-    /// and includes the first byte in the match.
+    /// Returns the byte offset of the start of the match in the haystack.
     #[inline]
     pub fn start(&self) -> usize {
         self.start
     }
-
-    /// Returns the byte offset of the end of the match in the haystack. The
-    /// end of the match corresponds to the byte immediately following the last
-    /// byte in the match. This means that `&slice[start..end]` works as one
-    /// would expect.
+    /// Returns the byte offset of the end of the match in the haystack.
     #[inline]
     pub fn end(&self) -> usize {
         self.end
     }
-
     /// Returns true if and only if this match has a length of zero.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.start == self.end
     }
-
     /// Returns the length, in bytes, of this match.
     #[inline]
     pub fn len(&self) -> usize {
         self.end - self.start
     }
-
-    /// Returns the range over the starting and ending byte offsets of the
-    /// match in the haystack.
+    /// Returns the range from start till end (byte offsets)
     #[inline]
     pub fn range(&self) -> core::ops::Range<usize> {
         self.start..self.end
     }
-
     /// Returns the substring of the haystack that matched.
     #[inline]
     pub fn as_str(&self) -> &'h str {
         &self.haystack[self.range()]
     }
-
     /// Creates a new match from the given haystack and byte offsets.
     #[inline]
     pub(crate) fn new(haystack: &'h str, start: usize, end: usize) -> Match<'h> {
@@ -106,46 +94,6 @@ impl<'h> Match<'h> {
     }
 }
 
-// impl<'h> core::fmt::Debug for Match<'h> {
-//     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-//         f.debug_struct("Match")
-//             .field("start", &self.start)
-//             .field("end", &self.end)
-//             .field("string", &self.as_str())
-//             .finish()
-//     }
-// }
-
-impl<'h> From<Match<'h>> for &'h str {
-    fn from(m: Match<'h>) -> &'h str {
-        m.as_str()
-    }
-}
-
-impl<'h> From<Match<'h>> for core::ops::Range<usize> {
-    fn from(m: Match<'h>) -> core::ops::Range<usize> {
-        m.range()
-    }
-}
-
-// fn option_index: Option<usize>) -> Option<Match<'static>> {
-//     if let Some(index) = option_index {
-//         // all single characters accents consists two bytes, so
-//         // the next character will be located at index+2'
-//         Some(Match::new(
-//             "TODO: insert single character",
-//             index,
-//             index + 2,
-//         ))
-//     } else {
-//         None
-//     }
-//}
-
-// fn option_index: Option<usize>) -> Option<Match<'static>> {
-//     option_index.map(|index| Match::new("TODO: insert single character", index, index + 2))
-// }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -156,11 +104,17 @@ mod tests {
         assert_eq!(m_atch.start(), 2);
         assert_eq!(m_atch.end(), 6);
         assert_eq!(m_atch.len(), 4);
-        assert_eq!(m_atch.as_str(),"oibe");
-        assert!(!m_atch.is_empty());
+        assert_eq!(m_atch.as_str(), "oibe");
         let r_ange = m_atch.range();
         assert_eq!(r_ange.start, 2);
         assert_eq!(r_ange.end, 6);
-        
+    }
+
+    #[test]
+    fn empty_match() {
+        let mut m_atch = Match::new("hooiberg", 2, 2);
+        assert!(m_atch.is_empty());
+        m_atch.end = 4;
+        assert!(!m_atch.is_empty());
     }
 }

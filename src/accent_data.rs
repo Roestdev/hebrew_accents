@@ -1,4 +1,4 @@
-//! This file contains all static data of 'Hebrew Accents'
+//! This file contains all static data of the 'Hebrew Accents'
 
 // Standard library
 use once_cell::sync::Lazy;

@@ -1,3 +1,5 @@
+//! Implementation of contains_accent() for 'SentenceContext'
+
 // Standard library
 
 // External crates

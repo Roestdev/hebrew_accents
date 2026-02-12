@@ -1,7 +1,4 @@
-//! THis file contains the ma
-//!
-//!
-//!
+//! Main entry point for Hebrew Accent information
 
 // Standard library
 // N/A

@@ -1,3 +1,5 @@
+//! Miscellaneous helper functions
+
 // Standard library
 // N/A
 
