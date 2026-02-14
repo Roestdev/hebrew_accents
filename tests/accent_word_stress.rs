@@ -112,7 +112,6 @@ fn testing_prose_accent_word_stress() {
 
 #[test]
 fn testing_poetry_accent_word_stress() {
-    // ImPositives
     assert_eq!(
         PoetryAccent::Silluq.word_stress(),
         Some(WordStress::ImPositive)
@@ -161,7 +160,6 @@ fn testing_poetry_accent_word_stress() {
         PoetryAccent::AzlaLegarmeh.word_stress(),
         Some(WordStress::ImPositive)
     );
-    // Some(WordStress::ImPositive)s
     assert_eq!(
         PoetryAccent::Munach.word_stress(),
         Some(WordStress::ImPositive)

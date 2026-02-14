@@ -214,7 +214,7 @@ pub trait Accent: Copy + Sized {
     fn relative_strength(self) -> u8;
 
     /// Return the *static* metadata for this concrete accent.
-    fn details(self) -> &'static AccentInfo;
+    fn details(self) -> &'static AccentInformation;
     // Convenience wrappers.
     /// English name of the Hebrew Accent
     #[inline]
@@ -234,18 +234,32 @@ pub trait Accent: Copy + Sized {
     /// Hebrew Accent type
     #[inline]
     fn accent_type(self) -> Option<AccentType> {
-        self.details().accent_type
+        if self.details().additional.is_some() {
+            Some(self.details().additional.unwrap().accent_type)
+        } else {
+            None
+        }
+        //self.details().accent_type
     }
     /// category of the Hebrew Accent
     #[inline]
     fn category(self) -> Option<AccentCategory> {
-        self.details().category
+        if self.details().additional.is_some() {
+            Some(self.details().additional.unwrap().category)
+        } else {
+            None
+        }
     }
     /// word-stress of the Hebrew Accent
     #[inline]
     fn word_stress(self) -> Option<WordStress> {
-        self.details().word_stress
+        if self.details().additional.is_some() {
+            self.details().additional.unwrap().word_stress
+        } else {
+            None
+        }
     }
+
     /// number of UTF-8 code points of the Hebrew Accent
     fn code_points(self) -> u8;
 }
@@ -259,7 +273,7 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.relative_strength(),
         }
     }
-    fn details(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInformation {
         match self {
             HebrewAccent::Prose(p) => p.details(),
             HebrewAccent::Poetry(p) => p.details(),
@@ -289,23 +303,43 @@ impl Accent for HebrewAccent {
     }
     fn accent_type(self) -> Option<AccentType> {
         match self {
-            HebrewAccent::Prose(p) => p.details().accent_type,
-            HebrewAccent::Poetry(p) => p.details().accent_type,
-            HebrewAccent::Pseudo(p) => p.details().accent_type,
+            HebrewAccent::Prose(p) => Some(p.details().additional.unwrap().accent_type),
+            HebrewAccent::Poetry(p) => Some(p.details().additional.unwrap().accent_type),
+            HebrewAccent::Pseudo(p) => Some(p.details().additional.unwrap().accent_type),
         }
     }
     fn category(self) -> Option<AccentCategory> {
         match self {
-            HebrewAccent::Prose(p) => p.details().category,
-            HebrewAccent::Poetry(p) => p.details().category,
-            HebrewAccent::Pseudo(p) => p.details().category,
+            HebrewAccent::Prose(p) => Some(p.details().additional.unwrap().category),
+            HebrewAccent::Poetry(p) => Some(p.details().additional.unwrap().category),
+            HebrewAccent::Pseudo(p) => Some(p.details().additional.unwrap().category),
         }
     }
     fn word_stress(self) -> Option<WordStress> {
         match self {
-            HebrewAccent::Prose(p) => p.details().word_stress,
-            HebrewAccent::Poetry(p) => p.details().word_stress,
-            HebrewAccent::Pseudo(p) => p.details().word_stress,
+            HebrewAccent::Prose(p) => {
+                if p.details().additional.is_some() {
+                    p.details().additional.unwrap().word_stress
+                } else {
+                    None
+                }
+            }
+
+            HebrewAccent::Poetry(p) => {
+                if p.details().additional.is_some() {
+                    p.details().additional.unwrap().word_stress
+                } else {
+                    None
+                }
+            }
+
+            HebrewAccent::Pseudo(p) => {
+                if p.details().additional.is_some() {
+                    p.details().additional.unwrap().word_stress
+                } else {
+                    None
+                }
+            }
         }
     }
     fn code_points(self) -> u8 {
@@ -336,7 +370,7 @@ impl Accent for HebrewAccent {
 }
 
 impl Accent for ProseAccent {
-    fn details(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInformation {
         PROSE_ACCENT_TABLE[self as usize]
     }
     fn relative_strength(self) -> u8 {
@@ -352,7 +386,7 @@ impl Accent for ProseAccent {
 }
 
 impl Accent for PoetryAccent {
-    fn details(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInformation {
         POETRY_ACCENT_TABLE[self as usize]
     }
     fn relative_strength(self) -> u8 {
@@ -368,7 +402,7 @@ impl Accent for PoetryAccent {
 }
 
 impl Accent for PseudoAccent {
-    fn details(self) -> &'static AccentInfo {
+    fn details(self) -> &'static AccentInformation {
         PSEUDO_ACCENT_TABLE[self as usize]
     }
     fn relative_strength(self) -> u8 {
@@ -385,25 +419,32 @@ impl Accent for PseudoAccent {
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct AccentInfo {
-    /// Primary identifiers
-    pub english_name: &'static str,
+pub struct AccentInformation {
     /// Hebrew name of the accent
     pub hebrew_name: &'static str,
-    /// The meaning of the hebrew the accent
+    /// The meaning of the Hebrew the accent
     pub meaning: &'static str,
-    /// Optional alternate identifiers
-    pub alternates: Option<Alternates>,
-    /// Indicates the accent type (Primary, Secundary)
-    pub accent_type: Option<AccentType>,
-    /// Optional alternate identifiers
-    pub category: Option<AccentCategory>,
-    /// Indicates if the accent is on the stressed syllable
-    pub word_stress: Option<WordStress>,
+    /// English name, transliterated
+    pub english_name: &'static str,
     /// Unicode code‑point data.
     pub code_points: CodePoints,
-    /// Free‑form comment (may be omitted)
+    /// Free‑form comment
     pub comment: Option<&'static str>,
+    /// Additional accent information
+    pub additional: Option<Additional>,
+}
+
+/// Additional information for the accents used in Prose and Poetry
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct Additional {
+    /// Indicates the accent type (Primary, Secundary)
+    pub accent_type: AccentType,
+    /// Optional alternate identifiers
+    pub category: AccentCategory,
+    /// Indicates if the accent is on the stressed syllable
+    pub word_stress: Option<WordStress>,
+    /// Optional alternate identifiers
+    pub alternates: Option<Alternates>,
 }
 
 /// Optional alternate representations for an accent.
@@ -525,8 +566,6 @@ pub enum WordStress {
     PostPositive,
     /// Accent is NOT located above the stressed syllable, but at the very beginning of the word
     PrePositive,
-    /// None, used for the secondary accents like Meteg
-    None,
 }
 
 #[cfg(test)]
@@ -540,8 +579,14 @@ mod tests {
         assert_eq!(accent.details().meaning, expected_meaning);
 
         // Category and type are just forwarded to `details()`.
-        assert_eq!(accent.category(), accent.details().category);
-        assert_eq!(accent.accent_type(), accent.details().accent_type);
+        assert_eq!(
+            accent.category(),
+            Some(accent.details().additional.unwrap().category)
+        );
+        assert_eq!(
+            accent.accent_type(),
+            Some(accent.details().additional.unwrap().accent_type)
+        );
     }
 
     /// ----------------------------------------------------------------
@@ -623,4 +668,9 @@ mod tests {
         let ha = HebrewAccent::Prose(ProseAccent::Galgal);
         assert_eq!("wheel, circle", ha.details().meaning);
     }
+}
+
+mod pseudo {
+    #[test]
+    fn check() {}
 }

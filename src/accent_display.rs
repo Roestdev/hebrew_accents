@@ -6,13 +6,13 @@
 
 // Crate‑internal (local modules)
 use crate::accent_data::{POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE};
-use crate::AccentInfo;
+use crate::AccentInformation;
 
 /// Print every accent in the *prose* table.
 pub fn display_prose_accent_table() {
     println!("=== PROSE ACCENT TABLE ===");
     for (idx, info) in PROSE_ACCENT_TABLE.iter().enumerate() {
-        // `info` is a `&'static AccentInfo`
+        // `info` is a `&'static AccentInformation`
         println!("{:02}. {:#?}", idx + 1, info);
     }
     println!("=== END OF PROSE TABLE ===\n");
@@ -37,7 +37,7 @@ pub fn display_pseudo_accent_table() {
 }
 
 /// Generic printer (wrapper)
-pub fn display_accent_table(name: &str, table: &[&AccentInfo]) {
+pub fn display_accent_table(name: &str, table: &[&AccentInformation]) {
     println!("=== {name} ===");
     for (idx, info) in table.iter().enumerate() {
         println!("{:02}.  {:#?}", idx + 1, info);

@@ -1,5 +1,4 @@
 //! Main file
-//!
 
 /// Sentence including the context
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
@@ -116,5 +115,40 @@ mod tests {
         assert!(m_atch.is_empty());
         m_atch.end = 4;
         assert!(!m_atch.is_empty());
+    }
+
+    mod function_coverage_tests {
+        use super::*;
+
+        #[test]
+        fn exercise_all_match_accessors() {
+            // Build a match that spans a known slice.
+            let haystack = "אבגדהוז";
+            // Bytes 2..5 correspond to the characters "גדה".
+            let m = Match::new(haystack, 2, 4);
+
+            // Each accessor is called once; the result is asserted only to avoid
+            // dead‑code elimination in release builds.
+            assert_eq!(m.start(), 2);
+            assert_eq!(m.end(), 4);
+            assert_eq!(m.len(), 2);
+            assert_eq!(m.range(), 2..4);
+            assert_eq!(m.as_str(), "ב");
+            assert!(!m.is_empty());
+
+            // Also test the empty‑match path.
+            let empty = Match::new(haystack, 4, 4);
+            assert!(empty.is_empty());
+            assert_eq!(empty.len(), 0);
+        }
+
+        #[test]
+        fn sentence_context_new_is_covered() {
+            // The doctest already covers this, but unit tests guarantee coverage
+            // even when doctests are disabled (e.g., `cargo test --doc` is not run).
+            let s = SentenceContext::new("דוגמה של משפט בעברית", Context::Prosaic);
+            assert_eq!(s.ctx, Context::Prosaic);
+            assert_eq!(s.sentence, "דוגמה של משפט בעברית");
+        }
     }
 }
