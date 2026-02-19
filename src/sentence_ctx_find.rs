@@ -29,7 +29,10 @@ use crate::{
 
 pub(crate) const ACCENT_LEN_UTF8: usize = 2;
 
-impl SentenceContext {
+impl<'a> SentenceContext {
+    /// Look for `accent` inside the sentence.
+    /// Returns a `Match` that borrows from the sentence (`'a`).
+    ///
     /// This routine searches for the first match of a HebrewAccent in the sentence
     /// taking into account the context.
     /// If found, it returns a [`Match`]. The `Match` provides access to both
@@ -50,7 +53,7 @@ impl SentenceContext {
     ///    end: 19,
     /// };
     /// ```
-    pub fn find_accent(self, accent: HebrewAccent) -> Option<Match<'static>> {
+    pub fn find_accent(&'a self, accent: HebrewAccent) -> Option<Match<'a>> {
         match accent {
             /* **********************************************************
              *                          PROSE
@@ -58,18 +61,23 @@ impl SentenceContext {
             // Disjunctives
             HebrewAccent::Prose(ProseAccent::Silluq)
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
-                if let Some(outer_match) = FA_RE_OUTER_COMMON_SILLUQ.find(&self.sentence).unwrap() {
-                    println!(
-                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
-                } else {
-                    println!("ProseAccent::Silluq not found.");
-                    None
-                }
+                let outer_match = match FA_RE_OUTER_COMMON_SILLUQ.find(&self.sentence).unwrap() {
+                    Some(m) => {
+                        println!("\n==> FA_RE_OUTER_COMMON_SILLUQ: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> COMMON::Silluq is not found (outer match).");
+                        return None;
+                    }
+                };
+                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self
@@ -80,18 +88,12 @@ impl SentenceContext {
                 .sentence
                 .find(SEGOLTA)
                 .map(|index| Match::new(SEGOLTA, index, index + ACCENT_LEN_UTF8)),
-
-            // TODOnnew code
-            HebrewAccent::Prose(ProseAccent::Shalshelet) => {
-                if self.ctx != Context::Prosaic {
-                    // wrong context, early return
-                    return None;
-                }
-                let outer = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
+            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx != Context::Prosaic => {
+                let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     Some(m) => {
-                        println!(
-                            "\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!\n\
-                                OUTER MATCH :: start:{} ; end:{} ; str:{}",
+                        println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
                             m.start(),
                             m.end(),
                             m.as_str()
@@ -99,15 +101,15 @@ impl SentenceContext {
                         m
                     }
                     None => {
-                        println!("ProseAccent::Shalshelet is not found (outer match).");
+                        println!("\n==> ProseAccent::Shalshelet is not found (outer match).");
                         return None;
                     }
                 };
-                let inner = match RE_INNER_COMMON_SHALSHELET.find(outer.as_str()) {
+                let inner_match = match RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str()) {
                     Some(m) => {
-                        println!(
-                            "\n==> RE_INNER_COMMON_SHALSHELET: found!\n\
-                                INNER MATCH :: start:{} ; end:{} ; str:{}",
+                        println!("\n==> RE_INNER_COMMON_SHALSHELET: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
                             m.start(),
                             m.end(),
                             m.as_str()
@@ -115,21 +117,16 @@ impl SentenceContext {
                         m
                     }
                     None => {
-                        println!("ProseAccent::Shalshelet is not found (inner match).");
+                        println!("\n==> ProseAccent::Shalshelet is not found (inner match).");
                         return None;
                     }
                 };
-                let outer_start = outer.start();
-                let abs_start = outer_start + inner.start();
-                let abs_end = outer_start + inner.end();
-
-                println!("Absolute start in `hay`: {}", abs_start);
-                println!("Absolute end   in `hay`: {}", abs_end);
-
+                let absolute_inner_start = outer_match.start() + inner_match.start();
+                let absolute_inner_end = outer_match.start() + inner_match.end();
                 Some(Match::new(
-                    "2CodePoints", // TODO: replace with the real identifier
-                    abs_start,
-                    abs_end,
+                    inner_match.as_str(),
+                    absolute_inner_start,
+                    absolute_inner_end,
                 ))
             }
             HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => self
@@ -186,56 +183,66 @@ impl SentenceContext {
                     .find(TELISHA_GEDOLA)
                     .map(|index| Match::new(TELISHA_GEDOLA, index, index + ACCENT_LEN_UTF8))
             }
-            HebrewAccent::Prose(ProseAccent::Legarmeh) => {
-                if let Some(outer_match) = RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
-                    println!("\n==> RE_OUTER_PROSE_LEGARMEH: FOUND!");
-                    println!(
-                        "OUTER MATCH:: start():{}; end():{}; asstr():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    let outer_start = outer_match.start();
-                    if let Some(inner_match) = RE_INNER_PROSE_LEGARMEH.find(outer_match.as_str()) {
-                        println!(
-                            "INNER MATCH:: start():{}; end():{}; asstr():  {}",
-                            inner_match.start(),
-                            inner_match.end(),
-                            inner_match.as_str()
+            HebrewAccent::Prose(ProseAccent::Legarmeh) if self.ctx == Context::Prosaic => {
+                let outer_match = match RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_PROSE_LEGARMEH: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
                         );
-                        let absolute_inner_start = outer_start + inner_match.start();
-                        let absolute_inner_end = outer_start + inner_match.end();
-                        println!("Absolute start in `hay`: {}", absolute_inner_start);
-                        println!("Absolute end in `hay`: {}", absolute_inner_end);
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            absolute_inner_start,
-                            absolute_inner_end,
-                        ))
-                    } else {
-                        println!("Narrow pattern not found inside the first match.");
-                        None
+                        m
                     }
-                } else {
-                    println!("No ProseAccent::Legarmeh.");
-                    None
-                }
+                    None => {
+                        println!("\n==> ProseAccent::Legarmeh is not found (outer match).");
+                        return None;
+                    }
+                };
+                let inner_match = match RE_INNER_PROSE_LEGARMEH.find(outer_match.as_str()) {
+                    Some(m) => {
+                        println!("\n==> RE_INNER_PROSE_LEGARMEH: FOUND!");
+                        print!(
+                            "\tinner match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> ProseAccent::Legarmeh is not found (outer match).");
+                        return None;
+                    }
+                };
+                let absolute_inner_start = outer_match.start() + inner_match.start();
+                let absolute_inner_end = outer_match.start() + inner_match.end();
+                Some(Match::new(
+                    inner_match.as_str(),
+                    absolute_inner_start,
+                    absolute_inner_end,
+                ))
             }
             // Conjunctives
             HebrewAccent::Prose(ProseAccent::Munach) if self.ctx == Context::Prosaic => {
-                if let Some(outer_match) = FA_RE_OUTER_PROSE_MUNACH.find(&self.sentence).unwrap() {
-                    println!("\n==> FA_RE_OUTER_COMMON_METEG: FOUND!");
-                    println!(
-                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    Some(Match::new(MUNACH, outer_match.start(), outer_match.end()))
-                } else {
-                    println!("Outer pattern not found for MUNACH (Prose).");
-                    None
-                }
+                let outer_match = match FA_RE_OUTER_PROSE_MUNACH.find(&self.sentence).unwrap() {
+                    Some(m) => {
+                        println!("\n==> FA_RE_OUTER_PROSE_MUNACH: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> CProseAccent::Munach is not found (outer match).");
+                        return None;
+                    }
+                };
+                Some(Match::new(MUNACH, outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => self
                 .sentence
@@ -269,118 +276,132 @@ impl SentenceContext {
                 .find(GALGAL)
                 .map(|index| Match::new(GALGAL, index, index + ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Mayela) if self.ctx == Context::Prosaic => {
-                match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
-                    Some(outer_match) => {
-                        println!("\n==> RE_OUTER_PROSE_MEAYLA found");
-                        println!("Matched text: {}", outer_match.as_str());
-                        println!("Starts at byte index: {}", outer_match.start());
-                        println!("Ends at byte index: {}", outer_match.end());
-                        Some(Match::new(MEAYLA, outer_match.start(), outer_match.end()))
+                let outer_match = match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_PROSE_MEAYLA: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
                     }
                     None => {
-                        println!("RE_OUTER_PROSE_MEAYLA not found.");
-                        None
+                        println!("\n==> ProseAccent::Mayela is not found (outer match).");
+                        return None;
                     }
-                }
+                };
+                Some(Match::new(MEAYLA, outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
-                if let Some(outer_match) = FA_RE_OUTER_COMMON_METEG.find(&self.sentence).unwrap() {
-                    println!("\n==> FA_RE_OUTER_COMMON_METEG: FOUND!");
-                    println!(
-                        "OUTER MATCH--start():{}‑-end():{}‑-asstr():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    Some(Match::new(METEG, outer_match.start(), outer_match.end()))
-                } else {
-                    println!("\n==> FA_RE_OUTER_COMMON_METEG: NOT FOUND!");
-                    None
-                }
+                let outer_match = match FA_RE_OUTER_COMMON_METEG.find(&self.sentence).unwrap() {
+                    Some(m) => {
+                        println!("\n==> FA_RE_OUTER_COMMON_METEG: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> COMMON::Meteg is not found (outer match).");
+                        return None;
+                    }
+                };
+                Some(Match::new(METEG, outer_match.start(), outer_match.end()))
             }
             /* **********************************************************
              *                          POETRY
              * *********************************************************/
             // Disjunctives
             HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.ctx == Context::Poetic => {
-                match RE_OUTER_POETRY_OLEH_WE_YORED.find(&self.sentence) {
-                    Some(outer_match) => {
+                let outer_match = match RE_OUTER_POETRY_OLEH_WE_YORED.find(&self.sentence) {
+                    Some(m) => {
                         println!("\n==> RE_OUTER_POETRY_OLEH_WE_YORED: FOUND!");
-                        println!("Matched text: {}", outer_match.as_str());
-                        println!("Starts at byte index: {}", outer_match.start());
-                        println!("Ends at byte index: {}", outer_match.end());
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            outer_match.start(),
-                            outer_match.end(),
-                        ))
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
                     }
                     None => {
-                        println!("PoetryAccent::OlehWeYored not found!");
-                        None
+                        println!("\n==> PoetryAccent::OlehWeYored is not found (outer match).");
+                        return None;
                     }
-                }
+                };
+                Some(Match::new(
+                    outer_match.as_str(),
+                    outer_match.start(),
+                    outer_match.end(),
+                ))
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.ctx == Context::Poetic => {
                 find_poetry_revia_gadol(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaMugrash) if self.ctx == Context::Poetic => {
-                match RE_OUTER_POETRY_REVIA_MUGRASH.find(&self.sentence) {
-                    Some(outer_match) => {
+                let outer_match = match RE_OUTER_POETRY_REVIA_MUGRASH.find(&self.sentence) {
+                    Some(m) => {
                         println!("\n==> RE_OUTER_POETRY_REVIA_MUGRASH: FOUND!");
-                        println!(
-                            "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                            outer_match.start(),
-                            outer_match.end(),
-                            outer_match.as_str()
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
                         );
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            outer_match.start(),
-                            outer_match.end(),
-                        ))
+                        m
                     }
                     None => {
-                        println!("PoetryAccent::ReviaMugrash NOT FOUND!");
-                        None
+                        println!("\n==> PoetryAccent::ReviaMugrash is not found (outer match).");
+                        return None;
                     }
-                }
+                };
+                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol) if self.ctx == Context::Poetic => {
-                if let Some(outer_match) = RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
-                    println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
-                    println!(
-                        "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    let outer_start = outer_match.start();
-                    if let Some(inner_match) = RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str())
-                    {
-                        println!(
-                            "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                            inner_match.start(),
-                            inner_match.end(),
-                            inner_match.as_str()
+                let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
                         );
-                        let absolute_inner_start = outer_start + inner_match.start();
-                        let absolute_inner_end = outer_start + inner_match.end();
-                        println!("Absolute start in `hay`: {}", absolute_inner_start);
-                        println!("Absolute end in `hay`: {}", absolute_inner_end);
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            absolute_inner_start,
-                            absolute_inner_end,
-                        ))
-                    } else {
-                        println!("PoetryAccent::ShalsheletGadol not found.");
-                        None
+                        m
                     }
-                } else {
-                    println!("PoetryAccent::ShalsheletGadol not found.");
-                    None
-                }
+                    None => {
+                        println!("\n==> ProseAccent::Shalshelet is not found (outer match).");
+                        return None;
+                    }
+                };
+                let inner_match = match RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str()) {
+                    Some(m) => {
+                        println!("\n==> RE_INNER_COMMON_SHALSHELET: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> ProseAccent::Shalshelet is not found (inner match).");
+                        return None;
+                    }
+                };
+                let absolute_inner_start = outer_match.start() + inner_match.start();
+                let absolute_inner_end = outer_match.start() + inner_match.end();
+                Some(Match::new(
+                    inner_match.as_str(),
+                    absolute_inner_start,
+                    absolute_inner_end,
+                ))
             }
             HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.ctx == Context::Poetic => self
                 .sentence
@@ -396,42 +417,44 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.ctx == Context::Poetic =>
             {
-                match RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH.find(&self.sentence) {
-                    Some(outer_match) => {
-                        println!("\n==> RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH found");
-                        println!("Matched text: {}", outer_match.as_str());
-                        println!("Starts at byte index: {}", outer_match.start());
-                        println!("Ends at byte index: {}", outer_match.end());
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            outer_match.start(),
-                            outer_match.end(),
-                        ))
+                let outer_match = match RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
                     }
                     None => {
-                        println!("PoetryAccent::MehuppakhLegarmeh not found");
-                        None
+                        println!(
+                            "\n==> PoetryAccent::MehuppakhLegarmeh is not found (outer match)."
+                        );
+                        return None;
                     }
-                }
+                };
+                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.ctx == Context::Poetic => {
-                match RE_OUTER_POETRY_AZLA_LEGARMEH.find(&self.sentence) {
-                    Some(outer_match) => {
-                        println!("\n==> RE_OUTER_POETRY_AZLA_LEGARMEH found!");
-                        println!("Matched text: {}", outer_match.as_str());
-                        println!("Starts at byte index: {}", outer_match.start());
-                        println!("Ends at byte index: {}", outer_match.end());
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            outer_match.start(),
-                            outer_match.end(),
-                        ))
+                let outer_match = match RE_OUTER_POETRY_AZLA_LEGARMEH.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_POETRY_AZLA_LEGARMEH: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
                     }
                     None => {
-                        println!("PoetryAccent::AzlaLegarmeh not found.");
-                        None
+                        println!("\n==> PoetryAccent::AzlaLegarmeh is not found (outer match).");
+                        return None;
                     }
-                }
+                };
+                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
             }
             // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
@@ -492,80 +515,88 @@ impl SentenceContext {
                 }
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha) if self.ctx == Context::Poetic => {
-                if let Some(outer_match) = RE_OUTER_POETRY_TSINNORIT_MERKHA.find(&self.sentence) {
-                    println!("\n==> RE_OUTER_POETRY_TSINNORIT_MERKHA: found!");
-                    println!(
-                        "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    let outer_start = outer_match.start();
-                    if let Some(inner_match) =
-                        RE_INNER_POETRY_TSINNORIT_MERKHA.find(outer_match.as_str())
-                    {
-                        println!("\n==> RE_INNER_POETRY_TSINNORIT_MERKHA: found!");
-                        println!(
-                            "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                            inner_match.start(),
-                            inner_match.end(),
-                            inner_match.as_str()
+                let outer_match = match RE_OUTER_POETRY_TSINNORIT_MERKHA.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_POETRY_TSINNORIT_MERKHA: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
                         );
-                        let absolute_inner_start = outer_start + inner_match.start();
-                        let absolute_inner_end = outer_start + inner_match.end();
-                        println!("Absolute start in `hay`: {}", absolute_inner_start);
-                        println!("Absolute end in `hay`: {}", absolute_inner_end);
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            absolute_inner_start,
-                            absolute_inner_end,
-                        ))
-                    } else {
-                        println!("TPoetryAccent::TsinnoritMerkha is not found (inner match");
-                        None
+                        m
                     }
-                } else {
-                    println!("PoetryAccent::TsinnoritMerkha is not found (outer match).");
-                    None
-                }
+                    None => {
+                        println!("\n==> PoetryAccent::TsinnoritMerkha is not found (outer match).");
+                        return None;
+                    }
+                };
+                let inner_match = match RE_INNER_POETRY_TSINNORIT_MERKHA.find(outer_match.as_str())
+                {
+                    Some(m) => {
+                        println!("\n==> RE_INNER_POETRY_TSINNORIT_MERKHA: FOUND!");
+                        print!(
+                            "\tinner match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> PoetryAccent::TsinnoritMerkha is not found (inner match).");
+                        return None;
+                    }
+                };
+                let absolute_inner_start = outer_match.start() + inner_match.start();
+                let absolute_inner_end = outer_match.start() + inner_match.end();
+                Some(Match::new(
+                    inner_match.as_str(),
+                    absolute_inner_start,
+                    absolute_inner_end,
+                ))
             }
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh) if self.ctx == Context::Poetic => {
-                if let Some(outer_match) = RE_OUTER_POETRY_TSINNORIT_MAHPAKH.find(&self.sentence) {
-                    println!("\n==> RE_OUTER_POETRY_TSINNORIT_MAHPAKH: found!");
-                    println!(
-                        "OUTER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                        outer_match.start(),
-                        outer_match.end(),
-                        outer_match.as_str()
-                    );
-                    let outer_start = outer_match.start();
-                    if let Some(inner_match) =
-                        RE_INNER_POETRY_TSINNORIT_MAHPAKH.find(outer_match.as_str())
-                    {
-                        println!("\n==> RE_INNER_POETRY_TSINNORIT_MAHPAKH: found!");
-                        println!(
-                            "INNER MATCH:: start():{}  ;end():{}  ;str():  {}",
-                            inner_match.start(),
-                            inner_match.end(),
-                            inner_match.as_str()
+                let outer_match = match RE_OUTER_POETRY_TSINNORIT_MAHPAKH.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_POETRY_TSINNORIT_MAHPAKH: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
                         );
-                        let absolute_inner_start = outer_start + inner_match.start();
-                        let absolute_inner_end = outer_start + inner_match.end();
-                        println!("Absolute start in `hay`: {}", absolute_inner_start);
-                        println!("Absolute end in `hay`: {}", absolute_inner_end);
-                        Some(Match::new(
-                            "2CodePoints", //TODO
-                            absolute_inner_start,
-                            absolute_inner_end,
-                        ))
-                    } else {
-                        println!("PoetryAccent::TsinnoritMahpak is not found (inner match");
-                        None
+                        m
                     }
-                } else {
-                    println!("PoetryAccent::TsinnoritMahpak is not found (outer match).");
-                    None
-                }
+                    None => {
+                        println!("\n==> PoetryAccent::TsinnoritMerkha is not found (outer match).");
+                        return None;
+                    }
+                };
+                let inner_match = match RE_INNER_POETRY_TSINNORIT_MAHPAKH.find(outer_match.as_str())
+                {
+                    Some(m) => {
+                        println!("\n==> RE_INNER_POETRY_TSINNORIT_MAHPAKH: FOUND!");
+                        print!(
+                            "\tinner match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> PoetryAccent::TsinnoritMerkha is not found (inner match).");
+                        return None;
+                    }
+                };
+                let absolute_inner_start = outer_match.start() + inner_match.start();
+                let absolute_inner_end = outer_match.start() + inner_match.end();
+                Some(Match::new(
+                    inner_match.as_str(),
+                    absolute_inner_start,
+                    absolute_inner_end,
+                ))
             }
             /* **********************************************************
              *                          PSEUDO
