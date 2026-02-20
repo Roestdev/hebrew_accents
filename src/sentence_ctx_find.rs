@@ -88,7 +88,7 @@ impl<'a> SentenceContext {
                 .sentence
                 .find(SEGOLTA)
                 .map(|index| Match::new(SEGOLTA, index, index + ACCENT_LEN_UTF8)),
-            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx != Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     Some(m) => {
                         println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
@@ -109,7 +109,7 @@ impl<'a> SentenceContext {
                     Some(m) => {
                         println!("\n==> RE_INNER_COMMON_SHALSHELET: FOUND!");
                         print!(
-                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            "\tinner match :: start:{} ; end:{} ; str:{}",
                             m.start(),
                             m.end(),
                             m.as_str()
@@ -238,7 +238,7 @@ impl<'a> SentenceContext {
                         m
                     }
                     None => {
-                        println!("\n==> CProseAccent::Munach is not found (outer match).");
+                        println!("\n==> ProseAccent::Munach is not found (outer match).");
                         return None;
                     }
                 };
@@ -360,7 +360,7 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
+                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol) if self.ctx == Context::Poetic => {
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
@@ -435,7 +435,7 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
+                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
             }
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.ctx == Context::Poetic => {
                 let outer_match = match RE_OUTER_POETRY_AZLA_LEGARMEH.find(&self.sentence) {
@@ -454,7 +454,7 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(SILLUQ, outer_match.start(), outer_match.end()))
+                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
             }
             // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
@@ -711,7 +711,7 @@ fn test_find_prose_shalshelet() {
     // Shalshelet, with Paseq - no space
     let sc = SentenceContext::new("בְּהִ֑ים֓׀ אֵ֥ץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓׀",
         start: 16,
         end: 20,
     };
@@ -722,7 +722,7 @@ fn test_find_prose_shalshelet() {
     // Shalshelet, with Paseq + one space
     let sc = SentenceContext::new("בְּהִ֑ים֓ ׀ אֵ֥ץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓ ׀",
         start: 16,
         end: 21,
     };
@@ -733,7 +733,7 @@ fn test_find_prose_shalshelet() {
     // Shalshelet, with Vertical Bar - no space
     let sc = SentenceContext::new("בְּהִ֑ים֓| אֵ֥ץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓|",
         start: 16,
         end: 19,
     };
@@ -744,7 +744,7 @@ fn test_find_prose_shalshelet() {
     // Shalshelet, with Vertical Bar + one space
     let sc = SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓ |",
         start: 16,
         end: 20,
     };
@@ -940,39 +940,39 @@ fn test_find_prose_legarmeh() {
     // Legarmeh, with Paseq
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֣ים׀",
         start: 52,
         end: 60,
     };
-    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected)); //  - 60
-                                                                              // Legarmeh with a space + Paseq
+    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected));
+    // Legarmeh with a space + Paseq
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים ׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֣ים ׀",
         start: 52,
         end: 61,
     };
-    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected)); // 40 - 61
-                                                                              // Legarmeh with two spaces + Paseq
+    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected));
+    // Legarmeh with two spaces + Paseq
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים  ׀  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), None);
     // Legarmeh, with Vertical Bar
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים|  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֣ים|",
         start: 52,
         end: 59,
     };
-    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected)); // 40 - 59
-                                                                              // Legarmeh, with space + Vertical Bar
+    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected));
+    // Legarmeh, with space + Vertical Bar
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֣ים |  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֣ים |",
         start: 52,
         end: 60,
     };
-    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected)); // 40 - 60
-                                                                              // Legarmeh, with two spaces + Vertical Bar
+    assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), Some(expected));
+    // Legarmeh, with two spaces + Vertical Bar
     let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים  |  אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
     assert_eq!(sc.find_accent(ProseAccent::Legarmeh.into()), None);
     // Paseq or Vertical Bar is missing
@@ -1173,7 +1173,7 @@ fn test_find_poetry_oleh_we_yored() {
     // OlehWeYored, one word
     let sc = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֫ימָ֥",
         start: 34,
         end: 44,
     };
@@ -1187,7 +1187,7 @@ fn test_find_poetry_oleh_we_yored() {
     // OlehWeYored, two words
     let sc = SentenceContext::new("ועַֽל־פַּלְגֵ֫י מָ֥יִם וְעָלֵ֥הוּ ׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֫י מָ֥",
         start: 26,
         end: 37,
     };
@@ -1249,7 +1249,7 @@ fn test_find_poetry_revia_mugrash() {
     // Revia and Geresh (Ps 32:3)
     let sc = SentenceContext::new("בְּ֝שַׁאֲגָתִ֗י", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֝שַׁאֲגָתִ֗",
         start: 6,
         end: 28,
     };
@@ -1260,7 +1260,7 @@ fn test_find_poetry_revia_mugrash() {
     // Revia and Geresh (Ps 110:6) - accent on a single character
     let sc = SentenceContext::new("יָדִ֣ין בַּ֭גּוֹיִם מָלֵ֣א גְוִיּ֑וֹת מָ֥חַץ רֹ֝֗אשׁ עַל־אֶ֥רֶץ רַבָּֽה׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack:  "֝֗",
         start: 89,
         end: 93,
     };
@@ -1286,7 +1286,7 @@ fn test_find_poetry_shalshelet_gadol() {
     // Shalshelet Gadol, with Paseq - no space
     let sc = SentenceContext::new("בְּהִ֑ים֓׀ אֵ֥ץ׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓׀",
         start: 16,
         end: 20,
     };
@@ -1297,7 +1297,7 @@ fn test_find_poetry_shalshelet_gadol() {
     // Shalshelet Gadol, with Paseq + one space
     let sc = SentenceContext::new("בְּהִ֑ים֓ ׀ אֵ֥ץ׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓ ׀",
         start: 16,
         end: 21,
     };
@@ -1308,7 +1308,7 @@ fn test_find_poetry_shalshelet_gadol() {
     // Shalshelet Gadol, with Vertical Bar - no space
     let sc = SentenceContext::new("בְּהִ֑ים֓| אֵ֥ץ׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓|",
         start: 16,
         end: 19,
     };
@@ -1319,7 +1319,7 @@ fn test_find_poetry_shalshelet_gadol() {
     // Shalshelet Gadol, with Vertical Bar + one space
     let sc = SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֓ |",
         start: 16,
         end: 20,
     };
@@ -1415,7 +1415,7 @@ fn test_find_poetry_mehuppakh_legarmeh() {
     // MehuppakhLegarmeh, with Paseq
     let sc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֤ ׀",
         start: 17,
         end: 22,
     };
@@ -1426,7 +1426,7 @@ fn test_find_poetry_mehuppakh_legarmeh() {
     // MehuppakhLegarmeh, with Vertical Bar
     let sc = SentenceContext::new(" את־אברהם֤ | מזמ֗ור", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֤ |",
         start: 17,
         end: 21,
     };
@@ -1443,7 +1443,7 @@ fn test_find_poetry_azla_legarmeh() {
     // AzlaLegarmeh, with Paseq + no space
     let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֨ם׀",
         start: 15,
         end: 21,
     };
@@ -1454,7 +1454,7 @@ fn test_find_poetry_azla_legarmeh() {
     // AzlaLegarmeh, with Paseq + 1 space
     let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֨ם ׀",
         start: 15,
         end: 22,
     };
@@ -1465,7 +1465,7 @@ fn test_find_poetry_azla_legarmeh() {
     // AzlaLegarmeh, with Vertical Bar + no space
     let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֨ם|",
         start: 15,
         end: 20,
     };
@@ -1476,7 +1476,7 @@ fn test_find_poetry_azla_legarmeh() {
     // AzlaLegarmeh, with Vertical Bar + 1 space
     let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֨ם |",
         start: 15,
         end: 21,
     };
@@ -1723,7 +1723,7 @@ fn test_find_poetry_tsinnorit_merkha() {
     // accent in a single word
     let sc = SentenceContext::new("אא֘תאב֥רהם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘תאב֥",
         start: 4,
         end: 14,
     };
@@ -1740,7 +1740,7 @@ fn test_find_poetry_tsinnorit_merkha() {
     // accent in two words seperated by Maqqeph
     let sc = SentenceContext::new("את־א֘ב֥רהם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘ב֥",
         start: 8,
         end: 14,
     };
@@ -1757,7 +1757,7 @@ fn test_find_poetry_tsinnorit_merkha() {
     // accent in two words
     let sc = SentenceContext::new("את־א֘בם ב֥רהם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘בם ב֥",
         start: 8,
         end: 19,
     };
@@ -1780,7 +1780,7 @@ fn test_find_poetry_tsinnorit_mahpakh() {
     // accent in a single word
     let sc = SentenceContext::new("את־א֘ב֤רהם אהם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘ב֤",
         start: 8,
         end: 14,
     };
@@ -1788,16 +1788,16 @@ fn test_find_poetry_tsinnorit_mahpakh() {
         sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()),
         Some(expected)
     );
-    // accent in a single word
+    // Mahpakh without Tsinnorit
     let sc = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
     assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
-    // accent in a single word, without Tsinnorit
+    // Tsinnorit without Mahpakh
     let sc = SentenceContext::new("את־א֘ברהם אהם", Context::Poetic);
     assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
     // accent in two words seperated by Maqqeph, without Mahpakh
     let sc = SentenceContext::new("אא֘ת־אב֤רהם אהם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘ת־אב֤",
         start: 4,
         end: 16,
     };
@@ -1811,10 +1811,10 @@ fn test_find_poetry_tsinnorit_mahpakh() {
     // accent in two words seperated by Maqqeph, without Mahpakh
     let sc = SentenceContext::new("אא֘ת־אברהם אהם", Context::Poetic);
     assert_eq!(sc.find_accent(PoetryAccent::TsinnoritMahpakh.into()), None);
-    // accent in two words
+    // accent in two words, without Maqqeph
     let sc = SentenceContext::new("את־א֘ברהם אהאב֤ם", Context::Poetic);
     let expected = Match {
-        haystack: "2CodePoints",
+        haystack: "֘ברהם אהאב֤",
         start: 8,
         end: 29,
     };
