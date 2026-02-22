@@ -360,7 +360,11 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
+                Some(Match::new(
+                    outer_match.as_str(),
+                    outer_match.start(),
+                    outer_match.end(),
+                ))
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol) if self.ctx == Context::Poetic => {
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
@@ -435,7 +439,11 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
+                Some(Match::new(
+                    outer_match.as_str(),
+                    outer_match.start(),
+                    outer_match.end(),
+                ))
             }
             HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh) if self.ctx == Context::Poetic => {
                 let outer_match = match RE_OUTER_POETRY_AZLA_LEGARMEH.find(&self.sentence) {
@@ -454,7 +462,11 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                Some(Match::new(outer_match.as_str(), outer_match.start(), outer_match.end()))
+                Some(Match::new(
+                    outer_match.as_str(),
+                    outer_match.start(),
+                    outer_match.end(),
+                ))
             }
             // Conjunctives
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
@@ -1260,7 +1272,7 @@ fn test_find_poetry_revia_mugrash() {
     // Revia and Geresh (Ps 110:6) - accent on a single character
     let sc = SentenceContext::new("יָדִ֣ין בַּ֭גּוֹיִם מָלֵ֣א גְוִיּ֑וֹת מָ֥חַץ רֹ֝֗אשׁ עַל־אֶ֥רֶץ רַבָּֽה׃", Context::Poetic);
     let expected = Match {
-        haystack:  "֝֗",
+        haystack: "֝֗",
         start: 89,
         end: 93,
     };

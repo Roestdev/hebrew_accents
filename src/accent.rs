@@ -44,61 +44,61 @@ impl From<PseudoAccent> for HebrewAccent {
 #[non_exhaustive]
 pub enum ProseAccent {
     #[default]
-    /// Disjunctive prose accent Silluq
+    /// Primary disjunctive prose accent Silluq
     Silluq,
-    /// Disjunctive prose accent Atnach
+    /// Primary disjunctive prose accent accent Atnach
     Atnach,
-    /// Disjunctive prose accent Segolta
+    /// Primary disjunctive prose accent Segolta
     Segolta,
-    /// Disjunctive prose accent Shalshelet
+    /// Primary disjunctive prose accent Shalshelet
     Shalshelet,
-    /// Disjunctive prose accent Zaqeph Qaton
+    /// Primary disjunctive prose accent Zaqeph Qaton
     ZaqephQatan,
-    /// Disjunctive prose accent Zaqeph Gadol
+    /// Primary disjunctive prose accent Zaqeph Gadol
     ZaqephGadol,
-    /// Disjunctive prose accent Revia
+    /// Primary disjunctive prose accent Revia
     Revia,
-    /// Disjunctive prose accent Tiphcha,
+    /// Primary disjunctive prose accent Tiphcha,
     Tiphcha,
-    /// Disjunctive prose accent Zarqa
+    /// Primary disjunctive prose accent Zarqa
     Zarqa,
-    /// Disjunctive prose accent Pashta
+    /// Primary disjunctive prose accent Pashta
     Pashta,
-    /// Disjunctive prose accent Yetiv
+    /// Primary disjunctive prose accent Yetiv
     Yetiv,
-    /// Disjunctive prose accent Tevir
+    /// Primary disjunctive prose accent Tevir
     Tevir,
-    /// Disjunctive prose accent Geresh
+    /// Primary disjunctive prose accent Geresh
     Geresh,
-    /// Disjunctive prose accent Gershayim
+    /// Primary disjunctive prose accent Gershayim
     Gershayim,
-    /// Disjunctive prose accent Pazer
+    /// Primary disjunctive prose accent Pazer
     Pazer,
-    /// Disjunctive prose accent Pazer Gadol
+    /// Primary disjunctive prose accent Pazer Gadol
     PazerGadol,
-    /// Disjunctive prose accent Telisha Gedolah
+    /// Primary disjunctive prose accent Telisha Gedolah
     TelishaGedolah,
-    /// Disjunctive prose accent Legarmeh
+    /// Primary disjunctive prose accent Legarmeh
     Legarmeh,
-    /// Conjunctive prose accent Munach
+    /// Primary conjunctive prose accent Munach
     Munach,
-    /// Conjunctive prose accent Mahpakh
+    /// Primary conjunctive prose accent Mahpakh
     Mahpakh,
-    /// Conjunctive prose accent Merkha
+    /// Primary conjunctive prose accent Merkha
     Merkha,
-    /// Conjunctive prose accent Merkha Kephulah
+    /// Primary conjunctive prose accent Merkha Kephulah
     MerkhaKephulah,
-    /// Conjunctive prose accent Darga
+    /// Primary conjunctive prose accent Darga
     Darga,
-    /// Conjunctive prose accent Azla
+    /// Primary conjunctive prose accent Azla
     Azla,
-    /// Conjunctive prose accent Telisha Qetannah
+    /// Primary conjunctive prose accent Telisha Qetannah
     TelishaQetannah,
-    /// Conjunctive prose accent Galgal
+    /// Primary conjunctive prose accent Galgal
     Galgal,
-    /// Conjunctive prose accent Mayela
+    /// Secondary conjunctive prose accent Mayela
     Mayela,
-    /// Conjunctive prose accent Meteg
+    /// Secondary conjunctive prose accent Meteg
     Meteg,
 }
 
@@ -111,7 +111,7 @@ impl ProseAccent {
     /// The strongest accent has a relative strength of 1
     ///
     /// Note: For now all Hebrew Accents have this property for now
-    ///       It is only valid for disjunctive accents.
+    ///    It is only valid for disjunctive accents.
     #[inline]
     pub fn relative_strength(self) -> u8 {
         self as u8 + 1
@@ -125,51 +125,51 @@ impl ProseAccent {
 #[non_exhaustive]
 pub enum PoetryAccent {
     #[default]
-    /// Disjunctive prose accent Silluq
+    /// Primary disjunctive poetry accent Silluq
     Silluq,
-    /// Disjunctive prose accent Oleh We Yored
+    /// Primary disjunctive poetry accent Oleh We Yored
     OlehWeYored,
-    /// Disjunctive prose accent Atnach
+    /// Primary disjunctive poetry accent Atnach
     Atnach,
-    /// Disjunctive prose accent Revia Gadol
+    /// Primary disjunctive poetry accent Revia Gadol
     ReviaGadol,
-    /// Disjunctive prose accent     Revia Mugrash,
+    /// Primary disjunctive poetry accent Revia Mugrash,
     ReviaMugrash,
-    /// Disjunctive prose accent ShalsheletGadol
+    /// Primary disjunctive poetry accent ShalsheletGadol
     ShalsheletGadol,
-    /// Disjunctive prose accent Tsinnor
+    /// Primary disjunctive poetry accent Tsinnor
     Tsinnor,
-    /// Disjunctive prose accent Revia Qaton
+    /// Primary disjunctive poetry accent Revia Qaton
     ReviaQaton,
-    /// Disjunctive prose accent     Dechi,
+    /// Primary disjunctive poetry accent Dechi,
     Dechi,
-    /// Disjunctive prose accent Pazer
+    /// Primary disjunctive poetry accent Pazer
     Pazer,
-    /// Disjunctive prose accent MehuppakhLegarmeh
+    /// Primary disjunctive poetry accent MehuppakhLegarmeh
     MehuppakhLegarmeh,
-    /// Disjunctive prose accent AzlaLegarmeh
+    /// Primary disjunctive poetry accent AzlaLegarmeh
     AzlaLegarmeh,
-    /// Conjunctive prose accent Munach
+    /// Primary conjunctive poetry accent Munach
     Munach,
-    /// Conjunctive prose accent Merkha
+    /// Primary conjunctive poetry accent Merkha
     Merkha,
-    /// Conjunctive prose accent Illuy,
+    /// Primary conjunctive poetry accent Illuy,
     Illuy,
-    /// Conjunctive prose accent Tarcha
+    /// Primary conjunctive poetry accent Tarcha
     Tarcha,
-    /// Conjunctive prose accent Galgal
+    /// Primary conjunctive poetry accent Galgal
     Galgal,
-    /// Conjunctive prose accent Mehuppakh
+    /// Primary conjunctive poetry accent Mehuppakh
     Mehuppakh,
-    /// Conjunctive prose accent Azla
+    /// Primary conjunctive poetry accent Azla
     Azla,
-    /// Conjunctive prose accent Shalshelet Qetannah
+    /// Primary conjunctive poetry accent Shalshelet Qetannah
     ShalsheletQetannah,
-    /// Conjunctive prose accent Tsinnorit Merkha
+    /// Primary conjunctive poetry accent Tsinnorit Merkha
     TsinnoritMerkha,
-    /// Conjunctive prose accent Tsinnorit Mahpakh
+    /// Primary conjunctive poetry accent Tsinnorit Mahpakh
     TsinnoritMahpakh,
-    /// Conjunctive prose accent Meteg
+    /// Secondary conjunctive poetry accent Meteg
     Meteg,
 }
 
@@ -212,7 +212,8 @@ impl PseudoAccent {
 pub trait Accent: Copy + Sized {
     /// indicates the relative_strength of a selected accent (1 is the strongest)
     fn relative_strength(self) -> u8;
-
+    /// indicates the relative_strength of a selected accent (1 is the strongest)
+    fn hierarchical_group(self) -> Option<HierarchicalGroup>;
     /// Return the *static* metadata for this concrete accent.
     fn details(self) -> &'static AccentInformation;
     // Convenience wrappers.
@@ -239,7 +240,6 @@ pub trait Accent: Copy + Sized {
         } else {
             None
         }
-        //self.details().accent_type
     }
     /// category of the Hebrew Accent
     #[inline]
@@ -273,6 +273,14 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.relative_strength(),
         }
     }
+    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
+        match self {
+            HebrewAccent::Prose(p) => prose_hierarchical_group(p),
+            HebrewAccent::Poetry(p) => poetry_hierarchical_group(p),
+            HebrewAccent::Pseudo(_p) => None,
+        }
+    }
+
     fn details(self) -> &'static AccentInformation {
         match self {
             HebrewAccent::Prose(p) => p.details(),
@@ -303,16 +311,52 @@ impl Accent for HebrewAccent {
     }
     fn accent_type(self) -> Option<AccentType> {
         match self {
-            HebrewAccent::Prose(p) => Some(p.details().additional.unwrap().accent_type),
-            HebrewAccent::Poetry(p) => Some(p.details().additional.unwrap().accent_type),
-            HebrewAccent::Pseudo(p) => Some(p.details().additional.unwrap().accent_type),
+            HebrewAccent::Prose(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().accent_type)
+                } else {
+                    None
+                }
+            }
+            HebrewAccent::Poetry(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().accent_type)
+                } else {
+                    None
+                }
+            }
+            HebrewAccent::Pseudo(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().accent_type)
+                } else {
+                    None
+                }
+            }
         }
     }
     fn category(self) -> Option<AccentCategory> {
         match self {
-            HebrewAccent::Prose(p) => Some(p.details().additional.unwrap().category),
-            HebrewAccent::Poetry(p) => Some(p.details().additional.unwrap().category),
-            HebrewAccent::Pseudo(p) => Some(p.details().additional.unwrap().category),
+            HebrewAccent::Prose(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().category)
+                } else {
+                    None
+                }
+            }
+            HebrewAccent::Poetry(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().category)
+                } else {
+                    None
+                }
+            }
+            HebrewAccent::Pseudo(p) => {
+                if p.details().additional.is_some() {
+                    Some(p.details().additional.unwrap().category)
+                } else {
+                    None
+                }
+            } //Some(p.details().additional.unwrap().category),
         }
     }
     fn word_stress(self) -> Option<WordStress> {
@@ -376,6 +420,9 @@ impl Accent for ProseAccent {
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
+    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
+        prose_hierarchical_group(self)
+    }
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
             1
@@ -391,6 +438,9 @@ impl Accent for PoetryAccent {
     }
     fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
+    }
+    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
+        poetry_hierarchical_group(self)
     }
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
@@ -408,6 +458,10 @@ impl Accent for PseudoAccent {
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
+    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
+        None
+    }
+
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
             1
@@ -430,7 +484,7 @@ pub struct AccentInformation {
     pub code_points: CodePoints,
     /// Free‑form comment
     pub comment: Option<&'static str>,
-    /// Additional accent information
+    /// Additional accent information (for PseudeoAccents, additional=None)
     pub additional: Option<Additional>,
 }
 
@@ -443,6 +497,8 @@ pub struct Additional {
     pub category: AccentCategory,
     /// Indicates if the accent is on the stressed syllable
     pub word_stress: Option<WordStress>,
+    /// TODO
+    pub hierarchical_group: Option<HierarchicalGroup>,
     /// Optional alternate identifiers
     pub alternates: Option<Alternates>,
 }
@@ -500,7 +556,7 @@ pub enum Tradition {
         /// Transliterated English name
         english_name: &'static str,
     },
-    /// Naming of the accent according Italian  tradition
+    /// Naming of the accent according Italian tradition
     Italian {
         /// Hebrew name of the accent
         hebrew_name: &'static str,
@@ -536,7 +592,7 @@ pub enum AccentType {
     Primary,
     /// used for Meayla and Meteg
     Secondary,
-    /// used for Maqqeph
+    /// used for Pseudo Accents
     None,
 }
 
@@ -566,6 +622,69 @@ pub enum WordStress {
     PostPositive,
     /// Accent is NOT located above the stressed syllable, but at the very beginning of the word
     PrePositive,
+}
+
+/// Indication of the where the DISJUNCIVE accents are part of
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub enum HierarchicalGroup {
+    /// TODO
+    ProseGroup1,
+    /// TODO
+    ProseGroup2,
+    /// TODO
+    ProseGroup3,
+    /// TODO
+    ProseGroup4,
+    /// TODO
+    PoetryGroup1,
+    /// TODO
+    PoetryGroup2,
+    /// TODO
+    PoetryGroup3,
+}
+
+pub(crate) fn prose_hierarchical_group(accent: ProseAccent) -> Option<HierarchicalGroup> {
+    match accent {
+        ProseAccent::Silluq | ProseAccent::Atnach => Some(HierarchicalGroup::ProseGroup1),
+
+        ProseAccent::Segolta
+        | ProseAccent::Shalshelet
+        | ProseAccent::ZaqephQatan
+        | ProseAccent::ZaqephGadol
+        | ProseAccent::Tiphcha => Some(HierarchicalGroup::ProseGroup2),
+
+        ProseAccent::Revia
+        | ProseAccent::Zarqa
+        | ProseAccent::Pashta
+        | ProseAccent::Tevir
+        | ProseAccent::Yetiv => Some(HierarchicalGroup::ProseGroup3),
+
+        ProseAccent::Geresh
+        | ProseAccent::Gershayim
+        | ProseAccent::Pazer
+        | ProseAccent::PazerGadol
+        | ProseAccent::TelishaGedolah
+        | ProseAccent::Legarmeh => Some(HierarchicalGroup::ProseGroup4),
+        _ => None, // all conjuntive ProseAccents
+    }
+}
+pub(crate) fn poetry_hierarchical_group(accent: PoetryAccent) -> Option<HierarchicalGroup> {
+    match accent {
+        PoetryAccent::Silluq | PoetryAccent::OlehWeYored | PoetryAccent::Atnach => {
+            Some(HierarchicalGroup::PoetryGroup1)
+        }
+        PoetryAccent::ReviaGadol
+        | PoetryAccent::ReviaMugrash
+        | PoetryAccent::ShalsheletGadol
+        | PoetryAccent::ReviaQaton
+        | PoetryAccent::Tsinnor
+        | PoetryAccent::Dechi => Some(HierarchicalGroup::PoetryGroup2),
+
+        PoetryAccent::Pazer | PoetryAccent::MehuppakhLegarmeh | PoetryAccent::AzlaLegarmeh => {
+            Some(HierarchicalGroup::PoetryGroup3)
+        }
+        _ => None, // all conjuntive PoetryAccents
+    }
 }
 
 #[cfg(test)]

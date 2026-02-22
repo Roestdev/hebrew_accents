@@ -19,7 +19,7 @@ use crate::Tradition;
 use crate::Utf8CodePointInfo;
 
 /// Constructor for a single code‑point description
-pub const fn utf8_cp(
+pub(crate) const fn utf8_cp_constructor(
     code_point: &'static str,
     hex_value: &'static str,
     name: &'static str,
@@ -37,23 +37,23 @@ pub const fn utf8_cp(
     }
 }
 
-pub const TR_ETNAHTA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_ETNAHTA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "אֶתְנַחְתָּ֑א",
     english_name: "Etnachta",
 };
-pub const TR_ETNAHTA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_ETNAHTA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "אַתְנָ֑ח",
     english_name: "Atnach",
 };
-pub const TR_ETNAHTA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_ETNAHTA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "אַתְנָ֑ח",
     english_name: "Atnach",
 };
-pub const TR_ETNAHTA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_ETNAHTA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "אֶתְנָחָ֑א",
     english_name: "Etnacha",
 };
-pub const CP_ETNAHTA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ETNAHTA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0591",
     "0xd6 0x91",
     "HEBREW ACCENT ETNAHTA",
@@ -67,19 +67,19 @@ pub const CP_ETNAHTA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_SEGOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_SEGOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "סְגוֹל֒",
     english_name: "segol",
 };
-pub const TR_SEGOL_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_SEGOL_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "סְגוֹלְתָּא֒",
     english_name: "segolta",
 };
-pub const TR_SEGOL_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_SEGOL_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שְׁרֵי֒",
     english_name: "shere",
 };
-pub const CP_SEGOL: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_SEGOL: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0592",
     "0xd6 0x92",
     "HEBREW ACCENT SEGOL",
@@ -88,24 +88,24 @@ pub const CP_SEGOL: Utf8CodePointInfo = utf8_cp(
     &[TR_SEGOL_ASHKENAZI, TR_SEGOL_SEPHARDI, TR_SEGOL_ITALIAN],
 );
 
-pub const TR_SHALSHELET_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_SHALSHELET_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "שַׁלְשֶׁ֓לֶת",
     english_name: "shalshelet",
 };
-pub const TR_SHALSHELET_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_SHALSHELET_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "שַׁלְשֶׁ֓לֶת",
     english_name: "shalshelet",
 };
-pub const TR_SHALSHELET_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_SHALSHELET_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שַׁלְשֶׁ֓לֶת",
     english_name: "shalshelet",
 };
-pub const TR_SHALSHELET_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_SHALSHELET_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "שִׁישְׁלָ֓א",
     english_name: "shishla",
 };
 
-pub const CP_SHALSHELET: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_SHALSHELET: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0593",
     "0xd6 0x93",
     "HEBREW ACCENT SHALSHELET",
@@ -119,25 +119,25 @@ pub const CP_SHALSHELET: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const CP_ZAQEF_QATAN_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const CP_ZAQEF_QATAN_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "זָקֵף קָטָ֔ן",
     english_name: "zaqeph qatan",
 };
-pub const CP_ZAQEF_QATAN_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const CP_ZAQEF_QATAN_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
 
-pub const CP_ZAQEF_QATAN_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const CP_ZAQEF_QATAN_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
-pub const CP_ZAQEF_QATAN_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const CP_ZAQEF_QATAN_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
 
-pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ZAQEF_QATAN: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0594",
     "0xd6 0x94",
     "HEBREW ACCENT ZAQEF QATAN",
@@ -150,23 +150,23 @@ pub const CP_ZAQEF_QATAN: Utf8CodePointInfo = utf8_cp(
         CP_ZAQEF_QATAN_YEMENITE,
     ],
 );
-pub const CP_ZAQEF_GADOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const CP_ZAQEF_GADOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub const CP_ZAQEF_GADOL_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const CP_ZAQEF_GADOL_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub const CP_ZAQEF_GADOL_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const CP_ZAQEF_GADOL_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub const CP_ZAQEF_GADOL_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const CP_ZAQEF_GADOL_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ZAQEF_GADOL: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0595",
     "0xd6 0x95",
     "HEBREW ACCENT ZAQEF GADOL",
@@ -180,23 +180,23 @@ pub const CP_ZAQEF_GADOL: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_TIPEHA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_TIPEHA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "טִפְחָ֖א",
     english_name: "tiphcha",
 };
-pub const TR_TIPEHA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_TIPEHA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "טַרְחָ֖א",
     english_name: "tarcha",
 };
-pub const TR_TIPEHA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_TIPEHA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "טַרְחָ֖א",
     english_name: "tarcha",
 };
-pub const TR_TIPEHA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_TIPEHA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "נְטוּיָ֖ה",
     english_name: "netuyah",
 };
-pub const CP_TIPEHA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_TIPEHA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0596",
     "0xd6 0x96",
     "HEBREW ACCENT TIPEHA",
@@ -210,23 +210,23 @@ pub const CP_TIPEHA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_REVIA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_REVIA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "רְבִ֗יע",
     english_name: "revia/revi’i",
 };
-pub const TR_REVIA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_REVIA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "רְבִ֗יע",
     english_name: "revia",
 };
-pub const TR_REVIA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_REVIA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "רְבִ֗יע",
     english_name: "revia",
 };
-pub const TR_REVIA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_REVIA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "רְבִ֗יע",
     english_name: "revia",
 };
-pub const CP_REVIA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_REVIA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0597",
     "0xd6 0x97",
     "HEBREW ACCENT REVIA",
@@ -240,23 +240,23 @@ pub const CP_REVIA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_ZARQA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_ZARQA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "זַרְקָא֘",
     english_name: "zarqa",
 };
-pub const TR_ZARQA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_ZARQA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "זַרְקָא֘",
     english_name: "zarqa",
 };
-pub const TR_ZARQA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_ZARQA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "זַרְקָא֘",
     english_name: "zarqa",
 };
-pub const TR_ZARQA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_ZARQA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "צִנּוֹר֘",
     english_name: "tsinnor",
 };
-pub const CP_ZARQA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ZARQA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0598",
     "0xd6 0x98",
     "HEBREW ACCENT ZARQA",
@@ -270,23 +270,23 @@ pub const CP_ZARQA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_PASHTA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_PASHTA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "פַּשְׁטָא֙",
     english_name: "pashta",
 };
-pub const TR_PASHTA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_PASHTA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "קַדְמָא֙",
     english_name: "qadma",
 };
-pub const TR_PASHTA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_PASHTA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "פַּשְׁטָא֙",
     english_name: "pashta",
 };
-pub const TR_PASHTA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_PASHTA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "אַזְלָא֙",
     english_name: "azla",
 };
-pub const CP_PASHTA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_PASHTA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+0599",
     "0xd6 0x99",
     "HEBREW ACCENT PASHTA",
@@ -300,23 +300,23 @@ pub const CP_PASHTA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_YETIV_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_YETIV_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "יְ֚תִיב",
     english_name: "yetiv",
 };
-pub const TR_YETIV_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_YETIV_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "יְ֚תִיב",
     english_name: "yetiv",
 };
-pub const TR_YETIV_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_YETIV_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שׁ֚וֹפָר יְתִיב",
     english_name: "shophar yetiv",
 };
-pub const TR_YETIV_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_YETIV_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "יְ֚תִיב",
     english_name: "yetiv",
 };
-pub const CP_YETIV: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_YETIV: Utf8CodePointInfo = utf8_cp_constructor(
     "U+059A",
     "0xd6 0x9a",
     "HEBREW ACCENT YETIV",
@@ -330,23 +330,23 @@ pub const CP_YETIV: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_TEVIR_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_TEVIR_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "תְּבִ֛יר",
     english_name: "tevir",
 };
-pub const TR_TEVIR_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_TEVIR_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "תְּבִ֛יר",
     english_name: "tevir",
 };
-pub const TR_TEVIR_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_TEVIR_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "תְּבִ֛יר",
     english_name: "tevir",
 };
-pub const TR_TEVIR_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_TEVIR_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "תַּבְרָ֛א",
     english_name: "tavra",
 };
-pub const CP_TEVIR: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_TEVIR: Utf8CodePointInfo = utf8_cp_constructor(
     "U+059B",
     "0xd6 0x9b",
     "HEBREW ACCENT TEVIR",
@@ -360,23 +360,23 @@ pub const CP_TEVIR: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_GERESH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_GERESH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "גֵּ֜רֵשׁ",
     english_name: "geresh/azla",
 };
-pub const TR_GERESH_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_GERESH_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "גְּרִ֜ישׁ",
     english_name: "gerish",
 };
-pub const TR_GERESH_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_GERESH_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "גֵּ֜רֵשׁ",
     english_name: "geresh/azla",
 };
-pub const TR_GERESH_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_GERESH_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "טָרֵ֜ס",
     english_name: "tares",
 };
-pub const CP_GERESH: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_GERESH: Utf8CodePointInfo = utf8_cp_constructor(
     "U+059C",
     "0xd6 0x9c",
     "HEBREW ACCENT GERESH",
@@ -391,7 +391,7 @@ pub const CP_GERESH: Utf8CodePointInfo = utf8_cp(
 );
 
 // TODO CP_GERESH_MUQDAM
-// pub const CP_GERESH_MUQDAM: Utf8CodePointInfo = utf8_cp(
+// pub(crate) const CP_GERESH_MUQDAM: Utf8CodePointInfo = utf8_cp_constructor(
 //     "U+059D",
 //     "0xd6 0x9d",
 //     "HEBREW ACCENT GERESH MUQDAM",
@@ -415,23 +415,23 @@ pub const CP_GERESH: Utf8CodePointInfo = utf8_cp(
 //     }),
 // );
 
-pub const TR_GERSHAYIM_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_GERSHAYIM_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "גֵּרְשַׁ֞יִם",
     english_name: "gershayim",
 };
-pub const TR_GERSHAYIM_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_GERSHAYIM_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "שְׁנֵי גְרִישִׁ֞ין",
     english_name: "shene gerishin",
 };
-pub const TR_GERSHAYIM_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_GERSHAYIM_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שְׁנֵי גְרִישִׁ֞ין",
     english_name: "shene gerishin",
 };
-pub const TR_GERSHAYIM_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_GERSHAYIM_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "שְׁנֵי גְרִישִׁ֞ין",
     english_name: "shene gerishin",
 };
-pub const CP_GERSHAYIM: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_GERSHAYIM: Utf8CodePointInfo = utf8_cp_constructor(
     "U+059E",
     "0xd6 0x9e",
     "HEBREW ACCENT GERSHAYIM",
@@ -445,23 +445,23 @@ pub const CP_GERSHAYIM: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_QARNEY_PARA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_QARNEY_PARA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "קַרְנֵי פָרָ֟ה",
     english_name: "qarne pharah / pazer gadol",
 };
-pub const TR_QARNEY_PARA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_QARNEY_PARA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "קַרְנֵי פָרָ֟ה",
     english_name: "qarne pharah",
 };
-pub const TR_QARNEY_PARA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_QARNEY_PARA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "קַרְנֵי פָרָ֟ה",
     english_name: "qarne pharah",
 };
-pub const TR_QARNEY_PARA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_QARNEY_PARA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "קַרְנֵי פָרָ֟ה",
     english_name: "qarne pharah",
 };
-pub const CP_QARNEY_PARA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_QARNEY_PARA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+059F",
     "0xd6 0x9f",
     "HEBREW ACCENT QARNEY PARA",
@@ -475,23 +475,23 @@ pub const CP_QARNEY_PARA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_TELISHA_GEDOLA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_TELISHA_GEDOLA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "תְּ֠לִישָא גְדוֹלָה",
     english_name: "telisha gedolah",
 };
-pub const TR_TELISHA_GEDOLA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_TELISHA_GEDOLA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "תִּ֠רְצָה",
     english_name: "tirtsah",
 };
-pub const TR_TELISHA_GEDOLA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_TELISHA_GEDOLA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "תַּ֠לְשָׁא",
     english_name: "talsha",
 };
-pub const TR_TELISHA_GEDOLA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_TELISHA_GEDOLA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "תְּ֠לִישָא גְדוֹלָה",
     english_name: "telisha gedolah",
 };
-pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_TELISHA_GEDOLA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A0",
     "0xd6 0xa0",
     "HEBREW ACCENT TELISHA GEDOLA",
@@ -505,20 +505,20 @@ pub const CP_TELISHA_GEDOLA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_PAZER_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_PAZER_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "פָּזֵ֡ר",
     english_name: "pazer",
 };
-pub const TR_PAZER_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_PAZER_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "פָּזֵר גָּד֡וֹל",
     english_name: "pazer gadol",
 };
-pub const TR_PAZER_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_PAZER_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "פָּזֵר גָּד֡וֹל",
     english_name: "pazer gadol",
 };
 
-pub const CP_PAZER: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_PAZER: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A1",
     "0xd6 0xa1",
     "HEBREW ACCENT PAZER",
@@ -528,7 +528,7 @@ pub const CP_PAZER: Utf8CodePointInfo = utf8_cp(
 );
 
 // TODO CP_ATNAH_HAFUKH
-// pub const CP_ATNAH_HAFUKH: Utf8CodePointInfo = utf8_cp(
+// pub(crate) const CP_ATNAH_HAFUKH: Utf8CodePointInfo = utf8_cp_constructor(
 //     "U+05A2",
 //     "0xd6 0xa2",
 //     "HEBREW ACCENT ATNAH HAFUKH",
@@ -552,20 +552,20 @@ pub const CP_PAZER: Utf8CodePointInfo = utf8_cp(
 //     }),
 // );
 
-pub const TR_MUNAH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_MUNAH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "מוּנַ֣ח",
     english_name: "munach",
 };
-pub const TR_MUNAH_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_MUNAH_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "שׁוֹפָר הוֹלֵ֣ךְ",
     english_name: "shophar holech",
 };
-pub const TR_MUNAH_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_MUNAH_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שׁוֹפָר עִלּ֣וּי",
     english_name: "shophar illuy",
 };
 
-pub const CP_MUNAH: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_MUNAH: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A3",
     "0xd6 0xa3",
     "HEBREW ACCENT MUNAH",
@@ -574,23 +574,23 @@ pub const CP_MUNAH: Utf8CodePointInfo = utf8_cp(
     &[TR_MUNAH_ASHKENAZI, TR_MUNAH_SEPHARDI, TR_MUNAH_ITALIAN],
 );
 
-pub const TR_MAHAPAKH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_MAHAPAKH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "מַהְפַּ֤ך",
     english_name: "mahpach",
 };
-pub const TR_MAHAPAKH_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_MAHAPAKH_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "שׁוֹפָר) מְהֻפָּ֤ךְ)",
     english_name: "(shophar) mehuppach",
 };
-pub const TR_MAHAPAKH_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_MAHAPAKH_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "שׁוֹפָר הָפ֤וּךְ",
     english_name: "shophar haphuch",
 };
-pub const TR_MAHAPAKH_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_MAHAPAKH_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "מְהֻפָּ֤ךְ",
     english_name: "mehuppach",
 };
-pub const CP_MAHAPAKH: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_MAHAPAKH: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A4",
     "0xd6 0xa4",
     "HEBREW ACCENT MAHAPAKH",
@@ -604,23 +604,23 @@ pub const CP_MAHAPAKH: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_MERKHA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_MERKHA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "מֵרְכָ֥א",
     english_name: "mercha",
 };
-pub const TR_MERKHA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_MERKHA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "מַאֲרִ֥יךְ",
     english_name: "maarich",
 };
-pub const TR_MERKHA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_MERKHA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "מַאֲרִ֥יךְ",
     english_name: "maarich",
 };
-pub const TR_MERKHA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_MERKHA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "מַאֲרְכָ֥א",
     english_name: "maarcha",
 };
-pub const CP_MERKHA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_MERKHA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A5",
     "0xd6 0xa5",
     "HEBREW ACCENT MERKHA",
@@ -634,19 +634,19 @@ pub const CP_MERKHA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_MERKHA_KEFULA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_MERKHA_KEFULA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "מֵרְכָא כּפוּלָ֦ה",
     english_name: "mercha kefulah",
 };
-pub const TR_MERKHA_KEFULA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_MERKHA_KEFULA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "תְּרֵי טַעֲמֵ֦י",
     english_name: "tere taame",
 };
-pub const TR_MERKHA_KEFULA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_MERKHA_KEFULA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "תְּרֵין חוּטְרִ֦ין",
     english_name: "teren chutrin",
 };
-pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_MERKHA_KEFULA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A6",
     "0xd6 0xa6",
     "HEBREW ACCENT MERKHA KEFULA",
@@ -659,24 +659,24 @@ pub const CP_MERKHA_KEFULA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_DARGA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_DARGA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "דַּרְגָּ֧א",
     english_name: "darga",
 };
-pub const TR_DARGA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_DARGA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "דַּרְגָּ֧א",
     english_name: "darga",
 };
-pub const TR_DARGA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_DARGA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "דַּרְגָּ֧א",
     english_name: "darga",
 };
 
-pub const TR_DARGA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_DARGA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "דַּרְגָּ֧א",
     english_name: "darga",
 };
-pub const CP_DARGA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_DARGA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A7",
     "0xd6 0xa7",
     "HEBREW ACCENT DARGA",
@@ -690,20 +690,20 @@ pub const CP_DARGA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_QADMA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_QADMA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "קַדְמָ֨א",
     english_name: "qadma",
 };
-pub const TR_QADMA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_QADMA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "אַזְלָ֨א",
     english_name: "azla",
 };
-pub const TR_QADMA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_QADMA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "קַדְמָ֨א",
     english_name: "qadma",
 };
 
-pub const CP_QADMA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_QADMA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A8",
     "0xd6 0xa8",
     "HEBREW ACCENT QADMA",
@@ -712,23 +712,23 @@ pub const CP_QADMA: Utf8CodePointInfo = utf8_cp(
     &[TR_QADMA_ASHKENAZI, TR_QADMA_SEPHARDI, TR_QADMA_ITALIAN],
 );
 
-pub const TR_TELISHA_QETANA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_TELISHA_QETANA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "תְּלִישָא קְטַנָּה֩",
     english_name: "telisha qetannah",
 };
-pub const TR_TELISHA_QETANA_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_TELISHA_QETANA_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "תַּלְשָׁא֩",
     english_name: "talsha",
 };
-pub const TR_TELISHA_QETANA_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_TELISHA_QETANA_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "תַּרְסָא֩",
     english_name: "tarsa",
 };
-pub const TR_TELISHA_QETANA_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_TELISHA_QETANA_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "תְּלִישָא קְטַנָּה֩",
     english_name: "telisha qetannah",
 };
-pub const CP_TELISHA_QETANA: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_TELISHA_QETANA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A9",
     "0xd6 0xa9",
     "HEBREW ACCENT TELISHA QETANA",
@@ -742,23 +742,23 @@ pub const CP_TELISHA_QETANA: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_YERAH_BEN_YOMO_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_YERAH_BEN_YOMO_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "יֵרֶח בֶּן יוֹמ֪וֹ",
     english_name: "yerach ben yomo/ galgal",
 };
-pub const TR_YERAH_BEN_YOMO_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_YERAH_BEN_YOMO_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "יֵרֶח בֶּן יוֹמ֪וֹ",
     english_name: "yerach ben yomo",
 };
-pub const TR_YERAH_BEN_YOMO_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_YERAH_BEN_YOMO_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "יֵרֶח בֶּן יוֹמ֪וֹ",
     english_name: "yerach ben yomo",
 };
-pub const TR_YERAH_BEN_YOMO_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_YERAH_BEN_YOMO_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "יֵרֶח בֶּן יוֹמ֪וֹ",
     english_name: "yerach ben yomo",
 };
-pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AA",
     "0xd6 0xaa",
     "HEBREW ACCENT YERAH BEN YOMO",
@@ -772,23 +772,23 @@ pub const CP_YERAH_BEN_YOMO: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_OLE_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_OLE_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "עוֹלֶה",
     english_name: "oleh",
 };
-pub const TR_OLE_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_OLE_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "עוֹלֶה",
     english_name: "oleh",
 };
-pub const TR_OLE_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_OLE_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "עוֹלֶה",
     english_name: "oleh",
 };
-pub const TR_OLE_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_OLE_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "עוֹלֶה",
     english_name: "oleh",
 };
-pub const CP_OLE: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_OLE: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AB",
     "0xd6 0xab",
     "HEBREW ACCENT OLE",
@@ -802,23 +802,23 @@ pub const CP_OLE: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_ILUY_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_ILUY_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "עִלוּי",
     english_name: "iluy",
 };
-pub const TR_ILUY_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_ILUY_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "עִלוּי",
     english_name: "iluy",
 };
-pub const TR_ILUY_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_ILUY_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "עִלוּי",
     english_name: "iluy",
 };
-pub const TR_ILUY_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_ILUY_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "עִלוּי",
     english_name: "iluy",
 };
-pub const CP_ILUY: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ILUY: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AC",
     "0xd6 0xac",
     "HEBREW ACCENT ILUY",
@@ -832,23 +832,23 @@ pub const CP_ILUY: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_DEHI_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_DEHI_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "דחי",
     english_name: "dechi",
 };
-pub const TR_DEHI_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_DEHI_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "דחי",
     english_name: "dechi",
 };
-pub const TR_DEHI_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_DEHI_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "דחי",
     english_name: "dechi",
 };
-pub const TR_DEHI_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_DEHI_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "דחי",
     english_name: "dechi",
 };
-pub const CP_DEHI: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_DEHI: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AD",
     "0xd6 0xad",
     "HEBREW ACCENT DEHI",
@@ -862,23 +862,23 @@ pub const CP_DEHI: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_ZINOR_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_ZINOR_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "צנור",
     english_name: "tsinor (zarqa above left)",
 };
-pub const TR_ZINOR_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_ZINOR_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "צנור",
     english_name: "tsinor (zarqa above left)",
 };
-pub const TR_ZINOR_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_ZINOR_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "צנור",
     english_name: "tsinor (zarqa above left)",
 };
-pub const TR_ZINOR_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_ZINOR_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "צנור",
     english_name: "tsinor (zarqa above left)",
 };
-pub const CP_ZINOR: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_ZINOR: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AE",
     "0xd6 0xae",
     "HEBREW ACCENT ZINOR",
@@ -892,23 +892,23 @@ pub const CP_ZINOR: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_SILLUQ_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_SILLUQ_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "סוֹף פָּסֽוּק",
     english_name: "sof pasuq/ silluq",
 };
-pub const TR_SILLUQ_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_SILLUQ_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "סוֹף פָּסֽוּק",
     english_name: "sof pasuq",
 };
-pub const TR_SILLUQ_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_SILLUQ_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "סוֹף פָּסֽוּק",
     english_name: "sof pasuq",
 };
-pub const TR_SILLUQ_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_SILLUQ_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "סוֹף פָּסֽוּק",
     english_name: "sof pasuq",
 };
-pub const CP_SILLUQ: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_SILLUQ: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BD",
     "0xd6 0xbd",
     "HEBREW POINT METEG",
@@ -922,24 +922,24 @@ pub const CP_SILLUQ: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const TR_METEG_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_METEG_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "מֶתֶג",
     english_name: "meteg",
 };
-pub const TR_METEG_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_METEG_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "מֶתֶג",
     english_name: "meteg",
 };
-pub const TR_METEG_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_METEG_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "מֶתֶג",
     english_name: "meteg",
 };
-pub const TR_METEG_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_METEG_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "מֶתֶג",
     english_name: "meteg",
 };
 
-pub const CP_METEG: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_METEG: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BD",
     "0xd6 0xbd",
     "HEBREW POINT METEG",
@@ -953,7 +953,7 @@ pub const CP_METEG: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const CP_MAQAF: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_MAQAF: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BE",
     "0xd6 0xbe",
     "HEBREW PUNCTUATION MAQAF",
@@ -962,23 +962,23 @@ pub const CP_MAQAF: Utf8CodePointInfo = utf8_cp(
     &[],
 );
 
-pub const TR_PASEQ_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TR_PASEQ_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "פָּסֵק",
     english_name: "paseq",
 };
-pub const TR_PASEQ_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TR_PASEQ_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "פָּסֵק",
     english_name: "paseq",
 };
-pub const TR_PASEQ_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TR_PASEQ_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "פָּסֵק",
     english_name: "paseq",
 };
-pub const TR_PASEQ_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TR_PASEQ_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "פָּסֵק",
     english_name: "paseq",
 };
-pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_PASEQ: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05C0",
     "0xd7 0x80",
     "HEBREW PUNCTUATION PASEQ",
@@ -992,7 +992,7 @@ pub const CP_PASEQ: Utf8CodePointInfo = utf8_cp(
     ],
 );
 
-pub const CP_SOPH_PASUQ: Utf8CodePointInfo = utf8_cp(
+pub(crate) const CP_SOPH_PASUQ: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05C3",
     "0xd7 0x83",
     "HEBREW PUNCTUATION SOF PASUQ",
@@ -1030,8 +1030,8 @@ mod tests {
     }
 
     #[test]
-    fn utf8_cp_constructor_behaves_as_expected() {
-        let created = utf8_cp(
+    fn utf8_cp_constructor_constructor_behaves_as_expected() {
+        let created = utf8_cp_constructor(
             "U+1234",
             "0x12 0x34",
             "DUMMY NAME",

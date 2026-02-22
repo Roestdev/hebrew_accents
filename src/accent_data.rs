@@ -115,7 +115,7 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     /*22 */ 22, // Meteg
 ];
 
-pub const SILLUQ_INFO: AccentInformation = AccentInformation {
+pub(crate) const SILLUQ_INFO: AccentInformation = AccentInformation {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
     meaning: "close, cessation",
@@ -130,11 +130,12 @@ pub const SILLUQ_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const ATNACH_INFO: AccentInformation = AccentInformation {
+pub(crate) const ATNACH_INFO: AccentInformation = AccentInformation {
     english_name: "Atnach",
     hebrew_name: "אתְנָח",
     meaning: "a causing to rest",
@@ -147,11 +148,12 @@ pub const ATNACH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const SEGOLTA_INFO: AccentInformation = AccentInformation {
+pub(crate) const SEGOLTA_INFO: AccentInformation = AccentInformation {
     english_name: "Segolta",
     hebrew_name: "סְגֹולְתָּא",
     meaning: "a little grape-bunch",
@@ -164,11 +166,12 @@ pub const SEGOLTA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PostPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const SHALSHELET_INFO: AccentInformation = AccentInformation {
+pub(crate) const SHALSHELET_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet",
     hebrew_name: "שַׁלְשֶׁלֶת",
     meaning: "chain or link",
@@ -181,11 +184,12 @@ pub const SHALSHELET_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
+pub(crate) const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
     meaning: "small upright",
@@ -198,6 +202,7 @@ pub const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Zaqeph Qatan",
             hebrew_name: "זָקֵף קָטָן",
@@ -206,7 +211,7 @@ pub const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
+pub(crate) const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Zaqeph Gadol",
     hebrew_name: "זָקֵף גָּדוֹל",
     meaning: "large upright",
@@ -219,11 +224,12 @@ pub const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const REVIA_INFO: AccentInformation = AccentInformation {
+pub(crate) const REVIA_INFO: AccentInformation = AccentInformation {
     english_name: "Revia",
     hebrew_name: "רְבִיעַ",
     meaning: "fourth [in a sequence]",
@@ -236,11 +242,12 @@ pub const REVIA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TIPHCHA_INFO: AccentInformation = AccentInformation {
+pub(crate) const TIPHCHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tiphcha", // ADD TARCHA
     hebrew_name: "טִפְחָא",
     meaning: "handbreadth or diagonal",
@@ -253,11 +260,12 @@ pub const TIPHCHA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const ZARQA_INFO: AccentInformation = AccentInformation {
+pub(crate) const ZARQA_INFO: AccentInformation = AccentInformation {
     english_name: "Zarqa",
     hebrew_name: "זַרְקָא",
     meaning: "to sprinkle, scatter",
@@ -270,11 +278,12 @@ pub const ZARQA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PostPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const PASHTA_INFO: AccentInformation = AccentInformation {
+pub(crate) const PASHTA_INFO: AccentInformation = AccentInformation {
     english_name: "Pashta",
     hebrew_name: "פַּשְׁטָא",
     meaning: "extending, stretching out in length",
@@ -287,11 +296,12 @@ pub const PASHTA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PostPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const YETIV_INFO: AccentInformation = AccentInformation {
+pub(crate) const YETIV_INFO: AccentInformation = AccentInformation {
     english_name: "Yetiv",
     hebrew_name: "יְתִיב",
     meaning: "resting or sitting",
@@ -304,11 +314,12 @@ pub const YETIV_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PrePositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TEVIR_INFO: AccentInformation = AccentInformation {
+pub(crate) const TEVIR_INFO: AccentInformation = AccentInformation {
     english_name: "Tevir",
     hebrew_name: "תְּבִיר",
     meaning: "broken, downward tumble",
@@ -321,11 +332,12 @@ pub const TEVIR_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const GERESH_INFO: AccentInformation = AccentInformation {
+pub(crate) const GERESH_INFO: AccentInformation = AccentInformation {
     english_name: "Geresh",
     hebrew_name: "גֵּרֵישׁ",
     meaning: "expulsion, driving out, divorce",
@@ -338,6 +350,7 @@ pub const GERESH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Teres",
             hebrew_name: "טֶרֶס",
@@ -346,7 +359,7 @@ pub const GERESH_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const GERSHAYIM_INFO: AccentInformation = AccentInformation {
+pub(crate) const GERSHAYIM_INFO: AccentInformation = AccentInformation {
     english_name: "Gershayim",
     hebrew_name: "גֵּרְשַׁיִם",
     meaning: "double of expulsion, driving out, divorce",
@@ -359,11 +372,12 @@ pub const GERSHAYIM_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const PAZER_INFO: AccentInformation = AccentInformation {
+pub(crate) const PAZER_INFO: AccentInformation = AccentInformation {
     english_name: "Pazer",
     hebrew_name: "פָּזֶר",
     meaning: "lavish or scatter",
@@ -376,6 +390,7 @@ pub const PAZER_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Pazer Qatan",
             hebrew_name: "פָּזֵר קָטָן",
@@ -384,7 +399,7 @@ pub const PAZER_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
+pub(crate) const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Pazer Gadol",
     hebrew_name: "פָּזֶר גּדוֹל",
     meaning: "large lavish or scatter",
@@ -397,6 +412,7 @@ pub const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Qarne Pharah",
             hebrew_name: "קַרְנֵי פָרָה",
@@ -405,7 +421,7 @@ pub const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
+pub(crate) const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
     english_name: "Telisha Gedolah",
     hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
     meaning: "great (long) detached",
@@ -418,11 +434,12 @@ pub const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PrePositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const LEGARMEH_INFO: AccentInformation = AccentInformation {
+pub(crate) const LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
     meaning: "for or by itself, independant",
@@ -435,6 +452,7 @@ pub const LEGARMEH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Munach Legarmeh",
             hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
@@ -443,7 +461,7 @@ pub const LEGARMEH_INFO: AccentInformation = AccentInformation {
     }),
 };
 // Conjunctives
-pub const MUNACH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MUNACH_INFO: AccentInformation = AccentInformation {
     english_name: "Munach",
     hebrew_name: "מוּנַ֣ח",
     meaning: "resting or placed",
@@ -456,11 +474,12 @@ pub const MUNACH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const MAHPAKH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MAHPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Mahpakh",
     hebrew_name: "מַהְפַּךְ",
     meaning: "turning round",
@@ -473,6 +492,7 @@ pub const MAHPAKH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Mehuppakh",
             hebrew_name: "מְהֻפָּ֤ךְ",
@@ -481,7 +501,7 @@ pub const MAHPAKH_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const MERKHA_INFO: AccentInformation = AccentInformation {
+pub(crate) const MERKHA_INFO: AccentInformation = AccentInformation {
     english_name: "Merkha",
     hebrew_name: "מֵרְכָא",
     meaning: "lengthener, prolonging",
@@ -494,11 +514,12 @@ pub const MERKHA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
     english_name: "Merkha Kephulah",
     hebrew_name: "מֵרְכָא כְּפוּלָה",
     meaning: "double lengthener",
@@ -511,11 +532,12 @@ pub const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const DARGA_INFO: AccentInformation = AccentInformation {
+pub(crate) const DARGA_INFO: AccentInformation = AccentInformation {
     english_name: "Darga",
     hebrew_name: "דַּרְגָּא",
     meaning: "stairstep",
@@ -528,11 +550,12 @@ pub const DARGA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const AZLA_INFO: AccentInformation = AccentInformation {
+pub(crate) const AZLA_INFO: AccentInformation = AccentInformation {
     english_name: "Azla",
     hebrew_name: "אַזְלָא",
     meaning: "going on (not pausing), depart",
@@ -545,6 +568,7 @@ pub const AZLA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Qadma",
             hebrew_name: "קַדְמָ֨א",
@@ -553,7 +577,7 @@ pub const AZLA_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
+pub(crate) const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
     english_name: "Telisha Qetannah",
     hebrew_name: "תְּלִישָא קְטַנָּה",
     meaning: "small (short) detached",
@@ -566,11 +590,12 @@ pub const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::PostPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const GALGAL_INFO: AccentInformation = AccentInformation {
+pub(crate) const GALGAL_INFO: AccentInformation = AccentInformation {
     english_name: "Galgal",
     hebrew_name: "גַּלְגַּל",
     meaning: "wheel, circle",
@@ -583,6 +608,7 @@ pub const GALGAL_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Jerach Ben Jomo",
             hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
@@ -591,7 +617,7 @@ pub const GALGAL_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const MAYELA_INFO: AccentInformation = AccentInformation {
+pub(crate) const MAYELA_INFO: AccentInformation = AccentInformation {
     english_name: "Mayela",
     hebrew_name: "מָאיְלָא",
     meaning: "to be raised or elevated",
@@ -604,6 +630,7 @@ pub const MAYELA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Secondary,
         category: AccentCategory::Conjunctive,
         word_stress: None,
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Meayyela",
             hebrew_name: "מְאַיְּלָא",
@@ -612,7 +639,7 @@ pub const MAYELA_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const METEG_INFO: AccentInformation = AccentInformation {
+pub(crate) const METEG_INFO: AccentInformation = AccentInformation {
     english_name: "Meteg",
     hebrew_name: "מֶתֶג",
     meaning: "accent or mark",
@@ -625,6 +652,7 @@ pub const METEG_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Secondary,
         category: AccentCategory::Conjunctive,
         word_stress: None,
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
@@ -646,7 +674,7 @@ Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
 
 // SILLUQ see PROSE section above
 
-pub const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
+pub(crate) const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
     english_name: "Oleh We Yored",
     hebrew_name: "עוֹלֶה וְיוֹרֵד",
     meaning: "ascending and descending",
@@ -659,13 +687,14 @@ pub const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
 // ATNACH see PROSE section above
 
-pub const REVIA_GADOL_INFO: AccentInformation = AccentInformation {
+pub(crate) const REVIA_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Gadol",
     hebrew_name: "רְבִיעַ גּדוֹל",
     meaning: "big fourth",
@@ -678,11 +707,12 @@ pub const REVIA_GADOL_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
+pub(crate) const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Mugrash",
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
     meaning: "exiled fourth",
@@ -695,11 +725,12 @@ pub const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
+pub(crate) const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet Gadol",
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
     meaning: "large chain or link",
@@ -712,11 +743,12 @@ pub const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TSINNOR_INFO: AccentInformation = AccentInformation {
+pub(crate) const TSINNOR_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnor",
     hebrew_name: "צִנּוֹר",
     meaning: "pipe or tube",
@@ -729,6 +761,7 @@ pub const TSINNOR_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PostPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Zarqa",
             hebrew_name: "זַרְקָא",
@@ -737,7 +770,7 @@ pub const TSINNOR_INFO: AccentInformation = AccentInformation {
     }),
 };
 
-pub const REVIA_QATON_INFO: AccentInformation = AccentInformation {
+pub(crate) const REVIA_QATON_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Qaton",
     hebrew_name: "רְבִיעַ קָטוֹן",
     meaning: "small fourth",
@@ -750,11 +783,12 @@ pub const REVIA_QATON_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const DECHI_INFO: AccentInformation = AccentInformation {
+pub(crate) const DECHI_INFO: AccentInformation = AccentInformation {
     english_name: "Dechi",
     hebrew_name: "דֶּחִי",
     meaning: "to push or drive away",
@@ -767,6 +801,7 @@ pub const DECHI_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::PrePositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Tiphcha",
             hebrew_name: "טִפְחָא",
@@ -777,7 +812,7 @@ pub const DECHI_INFO: AccentInformation = AccentInformation {
 
 // PAZER see PROSE section above
 
-pub const MEHUPPAKH_LEGARMEH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Mehuppakh Legarmeh",
     hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
     meaning: "reversed to its own",
@@ -790,11 +825,12 @@ pub const MEHUPPAKH_LEGARMEH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
+pub(crate) const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Azla Legarmeh",
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
     meaning: "goes to its own",
@@ -807,6 +843,7 @@ pub const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
@@ -815,7 +852,7 @@ pub const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
 
 // MERCHA see PROSE section above
 
-pub const ILLUY_INFO: AccentInformation = AccentInformation {
+pub(crate) const ILLUY_INFO: AccentInformation = AccentInformation {
     english_name: "Illuy",
     hebrew_name: "עִלּוּי",
     meaning: "elevation or raising",
@@ -828,11 +865,12 @@ pub const ILLUY_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TARCHA_INFO: AccentInformation = AccentInformation {
+pub(crate) const TARCHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tarcha",
     hebrew_name: "טַרְחָא",
     meaning: "trouble, difficulty, hardship, toil",
@@ -845,13 +883,14 @@ pub const TARCHA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
 // GALGAL see PROSE section above
 
-pub const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Mehuppakh",
     hebrew_name: "מְהֻפָּ֤ךְ",
     meaning: "reversed",
@@ -864,6 +903,7 @@ pub const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: Some(Alternates {
             english_name: "Mahpakh",
             hebrew_name: "מַהְפַּךְ",
@@ -874,7 +914,7 @@ pub const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
 
 // AZLA see PROSE section above
 
-pub const SHALSHELET_QETANNAH_INFO: AccentInformation = AccentInformation {
+pub(crate) const SHALSHELET_QETANNAH_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet Qetannah",
     hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
     meaning: "small chain",
@@ -887,11 +927,12 @@ pub const SHALSHELET_QETANNAH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
+pub(crate) const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnorit Merkha",
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
     meaning: "pipe of continuation",
@@ -904,11 +945,12 @@ pub const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
 
-pub const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
+pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnorit Mahpakh",
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
     meaning: "pipe of reversal",
@@ -921,6 +963,7 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
         accent_type: AccentType::Primary,
         category: AccentCategory::Conjunctive,
         word_stress: Some(WordStress::ImPositive),
+        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
         alternates: None,
     }),
 };
@@ -928,7 +971,7 @@ pub const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
 /********************************************************
  *                      PSEUDO ACCENT
  *******************************************************/
-pub const SOPH_PASUQ_INFO: AccentInformation = AccentInformation {
+pub(crate) const SOPH_PASUQ_INFO: AccentInformation = AccentInformation {
     english_name: "Soph Pasuq",
     hebrew_name: "סוֹף פָּסוּק",
     meaning: "end of verse",
@@ -942,7 +985,7 @@ pub const SOPH_PASUQ_INFO: AccentInformation = AccentInformation {
     additional: None,
 };
 
-pub const MAQQEPH_INFO: AccentInformation = AccentInformation {
+pub(crate) const MAQQEPH_INFO: AccentInformation = AccentInformation {
     english_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
     meaning:"binder",
@@ -954,7 +997,7 @@ pub const MAQQEPH_INFO: AccentInformation = AccentInformation {
     additional:  None,
 };
 
-pub const PASEQ_INFO: AccentInformation = AccentInformation {
+pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     english_name: "Paseq",
     hebrew_name: "פָּסֵק",
     meaning: "to pause, to stop or to interrupt",
