@@ -216,7 +216,8 @@ pub trait Accent: Copy + Sized {
     fn hierarchical_group(self) -> Option<HierarchicalGroup>;
     /// Return the *static* metadata for this concrete accent.
     fn details(self) -> &'static AccentInformation;
-    // Convenience wrappers.
+
+    /* ---------- Convenience helpers (default impls) ---------- */
     /// English name of the Hebrew Accent
     #[inline]
     fn english_name(self) -> &'static str {
@@ -235,29 +236,17 @@ pub trait Accent: Copy + Sized {
     /// Hebrew Accent type
     #[inline]
     fn accent_type(self) -> Option<AccentType> {
-        if self.details().additional.is_some() {
-            Some(self.details().additional.unwrap().accent_type)
-        } else {
-            None
-        }
+        self.details().additional.map(|add| add.accent_type)
     }
     /// category of the Hebrew Accent
     #[inline]
     fn category(self) -> Option<AccentCategory> {
-        if self.details().additional.is_some() {
-            Some(self.details().additional.unwrap().category)
-        } else {
-            None
-        }
+        self.details().additional.map(|add| add.category)
     }
     /// word-stress of the Hebrew Accent
     #[inline]
     fn word_stress(self) -> Option<WordStress> {
-        if self.details().additional.is_some() {
-            self.details().additional.unwrap().word_stress
-        } else {
-            None
-        }
+        self.details().additional.and_then(|add| add.word_stress)
     }
 
     /// number of UTF-8 code points of the Hebrew Accent
@@ -266,21 +255,6 @@ pub trait Accent: Copy + Sized {
 
 impl Accent for HebrewAccent {
     #[inline]
-    fn relative_strength(self) -> u8 {
-        match self {
-            HebrewAccent::Prose(p) => p.relative_strength(),
-            HebrewAccent::Poetry(p) => p.relative_strength(),
-            HebrewAccent::Pseudo(p) => p.relative_strength(),
-        }
-    }
-    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
-        match self {
-            HebrewAccent::Prose(p) => prose_hierarchical_group(p),
-            HebrewAccent::Poetry(p) => poetry_hierarchical_group(p),
-            HebrewAccent::Pseudo(_p) => None,
-        }
-    }
-
     fn details(self) -> &'static AccentInformation {
         match self {
             HebrewAccent::Prose(p) => p.details(),
@@ -288,141 +262,49 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.details(),
         }
     }
-    fn english_name(self) -> &'static str {
-        match self {
-            HebrewAccent::Prose(p) => p.details().english_name,
-            HebrewAccent::Poetry(p) => p.details().english_name,
-            HebrewAccent::Pseudo(p) => p.details().english_name,
-        }
-    }
-    fn hebrew_name(self) -> &'static str {
-        match self {
-            HebrewAccent::Prose(p) => p.details().hebrew_name,
-            HebrewAccent::Poetry(p) => p.details().hebrew_name,
-            HebrewAccent::Pseudo(p) => p.details().hebrew_name,
-        }
-    }
-    fn meaning(self) -> &'static str {
-        match self {
-            HebrewAccent::Prose(p) => p.details().meaning,
-            HebrewAccent::Poetry(p) => p.details().meaning,
-            HebrewAccent::Pseudo(p) => p.details().meaning,
-        }
-    }
-    fn accent_type(self) -> Option<AccentType> {
-        match self {
-            HebrewAccent::Prose(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().accent_type)
-                } else {
-                    None
-                }
-            }
-            HebrewAccent::Poetry(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().accent_type)
-                } else {
-                    None
-                }
-            }
-            HebrewAccent::Pseudo(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().accent_type)
-                } else {
-                    None
-                }
-            }
-        }
-    }
-    fn category(self) -> Option<AccentCategory> {
-        match self {
-            HebrewAccent::Prose(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().category)
-                } else {
-                    None
-                }
-            }
-            HebrewAccent::Poetry(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().category)
-                } else {
-                    None
-                }
-            }
-            HebrewAccent::Pseudo(p) => {
-                if p.details().additional.is_some() {
-                    Some(p.details().additional.unwrap().category)
-                } else {
-                    None
-                }
-            } //Some(p.details().additional.unwrap().category),
-        }
-    }
-    fn word_stress(self) -> Option<WordStress> {
-        match self {
-            HebrewAccent::Prose(p) => {
-                if p.details().additional.is_some() {
-                    p.details().additional.unwrap().word_stress
-                } else {
-                    None
-                }
-            }
 
-            HebrewAccent::Poetry(p) => {
-                if p.details().additional.is_some() {
-                    p.details().additional.unwrap().word_stress
-                } else {
-                    None
-                }
-            }
-
-            HebrewAccent::Pseudo(p) => {
-                if p.details().additional.is_some() {
-                    p.details().additional.unwrap().word_stress
-                } else {
-                    None
-                }
-            }
+    #[inline]
+    fn relative_strength(self) -> u8 {
+        match self {
+            HebrewAccent::Prose(p) => p.relative_strength(),
+            HebrewAccent::Poetry(p) => p.relative_strength(),
+            HebrewAccent::Pseudo(p) => p.relative_strength(),
         }
     }
+
+    #[inline]
+    fn hierarchical_group(self) -> Option<HierarchicalGroup> {
+        match self {
+            HebrewAccent::Prose(p) => p.hierarchical_group(),
+            HebrewAccent::Poetry(p) => p.hierarchical_group(),
+            HebrewAccent::Pseudo(_) => None,
+        }
+    }
+
+    #[inline]
     fn code_points(self) -> u8 {
         match self {
-            HebrewAccent::Prose(p) => {
-                if p.details().code_points.secondary.is_none() {
-                    1
-                } else {
-                    2
-                }
-            }
-            HebrewAccent::Poetry(p) => {
-                if p.details().code_points.secondary.is_none() {
-                    1
-                } else {
-                    2
-                }
-            }
-            HebrewAccent::Pseudo(p) => {
-                if p.details().code_points.secondary.is_none() {
-                    1
-                } else {
-                    2
-                }
-            }
+            HebrewAccent::Prose(p) => p.code_points(),
+            HebrewAccent::Poetry(p) => p.code_points(),
+            HebrewAccent::Pseudo(p) => p.code_points(),
         }
     }
 }
 
 impl Accent for ProseAccent {
+    #[inline]
     fn details(self) -> &'static AccentInformation {
         PROSE_ACCENT_TABLE[self as usize]
     }
+    #[inline]
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
+    #[inline]
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         prose_hierarchical_group(self)
     }
+    #[inline]
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
             1
@@ -433,15 +315,19 @@ impl Accent for ProseAccent {
 }
 
 impl Accent for PoetryAccent {
+    #[inline]
     fn details(self) -> &'static AccentInformation {
         POETRY_ACCENT_TABLE[self as usize]
     }
+    #[inline]
     fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
     }
+    #[inline]
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         poetry_hierarchical_group(self)
     }
+    #[inline]
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
             1
@@ -452,16 +338,20 @@ impl Accent for PoetryAccent {
 }
 
 impl Accent for PseudoAccent {
+    #[inline]
     fn details(self) -> &'static AccentInformation {
         PSEUDO_ACCENT_TABLE[self as usize]
     }
+    #[inline]
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
+    #[inline]
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         None
     }
 
+    #[inline]
     fn code_points(self) -> u8 {
         if self.details().code_points.secondary.is_none() {
             1
@@ -624,7 +514,9 @@ pub enum WordStress {
     PrePositive,
 }
 
-/// Indication of the where the DISJUNCIVE accents are part of
+/// Indication of where the DISJUNCIVE accents are part o
+/// Group classification is according the book from  Basics of Hebrew Accents by Mark D. Futato, Sr.
+/// which is based on
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum HierarchicalGroup {
     /// TODO
