@@ -28,7 +28,7 @@ Looking roughly I noticed the following similarities and differences.
   - contents of the groups are not identical
 - The names of the accents is mostly a mix of Ashkenazi and Sephardi (see [wikipedia](https://en.wikipedia.org/wiki/Hebrew_cantillation#Names_and_shapes_of_the_te'amim))
 
-Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, choices needs to be made regarding the implementation.
+Given that the scholars themselves do not have a unified view and that I myself am not a scholar of biblical Hebrew at all, choices need to be made regarding the implementation.
 
 </br>
 
@@ -123,36 +123,39 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 ## Data structures
 
 1. **SentenceContext**   
-    grouping the sentence and the context
+    grouping the sentence and the context in one structure
 
 1. **Hebrew Accent**  
-    Prose(ProseAccent), Poetry(PoetryAccent)
+    Prose(ProseAccent), Poetry(PoetryAccent), Pseudo(PseudoAccent)
 
 2. **Prose Accent**  
    All prose accents
 
 3. **Poetry Accent**   
-    All poetry accents
+   All poetry accents
 
-4. **Context**  
+4. **PseudoAccent**
+   All accents that are close related Hebrew accents
+
+5. **Context**  
    The context (writing style) of the sentence
-   Prose, Poetry
+   Prose, Poetry, Unknown
 
-5. **Accent Type**  
+6. **Accent Type**  
    Two type of accents: Primary and Secundary
 
-6. **Accent Category**    
+7. **Accent Category**    
    Disjunctive, Conjunctive
 
-7. **Accent Position**  
+8. **Accent Position**  
    Indication of the position of the accent in relation to the applicable consonant
 
-8. **Accent CodePoints**   
-   The number of Unicode code-points
+9.  **Accent CodePoints**   
+   The number of Unicode code-points ( 1 or 2 codepoints)
 
-9.  **Accent Information**   
+10. **Accent Information**   
    Contains all kind of attributes of the accents.
-   e.g. position, type etc. etc.
+   e.g. position, type etc.
 
 ## Functions
 
