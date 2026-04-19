@@ -1,4 +1,124 @@
-use hebrew_accents::{Accent, AccentCategory, PoetryAccent, ProseAccent, PseudoAccent};
+use hebrew_accents::{
+    Accent, AccentCategory, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
+};
+
+#[test]
+fn testing_hebrew_prose_accent_categories() {
+    // Disjunctives
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Silluq).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Atnach).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Segolta).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Shalshelet).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::ZaqephQatan).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::ZaqephGadol).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Revia).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Tiphcha).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Zarqa).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Pashta).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Yetiv).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Tevir).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Geresh).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Gershayim).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Pazer).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::PazerGadol).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::TelishaGedolah).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Legarmeh).category(),
+        Some(AccentCategory::Disjunctive)
+    );
+    // Conjunctives
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Munach).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Mahpakh).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Merkha).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::MerkhaKephulah).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Darga).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Azla).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::TelishaQetannah).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Galgal).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Mayela).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Meteg).category(),
+        Some(AccentCategory::Conjunctive)
+    );
+}
 
 #[test]
 fn testing_prose_accent_categories() {
@@ -218,6 +338,13 @@ fn testing_poetry_accent_categories() {
 
 #[test]
 fn testing_pseudo_accent_categories() {
+    assert_eq!(
+        HebrewAccent::Pseudo(PseudoAccent::SophPasuq).category(),
+        None
+    );
+    assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqeph).category(), None);
+    assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).category(), None);
+
     assert_eq!(PseudoAccent::SophPasuq.category(), None);
     assert_eq!(PseudoAccent::Maqqeph.category(), None);
     assert_eq!(PseudoAccent::Paseq.category(), None);

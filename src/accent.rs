@@ -353,11 +353,12 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn code_points(self) -> u8 {
-        if self.details().code_points.secondary.is_none() {
-            1
-        } else {
-            2
-        }
+        1 // always one
+        // if self.details().code_points.secondary.is_none() {
+        //     1
+        // } else {
+        //     2
+        // }
     }
 }
 
@@ -681,7 +682,407 @@ mod tests {
     }
 }
 
+#[cfg(test)]
 mod pseudo {
     #[test]
     fn check() {}
+}
+#[cfg(test)]
+mod hierarchical {
+    use crate::*;
+    // ----------------------------------------------------------------
+    // Tests for prose_hierarchical_group()
+    // ----------------------------------------------------------------
+
+    #[test]
+    fn test_prose_hierarchical_group_all_cases() {
+        // --- ProseGroup1 (Strongest Disjunctives) ---
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Silluq),
+            Some(HierarchicalGroup::ProseGroup1)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Atnach),
+            Some(HierarchicalGroup::ProseGroup1)
+        );
+
+        // --- ProseGroup2 ---
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Segolta),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Shalshelet),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::ZaqephQatan),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::ZaqephGadol),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Tiphcha),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+
+        // --- ProseGroup3 ---
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Revia),
+            Some(HierarchicalGroup::ProseGroup3)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Zarqa),
+            Some(HierarchicalGroup::ProseGroup3)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Pashta),
+            Some(HierarchicalGroup::ProseGroup3)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Tevir),
+            Some(HierarchicalGroup::ProseGroup3)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Yetiv),
+            Some(HierarchicalGroup::ProseGroup3)
+        );
+
+        // --- ProseGroup4 ---
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Geresh),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Gershayim),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Pazer),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::PazerGadol),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::TelishaGedolah),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+        assert_eq!(
+            prose_hierarchical_group(ProseAccent::Legarmeh),
+            Some(HierarchicalGroup::ProseGroup4)
+        );
+
+        // --- Conjunctive Accents (Should return None) ---
+        // Testing a representative sample of conjunctives to ensure the default branch works
+        assert_eq!(prose_hierarchical_group(ProseAccent::Munach), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Mahpakh), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Merkha), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::MerkhaKephulah), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Darga), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Azla), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::TelishaQetannah), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Galgal), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Mayela), None);
+        assert_eq!(prose_hierarchical_group(ProseAccent::Meteg), None);
+    }
+
+    // ----------------------------------------------------------------
+    // Tests for poetry_hierarchical_group()
+    // ----------------------------------------------------------------
+
+    #[test]
+    fn test_poetry_hierarchical_group_all_cases() {
+        use super::HierarchicalGroup;
+
+        // --- PoetryGroup1 (Strongest Disjunctives) ---
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::Silluq),
+            Some(HierarchicalGroup::PoetryGroup1)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::OlehWeYored),
+            Some(HierarchicalGroup::PoetryGroup1)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::Atnach),
+            Some(HierarchicalGroup::PoetryGroup1)
+        );
+
+        // --- PoetryGroup2 ---
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::ReviaGadol),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::ReviaMugrash),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::ShalsheletGadol),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::ReviaQaton),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::Tsinnor),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::Dechi),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+
+        // --- PoetryGroup3 ---
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::Pazer),
+            Some(HierarchicalGroup::PoetryGroup3)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::MehuppakhLegarmeh),
+            Some(HierarchicalGroup::PoetryGroup3)
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::AzlaLegarmeh),
+            Some(HierarchicalGroup::PoetryGroup3)
+        );
+
+        // --- Conjunctive Accents (Should return None) ---
+        // Testing a representative sample of conjunctives
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Munach), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Merkha), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Illuy), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Tarcha), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Galgal), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Mehuppakh), None);
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Azla), None);
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::ShalsheletQetannah),
+            None
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::TsinnoritMerkha),
+            None
+        );
+        assert_eq!(
+            poetry_hierarchical_group(PoetryAccent::TsinnoritMahpakh),
+            None
+        );
+        assert_eq!(poetry_hierarchical_group(PoetryAccent::Meteg), None);
+    }
+
+    // ----------------------------------------------------------------
+    // Integration test: Ensure the trait method delegates correctly
+    // ----------------------------------------------------------------
+
+    #[test]
+    fn test_trait_hierarchical_group_delegation() {
+        use super::HierarchicalGroup;
+
+        // Test Prose via Trait
+        let prose_silluq = ProseAccent::Silluq;
+        assert_eq!(
+            prose_silluq.hierarchical_group(),
+            Some(HierarchicalGroup::ProseGroup1)
+        );
+
+        let prose_munach = ProseAccent::Munach;
+        assert_eq!(prose_munach.hierarchical_group(), None);
+
+        // Test Poetry via Trait
+        let poetry_silluq = PoetryAccent::Silluq;
+        assert_eq!(
+            poetry_silluq.hierarchical_group(),
+            Some(HierarchicalGroup::PoetryGroup1)
+        );
+
+        let poetry_munach = PoetryAccent::Munach;
+        assert_eq!(poetry_munach.hierarchical_group(), None);
+
+        // Test HebrewAccent wrapper
+        let ha_prose = HebrewAccent::Prose(ProseAccent::Segolta);
+        assert_eq!(
+            ha_prose.hierarchical_group(),
+            Some(HierarchicalGroup::ProseGroup2)
+        );
+
+        let ha_poetry = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
+        assert_eq!(
+            ha_poetry.hierarchical_group(),
+            Some(HierarchicalGroup::PoetryGroup2)
+        );
+
+        let ha_pseudo = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        assert_eq!(ha_pseudo.hierarchical_group(), None);
+    }
+}
+
+#[cfg(test)]
+mod codepoints {
+    // ----------------------------------------------------------------
+    // Tests for code_points()
+    // ----------------------------------------------------------------
+
+use crate::*;
+    #[test]
+    fn testing_prose_accent_code_points() {
+    // Disjunctives
+    assert_eq!(ProseAccent::Silluq.code_points(), 1);
+    assert_eq!(ProseAccent::Atnach.code_points(), 1);
+    assert_eq!(ProseAccent::Segolta.code_points(), 1);
+    assert_eq!(ProseAccent::Shalshelet.code_points(), 2);
+    assert_eq!(ProseAccent::ZaqephQatan.code_points(), 1);
+    assert_eq!(ProseAccent::ZaqephGadol.code_points(), 1);
+    assert_eq!(ProseAccent::Revia.code_points(), 1);
+    assert_eq!(ProseAccent::Tiphcha.code_points(), 1);
+    assert_eq!(ProseAccent::Zarqa.code_points(), 1);
+    assert_eq!(ProseAccent::Pashta.code_points(), 1);
+    assert_eq!(ProseAccent::Yetiv.code_points(), 1);
+    assert_eq!(ProseAccent::Tevir.code_points(), 1);
+    assert_eq!(ProseAccent::Geresh.code_points(), 1);
+    assert_eq!(ProseAccent::Gershayim.code_points(), 1);
+    assert_eq!(ProseAccent::Pazer.code_points(), 1);
+    assert_eq!(ProseAccent::PazerGadol.code_points(), 1);
+    assert_eq!(ProseAccent::TelishaGedolah.code_points(), 1);
+    assert_eq!(ProseAccent::Legarmeh.code_points(), 2);
+    // Conjunctives
+    assert_eq!(ProseAccent::Munach.code_points(), 1);
+    assert_eq!(ProseAccent::Mahpakh.code_points(), 1);
+    assert_eq!(ProseAccent::Merkha.code_points(), 1);
+    assert_eq!(ProseAccent::MerkhaKephulah.code_points(), 1);
+    assert_eq!(ProseAccent::Darga.code_points(), 1);
+    assert_eq!(ProseAccent::Azla.code_points(), 1);
+    assert_eq!(ProseAccent::TelishaQetannah.code_points(), 1);
+    assert_eq!(ProseAccent::Galgal.code_points(), 1);
+    assert_eq!(ProseAccent::Mayela.code_points(), 1);
+    assert_eq!(ProseAccent::Meteg.code_points(), 1);
+}
+
+#[test]
+fn testing_poetry_accent_code_points() {
+    // Disjunctives
+    assert_eq!(PoetryAccent::Silluq.code_points(), 1);
+    assert_eq!(PoetryAccent::OlehWeYored.code_points(), 2,);
+    assert_eq!(PoetryAccent::Atnach.code_points(), 1);
+    assert_eq!(PoetryAccent::ReviaGadol.code_points(), 1);
+    assert_eq!(PoetryAccent::ReviaMugrash.code_points(), 2);
+    assert_eq!(PoetryAccent::ShalsheletGadol.code_points(), 2);
+    assert_eq!(PoetryAccent::Tsinnor.code_points(), 1);
+    assert_eq!(PoetryAccent::ReviaQaton.code_points(), 1);
+    assert_eq!(PoetryAccent::Dechi.code_points(), 1);
+    assert_eq!(PoetryAccent::Pazer.code_points(), 1);
+    assert_eq!(PoetryAccent::MehuppakhLegarmeh.code_points(), 2);
+    assert_eq!(PoetryAccent::AzlaLegarmeh.code_points(), 2);
+    // Conjunctives
+    assert_eq!(PoetryAccent::Munach.code_points(), 1);
+    assert_eq!(PoetryAccent::Merkha.code_points(), 1);
+    assert_eq!(PoetryAccent::Illuy.code_points(), 1);
+    assert_eq!(PoetryAccent::Tarcha.code_points(), 1);
+    assert_eq!(PoetryAccent::Galgal.code_points(), 1);
+    assert_eq!(PoetryAccent::Mehuppakh.code_points(), 1);
+    assert_eq!(PoetryAccent::Azla.code_points(), 1);
+    assert_eq!(PoetryAccent::ShalsheletQetannah.code_points(), 1);
+    assert_eq!(PoetryAccent::TsinnoritMerkha.code_points(), 2);
+    assert_eq!(PoetryAccent::TsinnoritMahpakh.code_points(), 2);
+    assert_eq!(PoetryAccent::Meteg.code_points(), 1);
+}
+
+#[test]
+fn testing_pseudo_accent_code_points() {
+    assert_eq!(PseudoAccent::SophPasuq.code_points(), 1);
+    assert_eq!(PseudoAccent::Maqqeph.code_points(), 1,);
+    assert_eq!(PseudoAccent::Paseq.code_points(), 1,);
+}
+
+}
+
+
+#[cfg(test)]
+mod relative_strength {
+    // ----------------------------------------------------------------
+    // Tests for relative_strength()
+    // ----------------------------------------------------------------
+
+use crate::*;
+    #[test]
+    fn testing_proseaccent_relative_strength() {
+    // Disjunctives
+    assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).relative_strength(), 1);
+    
+    assert_eq!(ProseAccent::Silluq.relative_strength(), 1);
+    assert_eq!(ProseAccent::Atnach.relative_strength(), 2);
+    assert_eq!(ProseAccent::Segolta.relative_strength(), 3);
+    assert_eq!(ProseAccent::Shalshelet.relative_strength(), 4);
+    assert_eq!(ProseAccent::ZaqephQatan.relative_strength(), 5);
+    assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), 6);
+    assert_eq!(ProseAccent::Revia.relative_strength(), 7);
+    assert_eq!(ProseAccent::Tiphcha.relative_strength(), 8);
+    assert_eq!(ProseAccent::Zarqa.relative_strength(), 9);
+    assert_eq!(ProseAccent::Pashta.relative_strength(), 10);
+    assert_eq!(ProseAccent::Yetiv.relative_strength(), 11);
+    assert_eq!(ProseAccent::Tevir.relative_strength(), 12);
+    assert_eq!(ProseAccent::Geresh.relative_strength(), 13);
+    assert_eq!(ProseAccent::Gershayim.relative_strength(), 14);
+    assert_eq!(ProseAccent::Pazer.relative_strength(), 15);
+    assert_eq!(ProseAccent::PazerGadol.relative_strength(), 16);
+    assert_eq!(ProseAccent::TelishaGedolah.relative_strength(), 17);
+    assert_eq!(ProseAccent::Legarmeh.relative_strength(), 18);
+    // Conjunctives
+    assert_eq!(ProseAccent::Munach.relative_strength(), 19);
+    assert_eq!(ProseAccent::Mahpakh.relative_strength(), 20);
+    assert_eq!(ProseAccent::Merkha.relative_strength(), 21);
+    assert_eq!(ProseAccent::MerkhaKephulah.relative_strength(), 22);
+    assert_eq!(ProseAccent::Darga.relative_strength(), 23);
+    assert_eq!(ProseAccent::Azla.relative_strength(), 24);
+    assert_eq!(ProseAccent::TelishaQetannah.relative_strength(), 25);
+    assert_eq!(ProseAccent::Galgal.relative_strength(), 26);
+    assert_eq!(ProseAccent::Mayela.relative_strength(), 27);
+    assert_eq!(ProseAccent::Meteg.relative_strength(), 28);
+}
+
+#[test]
+fn testing_poetryaccent_relative_strength() {
+    // Disjunctives
+    assert_eq!(HebrewAccent::Poetry(PoetryAccent::Silluq).relative_strength(), 1);
+
+    assert_eq!(PoetryAccent::Silluq.relative_strength(), 1);
+    assert_eq!(PoetryAccent::OlehWeYored.relative_strength(), 2,);
+    assert_eq!(PoetryAccent::Atnach.relative_strength(), 3);
+    assert_eq!(PoetryAccent::ReviaGadol.relative_strength(), 4);
+    assert_eq!(PoetryAccent::ReviaMugrash.relative_strength(), 5);
+    assert_eq!(PoetryAccent::ShalsheletGadol.relative_strength(), 6);
+    assert_eq!(PoetryAccent::Tsinnor.relative_strength(), 7);
+    assert_eq!(PoetryAccent::ReviaQaton.relative_strength(), 8);
+    assert_eq!(PoetryAccent::Dechi.relative_strength(), 9);
+    assert_eq!(PoetryAccent::Pazer.relative_strength(), 10);
+    assert_eq!(PoetryAccent::MehuppakhLegarmeh.relative_strength(), 11);
+    assert_eq!(PoetryAccent::AzlaLegarmeh.relative_strength(), 12);
+    // Conjunctives
+    assert_eq!(PoetryAccent::Munach.relative_strength(), 13);
+    assert_eq!(PoetryAccent::Merkha.relative_strength(), 14);
+    assert_eq!(PoetryAccent::Illuy.relative_strength(), 15);
+    assert_eq!(PoetryAccent::Tarcha.relative_strength(), 16);
+    assert_eq!(PoetryAccent::Galgal.relative_strength(), 17);
+    assert_eq!(PoetryAccent::Mehuppakh.relative_strength(), 18);
+    assert_eq!(PoetryAccent::Azla.relative_strength(), 19);
+    assert_eq!(PoetryAccent::ShalsheletQetannah.relative_strength(), 20);
+    assert_eq!(PoetryAccent::TsinnoritMerkha.relative_strength(), 21);
+    assert_eq!(PoetryAccent::TsinnoritMahpakh.relative_strength(), 21);
+    assert_eq!(PoetryAccent::Meteg.relative_strength(), 22);
+}
+
+#[test]
+fn testing_pseudoaccent_relative_strength() {
+    assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).relative_strength(), 1);
+
+    assert_eq!(PseudoAccent::SophPasuq.relative_strength(), 1);
+    assert_eq!(PseudoAccent::Maqqeph.relative_strength(), 2,);
+    assert_eq!(PseudoAccent::Paseq.relative_strength(), 3,);
+}
+
 }

@@ -18,6 +18,8 @@ pub enum Context {
     /// The sentence follows ordinary prose conventions.
     #[default]
     Prosaic,
+    /// todo
+    Unknown,
 }
 
 impl SentenceContext {
@@ -93,10 +95,24 @@ impl<'h> Match<'h> {
     }
 }
 
+/// Try to determine the context of the sentence
+///
+/// Prose: Segolta, Zaqeph Qaton/Gadol, Zarqa,
+/// Poetry: Tsinnor
+pub fn try_determine_context(sentence: &str) -> Context {
+    let _poetry = SentenceContext::new(sentence, Context::Poetic);
+    let _prose = SentenceContext::new(sentence, Context::Prosaic);
+
+    //Context::Poetic
+    //Context::Prosaic
+    Context::Unknown
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    // Existing tests...
     #[test]
     fn get_match_parameters() {
         let m_atch = Match::new("hooiberg", 2, 6);
@@ -117,38 +133,183 @@ mod tests {
         assert!(!m_atch.is_empty());
     }
 
-    mod function_coverage_tests {
-        use super::*;
+    // NEW TEST: Exercise try_determine_context function
+    #[test]
+    fn try_determine_context_returns_unknown() {
+        // Currently the function always returns Unknown
+        let result = try_determine_context("וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים");
+        assert_eq!(result, Context::Unknown);
+    }
 
-        #[test]
-        fn exercise_all_match_accessors() {
-            // Build a match that spans a known slice.
-            let haystack = "אבגדהוז";
-            // Bytes 2..5 correspond to the characters "גדה".
-            let m = Match::new(haystack, 2, 4);
+    #[test]
+    fn try_determine_context_with_empty_string() {
+        let result = try_determine_context("");
+        assert_eq!(result, Context::Unknown);
+    }
 
-            // Each accessor is called once; the result is asserted only to avoid
-            // dead‑code elimination in release builds.
-            assert_eq!(m.start(), 2);
-            assert_eq!(m.end(), 4);
-            assert_eq!(m.len(), 2);
-            assert_eq!(m.range(), 2..4);
-            assert_eq!(m.as_str(), "ב");
-            assert!(!m.is_empty());
+    #[test]
+    fn try_determine_context_with_poetic_text() {
+        // Even with poetic-looking text, current implementation returns Unknown
+        let result = try_determine_context("אֱלֹהִ֑ים צְבָא֖וֹת יְשַׁבְתִּ֣י");
+        assert_eq!(result, Context::Unknown);
+    }
 
-            // Also test the empty‑match path.
-            let empty = Match::new(haystack, 4, 4);
-            assert!(empty.is_empty());
-            assert_eq!(empty.len(), 0);
-        }
+    // NEW TEST: Exercise Context::Unknown variant
+    #[test]
+    fn context_unknown_variant_exists() {
+        let ctx = Context::Unknown;
+        assert_eq!(ctx, Context::Unknown);
+    }
 
-        #[test]
-        fn sentence_context_new_is_covered() {
-            // The doctest already covers this, but unit tests guarantee coverage
-            // even when doctests are disabled (e.g., `cargo test --doc` is not run).
-            let s = SentenceContext::new("דוגמה של משפט בעברית", Context::Prosaic);
-            assert_eq!(s.ctx, Context::Prosaic);
-            assert_eq!(s.sentence, "דוגמה של משפט בעברית");
-        }
+    #[test]
+    fn context_default_is_prosaic() {
+        let ctx: Context = Context::default();
+        assert_eq!(ctx, Context::Prosaic);
+    }
+
+    #[test]
+    fn context_poetic_variant_exists() {
+        let ctx = Context::Poetic;
+        assert_eq!(ctx, Context::Poetic);
+    }
+
+    #[test]
+    fn context_prosaic_variant_exists() {
+        let ctx = Context::Prosaic;
+        assert_eq!(ctx, Context::Prosaic);
+    }
+
+    // NEW TEST: Test SentenceContext with all Context variants
+    #[test]
+    fn sentence_context_with_poetic_context() {
+        let s = SentenceContext::new("משפט שירי", Context::Poetic);
+        assert_eq!(s.ctx, Context::Poetic);
+        assert_eq!(s.sentence, "משפט שירי");
+    }
+
+    #[test]
+    fn sentence_context_with_unknown_context() {
+        let s = SentenceContext::new("משפט לא ידוע", Context::Unknown);
+        assert_eq!(s.ctx, Context::Unknown);
+        assert_eq!(s.sentence, "משפט לא ידוע");
+    }
+
+    #[test]
+    fn sentence_context_with_prosaic_context() {
+        let s = SentenceContext::new("משפט רגיל", Context::Prosaic);
+        assert_eq!(s.ctx, Context::Prosaic);
+        assert_eq!(s.sentence, "משפט רגיל");
+    }
+
+    // NEW TEST: Test Match with edge cases
+    #[test]
+    fn match_with_full_string() {
+        let haystack = "שלום";
+        let m = Match::new(haystack, 0, haystack.len());
+        assert_eq!(m.start(), 0);
+        assert_eq!(m.end(), haystack.len());
+        assert_eq!(m.len(), haystack.len());
+        assert_eq!(m.as_str(), haystack);
+        assert!(!m.is_empty());
+    }
+
+    #[test]
+    fn match_with_single_byte() {
+        let haystack = "א";
+        let m = Match::new(haystack, 0, 2); // UTF-8 character 'א' is 2 bytes
+        assert_eq!(m.start(), 0);
+        assert_eq!(m.end(), 2);
+        assert_eq!(m.len(), 2);
+        assert_eq!(m.as_str(), "א");
+        assert!(!m.is_empty());
+    }
+
+    #[test]
+    fn match_range_property() {
+        let m = Match::new("test", 1, 3);
+        let range = m.range();
+        assert_eq!(range.start, 1);
+        assert_eq!(range.end, 3);
+        assert_eq!(range, 1..3);
+    }
+
+    // NEW TEST: Test Clone, Debug, PartialEq implementations
+    #[test]
+    fn sentence_context_clone() {
+        let s1 = SentenceContext::new("משפט", Context::Poetic);
+        let s2 = s1.clone();
+        assert_eq!(s1, s2);
+        assert!(std::ptr::eq(&s1, &s2) == false); // Different memory locations
+    }
+
+    #[test]
+    fn context_clone() {
+        let c1 = Context::Poetic;
+        let c2 = c1; // Copy, not clone
+        assert_eq!(c1, c2);
+    }
+
+    #[test]
+    fn match_debug_formatting() {
+        let m = Match::new("test", 0, 2);
+        let debug_str = format!("{:?}", m);
+        assert!(debug_str.contains("Match"));
+    }
+
+    #[test]
+    fn sentence_context_debug_formatting() {
+        let s = SentenceContext::new("test", Context::Prosaic);
+        let debug_str = format!("{:?}", s);
+        assert!(debug_str.contains("SentenceContext"));
+    }
+
+    // NEW TEST: Test Ord and PartialOrd implementations
+    #[test]
+    fn context_ord_comparison() {
+        assert!(Context::Poetic < Context::Prosaic); // Based on enum order
+        assert!(Context::Prosaic < Context::Unknown);
+        assert!(Context::Poetic < Context::Unknown);
+    }
+
+    #[test]
+    fn sentence_context_ord_comparison() {
+        let s1 = SentenceContext::new("א", Context::Poetic);
+        let s2 = SentenceContext::new("ב", Context::Poetic);
+        assert!(s1 < s2); // Lexicographic comparison of sentences
+    }
+
+    // NEW TEST: Test Hash implementation
+    #[test]
+    fn context_hash_consistency() {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        let mut hasher1 = DefaultHasher::new();
+        Context::Poetic.hash(&mut hasher1);
+        let hash1 = hasher1.finish();
+
+        let mut hasher2 = DefaultHasher::new();
+        Context::Poetic.hash(&mut hasher2);
+        let hash2 = hasher2.finish();
+
+        assert_eq!(hash1, hash2);
+    }
+
+    #[test]
+    fn sentence_context_hash_consistency() {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        let s1 = SentenceContext::new("test", Context::Prosaic);
+        let mut hasher1 = DefaultHasher::new();
+        s1.hash(&mut hasher1);
+        let hash1 = hasher1.finish();
+
+        let s2 = SentenceContext::new("test", Context::Prosaic);
+        let mut hasher2 = DefaultHasher::new();
+        s2.hash(&mut hasher2);
+        let hash2 = hasher2.finish();
+
+        assert_eq!(hash1, hash2);
     }
 }

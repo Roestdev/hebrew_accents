@@ -1,4 +1,4 @@
-use hebrew_accents::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
+use hebrew_accents::{ PoetryAccent, ProseAccent, PseudoAccent , Accent};
 
 #[test]
 fn testing_prose_accent_code_points() {

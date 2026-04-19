@@ -1,4 +1,4 @@
-use hebrew_accents::{PoetryAccent, ProseAccent, PseudoAccent};
+use hebrew_accents::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
 #[test]
 fn testing_prose_accent_relative_strengths() {
@@ -11,7 +11,10 @@ fn testing_prose_accent_relative_strengths() {
     assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), 6);
     assert_eq!(ProseAccent::Revia.relative_strength(), 7);
     assert_eq!(ProseAccent::Tiphcha.relative_strength(), 8);
-    assert_eq!(ProseAccent::Zarqa.relative_strength(), 9);
+    assert_eq!(
+        HebrewAccent::Prose(ProseAccent::Zarqa).relative_strength(),
+        9
+    );
     assert_eq!(ProseAccent::Pashta.relative_strength(), 10);
     assert_eq!(ProseAccent::Yetiv.relative_strength(), 11);
     assert_eq!(ProseAccent::Tevir.relative_strength(), 12);
@@ -30,6 +33,7 @@ fn testing_prose_accent_relative_strengths() {
     assert_eq!(ProseAccent::Azla.relative_strength(), 24);
     assert_eq!(ProseAccent::TelishaQetannah.relative_strength(), 25);
     assert_eq!(ProseAccent::Galgal.relative_strength(), 26);
+    assert_eq!(ProseAccent::Mayela.relative_strength(), 27);
     assert_eq!(ProseAccent::Mayela.relative_strength(), 27);
     assert_eq!(ProseAccent::Meteg.relative_strength(), 28);
 }
@@ -52,6 +56,10 @@ fn testing_poetry_accent_relative_strengths() {
     // Conjunctives
     assert_eq!(PoetryAccent::Munach.relative_strength(), 13);
     assert_eq!(PoetryAccent::Merkha.relative_strength(), 14);
+    assert_eq!(
+        HebrewAccent::Poetry(PoetryAccent::Illuy).relative_strength(),
+        15
+    );
     assert_eq!(PoetryAccent::Illuy.relative_strength(), 15);
     assert_eq!(PoetryAccent::Tarcha.relative_strength(), 16);
     assert_eq!(PoetryAccent::Galgal.relative_strength(), 17);
@@ -65,6 +73,10 @@ fn testing_poetry_accent_relative_strengths() {
 
 #[test]
 fn testing_pseudo_accent_relative_strengths() {
+    assert_eq!(
+        HebrewAccent::Pseudo(PseudoAccent::SophPasuq).relative_strength(),
+        1
+    );
     assert_eq!(PseudoAccent::SophPasuq.relative_strength(), 1);
     assert_eq!(PseudoAccent::Maqqeph.relative_strength(), 2,);
     assert_eq!(PseudoAccent::Paseq.relative_strength(), 3,);

@@ -351,3 +351,4 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
     // If we exit the loop without having seen both parts, the sequence is absent.
     false
 }
+
