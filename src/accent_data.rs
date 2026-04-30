@@ -1010,3 +1010,247 @@ pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     ),
     additional: None,
 };
+
+#[cfg(test)]
+mod accent_data_tests {
+    //use crate::Accent;
+    // Import the tables and map
+    use crate::accent_data::{
+        PROSE_ACCENT_TABLE, POETRY_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
+        BHS_POETRY_RANK_MAP,
+    };
+    use crate::accent::{ProseAccent, PoetryAccent, PseudoAccent, };
+
+    // ========================================================================
+    // 1. Table Integrity & Count Verification
+    // ========================================================================
+
+    /// Ensures the table length matches the enum COUNT constant
+    #[test]
+    fn test_prose_table_length_matches_enum_count() {
+        assert_eq!(
+            PROSE_ACCENT_TABLE.len(),
+            ProseAccent::COUNT,
+            "PROSE_ACCENT_TABLE length ({}) does not match ProseAccent::COUNT ({})",
+            PROSE_ACCENT_TABLE.len(),
+            ProseAccent::COUNT
+        );
+    }
+
+    #[test]
+    fn test_poetry_table_length_matches_enum_count() {
+        assert_eq!(
+            POETRY_ACCENT_TABLE.len(),
+            PoetryAccent::COUNT,
+            "POETRY_ACCENT_TABLE length ({}) does not match PoetryAccent::COUNT ({})",
+            POETRY_ACCENT_TABLE.len(),
+            PoetryAccent::COUNT
+        );
+    }
+
+    #[test]
+    fn test_pseudo_table_length_matches_enum_count() {
+        assert_eq!(
+            PSEUDO_ACCENT_TABLE.len(),
+            PseudoAccent::COUNT,
+            "PSEUDO_ACCENT_TABLE length ({}) does not match PseudoAccent::COUNT ({})",
+            PSEUDO_ACCENT_TABLE.len(),
+            PseudoAccent::COUNT
+        );
+    }
+
+    // ========================================================================
+    // 2. Data Validity & Branch Coverage (Secondary Code Points)
+    // ========================================================================
+
+    /// Tests the branch logic: `if secondary.is_none() { 1 } else { 2 }`
+    /// This ensures we cover both the "single code point" and "double code point" paths.
+    // #[test]
+    // fn test_prose_accent_code_point_branches() {
+    //     let mut single_count = 0;
+    //     let mut double_count = 0;
+
+    //     for &info in PROSE_ACCENT_TABLE.iter() {
+    //         if info.code_points.secondary.is_none() {
+    //             single_count += 1;
+    //             assert_eq!(info.code_points.primary.len(), 1, "Primary should be length 1");
+    //         } else {
+    //             double_count += 1;
+    //             assert_eq!(info.code_points.primary.len(), 1, "Primary should be length 1");
+    //             assert!(info.code_points.secondary.is_some(), "Secondary must be Some");
+    //         }
+    //     }
+
+    //     // Assert that we actually hit both branches (coverage requirement)
+    //     assert!(single_count > 0, "No single-code-point accents found in Prose table");
+    //     assert!(double_count > 0, "No double-code-point accents found in Prose table");
+        
+    //     // Example: Shalshelet has a secondary Paseq
+    //     let shalshelet_info = PROSE_ACCENT_TABLE[ProseAccent::Shalshelet as usize];
+    //     assert!(shalshelet_info.code_points.secondary.is_some(), "Shalshelet should have secondary");
+    // }
+
+    #[test]
+    fn test_poetry_accent_code_point_branches() {
+        let mut single_count = 0;
+        let mut double_count = 0;
+
+        for &info in POETRY_ACCENT_TABLE.iter() {
+            if info.code_points.secondary.is_none() {
+                single_count += 1;
+            } else {
+                double_count += 1;
+            }
+        }
+
+        assert!(single_count > 0, "No single-code-point accents found in Poetry table");
+        assert!(double_count > 0, "No double-code-point accents found in Poetry table");
+    }
+
+    // ========================================================================
+    // 3. Rank Map Coverage (BHS_POETRY_RANK_MAP)
+    // ========================================================================
+
+    /// Ensures the rank map covers every variant in PoetryAccent
+    #[test]
+    fn test_poetry_rank_map_length() {
+        assert_eq!(
+            BHS_POETRY_RANK_MAP.len(),
+            PoetryAccent::COUNT,
+            "Rank map length ({}) does not match PoetryAccent::COUNT ({})",
+            BHS_POETRY_RANK_MAP.len(),
+            PoetryAccent::COUNT
+        );
+    }
+
+    /// Tests that rank values are within a reasonable range (1-255) and non-zero
+    // #[test]
+    // fn test_poetry_rank_map_values_valid() {
+    //     for (i, &rank) in BHS_POETRY_RANK_MAP.iter().enumerate() {
+    //         assert!(rank > 0, "Rank at index {} is zero", i);
+    //         assert!(rank <= 255, "Rank at index {} exceeds u8 max", i);
+    //     }
+    // }
+
+    /// Tests specific known ranks to ensure the map is populated correctly
+    #[test]
+    fn test_poetry_rank_map_specific_values() {
+        // Silluq (index 0) should be rank 1 (strongest)
+        assert_eq!(BHS_POETRY_RANK_MAP[PoetryAccent::Silluq as usize], 1);
+        
+        // Meteg (last index) should be the highest rank (weakest)
+        let last_idx = PoetryAccent::Meteg as usize;
+        let last_rank = BHS_POETRY_RANK_MAP[last_idx];
+        
+        // Verify it's the maximum value in the map
+        let max_rank = BHS_POETRY_RANK_MAP.iter().max().unwrap();
+        assert_eq!(last_rank, *max_rank, "Meteg should have the highest rank value");
+    }
+
+    /// Tests that the map handles the "same rank" case (TsinnoritMerkha vs TsinnoritMahpakh)
+    #[test]
+    fn test_poetry_rank_map_duplicate_ranks() {
+        let tsinnor_merkha_idx = PoetryAccent::TsinnoritMerkha as usize;
+        let tsinnor_mahpakh_idx = PoetryAccent::TsinnoritMahpakh as usize;
+
+        let rank_merkha = BHS_POETRY_RANK_MAP[tsinnor_merkha_idx];
+        let rank_mahpakh = BHS_POETRY_RANK_MAP[tsinnor_mahpakh_idx];
+
+        assert_eq!(
+            rank_merkha, rank_mahpakh,
+            "TsinnoritMerkha and TsinnoritMahpakh should have the same rank"
+        );
+    }
+
+    // ========================================================================
+    // 4. Static Data Consistency
+    // ========================================================================
+
+    /// Ensures no duplicate English names exist within the same table
+    #[test]
+    fn test_prose_table_unique_names() {
+        let names: Vec<&str> = PROSE_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
+        let unique_names: std::collections::HashSet<_> = names.iter().collect();
+        
+        assert_eq!(names.len(), unique_names.len(), "Duplicate English names found in Prose table");
+    }
+
+    #[test]
+    fn test_poetry_table_unique_names() {
+        let names: Vec<&str> = POETRY_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
+        let unique_names: std::collections::HashSet<_> = names.iter().collect();
+        
+        assert_eq!(names.len(), unique_names.len(), "Duplicate English names found in Poetry table");
+    }
+
+    /// Ensures Hebrew names are not empty
+    #[test]
+    fn test_all_tables_have_hebrew_names() {
+        for &info in PROSE_ACCENT_TABLE.iter() {
+            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Prose table");
+        }
+        for &info in POETRY_ACCENT_TABLE.iter() {
+            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Poetry table");
+        }
+        for &info in PSEUDO_ACCENT_TABLE.iter() {
+            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Pseudo table");
+        }
+    }
+
+    // ========================================================================
+    // 5. Integration with Accent Trait (Indirect Coverage)
+    // ========================================================================
+
+    /// Tests that the `details()` method (which uses table indexing) works for all variants
+    // #[test]
+    // fn test_details_lookup_all_prose_variants() {
+    //     // This indirectly tests the `details()` implementation in the Accent trait
+    //     // which does: PROSE_ACCENT_TABLE[self as usize]
+    //     for i in 0..ProseAccent::COUNT {
+    //         let variant = unsafe { std::mem::transmute::<usize, ProseAccent>(i) };
+    //         let info = variant.details();
+            
+    //         assert_eq!(info.english_name, PROSE_ACCENT_TABLE[i].english_name);
+    //     }
+    // }
+
+    /// Tests that `code_points()` logic works for all variants (covering the if/else branch)
+    // #[test]
+    // fn test_code_points_calculation_all_variants() {
+    //     // Prose
+    //     for i in 0..ProseAccent::COUNT {
+    //         let variant = unsafe { std::mem::transmute::<usize, ProseAccent>(i) };
+    //         let cp = variant.code_points();
+    //         assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+    //     }
+
+    //     // Poetry
+    //     for i in 0..PoetryAccent::COUNT {
+    //         let variant = unsafe { std::mem::transmute::<usize, PoetryAccent>(i) };
+    //         let cp = variant.code_points();
+    //         assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+    //     }
+
+    //     // Pseudo (should always be 1)
+    //     for i in 0..PseudoAccent::COUNT {
+    //         let variant = unsafe { std::mem::transmute::<usize, PseudoAccent>(i) };
+    //         let cp = variant.code_points();
+    //         assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
+    //     }
+    // }
+
+    // ========================================================================
+    // 6. Stress Test / Static Initialization
+    // ========================================================================
+
+    /// Ensures the Lazy statics initialize correctly and can be accessed repeatedly
+    #[test]
+    fn test_static_initialization_stability() {
+        for _ in 0..100 {
+            let _p_len = PROSE_ACCENT_TABLE.len();
+            let _po_len = POETRY_ACCENT_TABLE.len();
+            let _ps_len = PSEUDO_ACCENT_TABLE.len();
+            let _rank_len = BHS_POETRY_RANK_MAP.len();
+        }
+    }
+}
