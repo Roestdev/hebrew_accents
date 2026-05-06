@@ -176,8 +176,8 @@ pub enum PoetryAccent {
 impl PoetryAccent {
     /// Total count of all poetry accents,including some 'non-accents'
     pub const COUNT: usize = 23;
-    //#[inline]
     /// Indicates a level of importancy
+    #[inline]
     pub fn relative_strength(self) -> u8 {
         // Discriminants start at 0; we want 1‑based relative_strengths.
         BHS_POETRY_RANK_MAP[self as usize]
@@ -201,8 +201,8 @@ pub enum PseudoAccent {
 impl PseudoAccent {
     /// Total count of all pseudo accents
     pub const COUNT: usize = 3;
-    //#[inline]
     /// Indicates a level of importancy
+    #[inline]
     pub fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
@@ -296,7 +296,7 @@ impl Accent for ProseAccent {
     fn details(self) -> &'static AccentInformation {
         PROSE_ACCENT_TABLE[self as usize]
     }
-    //#[inline]
+    #[inline]
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
@@ -319,7 +319,7 @@ impl Accent for PoetryAccent {
     fn details(self) -> &'static AccentInformation {
         POETRY_ACCENT_TABLE[self as usize]
     }
-    //#[inline]
+    #[inline]
     fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
     }
@@ -581,273 +581,304 @@ pub(crate) fn poetry_hierarchical_group(accent: PoetryAccent) -> Option<Hierarch
     }
 }
 
-// #[cfg(test)]
-// mod pseudo_accent_tests {
-//     use super::*;
+#[cfg(test)]
+mod pseudo_accent_tests {
+    use super::*;
 
-//     // ========================================================================
-//     // 1. Basic Trait Method Tests
-//     // ========================================================================
+    // ========================================================================
+    // 1. Basic Trait Method Tests
+    // ========================================================================
 
-//     /// Test that `details()` returns valid AccentInformation for all variants
-//     // #[test]
-//     // fn test_pseudo_accent_details_returns_valid_info() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+    /// Test that `details()` returns valid AccentInformation for all variants
+    #[test]
+    fn test_pseudo_accent_details_returns_valid_info() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     //     for variant in variants {
-//     //         let info = variant.details();
-            
-//     //         // Verify the info is not null/empty
-//     //         assert!(!info.english_name.is_empty(), 
-//     //                 "Variant {:?} has empty english_name", variant);
-//     //         assert!(!info.hebrew_name.is_empty(), 
-//     //                 "Variant {:?} has empty hebrew_name", variant);
-//     //         assert!(!info.meaning.is_empty(), 
-//     //                 "Variant {:?} has empty meaning", variant);
-//     //     }
-//     // }
+        for variant in variants {
+            let info = variant.details();
 
-//     /// Test that `english_name()` returns correct values
-//     // #[test]
-//     // fn test_pseudo_accent_english_name() {
-//     //     assert_eq!(PseudoAccent::SophPasuq.english_name(), "Soph Pasuq");
-//     //     assert_eq!(PseudoAccent::Maqqeph.english_name(), "Maqqeph");
-//     //     assert_eq!(PseudoAccent::Paseq.english_name(), "Paseq");
-//     // }
+            // Verify the info is not null/empty
+            assert!(
+                !info.english_name.is_empty(),
+                "Variant {:?} has empty english_name",
+                variant
+            );
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Variant {:?} has empty hebrew_name",
+                variant
+            );
+            assert!(
+                !info.meaning.is_empty(),
+                "Variant {:?} has empty meaning",
+                variant
+            );
+        }
+    }
 
-//     /// Test that `hebrew_name()` returns correct values
-//     // #[test]
-//     // fn test_pseudo_accent_hebrew_name() {
-//     //     //assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
-//     //     //assert_eq!(PseudoAccent::Maqqeph.hebrew_name(), "מַקֵּף");
-//     //     //assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
-//     // }
+    /// Test that `english_name()` returns correct values
+    #[test]
+    fn test_pseudo_accent_english_name() {
+        assert_eq!(PseudoAccent::SophPasuq.english_name(), "Soph Pasuq");
+        assert_eq!(PseudoAccent::Maqqeph.english_name(), "Maqqeph");
+        assert_eq!(PseudoAccent::Paseq.english_name(), "Paseq");
+    }
 
-//     /// Test that `meaning()` returns correct values
-//     // #[test]
-//     // fn test_pseudo_accent_meaning() {
-//     //     assert_eq!(PseudoAccent::SophPasuq.meaning(), "end of verse");
-//     //     assert_eq!(PseudoAccent::Maqqeph.meaning(), "binder");
-//     //     assert_eq!(PseudoAccent::Paseq.meaning(), "to pause, to stop or to interrupt");
-//     // }
+    /// Test that `hebrew_name()` returns correct values
+    #[test]
+    fn test_pseudo_accent_hebrew_name() {
+        //assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
+        //assert_eq!(PseudoAccent::Maqqeph.hebrew_name(), "מַקֵּף");
+        //assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
+    }
 
- 
-//     /// Test that relative_strength is consistent across calls
-//     //#[test]
-//     // fn test_pseudo_accent_relative_strength_consistency() {
-//     //     let variant = PseudoAccent::SophPasuq;
-        
-//     //     let strength1 = variant.relative_strength();
-//     //     let strength2 = variant.relative_strength();
-//     //     let strength3 = variant.relative_strength();
-        
-//     //     assert_eq!(strength1, strength2, "First two calls should match");
-//     //     assert_eq!(strength2, strength3, "All three calls should match");
-//     // }
+    /// Test that `meaning()` returns correct values
+    #[test]
+    fn test_pseudo_accent_meaning() {
+        assert_eq!(PseudoAccent::SophPasuq.meaning(), "end of verse");
+        assert_eq!(PseudoAccent::Maqqeph.meaning(), "binder");
+        assert_eq!(
+            PseudoAccent::Paseq.meaning(),
+            "to pause, to stop or to interrupt"
+        );
+    }
 
-//     // ========================================================================
-//     // 3. hierarchical_group Tests
-//     // ========================================================================
+    /// Test that relative_strength is consistent across calls
+    #[test]
+    fn test_pseudo_accent_relative_strength_consistency() {
+        let variant = PseudoAccent::SophPasuq;
 
-//     /// Test that hierarchical_group returns None for all PseudoAccent variants
-//     // #[test]
-//     // fn test_pseudo_accent_hierarchical_group_is_none() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+        let strength1 = variant.relative_strength();
+        let strength2 = variant.relative_strength();
+        let strength3 = variant.relative_strength();
 
-//     //     for variant in variants {
-//     //         assert_eq!(variant.hierarchical_group(), None,
-//     //                    "PseudoAccent {:?} should have None hierarchical_group", variant);
-//     //     }
-//     // }
+        assert_eq!(strength1, strength2, "First two calls should match");
+        assert_eq!(strength2, strength3, "All three calls should match");
+    }
 
-//     // ========================================================================
-//     // 4. code_points Tests
-//     // ========================================================================
+    // ========================================================================
+    // 3. hierarchical_group Tests
+    // ========================================================================
 
-//     /// Test that code_points returns 1 for all PseudoAccent variants
-//     // #[test]
-//     // fn test_pseudo_accent_code_points_is_one() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+    /// Test that hierarchical_group returns None for all PseudoAccent variants
+    #[test]
+    fn test_pseudo_accent_hierarchical_group_is_none() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     //     for variant in variants {
-//     //         assert_eq!(variant.code_points(), 1,
-//     //                    "PseudoAccent {:?} should have 1 code point", variant);
-//     //     }
-//     // }
+        for variant in variants {
+            assert_eq!(
+                variant.hierarchical_group(),
+                None,
+                "PseudoAccent {:?} should have None hierarchical_group",
+                variant
+            );
+        }
+    }
 
-//     /// Test that code_points is consistent
-//     // #[test]
-//     // fn test_pseudo_accent_code_points_consistency() {
-//     //     let variant = PseudoAccent::Maqqeph;
-        
-//     //     assert_eq!(variant.code_points(), variant.code_points());
-//     //     assert_eq!(variant.code_points(), 1);
-//     // }
+    // ========================================================================
+    // 4. code_points Tests
+    // ========================================================================
 
-//     // ========================================================================
-//     // 5. Optional Field Tests (accent_type, category, word_stress)
-//     // ========================================================================
+    /// Test that code_points returns 1 for all PseudoAccent variants
+    #[test]
+    fn test_pseudo_accent_code_points_is_one() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     /// Test that accent_type returns None for PseudoAccent (since additional is None)
-//     // #[test]
-//     // fn test_pseudo_accent_accent_type_is_none() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+        for variant in variants {
+            assert_eq!(
+                variant.code_points(),
+                1,
+                "PseudoAccent {:?} should have 1 code point",
+                variant
+            );
+        }
+    }
 
-//     //     for variant in variants {
-//     //         assert_eq!(variant.accent_type(), None,
-//     //                    "PseudoAccent {:?} should have None accent_type", variant);
-//     //     }
-//     // }
+    /// Test that code_points is consistent
+    #[test]
+    fn test_pseudo_accent_code_points_consistency() {
+        let variant = PseudoAccent::Maqqeph;
 
-//     /// Test that category returns None for PseudoAccent
-//     // #[test]
-//     // fn test_pseudo_accent_category_is_none() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+        assert_eq!(variant.code_points(), variant.code_points());
+        assert_eq!(variant.code_points(), 1);
+    }
 
-//     //     for variant in variants {
-//     //         assert_eq!(variant.category(), None,
-//     //                    "PseudoAccent {:?} should have None category", variant);
-//     //     }
-//     // }
+    // ========================================================================
+    // 5. Optional Field Tests (accent_type, category, word_stress)
+    // ========================================================================
 
-//     /// Test that word_stress returns None for PseudoAccent
-//     // #[test]
-//     // fn test_pseudo_accent_word_stress_is_none() {
-//     //     let variants = vec![
-//     //         PseudoAccent::SophPasuq,
-//     //         PseudoAccent::Maqqeph,
-//     //         PseudoAccent::Paseq,
-//     //     ];
+    /// Test that accent_type returns None for PseudoAccent (since additional is None)
+    #[test]
+    fn test_pseudo_accent_accent_type_is_none() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     //     for variant in variants {
-//     //         assert_eq!(variant.word_stress(), None,
-//     //                    "PseudoAccent {:?} should have None word_stress", variant);
-//     //     }
-//     // }
+        for variant in variants {
+            assert_eq!(
+                variant.accent_type(),
+                None,
+                "PseudoAccent {:?} should have None accent_type",
+                variant
+            );
+        }
+    }
 
-//     // ========================================================================
-//     // 6. Integration Tests with HebrewAccent
-//     // ========================================================================
+    /// Test that category returns None for PseudoAccent
+    #[test]
+    fn test_pseudo_accent_category_is_none() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     /// Test that PseudoAccent through HebrewAccent still works correctly
-//     // #[test]
-//     // fn test_pseudo_accent_via_hebrew_accent_trait() {
-//     //     let pseudo = PseudoAccent::SophPasuq;
-//     //     let hebrew: HebrewAccent = pseudo.into();
-        
-//     //     // Now test the trait methods through HebrewAccent
-//     //     assert_eq!(hebrew.english_name(), "Soph Pasuq");
-//     //     //assert_eq!(hebrew.hebrew_name(), "סוֹף פָּסוּק");
-//     //     assert_eq!(hebrew.meaning(), "end of verse");
-//     //     assert_eq!(hebrew.hierarchical_group(), None);
-//     //     assert_eq!(hebrew.code_points(), 1);
-//     // }
+        for variant in variants {
+            assert_eq!(
+                variant.category(),
+                None,
+                "PseudoAccent {:?} should have None category",
+                variant
+            );
+        }
+    }
 
-//     /// Test that all PseudoAccent variants work through HebrewAccent wrapper
-//     // #[test]
-//     // fn test_all_pseudo_variants_via_hebrew_accent() {
-//     //     let variants = vec![
-//     //         (PseudoAccent::SophPasuq, "Soph Pasuq"),
-//     //         (PseudoAccent::Maqqeph, "Maqqeph"),
-//     //         (PseudoAccent::Paseq, "Paseq"),
-//     //     ];
+    /// Test that word_stress returns None for PseudoAccent
+    #[test]
+    fn test_pseudo_accent_word_stress_is_none() {
+        let variants = vec![
+            PseudoAccent::SophPasuq,
+            PseudoAccent::Maqqeph,
+            PseudoAccent::Paseq,
+        ];
 
-//     //     for (pseudo, expected_name) in variants {
-//     //         let hebrew: HebrewAccent = pseudo.into();
-            
-//     //         assert_eq!(hebrew.english_name(), expected_name);
-//     //         assert!(matches!(hebrew, HebrewAccent::Pseudo(_)));
-//     //     }
-//     // }
+        for variant in variants {
+            assert_eq!(
+                variant.word_stress(),
+                None,
+                "PseudoAccent {:?} should have None word_stress",
+                variant
+            );
+        }
+    }
 
-//     // ========================================================================
-//     // 7. Edge Case & Property Tests
-//     // ========================================================================
+    // ========================================================================
+    // 6. Integration Tests with HebrewAccent
+    // ========================================================================
 
-//     /// Test that trait methods are idempotent (same input = same output)
-//     // #[test]
-//     // fn test_pseudo_accent_trait_methods_idempotent() {
-//     //     let variant = PseudoAccent::Paseq;
-        
-//     //     // All methods should return the same value on repeated calls
-//     //     assert_eq!(variant.details(), variant.details());
-//     //     assert_eq!(variant.english_name(), variant.english_name());
-//     //     assert_eq!(variant.hebrew_name(), variant.hebrew_name());
-//     //     assert_eq!(variant.meaning(), variant.meaning());
-//     //     assert_eq!(variant.code_points(), variant.code_points());
-//     //     assert_eq!(variant.hierarchical_group(), variant.hierarchical_group());
-//     // }
+    /// Test that PseudoAccent through HebrewAccent still works correctly
+    #[test]
+    fn test_pseudo_accent_via_hebrew_accent_trait() {
+        let pseudo = PseudoAccent::SophPasuq;
+        let hebrew: HebrewAccent = pseudo.into();
 
-//     /// Test that details() returns static reference (no allocation)
-//     // #[test]
-//     // fn test_pseudo_accent_details_returns_static_reference() {
-//     //     let info1 = PseudoAccent::SophPasuq.details();
-//     //     let info2 = PseudoAccent::SophPasuq.details();
-        
-//     //     // They should be the same static reference
-//     //     assert_eq!(info1 as *const _, info2 as *const _);
-//     // }
+        // Now test the trait methods through HebrewAccent
+        assert_eq!(hebrew.english_name(), "Soph Pasuq");
+        //assert_eq!(hebrew.hebrew_name(), "סוֹף פָּסוּק");
+        assert_eq!(hebrew.meaning(), "end of verse");
+        assert_eq!(hebrew.hierarchical_group(), None);
+        assert_eq!(hebrew.code_points(), 1);
+    }
 
-//     /// Test that all convenience helpers work together
-//     // #[test]
-//     // fn test_pseudo_accent_all_helpers_consistent() {
-//     //     let variant = PseudoAccent::Maqqeph;
-//     //     let info = variant.details();
-        
-//     //     // Verify helpers match the underlying details
-//     //     assert_eq!(variant.english_name(), info.english_name);
-//     //     assert_eq!(variant.hebrew_name(), info.hebrew_name);
-//     //     assert_eq!(variant.meaning(), info.meaning);
-//     // }
+    /// Test that all PseudoAccent variants work through HebrewAccent wrapper
+    #[test]
+    fn test_all_pseudo_variants_via_hebrew_accent() {
+        let variants = vec![
+            (PseudoAccent::SophPasuq, "Soph Pasuq"),
+            (PseudoAccent::Maqqeph, "Maqqeph"),
+            (PseudoAccent::Paseq, "Paseq"),
+        ];
 
-//     // ========================================================================
-//     // 8. Stress Test
-//     // ========================================================================
+        for (pseudo, expected_name) in variants {
+            let hebrew: HebrewAccent = pseudo.into();
 
-//     /// Rapidly call trait methods to ensure no memory issues
-//     // #[test]
-//     // fn test_pseudo_accent_trait_stress() {
-//     //     let iterations = 1000;
-        
-//     //     for _ in 0..iterations {
-//     //         let _ = PseudoAccent::SophPasuq.details();
-//     //         let _ = PseudoAccent::Maqqeph.english_name();
-//     //         let _ = PseudoAccent::Paseq.code_points();
-//     //         let _ = PseudoAccent::SophPasuq.hierarchical_group();
-//     //     }
-//     // }
-// }
+            assert_eq!(hebrew.english_name(), expected_name);
+            assert!(matches!(hebrew, HebrewAccent::Pseudo(_)));
+        }
+    }
+
+    // ========================================================================
+    // 7. Edge Case & Property Tests
+    // ========================================================================
+
+    /// Test that trait methods are idempotent (same input = same output)
+    #[test]
+    fn test_pseudo_accent_trait_methods_idempotent() {
+        let variant = PseudoAccent::Paseq;
+
+        // All methods should return the same value on repeated calls
+        assert_eq!(variant.details(), variant.details());
+        assert_eq!(variant.english_name(), variant.english_name());
+        assert_eq!(variant.hebrew_name(), variant.hebrew_name());
+        assert_eq!(variant.meaning(), variant.meaning());
+        assert_eq!(variant.code_points(), variant.code_points());
+        assert_eq!(variant.hierarchical_group(), variant.hierarchical_group());
+    }
+
+    /// Test that details() returns static reference (no allocation)
+    #[test]
+    fn test_pseudo_accent_details_returns_static_reference() {
+        let info1 = PseudoAccent::SophPasuq.details();
+        let info2 = PseudoAccent::SophPasuq.details();
+
+        // They should be the same static reference
+        assert_eq!(info1 as *const _, info2 as *const _);
+    }
+
+    /// Test that all convenience helpers work together
+    #[test]
+    fn test_pseudo_accent_all_helpers_consistent() {
+        let variant = PseudoAccent::Maqqeph;
+        let info = variant.details();
+
+        // Verify helpers match the underlying details
+        assert_eq!(variant.english_name(), info.english_name);
+        assert_eq!(variant.hebrew_name(), info.hebrew_name);
+        assert_eq!(variant.meaning(), info.meaning);
+    }
+
+    // ========================================================================
+    // 8. Stress Test
+    // ========================================================================
+
+    /// Rapidly call trait methods to ensure no memory issues
+    #[test]
+    fn test_pseudo_accent_trait_stress() {
+        let iterations = 1000;
+
+        for _ in 0..iterations {
+            let _ = PseudoAccent::SophPasuq.details();
+            let _ = PseudoAccent::Maqqeph.english_name();
+            let _ = PseudoAccent::Paseq.code_points();
+            let _ = PseudoAccent::SophPasuq.hierarchical_group();
+        }
+    }
+}
 
 #[cfg(test)]
 mod integration_tests {
     use super::*;
     // Assuming these are exported from your accent_data module
     // Adjust imports based on your actual module structure
+    use crate::accent::{PoetryAccent, ProseAccent, PseudoAccent};
     use crate::accent_data::{
-        PROSE_ACCENT_TABLE, 
+        PROSE_ACCENT_TABLE,
         //PROSE_ACCENT_TABLE, POETRY_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
     };
-    use crate::accent::{ProseAccent, PoetryAccent, PseudoAccent, };
     //use crate::accent::{ProseAccent, PoetryAccent, PseudoAccent, AccentInformation};
 
     // ========================================================================
@@ -859,31 +890,31 @@ mod integration_tests {
     #[test]
     fn test_prose_table_round_trip_conversion() {
         for &info_ptr in PROSE_ACCENT_TABLE.iter() {
-            // We need to map the info back to the enum variant. 
-            // Since we don't have a direct "Info -> Enum" function yet, 
+            // We need to map the info back to the enum variant.
+            // Since we don't have a direct "Info -> Enum" function yet,
             // we verify that the English name matches a known variant.
             // In a real scenario, you might have a `from_english_name` helper.
-            
+
             // For now, we test the structural integrity:
             // 1. Get the enum variant associated with this info (mocked via index or helper)
             // 2. Convert to HebrewAccent
             // 3. Verify it matches the expected variant
-            
+
             // NOTE: This test assumes you can iterate over the enum variants.
             // If you have a `variants()` method on the enums, use that.
             // Otherwise, we test the *existence* of the conversion for known variants.
-            
+
             // Let's test a specific known mapping: Silluq
             if info_ptr.english_name == "Silluq" {
                 let prose_variant = ProseAccent::Silluq;
                 let hebrew_accent: HebrewAccent = prose_variant.into();
-                
+
                 match hebrew_accent {
                     HebrewAccent::Prose(p) => {
                         assert_eq!(p, ProseAccent::Silluq);
                         // Verify the info matches
                         assert_eq!(p as usize, 0); // Assuming Silluq is index 0
-                    },
+                    }
                     _ => panic!("Silluq should be Prose variant"),
                 }
             }
@@ -897,24 +928,50 @@ mod integration_tests {
         // Iterate through the table and verify the conversion logic holds
         // This acts as a sanity check that the table order matches the enum definition order
         let _expected_names = [
-            "Silluq", "Atnach", "Segolta", "Shalshelet", "Zaqeph Qaton", 
-            "Zaqeph Gadol", "Revia", "Tiphcha", "Zarqa", "Pashta", 
-            "Yetiv", "Tevir", "Geresh", "Gershayim", "Pazer", 
-            "Pazer Gadol", "Telisha Gedolah", "Legarmeh", "Munach", 
-            "Mahpakh", "Merkha", "Merkha Kephulah", "Darga", "Azla", 
-            "Telisha Qetannah", "Galgal", "Mayela", "Meteg"
+            "Silluq",
+            "Atnach",
+            "Segolta",
+            "Shalshelet",
+            "Zaqeph Qaton",
+            "Zaqeph Gadol",
+            "Revia",
+            "Tiphcha",
+            "Zarqa",
+            "Pashta",
+            "Yetiv",
+            "Tevir",
+            "Geresh",
+            "Gershayim",
+            "Pazer",
+            "Pazer Gadol",
+            "Telisha Gedolah",
+            "Legarmeh",
+            "Munach",
+            "Mahpakh",
+            "Merkha",
+            "Merkha Kephulah",
+            "Darga",
+            "Azla",
+            "Telisha Qetannah",
+            "Galgal",
+            "Mayela",
+            "Meteg",
         ];
 
         for (i, &info_ptr) in PROSE_ACCENT_TABLE.iter().enumerate() {
             // We can't easily reconstruct the enum from the pointer without a reverse map,
             // so we verify the *data* consistency instead.
             // However, we can test that the *conversion* works for the known variant at index i.
-            
-            // This part requires a helper to get the variant from index, 
+
+            // This part requires a helper to get the variant from index,
             // or we just trust the unit tests covered the individual variants.
             // Instead, let's test the *integration* with the table data:
-            assert!(!info_ptr.english_name.is_empty(), "Table entry {} has empty name", i);
-            
+            assert!(
+                !info_ptr.english_name.is_empty(),
+                "Table entry {} has empty name",
+                i
+            );
+
             // Verify the conversion logic is sound by checking a sample
             if i == 0 {
                 let variant = ProseAccent::Silluq;
@@ -935,10 +992,12 @@ mod integration_tests {
         // Silluq exists in both Prose and Poetry
         let prose_silluq: HebrewAccent = ProseAccent::Silluq.into();
         let poetry_silluq: HebrewAccent = PoetryAccent::Silluq.into();
-        
-        assert_ne!(prose_silluq, poetry_silluq, 
-                   "Prose and Poetry Silluq should be distinct variants");
-        
+
+        assert_ne!(
+            prose_silluq, poetry_silluq,
+            "Prose and Poetry Silluq should be distinct variants"
+        );
+
         // Verify they are in the correct outer variants
         assert!(matches!(prose_silluq, HebrewAccent::Prose(_)));
         assert!(matches!(poetry_silluq, HebrewAccent::Poetry(_)));
@@ -950,7 +1009,7 @@ mod integration_tests {
     fn test_pseudo_distinct_from_prose_and_poetry() {
         let soph_pasuq: HebrewAccent = PseudoAccent::SophPasuq.into();
         let silluq: HebrewAccent = ProseAccent::Silluq.into();
-        
+
         // Soph Pasuq and Silluq are semantically similar (end of verse) but structurally distinct
         assert_ne!(soph_pasuq, silluq);
         assert!(matches!(soph_pasuq, HebrewAccent::Pseudo(_)));
@@ -1005,10 +1064,9 @@ mod integration_tests {
 
         // Verify we can still access the original variant
         assert_eq!(extracted, ProseAccent::Shalshelet);
-        
+
         // In a real app, you might now look up the info:
-        // let info = get_accent_info(extracted); 
-        // assert_eq!(info.meaning, "chain or link");
+        assert_eq!(extracted.meaning(), "chain or link");
     }
 
     // ========================================================================
@@ -1020,7 +1078,7 @@ mod integration_tests {
     fn test_conversion_idempotency() {
         let original = ProseAccent::Meteg;
         let first_convert: HebrewAccent = original.into();
-        
+
         // We can't convert HebrewAccent back to ProseAccent directly without a TryFrom
         // But we can verify the state is stable
         let second_convert: HebrewAccent = match first_convert {
@@ -1048,7 +1106,7 @@ mod integration_tests {
 
         assert!(res_hebrew.is_ok());
         assert!(!matches!(res_hebrew.unwrap(), HebrewAccent::Poetry(_))); // Wait, Zarqa is Prose!
-        // Correction:
+                                                                          // Correction:
         assert!(matches!(res_hebrew.unwrap(), HebrewAccent::Prose(_)));
     }
 
@@ -1060,13 +1118,13 @@ mod integration_tests {
     #[test]
     fn test_rapid_conversion_stress() {
         let iterations = 1000;
-        
+
         for _ in 0..iterations {
             let _p: HebrewAccent = ProseAccent::Silluq.into();
             let _po: HebrewAccent = PoetryAccent::Atnach.into();
             let _ps: HebrewAccent = PseudoAccent::SophPasuq.into();
         }
-        
+
         // If we reach here, no panics occurred
     }
 }
@@ -1083,7 +1141,7 @@ mod test_to_and_from_trait {
     fn test_from_prose_silluq() {
         let prose = ProseAccent::Silluq;
         let accent: HebrewAccent = prose.into();
-        
+
         assert_eq!(accent, HebrewAccent::Prose(ProseAccent::Silluq));
         match accent {
             HebrewAccent::Prose(p) => assert_eq!(p, ProseAccent::Silluq),
@@ -1095,7 +1153,7 @@ mod test_to_and_from_trait {
     fn test_from_prose_atnach() {
         let prose = ProseAccent::Atnach;
         let accent: HebrewAccent = prose.into();
-        
+
         assert_eq!(accent, HebrewAccent::Prose(ProseAccent::Atnach));
     }
 
@@ -1136,7 +1194,7 @@ mod test_to_and_from_trait {
         for variant in prose_variants {
             let accent: HebrewAccent = variant.into();
             assert!(matches!(accent, HebrewAccent::Prose(_)));
-            
+
             // Verify the inner value is preserved
             if let HebrewAccent::Prose(inner) = accent {
                 assert_eq!(inner, variant);
@@ -1154,7 +1212,7 @@ mod test_to_and_from_trait {
     fn test_from_poetry_silluq() {
         let poetry = PoetryAccent::Silluq;
         let accent: HebrewAccent = poetry.into();
-        
+
         assert_eq!(accent, HebrewAccent::Poetry(PoetryAccent::Silluq));
     }
 
@@ -1162,7 +1220,7 @@ mod test_to_and_from_trait {
     fn test_from_poetry_atnach() {
         let poetry = PoetryAccent::Atnach;
         let accent: HebrewAccent = poetry.into();
-        
+
         assert_eq!(accent, HebrewAccent::Poetry(PoetryAccent::Atnach));
     }
 
@@ -1198,7 +1256,7 @@ mod test_to_and_from_trait {
         for variant in poetry_variants {
             let accent: HebrewAccent = variant.into();
             assert!(matches!(accent, HebrewAccent::Poetry(_)));
-            
+
             // Verify the inner value is preserved
             if let HebrewAccent::Poetry(inner) = accent {
                 assert_eq!(inner, variant);
@@ -1216,7 +1274,7 @@ mod test_to_and_from_trait {
     fn test_from_pseudo_soph_pasuq() {
         let pseudo = PseudoAccent::SophPasuq;
         let accent: HebrewAccent = pseudo.into();
-        
+
         assert_eq!(accent, HebrewAccent::Pseudo(PseudoAccent::SophPasuq));
     }
 
@@ -1224,7 +1282,7 @@ mod test_to_and_from_trait {
     fn test_from_pseudo_maqqeph() {
         let pseudo = PseudoAccent::Maqqeph;
         let accent: HebrewAccent = pseudo.into();
-        
+
         assert_eq!(accent, HebrewAccent::Pseudo(PseudoAccent::Maqqeph));
     }
 
@@ -1232,7 +1290,7 @@ mod test_to_and_from_trait {
     fn test_from_pseudo_paseq() {
         let pseudo = PseudoAccent::Paseq;
         let accent: HebrewAccent = pseudo.into();
-        
+
         assert_eq!(accent, HebrewAccent::Pseudo(PseudoAccent::Paseq));
     }
 
@@ -1248,7 +1306,7 @@ mod test_to_and_from_trait {
         for variant in pseudo_variants {
             let accent: HebrewAccent = variant.into();
             assert!(matches!(accent, HebrewAccent::Pseudo(_)));
-            
+
             // Verify the inner value is preserved
             if let HebrewAccent::Pseudo(inner) = accent {
                 assert_eq!(inner, variant);
@@ -1267,7 +1325,7 @@ mod test_to_and_from_trait {
         // Ensure that converting and comparing works correctly
         let prose = ProseAccent::Silluq;
         let accent: HebrewAccent = prose.into();
-        
+
         assert_eq!(accent, HebrewAccent::Prose(prose));
         assert_ne!(accent, HebrewAccent::Poetry(PoetryAccent::Silluq));
         assert_ne!(accent, HebrewAccent::Pseudo(PseudoAccent::SophPasuq));
@@ -1278,7 +1336,7 @@ mod test_to_and_from_trait {
         // Different accent types should not be equal even if they share similar names
         let prose_silluq: HebrewAccent = ProseAccent::Silluq.into();
         let poetry_silluq: HebrewAccent = PoetryAccent::Silluq.into();
-        
+
         assert_ne!(prose_silluq, poetry_silluq);
     }
 
@@ -1287,7 +1345,7 @@ mod test_to_and_from_trait {
         // Test that explicit type annotation works
         let prose: ProseAccent = ProseAccent::Munach;
         let accent: HebrewAccent = From::from(prose);
-        
+
         assert!(matches!(accent, HebrewAccent::Prose(_)));
     }
 
@@ -1295,7 +1353,7 @@ mod test_to_and_from_trait {
     fn test_from_trait_infer_type() {
         // Test that type inference works
         let accent: HebrewAccent = ProseAccent::Meteg.into();
-        
+
         assert!(matches!(accent, HebrewAccent::Prose(_)));
     }
 
@@ -1305,7 +1363,7 @@ mod test_to_and_from_trait {
         let result: HebrewAccent = ProseAccent::Atnach.into();
         let result2: HebrewAccent = PoetryAccent::Atnach.into();
         let result3: HebrewAccent = PseudoAccent::SophPasuq.into();
-        
+
         assert!(matches!(result, HebrewAccent::Prose(_)));
         assert!(matches!(result2, HebrewAccent::Poetry(_)));
         assert!(matches!(result3, HebrewAccent::Pseudo(_)));
@@ -1321,7 +1379,7 @@ mod test_to_and_from_trait {
         let variant = ProseAccent::Revia;
         let accent1: HebrewAccent = variant.into();
         let accent2: HebrewAccent = variant.into();
-        
+
         assert_eq!(accent1, accent2);
     }
 }
@@ -1340,7 +1398,7 @@ mod test_relative_strength {
     #[test]
     fn testing_prose_accent_relative_strengths() {
         // Disjunctives
-        // assert_eq!(ProseAccent::Silluq.relative_strength(), 1);
+        assert_eq!(ProseAccent::Silluq.relative_strength(), 1);
         // assert_eq!(ProseAccent::Atnach.relative_strength(), 2);
         // assert_eq!(ProseAccent::Segolta.relative_strength(), 3);
         // assert_eq!(ProseAccent::Shalshelet.relative_strength(), 4);
@@ -2131,13 +2189,19 @@ mod test_meaning {
 }
 #[cfg(test)]
 mod test_accent_type {
-    use crate::{Accent, AccentType, PoetryAccent, ProseAccent, PseudoAccent, HebrewAccent};
+    use crate::{Accent, AccentType, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
     #[test]
     fn testing_hebrew_prose_accent_types() {
         // Disjunctives
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Atnach).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Silluq).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Atnach).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::Segolta).accent_type(),
             Some(AccentType::Primary)
@@ -2154,21 +2218,42 @@ mod test_accent_type {
             HebrewAccent::Prose(ProseAccent::ZaqephGadol).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Revia).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Revia).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::Tiphcha).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Zarqa).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Pashta).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Yetiv).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Tevir).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Geresh).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Zarqa).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Pashta).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Yetiv).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Tevir).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Geresh).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::Gershayim).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Pazer).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Pazer).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::PazerGadol).accent_type(),
             Some(AccentType::Primary)
@@ -2182,23 +2267,38 @@ mod test_accent_type {
             Some(AccentType::Primary)
         );
         // Conjunctives
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Munach).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Munach).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::Mahpakh).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Merkha).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Merkha).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Darga).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Azla).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Darga).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Azla).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::TelishaQetannah).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Galgal).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Galgal).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Prose(ProseAccent::Mayela).accent_type(),
             Some(AccentType::Secondary)
@@ -2320,8 +2420,14 @@ mod test_accent_type {
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Poetry(PoetryAccent::Dechi).accent_type(), Some(AccentType::Primary));
-        assert_eq!(HebrewAccent::Poetry(PoetryAccent::Pazer).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::Dechi).accent_type(),
+            Some(AccentType::Primary)
+        );
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::Pazer).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).accent_type(),
             Some(AccentType::Primary)
@@ -2339,7 +2445,10 @@ mod test_accent_type {
             HebrewAccent::Poetry(PoetryAccent::Merkha).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Poetry(PoetryAccent::Illuy).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::Illuy).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Poetry(PoetryAccent::Tarcha).accent_type(),
             Some(AccentType::Primary)
@@ -2352,7 +2461,10 @@ mod test_accent_type {
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh).accent_type(),
             Some(AccentType::Primary)
         );
-        assert_eq!(HebrewAccent::Poetry(PoetryAccent::Azla).accent_type(), Some(AccentType::Primary));
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::Azla).accent_type(),
+            Some(AccentType::Primary)
+        );
         assert_eq!(
             HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).accent_type(),
             Some(AccentType::Primary)
@@ -2459,9 +2571,18 @@ mod test_accent_type {
 
     #[test]
     fn testing_hebrew_pseudo_accent_types() {
-        assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).accent_type(), None);
-        assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqeph).accent_type(), None);
-        assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).accent_type(), None);
+        assert_eq!(
+            HebrewAccent::Pseudo(PseudoAccent::SophPasuq).accent_type(),
+            None
+        );
+        assert_eq!(
+            HebrewAccent::Pseudo(PseudoAccent::Maqqeph).accent_type(),
+            None
+        );
+        assert_eq!(
+            HebrewAccent::Pseudo(PseudoAccent::Paseq).accent_type(),
+            None
+        );
     }
     #[test]
     fn testing_pseudo_accent_types() {
@@ -3140,95 +3261,94 @@ mod test_word_stress {
 }
 #[cfg(test)]
 mod test_code_points {
-use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+    use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
-#[test]
-fn testing_prose_accent_code_points() {
-    // Disjunctives
-    assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).code_points(), 1);
-    assert_eq!(
-        HebrewAccent::Prose(ProseAccent::Shalshelet).code_points(),
-        2
-    );
+    #[test]
+    fn testing_prose_accent_code_points() {
+        // Disjunctives
+        assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).code_points(), 1);
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Shalshelet).code_points(),
+            2
+        );
 
-    assert_eq!(ProseAccent::Silluq.code_points(), 1);
-    assert_eq!(ProseAccent::Atnach.code_points(), 1);
-    assert_eq!(ProseAccent::Segolta.code_points(), 1);
-    assert_eq!(ProseAccent::Shalshelet.code_points(), 2);
-    assert_eq!(ProseAccent::ZaqephQatan.code_points(), 1);
-    assert_eq!(ProseAccent::ZaqephGadol.code_points(), 1);
-    assert_eq!(ProseAccent::Revia.code_points(), 1);
-    assert_eq!(ProseAccent::Tiphcha.code_points(), 1);
-    assert_eq!(ProseAccent::Zarqa.code_points(), 1);
-    assert_eq!(ProseAccent::Pashta.code_points(), 1);
-    assert_eq!(ProseAccent::Yetiv.code_points(), 1);
-    assert_eq!(ProseAccent::Tevir.code_points(), 1);
-    assert_eq!(ProseAccent::Geresh.code_points(), 1);
-    assert_eq!(ProseAccent::Gershayim.code_points(), 1);
-    assert_eq!(ProseAccent::Pazer.code_points(), 1);
-    assert_eq!(ProseAccent::PazerGadol.code_points(), 1);
-    assert_eq!(ProseAccent::TelishaGedolah.code_points(), 1);
-    assert_eq!(ProseAccent::Legarmeh.code_points(), 2);
-    // Conjunctives
-    assert_eq!(ProseAccent::Munach.code_points(), 1);
-    assert_eq!(ProseAccent::Mahpakh.code_points(), 1);
-    assert_eq!(ProseAccent::Merkha.code_points(), 1);
-    assert_eq!(ProseAccent::MerkhaKephulah.code_points(), 1);
-    assert_eq!(ProseAccent::Darga.code_points(), 1);
-    assert_eq!(ProseAccent::Azla.code_points(), 1);
-    assert_eq!(ProseAccent::TelishaQetannah.code_points(), 1);
-    assert_eq!(ProseAccent::Galgal.code_points(), 1);
-    assert_eq!(ProseAccent::Mayela.code_points(), 1);
-    assert_eq!(ProseAccent::Meteg.code_points(), 1);
-}
+        assert_eq!(ProseAccent::Silluq.code_points(), 1);
+        assert_eq!(ProseAccent::Atnach.code_points(), 1);
+        assert_eq!(ProseAccent::Segolta.code_points(), 1);
+        assert_eq!(ProseAccent::Shalshelet.code_points(), 2);
+        assert_eq!(ProseAccent::ZaqephQatan.code_points(), 1);
+        assert_eq!(ProseAccent::ZaqephGadol.code_points(), 1);
+        assert_eq!(ProseAccent::Revia.code_points(), 1);
+        assert_eq!(ProseAccent::Tiphcha.code_points(), 1);
+        assert_eq!(ProseAccent::Zarqa.code_points(), 1);
+        assert_eq!(ProseAccent::Pashta.code_points(), 1);
+        assert_eq!(ProseAccent::Yetiv.code_points(), 1);
+        assert_eq!(ProseAccent::Tevir.code_points(), 1);
+        assert_eq!(ProseAccent::Geresh.code_points(), 1);
+        assert_eq!(ProseAccent::Gershayim.code_points(), 1);
+        assert_eq!(ProseAccent::Pazer.code_points(), 1);
+        assert_eq!(ProseAccent::PazerGadol.code_points(), 1);
+        assert_eq!(ProseAccent::TelishaGedolah.code_points(), 1);
+        assert_eq!(ProseAccent::Legarmeh.code_points(), 2);
+        // Conjunctives
+        assert_eq!(ProseAccent::Munach.code_points(), 1);
+        assert_eq!(ProseAccent::Mahpakh.code_points(), 1);
+        assert_eq!(ProseAccent::Merkha.code_points(), 1);
+        assert_eq!(ProseAccent::MerkhaKephulah.code_points(), 1);
+        assert_eq!(ProseAccent::Darga.code_points(), 1);
+        assert_eq!(ProseAccent::Azla.code_points(), 1);
+        assert_eq!(ProseAccent::TelishaQetannah.code_points(), 1);
+        assert_eq!(ProseAccent::Galgal.code_points(), 1);
+        assert_eq!(ProseAccent::Mayela.code_points(), 1);
+        assert_eq!(ProseAccent::Meteg.code_points(), 1);
+    }
 
-#[test]
-fn testing_poetry_accent_code_points() {
-    // Disjunctives
-    assert_eq!(HebrewAccent::Poetry(PoetryAccent::Silluq).code_points(), 1);
-    assert_eq!(
-        HebrewAccent::Poetry(PoetryAccent::OlehWeYored).code_points(),
-        2
-    );
+    #[test]
+    fn testing_poetry_accent_code_points() {
+        // Disjunctives
+        assert_eq!(HebrewAccent::Poetry(PoetryAccent::Silluq).code_points(), 1);
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::OlehWeYored).code_points(),
+            2
+        );
 
-    assert_eq!(PoetryAccent::Silluq.code_points(), 1);
-    assert_eq!(PoetryAccent::OlehWeYored.code_points(), 2,);
-    assert_eq!(PoetryAccent::Atnach.code_points(), 1);
-    assert_eq!(PoetryAccent::ReviaGadol.code_points(), 1);
-    assert_eq!(PoetryAccent::ReviaMugrash.code_points(), 2);
-    assert_eq!(PoetryAccent::ShalsheletGadol.code_points(), 2);
-    assert_eq!(PoetryAccent::Tsinnor.code_points(), 1);
-    assert_eq!(PoetryAccent::ReviaQaton.code_points(), 1);
-    assert_eq!(PoetryAccent::Dechi.code_points(), 1);
-    assert_eq!(PoetryAccent::Pazer.code_points(), 1);
-    assert_eq!(PoetryAccent::MehuppakhLegarmeh.code_points(), 2);
-    assert_eq!(PoetryAccent::AzlaLegarmeh.code_points(), 2);
-    // Conjunctives
-    assert_eq!(PoetryAccent::Munach.code_points(), 1);
-    assert_eq!(PoetryAccent::Merkha.code_points(), 1);
-    assert_eq!(PoetryAccent::Illuy.code_points(), 1);
-    assert_eq!(PoetryAccent::Tarcha.code_points(), 1);
-    assert_eq!(PoetryAccent::Galgal.code_points(), 1);
-    assert_eq!(PoetryAccent::Mehuppakh.code_points(), 1);
-    assert_eq!(PoetryAccent::Azla.code_points(), 1);
-    assert_eq!(PoetryAccent::ShalsheletQetannah.code_points(), 1);
-    assert_eq!(PoetryAccent::TsinnoritMerkha.code_points(), 2);
-    assert_eq!(PoetryAccent::TsinnoritMahpakh.code_points(), 2);
-    assert_eq!(PoetryAccent::Meteg.code_points(), 1);
-}
+        assert_eq!(PoetryAccent::Silluq.code_points(), 1);
+        assert_eq!(PoetryAccent::OlehWeYored.code_points(), 2,);
+        assert_eq!(PoetryAccent::Atnach.code_points(), 1);
+        assert_eq!(PoetryAccent::ReviaGadol.code_points(), 1);
+        assert_eq!(PoetryAccent::ReviaMugrash.code_points(), 2);
+        assert_eq!(PoetryAccent::ShalsheletGadol.code_points(), 2);
+        assert_eq!(PoetryAccent::Tsinnor.code_points(), 1);
+        assert_eq!(PoetryAccent::ReviaQaton.code_points(), 1);
+        assert_eq!(PoetryAccent::Dechi.code_points(), 1);
+        assert_eq!(PoetryAccent::Pazer.code_points(), 1);
+        assert_eq!(PoetryAccent::MehuppakhLegarmeh.code_points(), 2);
+        assert_eq!(PoetryAccent::AzlaLegarmeh.code_points(), 2);
+        // Conjunctives
+        assert_eq!(PoetryAccent::Munach.code_points(), 1);
+        assert_eq!(PoetryAccent::Merkha.code_points(), 1);
+        assert_eq!(PoetryAccent::Illuy.code_points(), 1);
+        assert_eq!(PoetryAccent::Tarcha.code_points(), 1);
+        assert_eq!(PoetryAccent::Galgal.code_points(), 1);
+        assert_eq!(PoetryAccent::Mehuppakh.code_points(), 1);
+        assert_eq!(PoetryAccent::Azla.code_points(), 1);
+        assert_eq!(PoetryAccent::ShalsheletQetannah.code_points(), 1);
+        assert_eq!(PoetryAccent::TsinnoritMerkha.code_points(), 2);
+        assert_eq!(PoetryAccent::TsinnoritMahpakh.code_points(), 2);
+        assert_eq!(PoetryAccent::Meteg.code_points(), 1);
+    }
 
-#[test]
-fn testing_pseudo_accent_code_points() {
-    assert_eq!(
-        HebrewAccent::Pseudo(PseudoAccent::SophPasuq).code_points(),
-        1
-    );
-    assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqeph).code_points(), 1);
-    assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).code_points(), 1);
+    #[test]
+    fn testing_pseudo_accent_code_points() {
+        assert_eq!(
+            HebrewAccent::Pseudo(PseudoAccent::SophPasuq).code_points(),
+            1
+        );
+        assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqeph).code_points(), 1);
+        assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).code_points(), 1);
 
-    assert_ne!(PseudoAccent::SophPasuq.code_points(), 2);
-    assert_eq!(PseudoAccent::Maqqeph.code_points(), 1,);
-    assert_eq!(PseudoAccent::Paseq.code_points(), 1,);
-}
-
+        assert_ne!(PseudoAccent::SophPasuq.code_points(), 2);
+        assert_eq!(PseudoAccent::Maqqeph.code_points(), 1,);
+        assert_eq!(PseudoAccent::Paseq.code_points(), 1,);
+    }
 }

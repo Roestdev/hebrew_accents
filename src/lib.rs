@@ -123,6 +123,7 @@
 mod char;
 
 // finding Hebrew Accents
+mod sentenc_ctx_error;
 mod sentence_ctx; // main entry
 mod sentence_ctx_contains;
 mod sentence_ctx_find;

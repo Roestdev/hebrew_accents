@@ -1015,11 +1015,10 @@ pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
 mod accent_data_tests {
     //use crate::Accent;
     // Import the tables and map
+    use crate::accent::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
     use crate::accent_data::{
-        PROSE_ACCENT_TABLE, POETRY_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
-        BHS_POETRY_RANK_MAP,
+        BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
     };
-    use crate::accent::{ProseAccent, PoetryAccent, PseudoAccent, };
 
     // ========================================================================
     // 1. Table Integrity & Count Verification
@@ -1065,30 +1064,50 @@ mod accent_data_tests {
 
     /// Tests the branch logic: `if secondary.is_none() { 1 } else { 2 }`
     /// This ensures we cover both the "single code point" and "double code point" paths.
-    // #[test]
-    // fn test_prose_accent_code_point_branches() {
-    //     let mut single_count = 0;
-    //     let mut double_count = 0;
+    #[test]
+    fn test_prose_accent_code_point_branches() {
+        let mut single_count = 0;
+        let mut double_count = 0;
 
-    //     for &info in PROSE_ACCENT_TABLE.iter() {
-    //         if info.code_points.secondary.is_none() {
-    //             single_count += 1;
-    //             assert_eq!(info.code_points.primary.len(), 1, "Primary should be length 1");
-    //         } else {
-    //             double_count += 1;
-    //             assert_eq!(info.code_points.primary.len(), 1, "Primary should be length 1");
-    //             assert!(info.code_points.secondary.is_some(), "Secondary must be Some");
-    //         }
-    //     }
+        for &info in PROSE_ACCENT_TABLE.iter() {
+            if info.code_points.secondary.is_none() {
+                single_count += 1;
+                assert_eq!(
+                    info.code_points.primary.code_point.len(),
+                    6,
+                    "Primary should be length 1"
+                );
+            } else {
+                double_count += 1;
+                assert_eq!(
+                    info.code_points.primary.code_point.len(),
+                    6,
+                    "Primary should be length 1"
+                );
+                assert!(
+                    info.code_points.secondary.is_some(),
+                    "Secondary must be Some"
+                );
+            }
+        }
 
-    //     // Assert that we actually hit both branches (coverage requirement)
-    //     assert!(single_count > 0, "No single-code-point accents found in Prose table");
-    //     assert!(double_count > 0, "No double-code-point accents found in Prose table");
-        
-    //     // Example: Shalshelet has a secondary Paseq
-    //     let shalshelet_info = PROSE_ACCENT_TABLE[ProseAccent::Shalshelet as usize];
-    //     assert!(shalshelet_info.code_points.secondary.is_some(), "Shalshelet should have secondary");
-    // }
+        //     // Assert that we actually hit both branches (coverage requirement)
+        assert_eq!(
+            single_count, 26,
+            "No single-code-point accents found in Prose table"
+        );
+        assert_eq!(
+            double_count, 2,
+            "No double-code-point accents found in Prose table"
+        );
+
+        //     // Example: Shalshelet has a secondary Paseq
+        let shalshelet_info = PROSE_ACCENT_TABLE[ProseAccent::Shalshelet as usize];
+        assert!(
+            shalshelet_info.code_points.secondary.is_some(),
+            "Shalshelet should have secondary"
+        );
+    }
 
     #[test]
     fn test_poetry_accent_code_point_branches() {
@@ -1103,8 +1122,14 @@ mod accent_data_tests {
             }
         }
 
-        assert!(single_count > 0, "No single-code-point accents found in Poetry table");
-        assert!(double_count > 0, "No double-code-point accents found in Poetry table");
+        assert_eq!(
+            single_count, 16,
+            "No single-code-point accents found in Poetry table"
+        );
+        assert_eq!(
+            double_count, 7,
+            "No double-code-point accents found in Poetry table"
+        );
     }
 
     // ========================================================================
@@ -1123,28 +1148,22 @@ mod accent_data_tests {
         );
     }
 
-    /// Tests that rank values are within a reasonable range (1-255) and non-zero
-    // #[test]
-    // fn test_poetry_rank_map_values_valid() {
-    //     for (i, &rank) in BHS_POETRY_RANK_MAP.iter().enumerate() {
-    //         assert!(rank > 0, "Rank at index {} is zero", i);
-    //         assert!(rank <= 255, "Rank at index {} exceeds u8 max", i);
-    //     }
-    // }
-
     /// Tests specific known ranks to ensure the map is populated correctly
     #[test]
     fn test_poetry_rank_map_specific_values() {
         // Silluq (index 0) should be rank 1 (strongest)
         assert_eq!(BHS_POETRY_RANK_MAP[PoetryAccent::Silluq as usize], 1);
-        
+
         // Meteg (last index) should be the highest rank (weakest)
         let last_idx = PoetryAccent::Meteg as usize;
         let last_rank = BHS_POETRY_RANK_MAP[last_idx];
-        
+
         // Verify it's the maximum value in the map
         let max_rank = BHS_POETRY_RANK_MAP.iter().max().unwrap();
-        assert_eq!(last_rank, *max_rank, "Meteg should have the highest rank value");
+        assert_eq!(
+            last_rank, *max_rank,
+            "Meteg should have the highest rank value"
+        );
     }
 
     /// Tests that the map handles the "same rank" case (TsinnoritMerkha vs TsinnoritMahpakh)
@@ -1171,29 +1190,46 @@ mod accent_data_tests {
     fn test_prose_table_unique_names() {
         let names: Vec<&str> = PROSE_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
         let unique_names: std::collections::HashSet<_> = names.iter().collect();
-        
-        assert_eq!(names.len(), unique_names.len(), "Duplicate English names found in Prose table");
+
+        assert_eq!(
+            names.len(),
+            unique_names.len(),
+            "Duplicate English names found in Prose table"
+        );
     }
 
     #[test]
     fn test_poetry_table_unique_names() {
         let names: Vec<&str> = POETRY_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
         let unique_names: std::collections::HashSet<_> = names.iter().collect();
-        
-        assert_eq!(names.len(), unique_names.len(), "Duplicate English names found in Poetry table");
+
+        assert_eq!(
+            names.len(),
+            unique_names.len(),
+            "Duplicate English names found in Poetry table"
+        );
     }
 
     /// Ensures Hebrew names are not empty
     #[test]
     fn test_all_tables_have_hebrew_names() {
         for &info in PROSE_ACCENT_TABLE.iter() {
-            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Prose table");
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Empty Hebrew name in Prose table"
+            );
         }
         for &info in POETRY_ACCENT_TABLE.iter() {
-            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Poetry table");
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Empty Hebrew name in Poetry table"
+            );
         }
         for &info in PSEUDO_ACCENT_TABLE.iter() {
-            assert!(!info.hebrew_name.is_empty(), "Empty Hebrew name in Pseudo table");
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Empty Hebrew name in Pseudo table"
+            );
         }
     }
 
@@ -1202,42 +1238,51 @@ mod accent_data_tests {
     // ========================================================================
 
     /// Tests that the `details()` method (which uses table indexing) works for all variants
-    // #[test]
-    // fn test_details_lookup_all_prose_variants() {
-    //     // This indirectly tests the `details()` implementation in the Accent trait
-    //     // which does: PROSE_ACCENT_TABLE[self as usize]
-    //     for i in 0..ProseAccent::COUNT {
-    //         let variant = unsafe { std::mem::transmute::<usize, ProseAccent>(i) };
-    //         let info = variant.details();
-            
-    //         assert_eq!(info.english_name, PROSE_ACCENT_TABLE[i].english_name);
-    //     }
-    // }
+    #[test]
+    fn test_details_lookup_all_prose_variants() {
+        // Instead of reconstructing the enum, just iterate the table
+        // and assume the table order matches the enum order (which it must for your logic)
+        for (i, &info) in PROSE_ACCENT_TABLE.iter().enumerate() {
+            // If you need to test the `details()` method specifically, you still need the enum.
+            // But if you just want to verify the table data, this is enough.
+
+            // If you MUST call variant.details():
+            // You need a safe way to get the enum from index.
+            // Without num_enum, you are stuck with unsafe or a match.
+
+            // Let's stick to the safe cast if you are sure about the repr:
+            // (Requires ProseAccent to be #[repr(u8)])
+            let variant = unsafe { std::mem::transmute::<u8, ProseAccent>(i as u8) };
+            let info_from_trait = variant.details();
+
+            assert_eq!(info_from_trait.english_name, info.english_name);
+        }
+    }
 
     /// Tests that `code_points()` logic works for all variants (covering the if/else branch)
-    // #[test]
-    // fn test_code_points_calculation_all_variants() {
-    //     // Prose
-    //     for i in 0..ProseAccent::COUNT {
-    //         let variant = unsafe { std::mem::transmute::<usize, ProseAccent>(i) };
-    //         let cp = variant.code_points();
-    //         assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
-    //     }
+    #[test]
+    fn test_code_points_calculation_all_variants() {
+        // Prose
+        for i in 0..ProseAccent::COUNT {
+            let variant: ProseAccent = unsafe { std::mem::transmute(i as u8) };
+            let cp = variant.code_points();
+            assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+        }
 
-    //     // Poetry
-    //     for i in 0..PoetryAccent::COUNT {
-    //         let variant = unsafe { std::mem::transmute::<usize, PoetryAccent>(i) };
-    //         let cp = variant.code_points();
-    //         assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
-    //     }
+        // Poetry
+        for i in 0..PoetryAccent::COUNT {
+            let variant: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
+            let cp = variant.code_points();
+            assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+        }
 
-    //     // Pseudo (should always be 1)
-    //     for i in 0..PseudoAccent::COUNT {
-    //         let variant = unsafe { std::mem::transmute::<usize, PseudoAccent>(i) };
-    //         let cp = variant.code_points();
-    //         assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
-    //     }
-    // }
+        // Pseudo (should always be 1)
+        for i in 0..PseudoAccent::COUNT {
+            let variant: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
+            let cp = variant.code_points();
+            assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
+        }
+    }
 
     // ========================================================================
     // 6. Stress Test / Static Initialization

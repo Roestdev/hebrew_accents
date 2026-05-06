@@ -11,6 +11,7 @@ use crate::char::{
     GERESH_AS_CHAR, MAHPAKH, MAQQEPH_AS_CHAR, MERKHA, OLEH_AS_CHAR, PASEQ_AS_CHAR, REVIA,
     TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YORED_AS_CHAR, ZARQA_AS_CHAR,
 };
+use crate::sentenc_ctx_error::SentenceContextError;
 use crate::sentence_ctx_find::ACCENT_LEN_UTF8;
 use crate::Match;
 
@@ -352,6 +353,57 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
     false
 }
 
+pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
+    if s.is_empty() {
+        return Err(SentenceContextError::EmptySentence);
+    }
+
+    if s.contains("\n") {
+        return Err(SentenceContextError::MultipleLines);
+    }
+
+    for (idx, c) in s.chars().enumerate() {
+        if !is_valid_hebrew_char(c) {
+            return Err(SentenceContextError::InvalidCharacter(c, idx));
+        }
+    }
+    Ok(())
+}
+
+pub(crate) fn is_valid_hebrew_char(c: char) -> bool {
+    // Check for Hebrew Unicode Block (U+0590 - U+05FF)
+    if ('\u{0590}'..='\u{05FF}').contains(&c) {
+        return true;
+    }
+    // Check for Vertical Bar (U+007C) (Sometimes a replacement for Paseq)
+    if '\u{007C}' == c {
+        return true;
+    }
+
+    // Check for Whitespace (includes space, tab, newline, etc.)
+    // Note: newline is filterd by the calling function!
+    if c.is_whitespace() {
+        return true;
+    }
+
+    // Check for specific Bidi Control Characters
+    // These are the explicit controls used to force directionality
+    // Note: Maybe these can removed?
+    matches!(
+        c,
+        '\u{202A}' | // LRE: Left-to-Right Embedding
+        '\u{202B}' | // RLE: Right-to-Left Embedding
+        '\u{202C}' | // PDF: Pop Directional Formatting
+        '\u{202D}' | // LRO: Left-to-Right Override
+        '\u{202E}' | // RLO: Right-to-Left Override
+        '\u{2066}' | // LRI: Left-to-Right Isolate
+        '\u{2067}' | // RLI: Right-to-Left Isolate
+        '\u{2068}' | // FSI: First Strong Isolate
+        '\u{2069}' // PDI: Pop Directional Isolate
+    )
+}
+
+/////////////////////
 #[cfg(test)]
 mod poetry_accent_finder_tests {
     use super::*;
@@ -365,10 +417,17 @@ mod poetry_accent_finder_tests {
     // };
     // Import helper constants if needed for constructing test strings
     use crate::char::{
-        MERKHA, MAHPAKH, REVIA, OLEH_AS_CHAR, YORED_AS_CHAR, 
-        TSINNORIT_AS_CHAR, ZARQA_AS_CHAR, GERESH_AS_CHAR, 
-        PASEQ_AS_CHAR,  VERTICAL_LINE_AS_CHAR,
+        GERESH_AS_CHAR,
+        MAHPAKH,
+        MERKHA,
+        OLEH_AS_CHAR,
+        PASEQ_AS_CHAR,
+        REVIA,
+        TSINNORIT_AS_CHAR,
+        VERTICAL_LINE_AS_CHAR,
         //MAQQEPH_AS_CHAR,
+        YORED_AS_CHAR,
+        ZARQA_AS_CHAR,
     };
 
     // ========================================================================
@@ -534,7 +593,10 @@ mod poetry_accent_finder_tests {
         //let sentence = format!("word{} {} {}", GERESH_AS_CHAR, REVIA, OLEH_AS_CHAR);
         // Wait, the logic is: Revia is the target. Geresh is BEFORE Revia.
         // So: Geresh + Revia + Oleh + Yored
-        let sentence = format!("word{}{} {} {}", GERESH_AS_CHAR, REVIA, OLEH_AS_CHAR, YORED_AS_CHAR);
+        let sentence = format!(
+            "word{}{} {} {}",
+            GERESH_AS_CHAR, REVIA, OLEH_AS_CHAR, YORED_AS_CHAR
+        );
         let result = find_poetry_revia_qaton(&sentence);
         assert!(result.is_none());
     }

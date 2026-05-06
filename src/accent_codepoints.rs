@@ -851,7 +851,7 @@ pub(crate) const TR_DEHI_YEMENITE: Tradition = Tradition::Yemenite {
 pub(crate) const CP_DEHI: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AD",
     "0xd6 0xad",
-    "HEBREW ACCENT DEHI",
+    "HEBREW ACCENT DECHI",
     "֭",
     CodePointPosition::Under,
     &[

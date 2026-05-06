@@ -55,10 +55,12 @@ Then import and use the API in your `main.rs`:
 ``` rust
 use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent};
 // create a new SentenceContext (String,Context)
-let sc = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",Context::Prosaic);
-assert!(sc.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
+let sentence_context = SentenceContext::new("ויּ֣ר֖א עשׂ֔ו כּ֥י רע֖ות נ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",Context::Prosaic);
+let binding = sentence_context.unwrap(); 
+
+assert!(binding.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 // or
-assert!(sc.contains_accent(ProseAccent::Tiphcha.into()));
+assert!(binding.contains_accent(ProseAccent::Tiphcha.into()));
 ```
 
 ### Goals
