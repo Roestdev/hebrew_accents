@@ -353,12 +353,7 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn code_points(self) -> u8 {
-        1 // always one
-          // if self.details().code_points.secondary.is_none() {
-          //     1
-          // } else {
-          //     2
-          // }
+        1
     }
 }
 
@@ -631,9 +626,9 @@ mod pseudo_accent_tests {
     /// Test that `hebrew_name()` returns correct values
     #[test]
     fn test_pseudo_accent_hebrew_name() {
-        //assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
-        //assert_eq!(PseudoAccent::Maqqeph.hebrew_name(), "מַקֵּף");
-        //assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
+        assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
+        assert_eq!(PseudoAccent::Maqqeph.hebrew_name(), "מַקֵּף");
+        assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
     }
 
     /// Test that `meaning()` returns correct values
@@ -1494,6 +1489,11 @@ mod test_hierarchical_group {
             HebrewAccent::Prose(ProseAccent::Silluq).hierarchical_group(),
             Some(HierarchicalGroup::ProseGroup1)
         );
+        // Conjunctive
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::Munach).hierarchical_group(),
+            None
+        );
     }
 
     #[test]
@@ -1591,6 +1591,11 @@ mod test_hierarchical_group {
             HebrewAccent::Poetry(PoetryAccent::Silluq).hierarchical_group(),
             Some(HierarchicalGroup::PoetryGroup1)
         );
+        // Conjunctives
+        assert_eq!(
+            HebrewAccent::Poetry(PoetryAccent::Munach).hierarchical_group(),
+            None
+        );
     }
     #[test]
     fn testing_poetry_accent_hierarchical_group() {
@@ -1663,8 +1668,6 @@ mod test_hierarchical_group {
             HebrewAccent::Pseudo(PseudoAccent::SophPasuq).hierarchical_group(),
             None
         );
-        //assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqeph).hierarchical_group(), None);
-        //assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).hierarchical_group(), None);
     }
 
     #[test]
@@ -3350,5 +3353,809 @@ mod test_code_points {
         assert_ne!(PseudoAccent::SophPasuq.code_points(), 2);
         assert_eq!(PseudoAccent::Maqqeph.code_points(), 1,);
         assert_eq!(PseudoAccent::Paseq.code_points(), 1,);
+    }
+}
+
+#[cfg(test)]
+mod exhaustive_function_coverage_tests {
+    use super::*;
+
+    // ========================================================================
+    // 1. EXHAUSTIVE PROSE ACCENT COVERAGE
+    // ========================================================================
+
+    #[test]
+    fn test_all_prose_variants_exhaustive_trait_coverage() {
+        // Iterate through ALL ProseAccent variants using COUNT
+        for i in 0..ProseAccent::COUNT {
+            // Safe transmute since ProseAccent is #[repr(u8)]
+            let variant: ProseAccent = unsafe { std::mem::transmute(i as u8) };
+
+            // 1. Test details()
+            let info = variant.details();
+            assert!(
+                !info.english_name.is_empty(),
+                "Variant {:?} has empty english_name",
+                variant
+            );
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Variant {:?} has empty hebrew_name",
+                variant
+            );
+            assert!(
+                !info.meaning.is_empty(),
+                "Variant {:?} has empty meaning",
+                variant
+            );
+
+            // 2. Test relative_strength()
+            let strength = variant.relative_strength();
+            assert_eq!(
+                strength,
+                i as u8 + 1,
+                "Relative strength mismatch for {:?}",
+                variant
+            );
+
+            // 3. Test hierarchical_group()
+            let group = variant.hierarchical_group();
+            // Disjunctives (0-17) should have Some, Conjunctives (18-27) should have None
+            let is_disjunctive = i < 18;
+            if is_disjunctive {
+                assert!(
+                    group.is_some(),
+                    "Disjunctive {:?} should have hierarchical_group",
+                    variant
+                );
+            } else {
+                assert!(
+                    group.is_none(),
+                    "Conjunctive {:?} should have None hierarchical_group",
+                    variant
+                );
+            }
+
+            // 4. Test code_points()
+            let cp = variant.code_points();
+            assert!(cp == 1 || cp == 2, "Invalid code_points for {:?}", variant);
+            // Verify logic: if secondary is None, cp should be 1
+            if info.code_points.secondary.is_none() {
+                assert_eq!(
+                    cp, 1,
+                    "Variant {:?} has no secondary but code_points != 1",
+                    variant
+                );
+            } else {
+                assert_eq!(
+                    cp, 2,
+                    "Variant {:?} has secondary but code_points != 2",
+                    variant
+                );
+            }
+
+            // 5. Test all convenience helpers
+            assert_eq!(variant.english_name(), info.english_name);
+            assert_eq!(variant.hebrew_name(), info.hebrew_name);
+            assert_eq!(variant.meaning(), info.meaning);
+
+            let acc_type = variant.accent_type();
+            if let Some(add) = info.additional {
+                assert_eq!(acc_type, Some(add.accent_type));
+            } else {
+                assert_eq!(acc_type, None);
+            }
+
+            let cat = variant.category();
+            if let Some(add) = info.additional {
+                assert_eq!(cat, Some(add.category));
+            } else {
+                assert_eq!(cat, None);
+            }
+
+            let ws = variant.word_stress();
+            if let Some(add) = info.additional {
+                assert_eq!(ws, add.word_stress);
+            } else {
+                assert_eq!(ws, None);
+            }
+        }
+    }
+
+    // ========================================================================
+    // 2. EXHAUSTIVE POETRY ACCENT COVERAGE
+    // ========================================================================
+
+    #[test]
+    fn test_all_poetry_variants_exhaustive_trait_coverage() {
+        for i in 0..PoetryAccent::COUNT {
+            let variant: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
+
+            // 1. Test details()
+            let info = variant.details();
+            assert!(
+                !info.english_name.is_empty(),
+                "Variant {:?} has empty english_name",
+                variant
+            );
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Variant {:?} has empty hebrew_name",
+                variant
+            );
+            assert!(
+                !info.meaning.is_empty(),
+                "Variant {:?} has empty meaning",
+                variant
+            );
+
+            // 2. Test relative_strength() via BHS_POETRY_RANK_MAP
+            let strength = variant.relative_strength();
+            let expected_strength = BHS_POETRY_RANK_MAP[i];
+            assert_eq!(
+                strength, expected_strength,
+                "Relative strength mismatch for {:?}",
+                variant
+            );
+
+            // 3. Test hierarchical_group()
+            let group = variant.hierarchical_group();
+            // Disjunctives (0-11) should have Some, Conjunctives (12-22) should have None
+            let is_disjunctive = i < 12;
+            if is_disjunctive {
+                assert!(
+                    group.is_some(),
+                    "Disjunctive {:?} should have hierarchical_group",
+                    variant
+                );
+            } else {
+                assert!(
+                    group.is_none(),
+                    "Conjunctive {:?} should have None hierarchical_group",
+                    variant
+                );
+            }
+
+            // 4. Test code_points()
+            let cp = variant.code_points();
+            assert!(cp == 1 || cp == 2, "Invalid code_points for {:?}", variant);
+            if info.code_points.secondary.is_none() {
+                assert_eq!(
+                    cp, 1,
+                    "Variant {:?} has no secondary but code_points != 1",
+                    variant
+                );
+            } else {
+                assert_eq!(
+                    cp, 2,
+                    "Variant {:?} has secondary but code_points != 2",
+                    variant
+                );
+            }
+
+            // 5. Test all convenience helpers
+            assert_eq!(variant.english_name(), info.english_name);
+            assert_eq!(variant.hebrew_name(), info.hebrew_name);
+            assert_eq!(variant.meaning(), info.meaning);
+
+            let acc_type = variant.accent_type();
+            if let Some(add) = info.additional {
+                assert_eq!(acc_type, Some(add.accent_type));
+            } else {
+                assert_eq!(acc_type, None);
+            }
+
+            let cat = variant.category();
+            if let Some(add) = info.additional {
+                assert_eq!(cat, Some(add.category));
+            } else {
+                assert_eq!(cat, None);
+            }
+
+            let ws = variant.word_stress();
+            if let Some(add) = info.additional {
+                assert_eq!(ws, add.word_stress);
+            } else {
+                assert_eq!(ws, None);
+            }
+        }
+    }
+
+    // ========================================================================
+    // 3. EXHAUSTIVE PSEUDO ACCENT COVERAGE
+    // ========================================================================
+
+    #[test]
+    fn test_all_pseudo_variants_exhaustive_trait_coverage() {
+        for i in 0..PseudoAccent::COUNT {
+            let variant: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
+
+            // 1. Test details()
+            let info = variant.details();
+            assert!(
+                !info.english_name.is_empty(),
+                "Variant {:?} has empty english_name",
+                variant
+            );
+            assert!(
+                !info.hebrew_name.is_empty(),
+                "Variant {:?} has empty hebrew_name",
+                variant
+            );
+            assert!(
+                !info.meaning.is_empty(),
+                "Variant {:?} has empty meaning",
+                variant
+            );
+
+            // 2. Test relative_strength()
+            let strength = variant.relative_strength();
+            assert_eq!(
+                strength,
+                i as u8 + 1,
+                "Relative strength mismatch for {:?}",
+                variant
+            );
+
+            // 3. Test hierarchical_group() - Always None for Pseudo
+            assert!(
+                variant.hierarchical_group().is_none(),
+                "PseudoAccent {:?} should have None hierarchical_group",
+                variant
+            );
+
+            // 4. Test code_points() - Always 1 for Pseudo
+            assert_eq!(
+                variant.code_points(),
+                1,
+                "PseudoAccent {:?} should have 1 code_point",
+                variant
+            );
+            assert!(
+                info.code_points.secondary.is_none(),
+                "PseudoAccent {:?} should have no secondary code_point",
+                variant
+            );
+
+            // 5. Test all convenience helpers
+            assert_eq!(variant.english_name(), info.english_name);
+            assert_eq!(variant.hebrew_name(), info.hebrew_name);
+            assert_eq!(variant.meaning(), info.meaning);
+
+            // Pseudo accents have additional=None, so all these should be None
+            assert_eq!(variant.accent_type(), None);
+            assert_eq!(variant.category(), None);
+            assert_eq!(variant.word_stress(), None);
+        }
+    }
+
+    // ========================================================================
+    // 4. HEBREW ACCENT WRAPPER COVERAGE
+    // ========================================================================
+
+    #[test]
+    fn test_hebrew_accent_wrapper_exhaustive_coverage() {
+        // Test Prose variants via HebrewAccent
+        for i in 0..ProseAccent::COUNT {
+            let prose: ProseAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = HebrewAccent::Prose(prose);
+
+            // Verify details
+            let info = hebrew.details();
+            assert_eq!(info, prose.details());
+
+            // Verify relative_strength
+            assert_eq!(hebrew.relative_strength(), prose.relative_strength());
+
+            // Verify hierarchical_group
+            assert_eq!(hebrew.hierarchical_group(), prose.hierarchical_group());
+
+            // Verify code_points
+            assert_eq!(hebrew.code_points(), prose.code_points());
+
+            // Verify convenience helpers
+            assert_eq!(hebrew.english_name(), prose.english_name());
+            assert_eq!(hebrew.hebrew_name(), prose.hebrew_name());
+            assert_eq!(hebrew.meaning(), prose.meaning());
+            assert_eq!(hebrew.accent_type(), prose.accent_type());
+            assert_eq!(hebrew.category(), prose.category());
+            assert_eq!(hebrew.word_stress(), prose.word_stress());
+        }
+
+        // Test Poetry variants via HebrewAccent
+        for i in 0..PoetryAccent::COUNT {
+            let poetry: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = HebrewAccent::Poetry(poetry);
+
+            assert_eq!(hebrew.details(), poetry.details());
+            assert_eq!(hebrew.relative_strength(), poetry.relative_strength());
+            assert_eq!(hebrew.hierarchical_group(), poetry.hierarchical_group());
+            assert_eq!(hebrew.code_points(), poetry.code_points());
+            assert_eq!(hebrew.english_name(), poetry.english_name());
+            assert_eq!(hebrew.hebrew_name(), poetry.hebrew_name());
+            assert_eq!(hebrew.meaning(), poetry.meaning());
+            assert_eq!(hebrew.accent_type(), poetry.accent_type());
+            assert_eq!(hebrew.category(), poetry.category());
+            assert_eq!(hebrew.word_stress(), poetry.word_stress());
+        }
+
+        // Test Pseudo variants via HebrewAccent
+        for i in 0..PseudoAccent::COUNT {
+            let pseudo: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = HebrewAccent::Pseudo(pseudo);
+
+            assert_eq!(hebrew.details(), pseudo.details());
+            assert_eq!(hebrew.relative_strength(), pseudo.relative_strength());
+            assert_eq!(hebrew.hierarchical_group(), pseudo.hierarchical_group());
+            assert_eq!(hebrew.code_points(), pseudo.code_points());
+            assert_eq!(hebrew.english_name(), pseudo.english_name());
+            assert_eq!(hebrew.hebrew_name(), pseudo.hebrew_name());
+            assert_eq!(hebrew.meaning(), pseudo.meaning());
+            assert_eq!(hebrew.accent_type(), pseudo.accent_type());
+            assert_eq!(hebrew.category(), pseudo.category());
+            assert_eq!(hebrew.word_stress(), pseudo.word_stress());
+        }
+    }
+
+    // ========================================================================
+    // 5. CONVERSION TRAIT COVERAGE
+    // ========================================================================
+
+    #[test]
+    fn test_from_traits_exhaustive() {
+        // Test From<ProseAccent>
+        for i in 0..ProseAccent::COUNT {
+            let prose: ProseAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = prose.into();
+            assert!(matches!(hebrew, HebrewAccent::Prose(_)));
+            if let HebrewAccent::Prose(p) = hebrew {
+                assert_eq!(p, prose);
+            }
+        }
+
+        // Test From<PoetryAccent>
+        for i in 0..PoetryAccent::COUNT {
+            let poetry: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = poetry.into();
+            assert!(matches!(hebrew, HebrewAccent::Poetry(_)));
+            if let HebrewAccent::Poetry(p) = hebrew {
+                assert_eq!(p, poetry);
+            }
+        }
+
+        // Test From<PseudoAccent>
+        for i in 0..PseudoAccent::COUNT {
+            let pseudo: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
+            let hebrew: HebrewAccent = pseudo.into();
+            assert!(matches!(hebrew, HebrewAccent::Pseudo(_)));
+            if let HebrewAccent::Pseudo(p) = hebrew {
+                assert_eq!(p, pseudo);
+            }
+        }
+    }
+
+    // ========================================================================
+    // 6. EDGE CASES & PROPERTY TESTS
+    // ========================================================================
+
+    #[test]
+    fn test_details_returns_static_references() {
+        // Ensure details() returns the same static reference for the same variant
+        let p1 = ProseAccent::Silluq.details();
+        let p2 = ProseAccent::Silluq.details();
+        assert_eq!(p1 as *const _, p2 as *const _);
+
+        let po1 = PoetryAccent::Atnach.details();
+        let po2 = PoetryAccent::Atnach.details();
+        assert_eq!(po1 as *const _, po2 as *const _);
+
+        let ps1 = PseudoAccent::SophPasuq.details();
+        let ps2 = PseudoAccent::SophPasuq.details();
+        assert_eq!(ps1 as *const _, ps2 as *const _);
+    }
+
+    #[test]
+    fn test_relative_strength_idempotent() {
+        // Calling relative_strength multiple times should yield the same result
+        let p = ProseAccent::Meteg;
+        assert_eq!(p.relative_strength(), p.relative_strength());
+
+        let po = PoetryAccent::Meteg;
+        assert_eq!(po.relative_strength(), po.relative_strength());
+
+        let ps = PseudoAccent::Paseq;
+        assert_eq!(ps.relative_strength(), ps.relative_strength());
+    }
+
+    #[test]
+    fn test_code_points_logic_consistency() {
+        // Verify that code_points() logic matches the details() secondary field
+        for i in 0..ProseAccent::COUNT {
+            let p: ProseAccent = unsafe { std::mem::transmute(i as u8) };
+            let info = p.details();
+            let cp = p.code_points();
+            if info.code_points.secondary.is_none() {
+                assert_eq!(cp, 1);
+            } else {
+                assert_eq!(cp, 2);
+            }
+        }
+
+        for i in 0..PoetryAccent::COUNT {
+            let p: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
+            let info = p.details();
+            let cp = p.code_points();
+            if info.code_points.secondary.is_none() {
+                assert_eq!(cp, 1);
+            } else {
+                assert_eq!(cp, 2);
+            }
+        }
+    }
+}
+
+
+#[cfg(test)]
+mod test_uncovered_structs_enums {
+    use super::*;
+    //use crate::accent_codepoints::{CP_SOPH_PASUQ, CP_MAQAF, CP_PASEQ, CP_SEGOL, CP_SHALSHELET};
+    use crate::accent_codepoints::{CP_SOPH_PASUQ, CP_SEGOL, CP_SHALSHELET};
+
+    // ========================================================================
+    // 1. CODEPOINTS STRUCT TESTS
+    // ========================================================================
+
+    #[test]
+    fn test_code_points_single_vs_double() {
+        // Single code point (Soph Pasuq)
+        let single = CodePoints {
+            primary: &CP_SOPH_PASUQ,
+            secondary: None,
+        };
+        
+        assert!(single.secondary.is_none());
+        assert_eq!(single.primary.code_point, "U+05C3"); // Example value, adjust if needed
+        
+        // Double code point (Shalshelet often has secondary)
+        // We simulate this by checking a known dual-entry if available, 
+        // or constructing one for testing logic
+        let dual = CodePoints {
+            primary: &CP_SEGOL,
+            secondary: Some(&CP_SHALSHELET), // Hypothetical combination for test
+        };
+        
+        assert!(dual.secondary.is_some());
+        assert_ne!(dual.primary, dual.secondary.unwrap());
+    }
+
+    #[test]
+    fn test_code_points_immutability_and_copy() {
+        let cp = CodePoints {
+            primary: &CP_SOPH_PASUQ,
+            secondary: None,
+        };
+
+        // Verify Copy trait works (should not move)
+        let cp_copy = cp;
+        
+        assert_eq!(cp.primary.code_point, cp_copy.primary.code_point);
+        assert_eq!(cp.secondary.is_none(), cp_copy.secondary.is_none());
+    }
+
+    #[test]
+    fn test_code_points_debug_format() {
+        let cp = CodePoints {
+            primary: &CP_SOPH_PASUQ,
+            secondary: None,
+        };
+        
+        let debug_str = format!("{:?}", cp);
+        assert!(debug_str.contains("CodePoints"));
+        assert!(debug_str.contains("primary"));
+    }
+
+    // ========================================================================
+    // 2. UTF8_CODE_POINT_INFO STRUCT TESTS
+    // ========================================================================
+
+    #[test]
+    fn test_utf8_code_point_info_structure() {
+        let info = &CP_SOPH_PASUQ;
+
+        // Verify all fields are populated
+        assert!(!info.code_point.is_empty(), "code_point should not be empty");
+        assert!(!info.hex_value.is_empty(), "hex_value should not be empty");
+        assert!(!info.name.is_empty(), "name should not be empty");
+        assert!(!info.symbol.is_empty(), "symbol should not be empty");
+        
+        // Verify hex format (should start with U+)
+        assert!(info.code_point.starts_with("U+"), "code_point should start with U+");
+        
+        // Verify symbol is a single character (usually)
+        assert_eq!(info.symbol.chars().count(), 1, "symbol should be a single char");
+    }
+
+    #[test]
+    fn test_utf8_code_point_info_position_enum() {
+        // Test 'Above' position
+        let above_cp = Utf8CodePointInfo {
+            code_point: "U+0591",
+            hex_value: "0591",
+            name: "ACENT GRAVE",
+            symbol: "\u{0591}",
+            position: CodePointPosition::Above,
+            traditions: &[],
+        };
+        
+        assert_eq!(above_cp.position, CodePointPosition::Above);
+
+        // Test 'Under' position (default)
+        let under_cp = &CP_SOPH_PASUQ; // Assuming Soph Pasuq is 'After' or 'Under' based on context
+        // We check the actual enum value from the constant
+        match under_cp.position {
+            CodePointPosition::Under | 
+            CodePointPosition::Above | 
+            CodePointPosition::After | 
+            CodePointPosition::InBetween => {}, // Valid variants
+        }
+    }
+
+    #[test]
+    fn test_utf8_code_point_info_traditions_array() {
+        let info = &CP_SOPH_PASUQ;
+        
+        // Traditions should be a slice
+        //assert!(info.traditions.is_slice() || true); // Just verifying it exists
+        
+        // If traditions exist, verify structure
+        if !info.traditions.is_empty() {
+            for tradition in info.traditions.iter() {
+                match tradition {
+                    Tradition::Ashkenazi { hebrew_name, english_name } => {
+                        assert!(!hebrew_name.is_empty());
+                        assert!(!english_name.is_empty());
+                    },
+                    Tradition::Sephardi { hebrew_name, english_name } => {
+                        assert!(!hebrew_name.is_empty());
+                        assert!(!english_name.is_empty());
+                    },
+                    Tradition::Italian { hebrew_name, english_name } => {
+                        assert!(!hebrew_name.is_empty());
+                        assert!(!english_name.is_empty());
+                    },
+                    Tradition::Yemenite { hebrew_name, english_name } => {
+                        assert!(!hebrew_name.is_empty());
+                        assert!(!english_name.is_empty());
+                    },
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_utf8_code_point_info_hash_equality() {
+        // Two identical references should hash the same
+        let cp1 = &CP_SOPH_PASUQ;
+        let cp2 = &CP_SOPH_PASUQ;
+        
+        // Since they are &'static, they are the same pointer
+        assert_eq!(cp1 as *const _, cp2 as *const _);
+    }
+
+    // ========================================================================
+    // 3. TRADITION ENUM TESTS
+    // ========================================================================
+
+    #[test]
+    fn test_tradition_variants_existence() {
+        // Ashkenazi
+        let ash = Tradition::Ashkenazi {
+            hebrew_name: "אשכנזי",
+            english_name: "Ashkenazi",
+        };
+        match ash {
+            Tradition::Ashkenazi { .. } => {},
+            _ => panic!("Failed to match Ashkenazi"),
+        }
+
+        // Sephardi
+        let sep = Tradition::Sephardi {
+            hebrew_name: "ספרדי",
+            english_name: "Sephardi",
+        };
+        match sep {
+            Tradition::Sephardi { .. } => {},
+            _ => panic!("Failed to match Sephardi"),
+        }
+
+        // Italian
+        let ita = Tradition::Italian {
+            hebrew_name: "איטלקי",
+            english_name: "Italian",
+        };
+        match ita {
+            Tradition::Italian { .. } => {},
+            _ => panic!("Failed to match Italian"),
+        }
+
+        // Yemenite
+        let yem = Tradition::Yemenite {
+            hebrew_name: "תימני",
+            english_name: "Yemenite",
+        };
+        match yem {
+            Tradition::Yemenite { .. } => {},
+            _ => panic!("Failed to match Yemenite"),
+        }
+    }
+
+    #[test]
+    fn test_tradition_data_integrity() {
+        let traditions = vec![
+            Tradition::Ashkenazi { hebrew_name: "ה", english_name: "A" },
+            Tradition::Sephardi { hebrew_name: "ס", english_name: "S" },
+            Tradition::Italian { hebrew_name: "י", english_name: "I" },
+            Tradition::Yemenite { hebrew_name: "ת", english_name: "Y" },
+        ];
+
+        for t in &traditions {
+            match t {
+                Tradition::Ashkenazi { hebrew_name, english_name } => {
+                    assert_eq!(*hebrew_name, "ה");
+                    assert_eq!(*english_name, "A");
+                },
+                Tradition::Sephardi { hebrew_name, english_name } => {
+                    assert_eq!(*hebrew_name, "ס");
+                    assert_eq!(*english_name, "S");
+                },
+                Tradition::Italian { hebrew_name, english_name } => {
+                    assert_eq!(*hebrew_name, "י");
+                    assert_eq!(*english_name, "I");
+                },
+                Tradition::Yemenite { hebrew_name, english_name } => {
+                    assert_eq!(*hebrew_name, "ת");
+                    assert_eq!(*english_name, "Y");
+                },
+            }
+        }
+    }
+
+    #[test]
+    fn test_tradition_copy_clone() {
+        let t = Tradition::Ashkenazi {
+            hebrew_name: "Test",
+            english_name: "Test",
+        };
+        
+        let t2 = t.clone();
+        let _t3 = t; // Move
+        
+        // t2 should still be usable
+        match t2 {
+            Tradition::Ashkenazi { .. } => {},
+            _ => panic!("Clone failed"),
+        }
+    }
+
+    // ========================================================================
+    // 4. ALTERNATES STRUCT TESTS
+    // ========================================================================
+
+    #[test]
+    fn test_alternates_structure() {
+        let alt = Alternates {
+            english_name: "Alternative Name",
+            hebrew_name: "שם חלופי",
+            meaning: "Meaning of the alternative",
+        };
+
+        assert_eq!(alt.english_name, "Alternative Name");
+        assert_eq!(alt.hebrew_name, "שם חלופי");
+        assert_eq!(alt.meaning, "Meaning of the alternative");
+        
+        // Verify all fields are non-empty
+        assert!(!alt.english_name.is_empty());
+        assert!(!alt.hebrew_name.is_empty());
+        assert!(!alt.meaning.is_empty());
+    }
+
+    #[test]
+    fn test_alternates_in_context_of_accent() {
+        // Find an accent that has alternates (e.g., Mayela in the code had alternates)
+        // We can't easily access the table here without importing it, 
+        // so we test the struct logic directly.
+        
+        let alt = Alternates {
+            english_name: "Meayyela",
+            hebrew_name: "מְאַיְּלָא",
+            meaning: "todo",
+        };
+
+        // Verify it can be copied into an Option
+        let opt_alt: Option<Alternates> = Some(alt);
+        assert!(opt_alt.is_some());
+        
+        if let Some(a) = opt_alt {
+            assert_eq!(a.english_name, "Meayyela");
+        }
+    }
+
+    // ========================================================================
+    // 5. INTEGRATION: STRUCTS IN ACCENT_INFORMATION
+    // ========================================================================
+
+    #[test]
+    fn test_accent_information_with_full_structs() {
+        let full_info = AccentInformation {
+            hebrew_name: "Test Accent",
+            meaning: "Test Meaning",
+            english_name: "Test Accent",
+            code_points: CodePoints {
+                primary: &CP_SOPH_PASUQ,
+                secondary: None,
+            },
+            comment: Some("Test comment"),
+            additional: Some(Additional {
+                accent_type: AccentType::Primary,
+                category: AccentCategory::Disjunctive,
+                word_stress: Some(WordStress::ImPositive),
+                hierarchical_group: Some(HierarchicalGroup::ProseGroup1),
+                alternates: Some(Alternates {
+                    english_name: "Alt Name",
+                    hebrew_name: "שם חלופי",
+                    meaning: "Alt Meaning",
+                }),
+            }),
+        };
+
+        // Verify nested structures
+        assert!(full_info.additional.is_some());
+        if let Some(add) = full_info.additional {
+            assert!(add.alternates.is_some());
+            if let Some(alt) = add.alternates {
+                assert_eq!(alt.english_name, "Alt Name");
+            }
+            
+            assert_eq!(add.accent_type, AccentType::Primary);
+            assert_eq!(add.category, AccentCategory::Disjunctive);
+        }
+        
+        // Verify code points
+        assert!(full_info.code_points.secondary.is_none());
+        assert_eq!(full_info.code_points.primary.code_point, CP_SOPH_PASUQ.code_point);
+    }
+
+    #[test]
+    fn test_accent_information_without_alternates() {
+        let minimal_info = AccentInformation {
+            hebrew_name: "Simple Accent",
+            meaning: "Simple Meaning",
+            english_name: "Simple Accent",
+            code_points: CodePoints {
+                primary: &CP_SOPH_PASUQ,
+                secondary: None,
+            },
+            comment: None,
+            additional: None, // No additional info
+        };
+
+        assert!(minimal_info.additional.is_none());
+        assert!(minimal_info.comment.is_none());
+    }
+
+    // ========================================================================
+    // 6. EDGE CASES: EMPTY STRINGS AND NULLS
+    // ========================================================================
+
+    
+    
+    #[test]
+    fn test_tradition_empty_strings_allowed() {
+        // Similar to above, verifying struct flexibility
+        let _t = Tradition::Ashkenazi {
+            hebrew_name: "",
+            english_name: "",
+        };
+        // Struct allows empty strings; validation logic should be elsewhere
     }
 }

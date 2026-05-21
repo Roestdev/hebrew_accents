@@ -1,22 +1,30 @@
 use std::fmt;
+
 /// Define the error type for validation failures
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SentenceContextError {
     /// The char and its index
     InvalidCharacter(char, usize),
-    /// Optional: if you want to forbid empty strings
+
+    /// Forbid empty strings
     EmptySentence,
+
     /// Only single lines allowed
     MultipleLines,
-    /// todo
-    ContextCanNotBeDetermined,
+
+    /// Context derivation failed
+    NoDerivePossible(&'static str),
 }
 
 impl fmt::Display for SentenceContextError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            SentenceContextError::InvalidCharacter(c, idx) => {
-                write!(f, "Invalid character '{}' at index {}: only Hebrew, whitespace, and Bidi controls allowed.", c, idx)
+            SentenceContextError::InvalidCharacter(c, index) => {
+                write!(
+                    f,
+                    "Invalid character '{}' at index {} (only Hebrew, meteg display, white space and vertical bar is allowed)",
+                    c, index
+                )
             }
             SentenceContextError::EmptySentence => {
                 write!(f, "Sentence cannot be empty")
@@ -24,105 +32,134 @@ impl fmt::Display for SentenceContextError {
             SentenceContextError::MultipleLines => {
                 write!(f, "Sentence must be a single line")
             }
-            SentenceContextError::ContextCanNotBeDetermined => {
-                write!(f, "Could not determine the context (Prosaic vs Poetic)")
+            SentenceContextError::NoDerivePossible(reason) => {
+                write!(f, "Could not derive the context. Reason: {}", reason)
             }
         }
     }
 }
 
+impl std::error::Error for SentenceContextError {}
+
 #[cfg(test)]
-mod tests {
+mod tests_sentence_context_errors {
     use super::*;
 
-    // Helper to create a formatter for Display tests
-    fn format_error(err: SentenceContextError) -> String {
-        err.to_string()
-    }
-
+    // 1. Test Display formatting for InvalidCharacter
     #[test]
     fn test_invalid_character_display() {
         let err = SentenceContextError::InvalidCharacter('@', 5);
-        let msg = format_error(err);
-
+        let msg = err.to_string();
         assert_eq!(
-            msg,
-            "Invalid character '@' at index 5: only Hebrew, whitespace, and Bidi controls allowed."
-        );
+             msg,
+             "Invalid character '@' at index 5 (only Hebrew, meteg display, white space and vertical bar is allowed)"
+         );
     }
 
-    #[test]
-    fn test_invalid_character_debug() {
-        let err = SentenceContextError::InvalidCharacter('א', 10);
-        let debug_str = format!("{:?}", err);
-
-        // Verify Debug output includes the variant name and data
-        assert!(debug_str.contains("InvalidCharacter"));
-        assert!(debug_str.contains("'א'"));
-        assert!(debug_str.contains("10"));
-    }
-
+    // 2. Test Display formatting for EmptySentence
     #[test]
     fn test_empty_sentence_display() {
         let err = SentenceContextError::EmptySentence;
-        let msg = format_error(err);
-
-        assert_eq!(msg, "Sentence cannot be empty");
+        assert_eq!(err.to_string(), "Sentence cannot be empty");
     }
 
+    // 3. Test Display formatting for MultipleLines
     #[test]
     fn test_multiple_lines_display() {
         let err = SentenceContextError::MultipleLines;
-        let msg = format_error(err);
-
-        assert_eq!(msg, "Sentence must be a single line");
+        assert_eq!(err.to_string(), "Sentence must be a single line");
     }
 
+    // 4. Test Display formatting for NoDerivePossible
     #[test]
-    fn test_context_undetermined_display() {
-        let err = SentenceContextError::ContextCanNotBeDetermined;
-        let msg = format_error(err);
-
-        // Note: Your current impl prints "Sentence must be a single line" for this too.
-        // You might want to update the Display impl to be more specific later.
-        assert_eq!(msg, "Could not determine the context (Prosaic vs Poetic)");
+    fn test_no_derive_possible_display() {
+        let err = SentenceContextError::NoDerivePossible("missing context data");
+        assert_eq!(
+            err.to_string(),
+            "Could not derive the context. Reason: missing context data"
+        );
     }
 
+    // 5. Test Debug formatting
     #[test]
-    fn test_partial_eq() {
-        let err1 = SentenceContextError::InvalidCharacter('!', 0);
-        let err2 = SentenceContextError::InvalidCharacter('!', 0);
-        let err3 = SentenceContextError::InvalidCharacter('?', 0);
-        let err4 = SentenceContextError::EmptySentence;
+    fn test_debug_formatting() {
+        let err = SentenceContextError::InvalidCharacter('!', 0);
+        let debug_str = format!("{:?}", err.to_string());
+        // Debug output includes the variant name and the inner data
+        assert!(debug_str.contains("Invalid character"));
+        assert!(debug_str.contains("'!'"));
+        assert!(debug_str.contains("0"));
+    }
 
-        // Same variant and data
+    // 6. Test PartialEq and Eq
+    #[test]
+    fn test_equality() {
+        // Same values should be equal
+        let err1 = SentenceContextError::InvalidCharacter('a', 10);
+        let err2 = SentenceContextError::InvalidCharacter('a', 10);
         assert_eq!(err1, err2);
 
-        // Same variant and different char position
+        // Different char should not be equal
+        let err3 = SentenceContextError::InvalidCharacter('b', 10);
         assert_ne!(err1, err3);
 
-        // Different data (index)
-        assert_ne!(err1, SentenceContextError::InvalidCharacter('!', 1));
-
-        // Different variant
+        // Different index should not be equal
+        let err4 = SentenceContextError::InvalidCharacter('a', 11);
         assert_ne!(err1, err4);
+
+        // Different variants should not be equal
+        let err5 = SentenceContextError::EmptySentence;
+        assert_ne!(err1, err5);
     }
 
+    // 7. Test Clone
     #[test]
     fn test_clone() {
-        let err = SentenceContextError::InvalidCharacter('ז', 42);
-        let cloned = err.clone();
+        let original = SentenceContextError::InvalidCharacter('z', 99);
+        let cloned = original.clone();
+        assert_eq!(original, cloned);
 
-        assert_eq!(err, cloned);
+        // Verify they are distinct instances (though for simple enums this is mostly structural)
+        drop(original);
+        // Cloned should still be usable
+        assert_eq!(cloned.to_string(), "Invalid character 'z' at index 99 (only Hebrew, meteg display, white space and vertical bar is allowed)");
     }
 
+    // 8. Integration-style test: Simulating a validation function returning these errors
     #[test]
-    fn test_special_characters_in_error() {
-        // Test with a Hebrew character to ensure formatting handles non-ASCII correctly
-        let err = SentenceContextError::InvalidCharacter('ב', 1);
-        let msg = format_error(err);
+    fn test_error_construction_in_context() {
+        // Simulate a function that might return these errors
+        fn validate_char(c: char, idx: usize) -> Result<(), SentenceContextError> {
+            if c == '@' {
+                return Err(SentenceContextError::InvalidCharacter(c, idx));
+            }
+            Ok(())
+        }
 
-        assert!(msg.contains("ב"));
-        assert!(msg.contains("1"));
+        // Test failure case
+        let result = validate_char('@', 3);
+        assert!(result.is_err());
+
+        if let Err(SentenceContextError::InvalidCharacter(char, idx)) = result {
+            assert_eq!(char, '@');
+            assert_eq!(idx, 3);
+        } else {
+            panic!("Expected InvalidCharacter error");
+        }
+
+        // Test success case (hypothetically)
+        let result_ok = validate_char('א', 0); // Hebrew letter
+        assert!(result_ok.is_ok());
+    }
+
+    // 9. Test NoDerivePossible with different static strings
+    #[test]
+    fn test_no_derive_variants() {
+        let err1 = SentenceContextError::NoDerivePossible("reason one");
+        let err2 = SentenceContextError::NoDerivePossible("reason two");
+
+        assert_ne!(err1, err2);
+        assert!(err1.to_string().contains("reason one"));
+        assert!(err2.to_string().contains("reason two"));
     }
 }

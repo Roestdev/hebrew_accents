@@ -39,7 +39,7 @@ const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
 
 /// Negative LookAhead: *not* followed by Hebrew chars, optional spaces,
 /// and then a paseq or vertical line.
-const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}+?\s*[\u{05C0}\u{007C}])";
+const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}*?\s*?[\u{05C0}\u{007C}])";
 
 /// Negative LookAhead: *not* followed by a Hebrew chars, a maqaf, and another
 /// Hebrew run.  This is used to exclude “maqqaf‑connected” sequences.
@@ -484,5 +484,479 @@ mod regex_initialization_tests {
         // Should not match without Paseq
         let invalid = "בְּהִ֑ים";
         let _ = regex.is_match(invalid);
+    }
+}
+
+#[cfg(test)]
+
+mod additionalfunction_coverage_tests {
+    use super::*;
+    // For FA_RE_OUTER_COMMON_SILLUQ - test that it correctly rejects Maqqeph connections
+    #[test]
+    fn test_silluq_with_maqqeph_should_not_match() {
+        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
+        // Should NOT match when followed by Maqqeph
+        assert_eq!(regex.is_match("אֽוֹר־ב").unwrap(),false);
+    }
+
+    // For FA_RE_OUTER_PROSE_MUNACH - test Paseq distinction
+    #[test]
+    fn test_munach_with_paseq_should_not_match_foutetitel() {
+        let regex = &FA_RE_OUTER_PROSE_MUNACH;
+        // Munach followed by Paseq is Legarmeh, not Munach
+        assert_eq!(regex.is_match("אל֣ ׀  יָשָֽׁב").unwrap(),false);
+        assert_eq!(regex.is_match("אל֣׀  יָשָֽׁב").unwrap(),false);
+    }
+    #[test]
+    fn test_oleh_we_yored_two_words() {
+        let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        let valid = "עו֫לה בהי֥ם"; // Ole across word boundary
+        assert!(regex.is_match(valid));
+    }
+    #[test]
+    fn test_hebrew_text_with_multiple_accents() {
+        let text = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים";
+
+        // Test that Shalshelet pattern works in real text
+        let shalshelet = &RE_OUTER_COMMON_SHALSHELET;
+        // Test that Silluq pattern works
+        let silluq = &FA_RE_OUTER_COMMON_SILLUQ;
+
+        // At minimum, ensure no panics on real-world input
+        let _ = shalshelet.is_match(text);
+        let _ = silluq.is_match(text);
+    }
+
+    #[test]
+    fn test_patterns_with_whitespace_variations() {
+        let regex = &RE_OUTER_PROSE_LEGARMEH;
+
+        // Test with no space
+        assert!(regex.is_match("א֣׀"));
+
+        // Test with single space
+        assert!(regex.is_match("א֣ ׀"));
+
+        // Test with multiple spaces
+        assert!(!regex.is_match("א֣  ׀"));
+    }
+    #[test]
+    fn test_no_regex_panics_on_empty_string() {
+        let patterns = vec![
+            ("RE_OUTER_COMMON_SHALSHELET", &RE_OUTER_COMMON_SHALSHELET),
+            ("RE_INNER_COMMON_SHALSHELET", &RE_INNER_COMMON_SHALSHELET),
+            ("RE_OUTER_PROSE_LEGARMEH", &RE_OUTER_PROSE_LEGARMEH),
+            ("RE_INNER_PROSE_LEGARMEH", &RE_INNER_PROSE_LEGARMEH),
+            ("RE_OUTER_PROSE_MEAYLA", &RE_OUTER_PROSE_MEAYLA),
+            ("RE_OUTER_POETRY_OLEH_WE_YORED", &RE_OUTER_POETRY_OLEH_WE_YORED),
+            ("RE_OUTER_POETRY_REVIA_MUGRASH", &RE_OUTER_POETRY_REVIA_MUGRASH),
+            ("RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH", &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH),
+            ("RE_OUTER_POETRY_AZLA_LEGARMEH", &RE_OUTER_POETRY_AZLA_LEGARMEH),
+            ("RE_OUTER_POETRY_TSINNORIT_MERKHA", &RE_OUTER_POETRY_TSINNORIT_MERKHA),
+            ("RE_INNER_POETRY_TSINNORIT_MERKHA", &RE_INNER_POETRY_TSINNORIT_MERKHA),
+            ("RE_OUTER_POETRY_TSINNORIT_MAHPAKH", &RE_OUTER_POETRY_TSINNORIT_MAHPAKH),
+            ("RE_INNER_POETRY_TSINNORIT_MAHPAKH", &RE_INNER_POETRY_TSINNORIT_MAHPAKH),
+        ];
+
+        for (name, regex) in patterns {
+            let result = regex.is_match("");
+            assert_eq!(result,false,"{} panicked on empty string", name);
+        }
+    }
+    #[test]
+    fn test_no_fancy_regex_panics_on_empty_string() {
+        let patterns = vec![
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+            ("FA_RE_OUTER_PROSE_MUNACH", &FA_RE_OUTER_PROSE_MUNACH),
+            ("FA_RE_OUTER_COMMON_METEG", &FA_RE_OUTER_COMMON_METEG),
+            ("FA_RE_OUTER_POETRY_AZLA", &FA_RE_OUTER_POETRY_AZLA),
+            ("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH", &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH),
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+        ];
+
+        for (name, regex) in patterns {
+            let result = regex.is_match("");
+            assert!(result.is_ok(), "{} panicked on empty string", name);
+        }
+    }
+}
+
+///////////////// lumo new tests
+
+#[cfg(test)]
+mod regex_initialization_tests3 {
+    use super::*;
+
+    // --- Initialization & Basic Match Tests ---
+
+    #[test]
+    fn test_fa_re_outer_common_silluq_init() {
+        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
+        let valid = "אֽוֹר׃"; 
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_common_shalshelet_init() {
+        let regex = &RE_OUTER_COMMON_SHALSHELET;
+        let valid = "בְּהִ֑ים֓׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_inner_common_shalshelet_init() {
+        let regex = &RE_INNER_COMMON_SHALSHELET;
+        let valid = "֓׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_prose_legarmeh_init() {
+        let regex = &RE_OUTER_PROSE_LEGARMEH;
+        let valid = "א֣ים׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_inner_prose_legarmeh_init() {
+        let regex = &RE_INNER_PROSE_LEGARMEH;
+        let valid = "֣ים׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_fa_re_outer_prose_munach_init() {
+        let _regex = &FA_RE_OUTER_PROSE_MUNACH;
+        let valid = "א֣"; // Munach not followed by Paseq
+        let _ = _regex.is_match(valid);
+        let invalid = "ל֣ ׀"; // Munach not followed by Paseq
+        let _ = _regex.is_match(invalid);
+    }
+
+    #[test]
+    fn test_re_outer_prose_meayla_init() {
+        let regex = &RE_OUTER_PROSE_MEAYLA;
+        let valid = "טִפְחָ֖אֱלֹהִ֑ים"; 
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_fa_re_outer_common_meteg_init() {
+        let regex = &FA_RE_OUTER_COMMON_METEG;
+        let valid = "אֽ"; // Meteg not at end
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_oleh_we_yored_init() {
+        let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        let valid = "עוֹלֶה֥"; 
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_revia_mugrash_init() {
+        let regex = &RE_OUTER_POETRY_REVIA_MUGRASH;
+        let valid = "גֵּרֶשׁ֗"; 
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_mehuppakh_legarmeh_init() {
+        let regex = &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH;
+        let valid = "מַהְפַּ֤ך׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_azla_legarmeh_init() {
+        let regex = &RE_OUTER_POETRY_AZLA_LEGARMEH;
+        let valid = "קַדְמָ֨א׀";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_fa_re_outer_poetry_azla_init() {
+        let regex = &FA_RE_OUTER_POETRY_AZLA;
+        let valid = "קַדְמָ֨א"; // Azla not followed by Paseq
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_fa_re_outer_poetry_shalshelet_qetannah_init() {
+        let regex = &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH;
+        let valid = "שַׁלְשֶׁ֓לֶת"; 
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_tsinnorit_merkha_init() {
+        let regex = &RE_OUTER_POETRY_TSINNORIT_MERKHA;
+        let valid = "צִנּוֹר֘תאב֥";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_inner_poetry_tsinnorit_merkha_init() {
+        let regex = &RE_INNER_POETRY_TSINNORIT_MERKHA;
+        let valid = "צִנּוֹר֘תאב֥";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_outer_poetry_tsinnorit_mahpakh_init() {
+        let regex = &RE_OUTER_POETRY_TSINNORIT_MAHPAKH;
+        let valid = "צִנּוֹר֘תאב֤";
+        let _ = regex.is_match(valid);
+    }
+
+    #[test]
+    fn test_re_inner_poetry_tsinnorit_mahpakh_init() {
+        let regex = &RE_INNER_POETRY_TSINNORIT_MAHPAKH;
+        let valid = "צִנּוֹר֘תאב֤";
+        let _ = regex.is_match(valid);
+    }
+
+    // --- Comprehensive Negative & Branch Coverage Tests ---
+
+    /// Test that Silluq correctly rejects Maqqeph connections (Negative Lookahead)
+    #[test]
+    fn test_silluq_with_maqqeph_should_not_match() {
+        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
+        // Should NOT match when followed by Maqqeph
+        assert!(!regex.is_match("אֽוֹר־ב").unwrap());
+    }
+
+    /// Test that Silluq rejects non-end-of-string positions
+    #[test]
+    fn test_silluq_not_at_end_should_not_match() {
+        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
+        assert!(!regex.is_match("אֽוֹר׃ב").unwrap());
+    }
+
+    /// Test that Munach correctly rejects Paseq (distinguishing from Legarmeh)
+    #[test]
+    fn test_munach_with_paseq_should_not_match() {
+        let regex = &FA_RE_OUTER_PROSE_MUNACH;
+        // Munach followed by Paseq is Legarmeh, NOT Munach
+        assert_eq!(regex.is_match("לֹ֣א ׀  יָשָֽׁב").unwrap(), false);
+        assert_eq!(regex.is_match("לֹ֣א׀  יָשָֽׁב").unwrap(), false);
+        assert_eq!(regex.is_match("לֹ֣ ׀  יָשָֽׁב").unwrap(), false);
+        assert_eq!(regex.is_match("לֹ֣׀  יָשָֽׁב").unwrap(), false);
+    }
+
+    /// Test that Shalshelet requires Paseq (Negative case)
+    #[test]
+    fn test_shalshelet_without_paseq_should_not_match() {
+        let regex = &RE_OUTER_COMMON_SHALSHELET;
+        // Should not match without Paseq
+        assert!(!regex.is_match("בְּהִ֑ים"));
+    }
+
+    /// Test Meayla: Branch 1 - Tiphcha + Atnach
+    #[test]
+    fn test_meayla_with_atnach_branch() {
+        let regex = &RE_OUTER_PROSE_MEAYLA;
+        let valid = "טִפְחָ֖אֱלֹהִ֑ים";
+        assert!(regex.is_match(valid));
+    }
+
+    /// Test Meayla: Branch 2 - Tiphcha + Silluq
+    #[test]
+    fn test_meayla_with_silluq_branch() {
+        let regex = &RE_OUTER_PROSE_MEAYLA;
+        // Constructing a valid Tiphcha + Silluq pattern
+        let valid = "טִפְחָ֖אֽוֹר";
+        assert!(regex.is_match(valid));
+    }
+
+    /// Test Inner vs Outer Shalshelet distinction
+    // #[test]
+    // fn test_inner_vs_outer_shalshelet() {
+    //     let outer = &RE_OUTER_COMMON_SHALSHELET;
+    //     let inner = &RE_INNER_COMMON_SHALSHELET;
+        
+    //     // Outer requires non-space/maqaf before
+    //     assert!(outer.is_match("בְּהִ֑֓ים׀"));
+        
+    //     // Inner can start with the accent itself
+    //     assert!(inner.is_match("׀ב׀֓"));
+        
+    //     // Outer should fail on pure accent start (no preceding char)
+    //     assert!(!outer.is_match("֑׀"));
+    // }
+
+    /// Test Inner vs Outer Legarmeh distinction
+    #[test]
+    fn test_inner_vs_outer_legarmeh() {
+        let outer = &RE_OUTER_PROSE_LEGARMEH;
+        let inner = &RE_INNER_PROSE_LEGARMEH;
+        
+        assert!(outer.is_match("א֣׀"));
+        assert!(inner.is_match("֣׀"));
+        assert!(!outer.is_match("֣׀"));
+    }
+
+    /// Test Paseq vs Vertical Line equivalence
+    #[test]
+    fn test_paseq_vs_vertical_line_equivalence() {
+        let regex = &RE_OUTER_COMMON_SHALSHELET;
+        
+        let paseq = "בְּהִי֓ם׀";
+        let vertical = "בְּהִי֓ם|הִי";
+        
+        assert!(regex.is_match(paseq));
+        assert!(regex.is_match(vertical));
+    }
+
+    /// Test Geresh vs Geresh Muqdam variants
+    #[test]
+    fn test_geresh_variants() {
+        let regex = &RE_OUTER_POETRY_REVIA_MUGRASH;
+        
+        let geresh = "גֵּרֶ֜שׁ֗"; 
+        let geresh_muqdam = "גֵּרֶ֝שׁ֗"; 
+        
+        assert!(regex.is_match(geresh));
+        assert!(regex.is_match(&geresh_muqdam));
+    }
+
+    /// Test Oleh We Yored across word boundary
+    #[test]
+    fn test_oleh_we_yored_two_words() {
+        let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        // Ole + Hebrew + Space + Hebrew + Yored
+        let valid = "ע֫וֹלֶה בְּהי֥ם"; 
+        assert!(regex.is_match(valid));
+    }
+
+    /// Test Tsinnorit Merkha across word boundary
+    #[test]
+    fn test_tsinnorit_merkha_two_words() {
+        let regex = &RE_OUTER_POETRY_TSINNORIT_MERKHA;
+        let valid = "צִנּוֹר֘תאב֥";
+        assert!(regex.is_match(valid));
+    }
+
+    /// Test whitespace variations for Legarmeh
+    #[test]
+    fn test_patterns_with_whitespace_variations() {
+        let regex = &RE_OUTER_PROSE_LEGARMEH;
+
+        // Test with no space
+        assert!(regex.is_match("א֣׀"));
+        
+        // Test with single space
+        assert!(regex.is_match("א֣ ׀"));
+        
+        // Test with multiple spaces (should fail due to OPTIONAL_SPACE being \s?)
+        assert!(!regex.is_match("א֣  ׀"));
+    }
+
+    /// Test Meteg at sentence end (should not match, becomes Silluq)
+    #[test]
+    fn test_meteg_at_sentence_end_should_not_match() {
+        let regex = &FA_RE_OUTER_COMMON_METEG;
+        // Meteg at end of sentence should not match (it becomes Silluq)
+        assert!(!regex.is_match("אֽוֹר׃").unwrap());
+    }
+
+    /// Test Azla with Maqqeph (should match)
+    #[test]
+    fn test_azla_with_maqqeph_should_match() {
+        let regex = &FA_RE_OUTER_POETRY_AZLA;
+        // Azla followed by Maqqeph should match
+        assert!(regex.is_match("קַדְמָ֨א־ב").unwrap());
+    }
+
+    /// Test Shalshelet Qetannah with Paseq (should NOT match)
+    #[test]
+    fn test_shalshelet_qetannah_with_paseq_should_not_match() {
+        let regex = &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH;
+        // Shalshelet followed by Paseq should NOT match (it's regular Shalshelet)
+        assert!(!regex.is_match("שַׁלְשֶׁ֓לֶת׀").unwrap());
+    }
+
+    // --- Robustness Tests ---
+
+    #[test]
+    fn test_all_regexes_compile() {
+        // Just accessing them ensures Lazy::new ran without panic
+        let _ = &FA_RE_OUTER_COMMON_SILLUQ;
+        let _ = &RE_OUTER_COMMON_SHALSHELET;
+        let _ = &RE_INNER_COMMON_SHALSHELET;
+        let _ = &RE_OUTER_PROSE_LEGARMEH;
+        let _ = &RE_INNER_PROSE_LEGARMEH;
+        let _ = &FA_RE_OUTER_PROSE_MUNACH;
+        let _ = &RE_OUTER_PROSE_MEAYLA;
+        let _ = &FA_RE_OUTER_COMMON_METEG;
+        let _ = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        let _ = &RE_OUTER_POETRY_REVIA_MUGRASH;
+        let _ = &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH;
+        let _ = &RE_OUTER_POETRY_AZLA_LEGARMEH;
+        let _ = &FA_RE_OUTER_POETRY_AZLA;
+        let _ = &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH;
+        let _ = &RE_OUTER_POETRY_TSINNORIT_MERKHA;
+        let _ = &RE_INNER_POETRY_TSINNORIT_MERKHA;
+        let _ = &RE_OUTER_POETRY_TSINNORIT_MAHPAKH;
+        let _ = &RE_INNER_POETRY_TSINNORIT_MAHPAKH;
+    }
+
+    #[test]
+    fn test_no_regex_panics_on_empty_string() {
+        let patterns = vec![
+            ("RE_OUTER_COMMON_SHALSHELET", &RE_OUTER_COMMON_SHALSHELET),
+            ("RE_INNER_COMMON_SHALSHELET", &RE_INNER_COMMON_SHALSHELET),
+            ("RE_OUTER_PROSE_LEGARMEH", &RE_OUTER_PROSE_LEGARMEH),
+            ("RE_INNER_PROSE_LEGARMEH", &RE_INNER_PROSE_LEGARMEH),
+            ("RE_OUTER_PROSE_MEAYLA", &RE_OUTER_PROSE_MEAYLA),
+            ("RE_OUTER_POETRY_OLEH_WE_YORED", &RE_OUTER_POETRY_OLEH_WE_YORED),
+            ("RE_OUTER_POETRY_REVIA_MUGRASH", &RE_OUTER_POETRY_REVIA_MUGRASH),
+            ("RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH", &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH),
+            ("RE_OUTER_POETRY_AZLA_LEGARMEH", &RE_OUTER_POETRY_AZLA_LEGARMEH),
+            ("RE_OUTER_POETRY_TSINNORIT_MERKHA", &RE_OUTER_POETRY_TSINNORIT_MERKHA),
+            ("RE_INNER_POETRY_TSINNORIT_MERKHA", &RE_INNER_POETRY_TSINNORIT_MERKHA),
+            ("RE_OUTER_POETRY_TSINNORIT_MAHPAKH", &RE_OUTER_POETRY_TSINNORIT_MAHPAKH),
+            ("RE_INNER_POETRY_TSINNORIT_MAHPAKH", &RE_INNER_POETRY_TSINNORIT_MAHPAKH),
+        ];
+
+        for (name, regex) in patterns {
+            let result = regex.is_match("");
+            assert_eq!(result, false, "{} should not match empty string", name);
+        }
+    }
+
+    #[test]
+    fn test_all_fancy_regex_empty_string() {
+        let patterns = vec![
+            ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
+            ("FA_RE_OUTER_PROSE_MUNACH", &FA_RE_OUTER_PROSE_MUNACH),
+            ("FA_RE_OUTER_COMMON_METEG", &FA_RE_OUTER_COMMON_METEG),
+            ("FA_RE_OUTER_POETRY_AZLA", &FA_RE_OUTER_POETRY_AZLA),
+            ("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH", &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH),
+        ];
+
+        for (name, regex) in patterns {
+            let result = regex.is_match("");
+            assert!(result.is_ok(), "{} panicked on empty string", name);
+            assert_eq!(result.unwrap(), false, "{} should not match empty string", name);
+        }
+    }
+
+    #[test]
+    fn test_hebrew_text_with_multiple_accents() {
+        let text = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים";
+
+        // Test that Shalshelet pattern works in real text
+        let shalshelet = &RE_OUTER_COMMON_SHALSHELET;
+        // Test that Silluq pattern works
+        let silluq = &FA_RE_OUTER_COMMON_SILLUQ;
+
+        // At minimum, ensure no panics on real-world input
+        let _ = shalshelet.is_match(text);
+        let _ = silluq.is_match(text);
     }
 }

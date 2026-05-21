@@ -109,16 +109,64 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 **Except** the following four **poetry** Hebrew Accents, because they need a `flexible negative lookbehind` (*which is at the moment of writing not available as far as I know*):
 
-1. `Merkha`  
-    The accent Merkha, Ole We Yored and Tsinnorit Merkha all contain the ssame Unicode code-point **U+05A5**.
+1. `Merkha`
+   
+    The accents Merkha, Ole We Yored and Tsinnorit Merkha all contain the same Unicode code-point (**U+05A5**)
 
-2. `Mehuppakh`   
-   The accent Mehuppakh, Mehuppakh Legarmeh and Tsinnorit Mahpakh all contain the same Unicode code-point **U+05A5**.
+    ### Rules:
+
+    #### `Merkha`
+
+   1. not part of `Ole We Yored` 
+   
+      AND 
+
+   2. not before `Tsinnorit Merkha`
+
+
+2. `Mehuppakh` 
+     
+   The accents Mehuppakh, Mehuppakh Legarmeh and Tsinnorit Mahpakh all contain the same Unicode code-point (**U+05A5**)
+
+   ### Rules:
+
+   #### `Mehuppakh`
+
+   1. not part of `Mehuppakh Legarmeh` 
+   
+       AND
+
+   2. not before `Tsinnorit Mahpakh`
+
 
 3. `Revia Gadol`  and `Revia Qaton`
-   Revia Gadol, Revia Qaton and Revia Mugrash all contain same the Unicode code-point **U+0597**.
+   
+   Revia Gadol, Revia Qaton and Revia Mugrash all contain same the Unicode code-point (**U+0597**)
 
-   Allthough the Revia Gadol and Revia Qaton are represented by the same Unicode code-point, the difference is based upon the position in the sentence and the relation to another accent ( `OlehWeYored`).
+   Allthough the Revia Gadol and Revia Qaton are represented by the same Unicode code-point, the difference is based upon the position in  relation to the `OlehWeYored`
+
+   ### Rules:
+
+   #### `Revia Gadol`
+
+   1. not part of `Revia Mugrash` (Negative Lookbehind)
+   
+      AND
+
+   2. not before `OlehWeYored` (Negative Lookahead)
+
+   #### `Revia Qaton`: 
+   
+   1. not part of `Revia Mugrash` (Negative Lookbehind)
+   
+      AND
+   
+   2. (only) before `OlehWeYored` (Positive Lookahead)
+
+## General rules
+
+
+
 
 ## Data structures
 
@@ -162,7 +210,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 #### For `SentenceContext`
 
 - new() 
-  - creates a new SentenceContext object
+  - creates a new SentenceContext object, only if the sentence is validated. Otherwise an Error is give.
 
 - contains_accent() 
   -  checks if the accent is present in the sentence

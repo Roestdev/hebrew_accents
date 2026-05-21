@@ -140,3 +140,4 @@ mod accent_display;
 pub use accent::*;
 pub use accent_display::*;
 pub use sentence_ctx::*;
+pub use sentence_ctx_funcs::try_derive_context;
