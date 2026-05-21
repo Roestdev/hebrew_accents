@@ -42,7 +42,7 @@ impl fmt::Display for SentenceContextError {
 impl std::error::Error for SentenceContextError {}
 
 #[cfg(test)]
-mod tests_sentence_context_errors {
+mod test_display_formatting {
     use super::*;
 
     // 1. Test Display formatting for InvalidCharacter
@@ -56,21 +56,18 @@ mod tests_sentence_context_errors {
          );
     }
 
-    // 2. Test Display formatting for EmptySentence
     #[test]
     fn test_empty_sentence_display() {
         let err = SentenceContextError::EmptySentence;
         assert_eq!(err.to_string(), "Sentence cannot be empty");
     }
 
-    // 3. Test Display formatting for MultipleLines
     #[test]
     fn test_multiple_lines_display() {
         let err = SentenceContextError::MultipleLines;
         assert_eq!(err.to_string(), "Sentence must be a single line");
     }
 
-    // 4. Test Display formatting for NoDerivePossible
     #[test]
     fn test_no_derive_possible_display() {
         let err = SentenceContextError::NoDerivePossible("missing context data");
@@ -79,8 +76,12 @@ mod tests_sentence_context_errors {
             "Could not derive the context. Reason: missing context data"
         );
     }
+}
 
-    // 5. Test Debug formatting
+#[cfg(test)]
+mod test_debug_formatting {
+    use super::*;
+
     #[test]
     fn test_debug_formatting() {
         let err = SentenceContextError::InvalidCharacter('!', 0);
@@ -90,8 +91,11 @@ mod tests_sentence_context_errors {
         assert!(debug_str.contains("'!'"));
         assert!(debug_str.contains("0"));
     }
+}
+#[cfg(test)]
+mod test_eq_and_partialeq {
+    use super::*;
 
-    // 6. Test PartialEq and Eq
     #[test]
     fn test_equality() {
         // Same values should be equal
@@ -111,8 +115,11 @@ mod tests_sentence_context_errors {
         let err5 = SentenceContextError::EmptySentence;
         assert_ne!(err1, err5);
     }
+}
+#[cfg(test)]
+mod test_clone {
+    use super::*;
 
-    // 7. Test Clone
     #[test]
     fn test_clone() {
         let original = SentenceContextError::InvalidCharacter('z', 99);
@@ -124,12 +131,16 @@ mod tests_sentence_context_errors {
         // Cloned should still be usable
         assert_eq!(cloned.to_string(), "Invalid character 'z' at index 99 (only Hebrew, meteg display, white space and vertical bar is allowed)");
     }
+}
+#[cfg(test)]
+mod test_with_error_simulation {
+    use super::*;
 
     // 8. Integration-style test: Simulating a validation function returning these errors
     #[test]
     fn test_error_construction_in_context() {
         // Simulate a function that might return these errors
-        fn validate_char(c: char, idx: usize) -> Result<(), SentenceContextError> {
+        fn validate_char_simulation(c: char, idx: usize) -> Result<(), SentenceContextError> {
             if c == '@' {
                 return Err(SentenceContextError::InvalidCharacter(c, idx));
             }
@@ -137,7 +148,7 @@ mod tests_sentence_context_errors {
         }
 
         // Test failure case
-        let result = validate_char('@', 3);
+        let result = validate_char_simulation('@', 3);
         assert!(result.is_err());
 
         if let Err(SentenceContextError::InvalidCharacter(char, idx)) = result {
@@ -148,9 +159,14 @@ mod tests_sentence_context_errors {
         }
 
         // Test success case (hypothetically)
-        let result_ok = validate_char('א', 0); // Hebrew letter
+        let result_ok = validate_char_simulation('א', 0); // Hebrew letter
         assert!(result_ok.is_ok());
     }
+}
+
+#[cfg(test)]
+mod test_derive_variants {
+    use super::*;
 
     // 9. Test NoDerivePossible with different static strings
     #[test]
