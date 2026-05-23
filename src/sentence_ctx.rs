@@ -48,11 +48,11 @@ impl SentenceContext {
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
     /// The matched HebrewAccent
-    pub haystack: &'h str,
+    haystack: &'h str,
     /// Start byte of the match
-    pub start: usize,
+    start: usize,
     /// End byte of the match
-    pub end: usize,
+    end: usize,
 }
 
 impl<'h> Match<'h> {
