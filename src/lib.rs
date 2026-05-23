@@ -137,7 +137,10 @@ mod accent_data;
 mod accent_display;
 
 // exports
-pub use accent::*;
+pub use accent::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+pub use accent::{AccentCategory, AccentInformation, AccentType};
+pub use accent::{Additional, Alternates, Tradition, WordStress};
+pub use accent::{CodePointPosition, CodePoints, HierarchicalGroup, Utf8CodePointInfo};
 pub use accent_display::*;
-pub use sentence_ctx::*;
+pub use sentence_ctx::{Context, Match, SentenceContext};
 pub use sentence_ctx_funcs::try_derive_context;

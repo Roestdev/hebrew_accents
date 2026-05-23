@@ -22,20 +22,37 @@ pub enum Context {
 }
 
 impl SentenceContext {
-    /// Creates a new object: SentenceContext
+    /// Creates a new `SentenceContext` object.
+    ///
+    /// # Arguments
+    ///
+    /// * `sentence` - The Hebrew text to wrap in a context
+    /// * `ctx`      - The linguistic context (e.g., `Context::Poetic`, `Context::Prose`)
+    ///
+    /// # Returns
+    ///
+    /// Returns `Ok(SentenceContext)` on success,
+    ///  or `Err(SentenceContextError)` if the sentence fails validation.
     ///
     /// # Example
-    /// ```
-    /// use hebrew_accents::Context;
-    /// use hebrew_accents::SentenceContext;
     ///
-    /// let sentence_context = SentenceContext::new( "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃  ׃ פ", Context::Prosaic);
-    /// let binding = sentence_context.unwrap();
-    /// assert_eq!(binding.ctx,Context::Prosaic);
-    /// assert_eq!(binding.sentence,"וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃  ׃ פ");
+    /// ```
+    /// use crate::hebrew_accents::{SentenceContext, Context};
+    ///
+    /// let result = SentenceContext::new("אבabcגד", Context::Poetic);
+    /// assert!(result.is_err());
+    ///
+    /// // Get the error instance
+    /// let err = result.unwrap_err();
+    /// 
+    /// // Get the string message
+    /// let msg = err.to_string();
+    /// 
+    /// // Assert the message matches expected text
+    /// assert_eq!(msg, "Invalid character 'a' at position 2. Only Hebrew letters, whitespace, or '|' are permitted.");
     /// ```
     pub fn new(sentence: impl Into<String>, ctx: Context) -> Result<Self, SentenceContextError> {
-        let sentence = sentence.into(); // Convert once and store
+        let sentence = sentence.into();
         validate_sentence(&sentence)?;
         Ok(Self { sentence, ctx })
     }
@@ -45,11 +62,11 @@ impl SentenceContext {
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
     /// The matched HebrewAccent
-    pub haystack: &'h str,
+    haystack: &'h str,
     /// Start byte of the match
-    pub start: usize,
+    start: usize,
     /// End byte of the match
-    pub end: usize,
+    end: usize,
 }
 
 impl<'h> Match<'h> {

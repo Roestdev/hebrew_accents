@@ -1402,7 +1402,7 @@ mod tests_find_poetry_merkha {
         let m = result.unwrap();
 
         // Get the actual character at the reported offset
-        let char_at_offset = sentence.chars().nth(m.start);
+        let char_at_offset = sentence.chars().nth(m.start());
         assert_eq!(char_at_offset, Some('\u{05A5}'));
     }
 }

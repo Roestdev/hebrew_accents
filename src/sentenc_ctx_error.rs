@@ -22,7 +22,7 @@ impl fmt::Display for SentenceContextError {
             SentenceContextError::InvalidCharacter(c, index) => {
                 write!(
                     f,
-                    "Invalid character '{}' at index {} (only Hebrew, meteg display, white space and vertical bar is allowed)",
+                    "Invalid character '{}' at position {}. Only Hebrew letters, whitespace, or '|' are permitted.",
                     c, index
                 )
             }
@@ -52,10 +52,9 @@ mod test_display_formatting {
         let msg = err.to_string();
         assert_eq!(
              msg,
-             "Invalid character '@' at index 5 (only Hebrew, meteg display, white space and vertical bar is allowed)"
+             "Invalid character '@' at position 5. Only Hebrew letters, whitespace, or '|' are permitted."
          );
     }
-
     #[test]
     fn test_empty_sentence_display() {
         let err = SentenceContextError::EmptySentence;
@@ -129,7 +128,7 @@ mod test_clone {
         // Verify they are distinct instances (though for simple enums this is mostly structural)
         drop(original);
         // Cloned should still be usable
-        assert_eq!(cloned.to_string(), "Invalid character 'z' at index 99 (only Hebrew, meteg display, white space and vertical bar is allowed)");
+        assert_eq!(cloned.to_string(), "Invalid character 'z' at position 99. Only Hebrew letters, whitespace, or '|' are permitted.");
     }
 }
 #[cfg(test)]

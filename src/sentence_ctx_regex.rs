@@ -496,7 +496,7 @@ mod additionalfunction_coverage_tests {
     fn test_silluq_with_maqqeph_should_not_match() {
         let regex = &FA_RE_OUTER_COMMON_SILLUQ;
         // Should NOT match when followed by Maqqeph
-        assert_eq!(regex.is_match("אֽוֹר־ב").unwrap(),false);
+        assert_eq!(regex.is_match("אֽוֹר־ב").unwrap(), false);
     }
 
     // For FA_RE_OUTER_PROSE_MUNACH - test Paseq distinction
@@ -504,8 +504,8 @@ mod additionalfunction_coverage_tests {
     fn test_munach_with_paseq_should_not_match_foutetitel() {
         let regex = &FA_RE_OUTER_PROSE_MUNACH;
         // Munach followed by Paseq is Legarmeh, not Munach
-        assert_eq!(regex.is_match("אל֣ ׀  יָשָֽׁב").unwrap(),false);
-        assert_eq!(regex.is_match("אל֣׀  יָשָֽׁב").unwrap(),false);
+        assert_eq!(regex.is_match("אל֣ ׀  יָשָֽׁב").unwrap(), false);
+        assert_eq!(regex.is_match("אל֣׀  יָשָֽׁב").unwrap(), false);
     }
     #[test]
     fn test_oleh_we_yored_two_words() {
@@ -548,19 +548,43 @@ mod additionalfunction_coverage_tests {
             ("RE_OUTER_PROSE_LEGARMEH", &RE_OUTER_PROSE_LEGARMEH),
             ("RE_INNER_PROSE_LEGARMEH", &RE_INNER_PROSE_LEGARMEH),
             ("RE_OUTER_PROSE_MEAYLA", &RE_OUTER_PROSE_MEAYLA),
-            ("RE_OUTER_POETRY_OLEH_WE_YORED", &RE_OUTER_POETRY_OLEH_WE_YORED),
-            ("RE_OUTER_POETRY_REVIA_MUGRASH", &RE_OUTER_POETRY_REVIA_MUGRASH),
-            ("RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH", &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH),
-            ("RE_OUTER_POETRY_AZLA_LEGARMEH", &RE_OUTER_POETRY_AZLA_LEGARMEH),
-            ("RE_OUTER_POETRY_TSINNORIT_MERKHA", &RE_OUTER_POETRY_TSINNORIT_MERKHA),
-            ("RE_INNER_POETRY_TSINNORIT_MERKHA", &RE_INNER_POETRY_TSINNORIT_MERKHA),
-            ("RE_OUTER_POETRY_TSINNORIT_MAHPAKH", &RE_OUTER_POETRY_TSINNORIT_MAHPAKH),
-            ("RE_INNER_POETRY_TSINNORIT_MAHPAKH", &RE_INNER_POETRY_TSINNORIT_MAHPAKH),
+            (
+                "RE_OUTER_POETRY_OLEH_WE_YORED",
+                &RE_OUTER_POETRY_OLEH_WE_YORED,
+            ),
+            (
+                "RE_OUTER_POETRY_REVIA_MUGRASH",
+                &RE_OUTER_POETRY_REVIA_MUGRASH,
+            ),
+            (
+                "RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH",
+                &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
+            ),
+            (
+                "RE_OUTER_POETRY_AZLA_LEGARMEH",
+                &RE_OUTER_POETRY_AZLA_LEGARMEH,
+            ),
+            (
+                "RE_OUTER_POETRY_TSINNORIT_MERKHA",
+                &RE_OUTER_POETRY_TSINNORIT_MERKHA,
+            ),
+            (
+                "RE_INNER_POETRY_TSINNORIT_MERKHA",
+                &RE_INNER_POETRY_TSINNORIT_MERKHA,
+            ),
+            (
+                "RE_OUTER_POETRY_TSINNORIT_MAHPAKH",
+                &RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
+            ),
+            (
+                "RE_INNER_POETRY_TSINNORIT_MAHPAKH",
+                &RE_INNER_POETRY_TSINNORIT_MAHPAKH,
+            ),
         ];
 
         for (name, regex) in patterns {
             let result = regex.is_match("");
-            assert_eq!(result,false,"{} panicked on empty string", name);
+            assert_eq!(result, false, "{} panicked on empty string", name);
         }
     }
     #[test]
@@ -570,7 +594,10 @@ mod additionalfunction_coverage_tests {
             ("FA_RE_OUTER_PROSE_MUNACH", &FA_RE_OUTER_PROSE_MUNACH),
             ("FA_RE_OUTER_COMMON_METEG", &FA_RE_OUTER_COMMON_METEG),
             ("FA_RE_OUTER_POETRY_AZLA", &FA_RE_OUTER_POETRY_AZLA),
-            ("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH", &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH),
+            (
+                "FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH",
+                &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH,
+            ),
             ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
             ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
             ("FA_RE_OUTER_COMMON_SILLUQ", &FA_RE_OUTER_COMMON_SILLUQ),
@@ -595,7 +622,7 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_fa_re_outer_common_silluq_init() {
         let regex = &FA_RE_OUTER_COMMON_SILLUQ;
-        let valid = "אֽוֹר׃"; 
+        let valid = "אֽוֹר׃";
         let _ = regex.is_match(valid);
     }
 
@@ -639,7 +666,7 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_re_outer_prose_meayla_init() {
         let regex = &RE_OUTER_PROSE_MEAYLA;
-        let valid = "טִפְחָ֖אֱלֹהִ֑ים"; 
+        let valid = "טִפְחָ֖אֱלֹהִ֑ים";
         let _ = regex.is_match(valid);
     }
 
@@ -653,14 +680,14 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_re_outer_poetry_oleh_we_yored_init() {
         let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
-        let valid = "עוֹלֶה֥"; 
+        let valid = "עוֹלֶה֥";
         let _ = regex.is_match(valid);
     }
 
     #[test]
     fn test_re_outer_poetry_revia_mugrash_init() {
         let regex = &RE_OUTER_POETRY_REVIA_MUGRASH;
-        let valid = "גֵּרֶשׁ֗"; 
+        let valid = "גֵּרֶשׁ֗";
         let _ = regex.is_match(valid);
     }
 
@@ -688,7 +715,7 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_fa_re_outer_poetry_shalshelet_qetannah_init() {
         let regex = &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH;
-        let valid = "שַׁלְשֶׁ֓לֶת"; 
+        let valid = "שַׁלְשֶׁ֓לֶת";
         let _ = regex.is_match(valid);
     }
 
@@ -778,13 +805,13 @@ mod regex_initialization_tests3 {
     // fn test_inner_vs_outer_shalshelet() {
     //     let outer = &RE_OUTER_COMMON_SHALSHELET;
     //     let inner = &RE_INNER_COMMON_SHALSHELET;
-        
+
     //     // Outer requires non-space/maqaf before
     //     assert!(outer.is_match("בְּהִ֑֓ים׀"));
-        
+
     //     // Inner can start with the accent itself
     //     assert!(inner.is_match("׀ב׀֓"));
-        
+
     //     // Outer should fail on pure accent start (no preceding char)
     //     assert!(!outer.is_match("֑׀"));
     // }
@@ -794,7 +821,7 @@ mod regex_initialization_tests3 {
     fn test_inner_vs_outer_legarmeh() {
         let outer = &RE_OUTER_PROSE_LEGARMEH;
         let inner = &RE_INNER_PROSE_LEGARMEH;
-        
+
         assert!(outer.is_match("א֣׀"));
         assert!(inner.is_match("֣׀"));
         assert!(!outer.is_match("֣׀"));
@@ -804,10 +831,10 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_paseq_vs_vertical_line_equivalence() {
         let regex = &RE_OUTER_COMMON_SHALSHELET;
-        
+
         let paseq = "בְּהִי֓ם׀";
         let vertical = "בְּהִי֓ם|הִי";
-        
+
         assert!(regex.is_match(paseq));
         assert!(regex.is_match(vertical));
     }
@@ -816,10 +843,10 @@ mod regex_initialization_tests3 {
     #[test]
     fn test_geresh_variants() {
         let regex = &RE_OUTER_POETRY_REVIA_MUGRASH;
-        
-        let geresh = "גֵּרֶ֜שׁ֗"; 
-        let geresh_muqdam = "גֵּרֶ֝שׁ֗"; 
-        
+
+        let geresh = "גֵּרֶ֜שׁ֗";
+        let geresh_muqdam = "גֵּרֶ֝שׁ֗";
+
         assert!(regex.is_match(geresh));
         assert!(regex.is_match(&geresh_muqdam));
     }
@@ -829,7 +856,7 @@ mod regex_initialization_tests3 {
     fn test_oleh_we_yored_two_words() {
         let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
         // Ole + Hebrew + Space + Hebrew + Yored
-        let valid = "ע֫וֹלֶה בְּהי֥ם"; 
+        let valid = "ע֫וֹלֶה בְּהי֥ם";
         assert!(regex.is_match(valid));
     }
 
@@ -848,10 +875,10 @@ mod regex_initialization_tests3 {
 
         // Test with no space
         assert!(regex.is_match("א֣׀"));
-        
+
         // Test with single space
         assert!(regex.is_match("א֣ ׀"));
-        
+
         // Test with multiple spaces (should fail due to OPTIONAL_SPACE being \s?)
         assert!(!regex.is_match("א֣  ׀"));
     }
@@ -913,14 +940,38 @@ mod regex_initialization_tests3 {
             ("RE_OUTER_PROSE_LEGARMEH", &RE_OUTER_PROSE_LEGARMEH),
             ("RE_INNER_PROSE_LEGARMEH", &RE_INNER_PROSE_LEGARMEH),
             ("RE_OUTER_PROSE_MEAYLA", &RE_OUTER_PROSE_MEAYLA),
-            ("RE_OUTER_POETRY_OLEH_WE_YORED", &RE_OUTER_POETRY_OLEH_WE_YORED),
-            ("RE_OUTER_POETRY_REVIA_MUGRASH", &RE_OUTER_POETRY_REVIA_MUGRASH),
-            ("RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH", &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH),
-            ("RE_OUTER_POETRY_AZLA_LEGARMEH", &RE_OUTER_POETRY_AZLA_LEGARMEH),
-            ("RE_OUTER_POETRY_TSINNORIT_MERKHA", &RE_OUTER_POETRY_TSINNORIT_MERKHA),
-            ("RE_INNER_POETRY_TSINNORIT_MERKHA", &RE_INNER_POETRY_TSINNORIT_MERKHA),
-            ("RE_OUTER_POETRY_TSINNORIT_MAHPAKH", &RE_OUTER_POETRY_TSINNORIT_MAHPAKH),
-            ("RE_INNER_POETRY_TSINNORIT_MAHPAKH", &RE_INNER_POETRY_TSINNORIT_MAHPAKH),
+            (
+                "RE_OUTER_POETRY_OLEH_WE_YORED",
+                &RE_OUTER_POETRY_OLEH_WE_YORED,
+            ),
+            (
+                "RE_OUTER_POETRY_REVIA_MUGRASH",
+                &RE_OUTER_POETRY_REVIA_MUGRASH,
+            ),
+            (
+                "RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH",
+                &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
+            ),
+            (
+                "RE_OUTER_POETRY_AZLA_LEGARMEH",
+                &RE_OUTER_POETRY_AZLA_LEGARMEH,
+            ),
+            (
+                "RE_OUTER_POETRY_TSINNORIT_MERKHA",
+                &RE_OUTER_POETRY_TSINNORIT_MERKHA,
+            ),
+            (
+                "RE_INNER_POETRY_TSINNORIT_MERKHA",
+                &RE_INNER_POETRY_TSINNORIT_MERKHA,
+            ),
+            (
+                "RE_OUTER_POETRY_TSINNORIT_MAHPAKH",
+                &RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
+            ),
+            (
+                "RE_INNER_POETRY_TSINNORIT_MAHPAKH",
+                &RE_INNER_POETRY_TSINNORIT_MAHPAKH,
+            ),
         ];
 
         for (name, regex) in patterns {
@@ -936,13 +987,21 @@ mod regex_initialization_tests3 {
             ("FA_RE_OUTER_PROSE_MUNACH", &FA_RE_OUTER_PROSE_MUNACH),
             ("FA_RE_OUTER_COMMON_METEG", &FA_RE_OUTER_COMMON_METEG),
             ("FA_RE_OUTER_POETRY_AZLA", &FA_RE_OUTER_POETRY_AZLA),
-            ("FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH", &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH),
+            (
+                "FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH",
+                &FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH,
+            ),
         ];
 
         for (name, regex) in patterns {
             let result = regex.is_match("");
             assert!(result.is_ok(), "{} panicked on empty string", name);
-            assert_eq!(result.unwrap(), false, "{} should not match empty string", name);
+            assert_eq!(
+                result.unwrap(),
+                false,
+                "{} should not match empty string",
+                name
+            );
         }
     }
 

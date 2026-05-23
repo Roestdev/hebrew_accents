@@ -3794,12 +3794,11 @@ mod exhaustive_function_coverage_tests {
     }
 }
 
-
 #[cfg(test)]
 mod test_uncovered_structs_enums {
     use super::*;
     //use crate::accent_codepoints::{CP_SOPH_PASUQ, CP_MAQAF, CP_PASEQ, CP_SEGOL, CP_SHALSHELET};
-    use crate::accent_codepoints::{CP_SOPH_PASUQ, CP_SEGOL, CP_SHALSHELET};
+    use crate::accent_codepoints::{CP_SEGOL, CP_SHALSHELET, CP_SOPH_PASUQ};
 
     // ========================================================================
     // 1. CODEPOINTS STRUCT TESTS
@@ -3812,18 +3811,18 @@ mod test_uncovered_structs_enums {
             primary: &CP_SOPH_PASUQ,
             secondary: None,
         };
-        
+
         assert!(single.secondary.is_none());
         assert_eq!(single.primary.code_point, "U+05C3"); // Example value, adjust if needed
-        
+
         // Double code point (Shalshelet often has secondary)
-        // We simulate this by checking a known dual-entry if available, 
+        // We simulate this by checking a known dual-entry if available,
         // or constructing one for testing logic
         let dual = CodePoints {
             primary: &CP_SEGOL,
             secondary: Some(&CP_SHALSHELET), // Hypothetical combination for test
         };
-        
+
         assert!(dual.secondary.is_some());
         assert_ne!(dual.primary, dual.secondary.unwrap());
     }
@@ -3837,7 +3836,7 @@ mod test_uncovered_structs_enums {
 
         // Verify Copy trait works (should not move)
         let cp_copy = cp;
-        
+
         assert_eq!(cp.primary.code_point, cp_copy.primary.code_point);
         assert_eq!(cp.secondary.is_none(), cp_copy.secondary.is_none());
     }
@@ -3848,7 +3847,7 @@ mod test_uncovered_structs_enums {
             primary: &CP_SOPH_PASUQ,
             secondary: None,
         };
-        
+
         let debug_str = format!("{:?}", cp);
         assert!(debug_str.contains("CodePoints"));
         assert!(debug_str.contains("primary"));
@@ -3863,16 +3862,26 @@ mod test_uncovered_structs_enums {
         let info = &CP_SOPH_PASUQ;
 
         // Verify all fields are populated
-        assert!(!info.code_point.is_empty(), "code_point should not be empty");
+        assert!(
+            !info.code_point.is_empty(),
+            "code_point should not be empty"
+        );
         assert!(!info.hex_value.is_empty(), "hex_value should not be empty");
         assert!(!info.name.is_empty(), "name should not be empty");
         assert!(!info.symbol.is_empty(), "symbol should not be empty");
-        
+
         // Verify hex format (should start with U+)
-        assert!(info.code_point.starts_with("U+"), "code_point should start with U+");
-        
+        assert!(
+            info.code_point.starts_with("U+"),
+            "code_point should start with U+"
+        );
+
         // Verify symbol is a single character (usually)
-        assert_eq!(info.symbol.chars().count(), 1, "symbol should be a single char");
+        assert_eq!(
+            info.symbol.chars().count(),
+            1,
+            "symbol should be a single char"
+        );
     }
 
     #[test]
@@ -3886,47 +3895,59 @@ mod test_uncovered_structs_enums {
             position: CodePointPosition::Above,
             traditions: &[],
         };
-        
+
         assert_eq!(above_cp.position, CodePointPosition::Above);
 
         // Test 'Under' position (default)
         let under_cp = &CP_SOPH_PASUQ; // Assuming Soph Pasuq is 'After' or 'Under' based on context
-        // We check the actual enum value from the constant
+                                       // We check the actual enum value from the constant
         match under_cp.position {
-            CodePointPosition::Under | 
-            CodePointPosition::Above | 
-            CodePointPosition::After | 
-            CodePointPosition::InBetween => {}, // Valid variants
+            CodePointPosition::Under
+            | CodePointPosition::Above
+            | CodePointPosition::After
+            | CodePointPosition::InBetween => {} // Valid variants
         }
     }
 
     #[test]
     fn test_utf8_code_point_info_traditions_array() {
         let info = &CP_SOPH_PASUQ;
-        
+
         // Traditions should be a slice
         //assert!(info.traditions.is_slice() || true); // Just verifying it exists
-        
+
         // If traditions exist, verify structure
         if !info.traditions.is_empty() {
             for tradition in info.traditions.iter() {
                 match tradition {
-                    Tradition::Ashkenazi { hebrew_name, english_name } => {
+                    Tradition::Ashkenazi {
+                        hebrew_name,
+                        english_name,
+                    } => {
                         assert!(!hebrew_name.is_empty());
                         assert!(!english_name.is_empty());
-                    },
-                    Tradition::Sephardi { hebrew_name, english_name } => {
+                    }
+                    Tradition::Sephardi {
+                        hebrew_name,
+                        english_name,
+                    } => {
                         assert!(!hebrew_name.is_empty());
                         assert!(!english_name.is_empty());
-                    },
-                    Tradition::Italian { hebrew_name, english_name } => {
+                    }
+                    Tradition::Italian {
+                        hebrew_name,
+                        english_name,
+                    } => {
                         assert!(!hebrew_name.is_empty());
                         assert!(!english_name.is_empty());
-                    },
-                    Tradition::Yemenite { hebrew_name, english_name } => {
+                    }
+                    Tradition::Yemenite {
+                        hebrew_name,
+                        english_name,
+                    } => {
                         assert!(!hebrew_name.is_empty());
                         assert!(!english_name.is_empty());
-                    },
+                    }
                 }
             }
         }
@@ -3937,7 +3958,7 @@ mod test_uncovered_structs_enums {
         // Two identical references should hash the same
         let cp1 = &CP_SOPH_PASUQ;
         let cp2 = &CP_SOPH_PASUQ;
-        
+
         // Since they are &'static, they are the same pointer
         assert_eq!(cp1 as *const _, cp2 as *const _);
     }
@@ -3954,7 +3975,7 @@ mod test_uncovered_structs_enums {
             english_name: "Ashkenazi",
         };
         match ash {
-            Tradition::Ashkenazi { .. } => {},
+            Tradition::Ashkenazi { .. } => {}
             _ => panic!("Failed to match Ashkenazi"),
         }
 
@@ -3964,7 +3985,7 @@ mod test_uncovered_structs_enums {
             english_name: "Sephardi",
         };
         match sep {
-            Tradition::Sephardi { .. } => {},
+            Tradition::Sephardi { .. } => {}
             _ => panic!("Failed to match Sephardi"),
         }
 
@@ -3974,7 +3995,7 @@ mod test_uncovered_structs_enums {
             english_name: "Italian",
         };
         match ita {
-            Tradition::Italian { .. } => {},
+            Tradition::Italian { .. } => {}
             _ => panic!("Failed to match Italian"),
         }
 
@@ -3984,7 +4005,7 @@ mod test_uncovered_structs_enums {
             english_name: "Yemenite",
         };
         match yem {
-            Tradition::Yemenite { .. } => {},
+            Tradition::Yemenite { .. } => {}
             _ => panic!("Failed to match Yemenite"),
         }
     }
@@ -3992,30 +4013,54 @@ mod test_uncovered_structs_enums {
     #[test]
     fn test_tradition_data_integrity() {
         let traditions = vec![
-            Tradition::Ashkenazi { hebrew_name: "ה", english_name: "A" },
-            Tradition::Sephardi { hebrew_name: "ס", english_name: "S" },
-            Tradition::Italian { hebrew_name: "י", english_name: "I" },
-            Tradition::Yemenite { hebrew_name: "ת", english_name: "Y" },
+            Tradition::Ashkenazi {
+                hebrew_name: "ה",
+                english_name: "A",
+            },
+            Tradition::Sephardi {
+                hebrew_name: "ס",
+                english_name: "S",
+            },
+            Tradition::Italian {
+                hebrew_name: "י",
+                english_name: "I",
+            },
+            Tradition::Yemenite {
+                hebrew_name: "ת",
+                english_name: "Y",
+            },
         ];
 
         for t in &traditions {
             match t {
-                Tradition::Ashkenazi { hebrew_name, english_name } => {
+                Tradition::Ashkenazi {
+                    hebrew_name,
+                    english_name,
+                } => {
                     assert_eq!(*hebrew_name, "ה");
                     assert_eq!(*english_name, "A");
-                },
-                Tradition::Sephardi { hebrew_name, english_name } => {
+                }
+                Tradition::Sephardi {
+                    hebrew_name,
+                    english_name,
+                } => {
                     assert_eq!(*hebrew_name, "ס");
                     assert_eq!(*english_name, "S");
-                },
-                Tradition::Italian { hebrew_name, english_name } => {
+                }
+                Tradition::Italian {
+                    hebrew_name,
+                    english_name,
+                } => {
                     assert_eq!(*hebrew_name, "י");
                     assert_eq!(*english_name, "I");
-                },
-                Tradition::Yemenite { hebrew_name, english_name } => {
+                }
+                Tradition::Yemenite {
+                    hebrew_name,
+                    english_name,
+                } => {
                     assert_eq!(*hebrew_name, "ת");
                     assert_eq!(*english_name, "Y");
-                },
+                }
             }
         }
     }
@@ -4026,13 +4071,13 @@ mod test_uncovered_structs_enums {
             hebrew_name: "Test",
             english_name: "Test",
         };
-        
+
         let t2 = t.clone();
         let _t3 = t; // Move
-        
+
         // t2 should still be usable
         match t2 {
-            Tradition::Ashkenazi { .. } => {},
+            Tradition::Ashkenazi { .. } => {}
             _ => panic!("Clone failed"),
         }
     }
@@ -4052,7 +4097,7 @@ mod test_uncovered_structs_enums {
         assert_eq!(alt.english_name, "Alternative Name");
         assert_eq!(alt.hebrew_name, "שם חלופי");
         assert_eq!(alt.meaning, "Meaning of the alternative");
-        
+
         // Verify all fields are non-empty
         assert!(!alt.english_name.is_empty());
         assert!(!alt.hebrew_name.is_empty());
@@ -4062,9 +4107,9 @@ mod test_uncovered_structs_enums {
     #[test]
     fn test_alternates_in_context_of_accent() {
         // Find an accent that has alternates (e.g., Mayela in the code had alternates)
-        // We can't easily access the table here without importing it, 
+        // We can't easily access the table here without importing it,
         // so we test the struct logic directly.
-        
+
         let alt = Alternates {
             english_name: "Meayyela",
             hebrew_name: "מְאַיְּלָא",
@@ -4074,7 +4119,7 @@ mod test_uncovered_structs_enums {
         // Verify it can be copied into an Option
         let opt_alt: Option<Alternates> = Some(alt);
         assert!(opt_alt.is_some());
-        
+
         if let Some(a) = opt_alt {
             assert_eq!(a.english_name, "Meayyela");
         }
@@ -4115,14 +4160,17 @@ mod test_uncovered_structs_enums {
             if let Some(alt) = add.alternates {
                 assert_eq!(alt.english_name, "Alt Name");
             }
-            
+
             assert_eq!(add.accent_type, AccentType::Primary);
             assert_eq!(add.category, AccentCategory::Disjunctive);
         }
-        
+
         // Verify code points
         assert!(full_info.code_points.secondary.is_none());
-        assert_eq!(full_info.code_points.primary.code_point, CP_SOPH_PASUQ.code_point);
+        assert_eq!(
+            full_info.code_points.primary.code_point,
+            CP_SOPH_PASUQ.code_point
+        );
     }
 
     #[test]
@@ -4147,8 +4195,6 @@ mod test_uncovered_structs_enums {
     // 6. EDGE CASES: EMPTY STRINGS AND NULLS
     // ========================================================================
 
-    
-    
     #[test]
     fn test_tradition_empty_strings_allowed() {
         // Similar to above, verifying struct flexibility
