@@ -130,10 +130,10 @@ pub(crate) static RE_OUTER_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
 // A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
 // A Silluq is not a Meteg
 //  FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)")
-const NAAMVERZINNEN: &str =
+const METEG_CONSTRAINS: &str =
     r"(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)";
 pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern = format!("{}{}", METEG, NAAMVERZINNEN,);
+    let pattern = format!("{}{}", METEG, METEG_CONSTRAINS,);
     FancyRegex::new(&pattern)
         .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", &pattern))
 });
@@ -486,3 +486,4 @@ mod regex_initialization_tests {
         let _ = regex.is_match(invalid);
     }
 }
+

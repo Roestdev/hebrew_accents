@@ -1020,11 +1020,7 @@ mod accent_data_tests {
         BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
     };
 
-    // ========================================================================
-    // 1. Table Integrity & Count Verification
-    // ========================================================================
-
-    /// Ensures the table length matches the enum COUNT constant
+    // Ensures the table length matches the enum COUNT constant
     #[test]
     fn test_prose_table_length_matches_enum_count() {
         assert_eq!(
@@ -1035,7 +1031,6 @@ mod accent_data_tests {
             ProseAccent::COUNT
         );
     }
-
     #[test]
     fn test_poetry_table_length_matches_enum_count() {
         assert_eq!(
@@ -1046,7 +1041,6 @@ mod accent_data_tests {
             PoetryAccent::COUNT
         );
     }
-
     #[test]
     fn test_pseudo_table_length_matches_enum_count() {
         assert_eq!(
@@ -1057,13 +1051,8 @@ mod accent_data_tests {
             PseudoAccent::COUNT
         );
     }
-
-    // ========================================================================
-    // 2. Data Validity & Branch Coverage (Secondary Code Points)
-    // ========================================================================
-
-    /// Tests the branch logic: `if secondary.is_none() { 1 } else { 2 }`
-    /// This ensures we cover both the "single code point" and "double code point" paths.
+    // Tests the branch logic: `if secondary.is_none() { 1 } else { 2 }`
+    // This ensures we cover both the "single code point" and "double code point" paths.
     #[test]
     fn test_prose_accent_code_point_branches() {
         let mut single_count = 0;
@@ -1131,11 +1120,6 @@ mod accent_data_tests {
             "No double-code-point accents found in Poetry table"
         );
     }
-
-    // ========================================================================
-    // 3. Rank Map Coverage (BHS_POETRY_RANK_MAP)
-    // ========================================================================
-
     /// Ensures the rank map covers every variant in PoetryAccent
     #[test]
     fn test_poetry_rank_map_length() {
@@ -1147,7 +1131,6 @@ mod accent_data_tests {
             PoetryAccent::COUNT
         );
     }
-
     /// Tests specific known ranks to ensure the map is populated correctly
     #[test]
     fn test_poetry_rank_map_specific_values() {
