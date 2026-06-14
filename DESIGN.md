@@ -32,20 +32,38 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 </br>
 
-# Design decision
+# Design decisions
 
 - I chose to utilize the layout as outlined in the `Biblia Hebraica Stuttgartensia` (BHS) which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
 - On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR`, as mentioned by Helmut Richter will be added.
 
-- Accent names will be according `Biblia Hebraica Stuttgartensia`, but alternate names will be provided if applicable.
+- Accent names will be according `BHS`, but alternate names will be provided if applicable.
 
-- The Latin adjectives referenced in the BHS will be translated into Hebrew and subsequently transliterated into English.
+- The Latin adjectives referenced in the `BHS` will be translated into Hebrew and subsequently transliterated into English.
 
-- The 'accent' Meteg, which is not mentioned BHS will be added to the list of both (prose and poetry) conjunctives. The Meteg is just as the Meayla seen as a secondary accent.
+- The accent `Meteg`, which is not mentioned BHS will be added to the list of both (prose and poetry) conjunctives. The Meteg is just as the Meayla a **secondary accent**.
 
-- The Maqqeph will also be added to the list of both (prose and poetry) conjunctives. Although the Maqqeph does not belong to the conjunctive accents, it does have the function of binding words together, just like the conjunctives.
-  
+- A new classification, `PseudoAccents`, will be introduced to accommodate specific Hebrew punctuation marks that are closely related to the accents but do not conform to the standard Prose or Poetry accent taxonomies. 
+These pseudo accents require distinct handling. The following marks are now categorized under PseudoAccents:
+
+  - `SophPasuq`
+   
+      Function: Primarily denotes the end of a verse or sentence, analogous to a period. However, its application is not absolute; certain scholarly traditions equate its disjunctive weight to that of Silluq.
+      Marks the end of a sentence (like the period), but not always. Some sholars treat them as as equal as the Silluq (a disjuntive).
+
+   - `Maqqeph`
+
+      Function: Serves as a hyphenation or binding agent that connects words into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
+      it does have the function of binding words together, just like the conjunctives.
+
+   -  `Paseq`
+
+      Function: Acts as a separator or divider. It may appear in conjunction with a Hebrew accent to modify its function but does not operate as an independent accent mark. Can be part of a Hebrew Accent, but not as an individual accent
+
+
+
+
 ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
 - The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:
@@ -161,14 +179,14 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 #### For `SentenceContext`
 
-- new() 
-  - creates a new SentenceContext object
+- new() -> Result<SentenceContext, SentenceContextError>
+  - Creates a new SentenceContext object. User input will be validated.
 
-- contains_accent() 
-  -  checks if the accent is present in the sentence
+- contains_accent() -> bool
+  -  Checks if the given accent is present in the sentence
 
-- find_accent() **TODO**
-  - returns the position of the first found accent
+- find_accent() -> Option(Match)
+  - Returns the position of the first found accent
 
 #### For `ProseAccent` and `PoetryAccents`
 
@@ -184,3 +202,23 @@ In general all mappings can be resolved using either the [String](https://doc.ru
     - gives additional information for a specific accent, e.g. accents position etc. etc.
 - accent_type()
 - category()
+
+## Input validation
+
+Accepted input must strictly adhere to the following criteria:
+
+ - `First Character Constraints`
+   - Must be a consonant.
+   - Must not be a final consonant (e.g., Hebrew Sofit letters like ך, ם, ף, ץ, ן).
+
+ - `Subsequent Character Constraints` 
+  
+   All characters following the first must belong to one of the following categories:
+
+   - **Hebrew Script**: Any character within the Hebrew Unicode block (U+0590–U+05FF).
+
+   - **Vertical Line**: The ASCII vertical bar (|, U+007C), sometimes used in Hebrew texts as a display substitute for the Paseq (פסיק).
+
+   - **Layout Controls for Meteg**: CGJ, ZWNJ and  ZWJ. See [Section 9.1 of the Unicode Standard, Version 15.0.0](https://www.unicode.org/versions/Unicode15.0.0/ch09.pdf) for more information.
+     
+   - **Whitespace**: Space characters as defined by the Rust standard library (char::is_whitespace) **Status**: Under consideration for final implementation.

@@ -389,17 +389,25 @@ pub(crate) fn is_valid_hebrew_char(c: char) -> bool {
     // Check for specific Bidi Control Characters
     // These are the explicit controls used to force directionality
     // Note: Maybe these can removed?
+    // matches!(
+    //     c,
+    //     '\u{202A}' | // LRE: Left-to-Right Embedding
+    //     '\u{202B}' | // RLE: Right-to-Left Embedding
+    //     '\u{202C}' | // PDF: Pop Directional Formatting
+    //     '\u{202D}' | // LRO: Left-to-Right Override
+    //     '\u{202E}' | // RLO: Right-to-Left Override
+    //     '\u{2066}' | // LRI: Left-to-Right Isolate
+    //     '\u{2067}' | // RLI: Right-to-Left Isolate
+    //     '\u{2068}' | // FSI: First Strong Isolate
+    //     '\u{2069}' // PDI: Pop Directional Isolate
+    // )
+    // Check for specific METEG Layout Control Characters
+    // see https://www.unicode.org/versions/Unicode15.0.0/ section 9.1 for more information
     matches!(
         c,
-        '\u{202A}' | // LRE: Left-to-Right Embedding
-        '\u{202B}' | // RLE: Right-to-Left Embedding
-        '\u{202C}' | // PDF: Pop Directional Formatting
-        '\u{202D}' | // LRO: Left-to-Right Override
-        '\u{202E}' | // RLO: Right-to-Left Override
-        '\u{2066}' | // LRI: Left-to-Right Isolate
-        '\u{2067}' | // RLI: Right-to-Left Isolate
-        '\u{2068}' | // FSI: First Strong Isolate
-        '\u{2069}' // PDI: Pop Directional Isolate
+        '\u{034F}' | // CGJ: COMBINING GRAPHEME JOINER
+        '\u{200C}' | // ZWNJ: ZERO WIDTH NON-JOINER
+        '\u{200D}' // ZWJ: ZERO WIDTH JOINER
     )
 }
 
