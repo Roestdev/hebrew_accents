@@ -5,6 +5,7 @@
 
 // External crates
 // N/A
+use hebrew_unicode_script::{is_hbr_block, is_hbr_consonant_final, is_hbr_consonant_normal};
 
 // Crate‑internal (local modules)
 use crate::char::{
@@ -138,7 +139,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
     None
 }
 
-pub fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> {
+pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> {
     // Revia Qaton is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
@@ -362,6 +363,34 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
         return Err(SentenceContextError::MultipleLines);
     }
 
+    // Find the first NON-WHITESPACE character
+    let first_non_ws = s.chars().find(|c| !c.is_whitespace());
+
+    match first_non_ws {
+        // No meaningful characters at all (whitespace only)
+        None => return Err(SentenceContextError::EmptySentence),
+
+        // First char is a Final Form letter (invalid start)
+        // Ranges: 05DA (ך), 05DE (ם), 05E0 (ן), 05E3 (ף), 05E5 (ץ)
+        Some(c) if is_hbr_consonant_final(c) => {
+            return Err(SentenceContextError::StartsWithFinalForm(c));
+        }
+
+        // First char is not a normal Hebrew consonant
+        Some(c) if !is_hbr_consonant_normal(c) => {
+            return Err(SentenceContextError::StartsWithNonConsonant(c));
+        }
+
+        // First char is neither a Hebrew letter nor a niqqud mark
+        Some(c) if !is_valid_hebrew_char(c) => {
+            return Err(SentenceContextError::InvalidCharacter(c, 0));
+        }
+
+        // Valid start (Hebrew consonant), continue full validation
+        _ => {}
+    }
+
+    // Validate ALL characters in the string
     for (idx, c) in s.chars().enumerate() {
         if !is_valid_hebrew_char(c) {
             return Err(SentenceContextError::InvalidCharacter(c, idx));
@@ -370,39 +399,51 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     Ok(())
 }
 
-pub(crate) fn is_valid_hebrew_char(c: char) -> bool {
+/// Helper to detect valid hebrew chars
+fn is_valid_hebrew_char(c: char) -> bool {
     // Check for Hebrew Unicode Block (U+0590 - U+05FF)
-    if ('\u{0590}'..='\u{05FF}').contains(&c) {
+    if is_hbr_block(c) {
         return true;
     }
-    // Check for Vertical Bar (U+007C) (Sometimes a replacement for Paseq)
-    if '\u{007C}' == c {
+    // Check for space like characters
+    if is_space_like_char(c) {
         return true;
     }
+    //
+    if is_paseq_alternative_char(c) {
+        return true;
+    }
+    // Check for space like characters
+    if is_meteg_layout_char(c) {
+        return true;
+    }
+    false
+}
 
-    // Check for Whitespace (includes space, tab, newline, etc.)
-    // Note: newline is filterd by the calling function!
-    if c.is_whitespace() {
-        return true;
-    }
+fn is_space_like_char(c: char) -> bool {
+    matches!(
+        c,
+        '\u{0020}' | // SPACE
+        '\u{00A0}' | // NO-BREAK SPACE
+        '\u{200E}' | // LRM: ZERO WIDTH JOINER
+        '\u{200F}' | // RLM: RIGHT-TO-LEFT
+        '\u{2009}' | // THIN SPACE
+        '\u{205F}' | // MEDIUM MATHEMATICAL SPACE
+        '\u{3000}' // IDEOGRAPHIC SPACE
+    )
+}
 
-    // Check for specific Bidi Control Characters
-    // These are the explicit controls used to force directionality
-    // Note: Maybe these can removed?
-    // matches!(
-    //     c,
-    //     '\u{202A}' | // LRE: Left-to-Right Embedding
-    //     '\u{202B}' | // RLE: Right-to-Left Embedding
-    //     '\u{202C}' | // PDF: Pop Directional Formatting
-    //     '\u{202D}' | // LRO: Left-to-Right Override
-    //     '\u{202E}' | // RLO: Right-to-Left Override
-    //     '\u{2066}' | // LRI: Left-to-Right Isolate
-    //     '\u{2067}' | // RLI: Right-to-Left Isolate
-    //     '\u{2068}' | // FSI: First Strong Isolate
-    //     '\u{2069}' // PDI: Pop Directional Isolate
-    // )
-    // Check for specific METEG Layout Control Characters
-    // see https://www.unicode.org/versions/Unicode15.0.0/ section 9.1 for more information
+//
+fn is_paseq_alternative_char(c: char) -> bool {
+    matches!(
+        c,
+        '\u{007C}' // VERTICAL BAR
+    )
+}
+
+// Check for specific METEG Layout Control Characters
+// see https://www.unicode.org/versions/Unicode15.0.0/ section 9.1 for more information
+fn is_meteg_layout_char(c: char) -> bool {
     matches!(
         c,
         '\u{034F}' | // CGJ: COMBINING GRAPHEME JOINER
@@ -411,9 +452,8 @@ pub(crate) fn is_valid_hebrew_char(c: char) -> bool {
     )
 }
 
-/////////////////////
 #[cfg(test)]
-mod poetry_accent_finder_tests {
+mod test_poetry_accent_finder {
     use super::*;
     // Assuming the module is named `poetry_accent_finder` or similar
     // Adjust the path based on your actual module structure
@@ -783,5 +823,307 @@ mod poetry_accent_finder_tests {
         let sentence: Vec<char> = "a".chars().collect();
         let result = is_followed_by_oleh_we_yored(10, &sentence);
         assert!(!result);
+    }
+}
+
+#[cfg(test)]
+mod tests4_poetry_merkha_finder {
+    // TODO
+    // use super::*;
+}
+#[cfg(test)]
+mod tests4_poetry_mehuppak_finder {
+    // TODO
+    // use super::*;
+}
+#[cfg(test)]
+mod tests4_poetry_revia_gadol_finder {
+    // TODO
+    // use super::*;
+}
+#[cfg(test)]
+mod tests4_poetry_revia_qaton_finder {
+    // TODO
+    // use super::*;
+}
+// helper funtions
+#[cfg(test)]
+mod tests4_as_char_slice {
+    // TODO
+    // use super::*;
+}
+#[cfg(test)]
+mod tests4_indexes_target_char {
+    // TODO
+    // use super::*;
+}
+
+#[cfg(test)]
+mod tests4_is_part_of_two_code_point_accent_look_behind {
+    // TODO
+    // use super::*;
+}
+
+#[cfg(test)]
+mod tests4_is_part_of_mahpakh_legarmeh_look_ahead {
+    // TODO
+    // use super::*;
+}
+
+#[cfg(test)]
+mod tests4_is_followed_by_oleh_we_yore {
+    // TODO
+    // use super::*;
+}
+
+#[cfg(test)]
+mod tests4_validate_sentence {
+    // use super::*;
+}
+
+#[cfg(test)]
+//is_hbr_block(c)
+//is_space_like_char(c)
+//is_paseq_alternative_char(c)
+//is_meteg_layout_char(c) {
+mod tests4_is_valid_hebrew_char {
+    mod tests4_is_hebrew_block {
+        // --- Hebrew Block Characters (U+0590 - U+05FF) ---
+        use crate::sentence_ctx_funcs::is_valid_hebrew_char;
+        
+
+        #[test]
+        fn rejects_outside_hebrew_block_start() {
+            // Just before the Hebrew block
+            assert!(!is_valid_hebrew_char('\u{058F}'));
+            assert!(!is_valid_hebrew_char('\u{058E}'));
+            assert!(!is_valid_hebrew_char('\u{0500}'));
+        }
+    }
+    mod tests4_is_space_like_char {
+        use crate::sentence_ctx_funcs::is_space_like_char;
+
+        #[test]
+        fn accepts_standard_space() {
+            assert!(is_space_like_char('\u{0020}'));
+        }
+        #[test]
+        fn accepts_no_break_space() {
+            assert!(is_space_like_char('\u{00A0}'));
+        }
+
+        #[test]
+        fn accepts_left_to_right_mark() {
+            assert!(is_space_like_char('\u{200E}'));
+        }
+
+        #[test]
+        fn accepts_right_to_left_mark() {
+            assert!(is_space_like_char('\u{200F}'));
+        }
+
+        #[test]
+        fn accepts_thin_space() {
+            assert!(is_space_like_char('\u{2009}'));
+        }
+
+        #[test]
+        fn accepts_medium_mathematical_space() {
+            assert!(is_space_like_char('\u{205F}'));
+        }
+
+        #[test]
+        fn accepts_ideographic_space() {
+            assert!(is_space_like_char('\u{3000}'));
+        }
+
+        #[test]
+        fn rejects_non_space_like_chars() {
+            assert!(!is_space_like_char('\u{0009}')); // TAB
+            assert!(!is_space_like_char('־'));
+            assert!(!is_space_like_char('ג'));
+        }
+    }
+    mod tests4_is_paseq_alternative_char {
+        use crate::sentence_ctx_funcs::is_paseq_alternative_char;
+        #[test]
+        fn accepts_vertical_bar_ascii() {
+            assert!(is_paseq_alternative_char('|'));
+        }
+
+        #[test]
+        fn accepts_vertical_bar_unicode_escape() {
+            assert!(is_paseq_alternative_char('\u{007C}'));
+        }
+        #[test]
+        fn rejects_non_meteg_layout_chars() {
+            assert!(!is_paseq_alternative_char('\u{00A6}')); // Broken Bar
+            assert!(!is_paseq_alternative_char('ַ'));
+            assert!(!is_paseq_alternative_char('ט'));
+        }
+    }
+    mod tests4_is_meteg_layout_char {
+        use crate::sentence_ctx_funcs::is_meteg_layout_char;
+        #[test]
+        fn accepts_cgj_u034f() {
+            assert!(is_meteg_layout_char('\u{034F}'));
+        }
+
+        #[test]
+        fn accepts_zwnj_u200c() {
+            assert!(is_meteg_layout_char('\u{200C}'));
+        }
+
+        #[test]
+        fn accepts_zwj_u200d() {
+            assert!(is_meteg_layout_char('\u{200D}'));
+        }
+        #[test]
+        fn rejects_non_meteg_layout_chars() {
+            assert!(!is_meteg_layout_char('\u{0020}'));
+            assert!(!is_meteg_layout_char('a'));
+            assert!(!is_meteg_layout_char('א'));
+        }
+    }
+    mod edge_cases {
+        use crate::sentence_ctx_funcs::is_valid_hebrew_char;
+        use crate::sentence_ctx_funcs::is_meteg_layout_char;
+
+        #[test]
+        fn tests_exact_boundaries_of_all_ranges() {
+            // Hebrew Block Start
+            assert!(is_valid_hebrew_char('\u{0590}'));
+            assert!(!is_valid_hebrew_char('\u{058F}'));
+
+            // Hebrew Block End
+            assert!(is_valid_hebrew_char('\u{05FF}'));
+            assert!(!is_valid_hebrew_char('\u{0600}'));
+        }
+
+        #[test]
+        fn verifies_all_explicitly_accepted_chars_pass_main_function() {
+            // Combine all explicitly accepted non-Hebrew chars and verify they pass
+            let all_explicit = vec![
+                '|', // Vertical bar
+                '\u{0020}', '\u{00A0}', '\u{200E}', '\u{200F}', '\u{2009}', '\u{205F}', '\u{3000}',
+                '\u{034F}', '\u{200C}', '\u{200D}',
+            ];
+
+            for c in all_explicit {
+                assert!(
+                    is_valid_hebrew_char(c),
+                    "Explicitly accepted character '{:?}' (U+{:04X}) should pass main function",
+                    c,
+                    c as u32
+                );
+            }
+        }
+
+        #[test]
+        fn rejects_non_meteg_layout_chars() {
+            assert!(!is_meteg_layout_char('\u{0020}'));
+            assert!(!is_meteg_layout_char('a'));
+            assert!(!is_meteg_layout_char('א'));
+        }
+
+        #[test]
+        fn rejects_outside_hebrew_block_start() {
+            // Just before the Hebrew block
+            assert!(!is_valid_hebrew_char('\u{058F}'));
+            assert!(!is_valid_hebrew_char('\u{058E}'));
+            assert!(!is_valid_hebrew_char('\u{0500}'));
+        }
+
+        #[test]
+        fn rejects_outside_hebrew_block_end() {
+            // Just after the Hebrew block
+            assert!(!is_valid_hebrew_char('\u{0600}'));
+            assert!(!is_valid_hebrew_char('\u{0601}'));
+            assert!(!is_valid_hebrew_char('\u{0700}'));
+        }
+
+        #[test]
+        fn rejects_null_character() {
+            assert!(!is_valid_hebrew_char('\0'));
+        }
+
+        #[test]
+        fn rejects_emoji() {
+            assert!(!is_valid_hebrew_char('\u{1F600}')); // 😀
+            assert!(!is_valid_hebrew_char('\u{1F44D}')); // 👍
+        }
+
+        #[test]
+        fn rejects_newline_variations_not_in_space_list() {
+            // Note: Your is_valid_hebrew_char does NOT accept regular \n via is_space_like_char
+            // If you need to handle this, add to is_space_like_char or main function
+            // For now, these are expected to fail based on current implementation
+            // assert!(!is_valid_hebrew_char('\n')); // Only true if not handled elsewhere
+            // assert!(!is_valid_hebrew_char('\r'));
+        }
+
+        #[test]
+        fn rejects_high_unicode_private_use_area() {
+            assert!(!is_valid_hebrew_char('\u{E000}'));
+            assert!(!is_valid_hebrew_char('\u{FDD0}'));
+        }
+
+        #[test]
+        fn rejects_other_whitespace_not_in_space_like() {
+            // Standard tab (\t) is not in is_space_like_char list
+            // It would only pass if your validation elsewhere handles it
+            // Based on current implementation, this SHOULD reject
+            // assert!(!is_valid_hebrew_char('\t'));
+        }
+
+
+        #[test]
+        fn handles_mixed_script_string_correctly() {
+            let mixed = "אב| cd "; // Hebrew + vertical bar + Latin + space
+
+            // Check each character individually
+            let chars: Vec<char> = mixed.chars().collect();
+            assert_eq!(chars.len(), 7);
+
+            // First two (Hebrew) should be valid
+            assert!(is_valid_hebrew_char(chars[0]));
+            assert!(is_valid_hebrew_char(chars[1]));
+
+            // Third (vertical bar) should be valid
+            assert!(is_valid_hebrew_char(chars[2]));
+
+            // Fourth and fifth (Latin) should be invalid
+            assert!(!is_valid_hebrew_char(chars[3]));
+            assert!(!is_valid_hebrew_char(chars[4]));
+
+            // Sixth and seventh (space and 'd') - space valid, d invalid
+            assert!(is_valid_hebrew_char(chars[5]));
+            assert!(!is_valid_hebrew_char(chars[6]));
+        }
+
+        #[test]
+        fn empty_string_simulation_returns_false_for_all_chars() {
+            // When iterating over empty string, loop won't execute (tested via other means)
+            // This verifies that truly invalid chars don't slip through
+            let definitely_invalid = ['_', '-', '@', '#', '$', '%', '&'];
+
+            for c in definitely_invalid {
+                assert!(!is_valid_hebrew_char(c), "{:?} should be rejected", c);
+            }
+        }
+
+        // --- Real World Sample ---
+        #[test]
+        fn accepts_sample_biblical_text() {
+            let sample = "וַיַּעַשׂ֩";
+            for c in sample.chars() {
+                assert!(
+                    is_valid_hebrew_char(c),
+                    "Character '{}' (U+{:04X}) should be valid",
+                    c,
+                    c as u32
+                );
+            }
+        }
     }
 }

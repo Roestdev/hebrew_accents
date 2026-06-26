@@ -6,20 +6,27 @@ use crate::{
 };
 
 /// Sentence including the context
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct SentenceContext {
-    /// The sentence
+    /// The sentence content (owned)
     pub sentence: String,
     /// The context of the sentence
     pub ctx: Context,
 }
 
 /// Describes the context of a sentence (poetic or prosaic)
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
+///
+/// Default value is Prosaic
+#[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Context {
-    /// The sentence follows a poetic structure (e.g., meter, rhyme).
+    /// The sentence follows a poetic structure (e.g., Psalms, Job, Proverbs).
+    /// Typically characterized by parallelism, meter, and specific poetry-exclusive accents
+    /// such as Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh.
     Poetic,
-    /// The sentence follows ordinary prose conventions.
+
+    /// The sentence follows ordinary prose conventions (e.g., Genesis, Exodus narrative).
+    /// Characterized by prose-exclusive accents such as Segolta, Zaqeph Qatan/Gadol,
+    /// Pashta, Tevir, Yetiv, etc. Used as the default when context cannot be determined.
     #[default]
     Prosaic,
 }
@@ -38,9 +45,172 @@ impl SentenceContext {
     /// assert_eq!(binding.sentence,"וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃  ׃ פ");
     /// ```
     pub fn new(sentence: impl Into<String>, ctx: Context) -> Result<Self, SentenceContextError> {
-        let sentence = sentence.into(); // Convert once and store
-        validate_sentence(&sentence)?;
-        Ok(Self { sentence, ctx })
+        let sentence_str = sentence.into();
+
+        // Validate the string before storing
+        validate_sentence(&sentence_str)?;
+
+        Ok(Self {
+            sentence: sentence_str,
+            ctx,
+        })
+    }
+
+    /// Returns a default `SentenceContext` with a valid non-empty string.
+    ///
+    /// Since an empty string will fail validation".
+    ///
+    /// ## Note
+    /// Genesis 1:1 is used as the default sentence
+    /// This method assumes always passes `validate_sentence`.
+    ///
+    /// # Example
+    /// ```
+    /// use hebrew_accents::{SentenceContext, Context};
+    ///
+    /// let sentence_context = SentenceContext::with_valid_default();
+    /// let binding = sentence_context.unwrap();
+    /// assert_eq!(binding.ctx,Context::Prosaic);
+    /// assert_eq!(binding.sentence,"בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃");
+    /// ```
+    pub fn with_valid_default() -> Result<Self, SentenceContextError> {
+        let genesis_1_verse_1 = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
+        Ok(Self::new(genesis_1_verse_1, Context::default())?)
+    }
+
+    /// Returns a reference to the sentence content.
+    ///
+    /// # Example
+    /// ```
+    /// use hebrew_accents::{SentenceContext, Context};
+    ///
+    /// let ctx = SentenceContext::new("שָׁלוֹם עַל יִשְׂרָאֵל", Context::Prosaic).unwrap();
+    ///
+    /// // Access the underlying string slice
+    /// assert_eq!(ctx.as_str(), "שָׁלוֹם עַל יִשְׂרָאֵל");
+    /// assert_eq!(ctx.as_str().len(), 22); // Length in bytes
+    /// ```
+    pub fn as_str(&self) -> &str {
+        &self.sentence
+    }
+
+    /// Returns the context of the sentence (Poetic or Prosaic).
+    ///
+    /// # Example
+    /// ```
+    /// use hebrew_accents::{SentenceContext, Context};
+    ///
+    /// // Create a poetic context
+    /// let poetry = SentenceContext::new("זְמִירוֹת", Context::Poetic).unwrap();
+    /// assert_eq!(poetry.context(), Context::Poetic);
+    ///
+    /// // Create a prosaic context
+    /// let prose = SentenceContext::new("וַיְדַבֵּר", Context::Prosaic).unwrap();
+    /// assert_eq!(prose.context(), Context::Prosaic);
+    ///
+    /// // Verify equality with the enum variant
+    /// if poetry.context() == Context::Poetic {
+    ///     println!("This is poetry!");
+    /// }
+    /// ```
+    pub fn context(&self) -> Context {
+        self.ctx
+    }
+
+    /// Try to determine the context of the given sentence
+    ///
+    /// This function tries to classify a Hebrew sentence as either poetic or prose by analyzing its accentuation pattern (ta'amim).
+    /// However, accurate classification is not always guaranteed due to the existence of two distinct accent systems.
+    /// While certain accents are exclusive to one register, others appear in both, creating ambiguity that can prevent
+    /// definitive context determination.
+    ///
+    /// The function works by checking for the presence of accent marks that are exclusive to
+    /// each context:
+    ///
+    /// **Prose-exclusive accents** (Segolta, Zaqeph Qatan/Gadol, Pashta, Tevir, Yetiv,
+    /// Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga):
+    ///   → Indicate the sentence is likely Prosaic
+    ///
+    /// **Poetry-exclusive accents** (Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh):
+    ///   → Indicate the sentence is likely Poetic
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Context::Prosaic)` - Only prose-exclusive accents were detected
+    /// * `Ok(Context::Poetic)` - Only poetry-exclusive accents were detected
+    /// * `Err(SentenceContextError::DerivationFailed("..."))` - One of the following:
+    ///   * `"Unique prose and poetry accent markers identified."` — Ambiguous input containing
+    ///     characteristics of both contexts
+    ///   * `"No distinguishable prose and/or poetry accents have been found"` — Input lacks
+    ///     any context-specific accent markers
+    ///
+    /// # Limitations
+    ///
+    /// Because some Hebrew accents appear in both prosaic and poetic systems, accurate
+    /// classification depends on finding at least one uniquely identifying accent. If the
+    /// sentence contains only shared accents or a mixture from both registers, definitive
+    /// determination is not possible.
+    ///
+    /// # Example
+    ///
+    /// ``` rust
+    /// use hebrew_accents::{SentenceContext, Context};
+    ///
+    /// let result = try_determine_context("וַיְהִ֣י בְיָמֵ֗י אֲחַשְׁוֵרֹ֡שׁ");
+    /// match result {
+    ///     Ok(context) => println!("Context: {:?}", context),
+    ///     Err(e) => println!("Could not determine context: {}", e),
+    /// }
+    /// ```
+    pub fn try_determine_context(&self) -> Result<Context, SentenceContextError> {
+        let mut could_be_prose = false;
+        let mut could_be_poetry = false;
+
+        // store original Context
+        let _org_context = self.ctx;
+
+        // Assume the sentence is Prosaic
+        let mut assume_prose = self.clone();
+        assume_prose.ctx = Context::Prosaic;
+        if assume_prose.contains_accent(ProseAccent::Segolta.into())
+            || assume_prose.contains_accent(ProseAccent::ZaqephQatan.into())
+            || assume_prose.contains_accent(ProseAccent::ZaqephGadol.into())
+            || assume_prose.contains_accent(ProseAccent::Pashta.into())
+            || assume_prose.contains_accent(ProseAccent::Tevir.into())
+            || assume_prose.contains_accent(ProseAccent::Yetiv.into())
+            || assume_prose.contains_accent(ProseAccent::Gershayim.into())
+            || assume_prose.contains_accent(ProseAccent::PazerGadol.into())
+            || assume_prose.contains_accent(ProseAccent::TelishaGedolah.into())
+            || assume_prose.contains_accent(ProseAccent::MerkhaKephulah.into())
+            || assume_prose.contains_accent(ProseAccent::Darga.into())
+            || assume_prose.contains_accent(ProseAccent::TelishaQetannah.into())
+        {
+            could_be_prose = true;
+        }
+
+        // Assume the sentence is Poetic
+        let mut assume_poetry = self.clone();
+        assume_poetry.ctx = Context::Poetic;
+        if assume_poetry.contains_accent(PoetryAccent::OlehWeYored.into())
+            || assume_poetry.contains_accent(PoetryAccent::Dechi.into())
+            || assume_poetry.contains_accent(PoetryAccent::Illuy.into())
+            || assume_poetry.contains_accent(PoetryAccent::TsinnoritMerkha.into())
+            || assume_poetry.contains_accent(PoetryAccent::TsinnoritMahpakh.into())
+        {
+            could_be_poetry = true;
+        }
+
+        // Determine context based upon the findings using match
+        match (could_be_prose, could_be_poetry) {
+            (true, false) => Ok(Context::Prosaic),
+            (false, true) => Ok(Context::Poetic),
+            (true, true) => Err(SentenceContextError::DerivationFailed(
+                "Unique prose and poetry accent markers identified",
+            )),
+            (false, false) => Err(SentenceContextError::DerivationFailed(
+                "No unique prose or poetry accent markers identified",
+            )),
+        }
     }
 }
 
@@ -97,42 +267,6 @@ impl<'h> Match<'h> {
     }
 }
 
-/// Try to determine the context of the sentence
-///
-/// Prose: Segolta, Zaqeph Qaton/Gadol, Zarqa,
-/// Poetry: Tsinnor
-pub fn try_determine_context(sentence: &str) -> Result<Context, SentenceContextError> {
-    // Assume the sentence is Prosaic
-    let assume_prose = SentenceContext::new(sentence, Context::Prosaic)?;
-    if assume_prose.contains_accent(ProseAccent::Segolta.into())
-        || assume_prose.contains_accent(ProseAccent::ZaqephQatan.into())
-        || assume_prose.contains_accent(ProseAccent::ZaqephGadol.into())
-        || assume_prose.contains_accent(ProseAccent::Pashta.into())
-        || assume_prose.contains_accent(ProseAccent::Tevir.into())
-        || assume_prose.contains_accent(ProseAccent::Yetiv.into())
-        || assume_prose.contains_accent(ProseAccent::Gershayim.into())
-        || assume_prose.contains_accent(ProseAccent::PazerGadol.into())
-        || assume_prose.contains_accent(ProseAccent::TelishaGedolah.into())
-        || assume_prose.contains_accent(ProseAccent::MerkhaKephulah.into())
-        || assume_prose.contains_accent(ProseAccent::Darga.into())
-        || assume_prose.contains_accent(ProseAccent::TelishaQetannah.into())
-    {
-        return Ok(Context::Poetic);
-    }
-    // Assume the sentence is Poetic
-    let assume_poetry = SentenceContext::new(sentence, Context::Poetic)?;
-    if assume_poetry.contains_accent(PoetryAccent::OlehWeYored.into())
-        || assume_poetry.contains_accent(PoetryAccent::Dechi.into())
-        || assume_poetry.contains_accent(PoetryAccent::Illuy.into())
-        || assume_poetry.contains_accent(PoetryAccent::TsinnoritMerkha.into())
-        || assume_poetry.contains_accent(PoetryAccent::TsinnoritMahpakh.into())
-    {
-        return Ok(Context::Prosaic);
-    }
-    // Context Can Not Be Determined
-    Err(SentenceContextError::ContextCanNotBeDetermined)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -178,45 +312,6 @@ mod tests {
         assert!(m_atch.is_empty());
         m_atch.end = 4;
         assert!(!m_atch.is_empty());
-    }
-
-    // NEW TEST: Exercise try_determine_context function
-    #[test]
-    fn try_determine_context_returns_unknown() {
-        let text_without_accents = "שלום"; // Plain text with no cantillation marks
-        let result = try_determine_context(text_without_accents);
-
-        assert!(
-            result.is_err(),
-            "Expected an error for text without specific accents"
-        );
-        assert_eq!(
-            result.unwrap_err(),
-            SentenceContextError::ContextCanNotBeDetermined
-        );
-    }
-
-    #[test]
-    fn try_determine_context_with_empty_string() {
-        let result = try_determine_context("");
-        assert!(
-            result.is_err(),
-            "Expected an error for text without specific accents"
-        );
-        assert_eq!(result.unwrap_err(), SentenceContextError::EmptySentence);
-    }
-
-    #[test]
-    fn try_determine_context_with_poetic_text() {
-        let result = try_determine_context("אֱלֹהִ֑ים צְבָא֖וֹת יְשַׁבְתִּ֣י");
-        assert!(
-            result.is_err(),
-            "Expected an error for text without specific accents"
-        );
-        assert_eq!(
-            result.unwrap_err(),
-            SentenceContextError::ContextCanNotBeDetermined
-        );
     }
 
     #[test]
@@ -353,99 +448,6 @@ mod tests {
 }
 
 #[cfg(test)]
-mod try_get_context {
-    use super::*;
-
-    #[test]
-    fn test_detects_poetic_context_via_prose_accents() {
-        // Genesis 1:1: "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים..."
-        // Contains Telisha Gedola (֟) which is in the "Poetic" trigger list for Prose accents.
-        let text = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים";
-        let result = try_determine_context(text);
-        assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err(),
-            SentenceContextError::ContextCanNotBeDetermined
-        );
-    }
-
-    #[test]
-    fn test_detects_prosaic_context_via_poetry_accents() {
-        // We need a string that definitely contains an accent that only occurs in poetry
-        // Placeholder: Replace with a real verse containing OlehWeYored.
-        let text = "א֥שֽׁרי־הא֗ישׁ אשׁ֤ר ל֥א הלך֮ בּעצ֪ת רשׁ֫ע֥ים וּבד֣רך ח֭טּאים ל֥א עמ֑ד וּבמושׁ֥ב ל֝צ֗ים ל֣א ישֽׁב";
-
-        let res = try_determine_context(text);
-
-        if res.is_ok() {
-            assert_eq!(res.unwrap(), Context::Prosaic);
-        } else {
-            println!("Warning: Text did not trigger Prosaic detection. Check accent presence.");
-        }
-    }
-
-    /// Test Case 3: Context Cannot Be Determined
-    /// A simple sentence with no special accents (e.g., just "Hello" or a plain Hebrew sentence without Ta'amei).
-    #[test]
-    fn test_context_undetermined() {
-        // A string with no cantillation marks or only common ones not in the trigger lists.
-        // Example: "שלום" (Shalom) with no accents.
-        let text = "שלום";
-
-        let result = try_determine_context(text);
-
-        assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err(),
-            SentenceContextError::ContextCanNotBeDetermined
-        );
-    }
-
-    /// Test Case 4: Invalid Input (Empty String)
-    #[test]
-    fn test_empty_string_error() {
-        let text = "";
-
-        let result = try_determine_context(text);
-
-        assert!(result.is_err());
-        // Should be EmptySentence or ContextCanNotBeDetermined depending on new() logic
-        // Assuming new() returns EmptySentence first.
-        match result.unwrap_err() {
-            SentenceContextError::EmptySentence => {}
-            SentenceContextError::ContextCanNotBeDetermined => {}
-            e => panic!("Unexpected error: {:?}", e),
-        }
-    }
-
-    /// Test Case 5: Invalid Character
-    #[test]
-    fn test_invalid_character_error() {
-        // Hebrew text with a Latin character (invalid)
-        let text = "בְּרֵאשִׁ֖ית A";
-
-        let result = try_determine_context(text);
-
-        assert!(result.is_err());
-        match result.unwrap_err() {
-            SentenceContextError::InvalidCharacter(_, _) => {}
-            e => panic!("Expected InvalidCharacter, got: {:?}", e),
-        }
-    }
-
-    /// Test Case 6: Multiple Lines
-    #[test]
-    fn test_multiple_lines_error() {
-        let text = "בְּרֵאשִׁ֖ית\nבָּרָ֣א";
-
-        let result = try_determine_context(text);
-
-        assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), SentenceContextError::MultipleLines);
-    }
-}
-
-#[cfg(test)]
 mod lumo_tests {
     use crate::accent_data::POETRY_ACCENT_TABLE;
     use crate::accent_data::PROSE_ACCENT_TABLE;
@@ -518,5 +520,113 @@ mod lumo_tests {
         display_poetry_accent_table();
         display_pseudo_accent_table();
         display_accent_table("Integration", PROSE_ACCENT_TABLE.as_ref());
+    }
+}
+
+#[cfg(test)]
+mod try_determine_context {
+    use super::*;
+    use crate::Context;
+    // Helper to create a SentenceContext instance for testing
+    // We mock the accents by setting them directly or relying on a constructor that accepts them
+    // Since the snippet doesn't show the constructor for accents, we assume `contains_accent`
+    // checks an internal list. In a real scenario, you might need a builder or a specific
+    // constructor for testing that injects accents.
+    //
+    // *Assumption*: There is a way to create a `SentenceContext` with pre-defined accents
+    // or we can manipulate the internal state via a `new_with_accents` helper not shown here.
+    // If your struct doesn't have such a helper, you will need to implement one in your
+    // main code behind `#[cfg(test)]` or use the `new` method with actual Hebrew text
+    // containing the desired accents.
+
+    /// Helper to create a test sentence with specific "fake" accents injected if needed,
+    /// or simply using `new` with real text. For these tests, I assume we can create
+    /// a context where we know exactly which `contains_accent` will return true.
+    ///
+    /// To make these tests runnable, I'll assume you have a test-only constructor or
+    /// that you use real Hebrew strings containing the specific accents.
+    ///
+    /// *Strategy*: I will write tests assuming you can pass a vector of accents to a
+    /// test helper, OR you use specific Hebrew strings known to contain only those accents.
+    /// Below I provide the structure using `SentenceContext::new` with example strings.
+
+    // Example strings (you would replace these with actual verified Hebrew text)
+    // 1. Text with ONLY Segolta (Prose)
+    const TEXT_PROSE_ONLY: &str = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃"; // Genesis 1:1
+
+    // 2. Text with ONLY OlehWeYored (Poetry)
+    const TEXT_POETRY_ONLY: &str =
+        "אַ֥שְֽׁרֵי־הָאִ֗ישׁ אֲשֶׁ֤ר לֹ֥א הָלַךְ֮ בַּעֲצַ֪ת רְשָׁ֫עִ֥ים וּבְדֶ֣רֶךְ חַ֭טָּאִים לֹ֥א עָמָ֑ד וּבְמוֹשַׁ֥ב לֵ֝צִ֗ים לֹ֣א יָשָֽׁב׃"; // Psalm 1:1
+
+    // 3. Text with BOTH types
+    const TEXT_AMBIGUOUS: &str = "מַעֲשֵׂ֣ה אֱלֹהִ֑ים"; // Hypothetical mix
+
+    // 4. Text with NEITHER (common accents like Munakh, Makhpakh which appear in both?)
+    const TEXT_NEITHER: &str = "וַיֹּ֙אמֶר֙"; // Hypothetical common accent
+
+    #[test]
+    fn test_detect_prose_only() {
+        let sentence_ctx = SentenceContext::new(TEXT_PROSE_ONLY, Context::Prosaic).unwrap();
+
+        let result = sentence_ctx.try_determine_context();
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), Context::Prosaic);
+    }
+
+    #[test]
+    fn test_detect_poetry_only() {
+        let ctx = SentenceContext::new(TEXT_POETRY_ONLY, Context::Prosaic).unwrap();
+
+        let result = ctx.try_determine_context();
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), Context::Poetic);
+    }
+
+    #[test]
+    fn test_detect_ambiguity_both_found() {
+        let ctx = SentenceContext::new(TEXT_AMBIGUOUS, Context::Prosaic).unwrap();
+
+        let result = ctx.try_determine_context();
+
+        assert!(result.is_err());
+        match result {
+            Err(SentenceContextError::DerivationFailed(msg)) => {
+                assert!(msg.contains("Both prose and poetry"));
+            }
+            _ => panic!("Expected DerivationFailed error"),
+        }
+    }
+
+    #[test]
+    fn test_detect_neither_found() {
+        let sentence_ctx = SentenceContext::new(TEXT_NEITHER, Context::Prosaic).unwrap();
+
+        let result = sentence_ctx.try_determine_context();
+
+        assert!(result.is_err());
+        match result {
+            Err(SentenceContextError::DerivationFailed(msg)) => {
+                assert!(msg.contains("No distinguishable"));
+            }
+            _ => panic!("Expected DerivationFailed error"),
+        }
+    }
+
+    #[test]
+    fn test_empty_sentence_no_accents() {
+        let ctx = SentenceContext::new("", Context::Prosaic).unwrap();
+
+        let result = ctx.try_determine_context();
+
+        // Empty string should trigger "No distinguishable..."
+        assert!(result.is_err());
+        match result {
+            Err(SentenceContextError::DerivationFailed(msg)) => {
+                assert!(msg.contains("No distinguishable"));
+            }
+            _ => panic!("Expected DerivationFailed error"),
+        }
     }
 }

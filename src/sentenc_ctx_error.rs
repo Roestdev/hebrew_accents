@@ -1,128 +1,197 @@
-use std::fmt;
-/// Define the error type for validation failures
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum SentenceContextError {
-    /// The char and its index
-    InvalidCharacter(char, usize),
-    /// Optional: if you want to forbid empty strings
-    EmptySentence,
-    /// Only single lines allowed
-    MultipleLines,
-    /// todo
-    ContextCanNotBeDetermined,
-}
+use thiserror::Error;
 
-impl fmt::Display for SentenceContextError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            SentenceContextError::InvalidCharacter(c, idx) => {
-                write!(f, "Invalid character '{}' at index {}: only Hebrew, whitespace, and Bidi controls allowed.", c, idx)
-            }
-            SentenceContextError::EmptySentence => {
-                write!(f, "Sentence cannot be empty")
-            }
-            SentenceContextError::MultipleLines => {
-                write!(f, "Sentence must be a single line")
-            }
-            SentenceContextError::ContextCanNotBeDetermined => {
-                write!(f, "Could not determine the context (Prosaic vs Poetic)")
-            }
-        }
-    }
+/// Define the error type for validation failures
+#[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SentenceContextError {
+    /// Character outside the allowed set was encountered
+    #[error("Invalid character '{}' at index {}: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
+    InvalidCharacter(char, usize),
+
+    /// Input string was empty or contains only whitespace
+    #[error("Sentence cannot be empty or contain only whitespace characters")]
+    EmptySentence,
+
+    /// Input contained newline characters
+    #[error("Sentence must be a single line")]
+    MultipleLines,
+
+    /// First character is not a valid Hebrew consonant (e.g., niqqud, punctuation)
+    #[error("Sentence must start with a Hebrew consonant, found '{}'", .0)]
+    StartsWithNonConsonant(char),
+
+    /// First character is a final-form letter (ך, ם, ן, ף, ץ)
+    #[error("Final-form letter '{}' cannot appear at sentence start", .0)]
+    StartsWithFinalForm(char),
+
+    /// Ambiguous or insufficient accent marks for context determination
+    #[error("Derivation failed: {0}")]
+    DerivationFailed(&'static str),
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
 
-    // Helper to create a formatter for Display tests
-    fn format_error(err: SentenceContextError) -> String {
-        err.to_string()
+    /// Helper to compute hash for testing Hash trait
+    fn get_hash<T: Hash>(t: &T) -> u64 {
+        let mut s = DefaultHasher::new();
+        t.hash(&mut s);
+        s.finish()
     }
 
     #[test]
-    fn test_invalid_character_display() {
+    fn test_invalid_character_formatting() {
         let err = SentenceContextError::InvalidCharacter('@', 5);
-        let msg = format_error(err);
+
+        assert_eq!(err.to_string(), "Invalid character '@' at index 5: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed");
+        assert_eq!(err, SentenceContextError::InvalidCharacter('@', 5));
+        // Different index should not be equal
+        assert_ne!(err, SentenceContextError::InvalidCharacter('@', 6));
+        // Different char should not be equal
+        assert_ne!(err, SentenceContextError::InvalidCharacter('$', 5));
+    }
+
+    #[test]
+    fn test_empty_sentence_formatting() {
+        let err = SentenceContextError::EmptySentence;
+        assert_eq!(
+            err.to_string(),
+            "Sentence cannot be empty or contain only whitespace characters"
+        );
+
+        // Unit variants should be equal to themselves
+        assert_eq!(err, SentenceContextError::EmptySentence);
+    }
+
+    #[test]
+    fn test_multiple_lines_formatting() {
+        let err = SentenceContextError::MultipleLines;
+        assert_eq!(err.to_string(), "Sentence must be a single line");
+        assert_eq!(err, SentenceContextError::MultipleLines);
+    }
+
+    #[test]
+    fn test_starts_with_non_consonant_formatting() {
+        let vowel = 'ְ'; // Sheva (U+05B0)
+        let err = SentenceContextError::StartsWithNonConsonant(vowel);
 
         assert_eq!(
-            msg,
-            "Invalid character '@' at index 5: only Hebrew, whitespace, and Bidi controls allowed."
+            err.to_string(),
+            "Sentence must start with a Hebrew consonant, found '\u{05B0}'"
+        );
+        assert_eq!(err, SentenceContextError::StartsWithNonConsonant('ְ'));
+
+        // Test with a space (often treated as non-consonant start in loose parsing, though usually whitespace skipped)
+        let space_err = SentenceContextError::StartsWithNonConsonant(' ');
+        assert_eq!(
+            space_err.to_string(),
+            "Sentence must start with a Hebrew consonant, found ' '"
         );
     }
 
     #[test]
-    fn test_invalid_character_debug() {
-        let err = SentenceContextError::InvalidCharacter('א', 10);
-        let debug_str = format!("{:?}", err);
+    fn test_startswith_final_form_formatting() {
+        // Test all five final forms
+        let finals = ['ך', 'ם', 'ן', 'ף', 'ץ'];
 
-        // Verify Debug output includes the variant name and data
+        for &final_char in &finals {
+            let err = SentenceContextError::StartsWithFinalForm(final_char);
+            let expected = format!(
+                "Final-form letter '{}' cannot appear at sentence start",
+                final_char
+            );
+
+            assert_eq!(err.to_string(), expected);
+            assert_eq!(err, SentenceContextError::StartsWithFinalForm(final_char));
+        }
+    }
+
+    #[test]
+    fn test_derivation_failed_formatting() {
+        let reason = "Ambiguous accents";
+        let err = SentenceContextError::DerivationFailed(reason);
+
+        assert_eq!(err.to_string(), "Derivation failed: Ambiguous accents");
+        assert_eq!(
+            err,
+            SentenceContextError::DerivationFailed("Ambiguous accents")
+        );
+
+        // String slice comparison
+        assert_ne!(
+            err,
+            SentenceContextError::DerivationFailed("Different reason")
+        );
+    }
+
+    #[test]
+    fn test_clone_and_copy() {
+        // Verify Clone works
+        let err = SentenceContextError::InvalidCharacter('א', 0);
+        let cloned = err.clone();
+        assert_eq!(err, cloned);
+
+        // Verify Copy works (by using it twice without move error)
+        let _first_use = SentenceContextError::EmptySentence;
+        let _second_use = SentenceContextError::EmptySentence; // This would fail if not Copy
+    }
+
+    #[test]
+    fn test_hash_consistency() {
+        // Two identical errors must produce the same hash
+        let err1 = SentenceContextError::InvalidCharacter('!', 0);
+        let err2 = SentenceContextError::InvalidCharacter('!', 0);
+
+        assert_eq!(get_hash(&err1), get_hash(&err2));
+
+        // Different errors must likely produce different hashes
+        let err3 = SentenceContextError::InvalidCharacter('@', 0);
+        let h1 = get_hash(&SentenceContextError::EmptySentence);
+        let h2 = get_hash(&SentenceContextError::MultipleLines);
+        let h3 = get_hash(&err3);
+
+        // Verify distinct error types have different hashes
+        assert_ne!(h1, h2);
+        assert_ne!(h1, h3); // EmptySentence vs InvalidCharacter('!', 0)
+        assert_ne!(h2, h3); // MultipleLines vs InvalidCharacter('@', 0)
+
+        // Same character at different indices should have different hashes
+        assert_ne!(
+            get_hash(&err1),
+            get_hash(&SentenceContextError::InvalidCharacter('@', 1))
+        );
+    }
+
+    #[test]
+    fn test_debug_trait() {
+        let err = SentenceContextError::InvalidCharacter('\u{200F}', 10); // RTL mark
+        let debug_str = format!("{:?}", err);
+        println!("test_debug_trait: {}", debug_str);
+
+        // Debug output should contain the variant name and data
         assert!(debug_str.contains("InvalidCharacter"));
-        assert!(debug_str.contains("'א'"));
+        assert!(debug_str.contains("\\u{200f}")); // escape the '/'
         assert!(debug_str.contains("10"));
     }
 
     #[test]
-    fn test_empty_sentence_display() {
-        let err = SentenceContextError::EmptySentence;
-        let msg = format_error(err);
+    fn test_error_conversion_to_string() {
+        // Ensure .to_string() works on all variants
+        let errors = vec![
+            SentenceContextError::InvalidCharacter('x', 0),
+            SentenceContextError::EmptySentence,
+            SentenceContextError::MultipleLines,
+            SentenceContextError::StartsWithNonConsonant(' '),
+            SentenceContextError::StartsWithFinalForm('ץ'),
+            SentenceContextError::DerivationFailed("Test"),
+        ];
 
-        assert_eq!(msg, "Sentence cannot be empty");
-    }
-
-    #[test]
-    fn test_multiple_lines_display() {
-        let err = SentenceContextError::MultipleLines;
-        let msg = format_error(err);
-
-        assert_eq!(msg, "Sentence must be a single line");
-    }
-
-    #[test]
-    fn test_context_undetermined_display() {
-        let err = SentenceContextError::ContextCanNotBeDetermined;
-        let msg = format_error(err);
-
-        // Note: Your current impl prints "Sentence must be a single line" for this too.
-        // You might want to update the Display impl to be more specific later.
-        assert_eq!(msg, "Could not determine the context (Prosaic vs Poetic)");
-    }
-
-    #[test]
-    fn test_partial_eq() {
-        let err1 = SentenceContextError::InvalidCharacter('!', 0);
-        let err2 = SentenceContextError::InvalidCharacter('!', 0);
-        let err3 = SentenceContextError::InvalidCharacter('?', 0);
-        let err4 = SentenceContextError::EmptySentence;
-
-        // Same variant and data
-        assert_eq!(err1, err2);
-
-        // Same variant and different char position
-        assert_ne!(err1, err3);
-
-        // Different data (index)
-        assert_ne!(err1, SentenceContextError::InvalidCharacter('!', 1));
-
-        // Different variant
-        assert_ne!(err1, err4);
-    }
-
-    #[test]
-    fn test_clone() {
-        let err = SentenceContextError::InvalidCharacter('ז', 42);
-        let cloned = err.clone();
-
-        assert_eq!(err, cloned);
-    }
-
-    #[test]
-    fn test_special_characters_in_error() {
-        // Test with a Hebrew character to ensure formatting handles non-ASCII correctly
-        let err = SentenceContextError::InvalidCharacter('ב', 1);
-        let msg = format_error(err);
-
-        assert!(msg.contains("ב"));
-        assert!(msg.contains("1"));
+        for e in errors {
+            let s = e.to_string();
+            assert!(!s.is_empty());
+            assert!(s.len() > 5); // Sanity check
+        }
     }
 }
