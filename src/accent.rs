@@ -875,7 +875,6 @@ mod pseudo_accent_tests {
     }
 }
 
-
 #[cfg(test)]
 mod test_relative_strength {
     use crate::*;
@@ -2972,7 +2971,7 @@ mod test_to_and_from_trait_by_lumo {
             }
         }
     }
- 
+
     #[test]
     fn test_from_pseudo_soph_pasuq() {
         let pseudo = PseudoAccent::SophPasuq;

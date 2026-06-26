@@ -486,4 +486,3 @@ mod regex_initialization_tests {
         let _ = regex.is_match(invalid);
     }
 }
-

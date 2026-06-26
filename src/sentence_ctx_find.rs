@@ -1902,7 +1902,7 @@ mod unit_tests {
 mod unit_tests_cross_context {
     use super::*;
     #[test]
-// accents in the wrong context
+    // accents in the wrong context
     fn try_find_prose_accent_in_poetry_context() {
         // try find Segolta in Poetic context
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
@@ -2228,7 +2228,7 @@ mod additional_function_coverage_tests {
         let binding = sc.unwrap();
         let result = binding.find_accent(PseudoAccent::SophPasuq.into());
         assert!(result.is_some());
-        
+
         let sc = SentenceContext::new("אלהים ׃ יה֣י", Context::Prosaic);
         let binding = sc.unwrap();
         let result = binding.find_accent(PseudoAccent::SophPasuq.into());
@@ -2246,7 +2246,6 @@ mod additional_function_coverage_tests {
         let binding = sc.unwrap();
         let result = binding.find_accent(PseudoAccent::Maqqeph.into());
         assert!(result.is_some());
-    
     }
 
     #[test]
