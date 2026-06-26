@@ -14,7 +14,7 @@ use crate::char::{
 };
 use crate::sentenc_ctx_error::SentenceContextError;
 use crate::sentence_ctx_find::ACCENT_LEN_UTF8;
-use crate::Match;
+use crate::{Context, Match, PoetryAccent, ProseAccent, SentenceContext};
 
 pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
     // Merkha (as a poetry accent) is
@@ -352,6 +352,57 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
 
     // If we exit the loop without having seen both parts, the sequence is absent.
     false
+}
+
+pub(crate) fn detect_context_from_sentence(
+    sentence: &str,
+) -> Result<Context, SentenceContextError> {
+    validate_sentence(sentence)?;
+
+    let mut could_be_prose = false;
+    let mut could_be_poetry = false;
+
+    // Assume Prosaic and check for prose-exclusive accents
+    let assume_prose = SentenceContext::new(sentence, Context::Prosaic)?;
+    if assume_prose.contains_accent(ProseAccent::Segolta.into())
+        || assume_prose.contains_accent(ProseAccent::ZaqephQatan.into())
+        || assume_prose.contains_accent(ProseAccent::ZaqephGadol.into())
+        || assume_prose.contains_accent(ProseAccent::Pashta.into())
+        || assume_prose.contains_accent(ProseAccent::Tevir.into())
+        || assume_prose.contains_accent(ProseAccent::Yetiv.into())
+        || assume_prose.contains_accent(ProseAccent::Gershayim.into())
+        || assume_prose.contains_accent(ProseAccent::PazerGadol.into())
+        || assume_prose.contains_accent(ProseAccent::TelishaGedolah.into())
+        || assume_prose.contains_accent(ProseAccent::MerkhaKephulah.into())
+        || assume_prose.contains_accent(ProseAccent::Darga.into())
+        || assume_prose.contains_accent(ProseAccent::TelishaQetannah.into())
+    {
+        could_be_prose = true;
+    }
+
+    // Assume Poetic and check for poetry-exclusive accents
+    let assume_poetry = SentenceContext::new(sentence, Context::Poetic)?;
+    if assume_poetry.contains_accent(PoetryAccent::OlehWeYored.into())
+        || assume_poetry.contains_accent(PoetryAccent::ReviaMugrash.into())
+        || assume_poetry.contains_accent(PoetryAccent::Dechi.into())
+        || assume_poetry.contains_accent(PoetryAccent::Illuy.into())
+        || assume_poetry.contains_accent(PoetryAccent::TsinnoritMerkha.into())
+        || assume_poetry.contains_accent(PoetryAccent::TsinnoritMahpakh.into())
+    {
+        could_be_poetry = true;
+    }
+
+    // Determine context based upon the findings
+    match (could_be_prose, could_be_poetry) {
+        (true, false) => Ok(Context::Prosaic),
+        (false, true) => Ok(Context::Poetic),
+        (true, true) => Err(SentenceContextError::DerivationFailed(
+            "Unique prose and poetry accent markers identified",
+        )),
+        (false, false) => Err(SentenceContextError::DerivationFailed(
+            "No unique prose or poetry accent markers identified",
+        )),
+    }
 }
 
 pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
@@ -887,10 +938,56 @@ mod tests4_validate_sentence {
 //is_paseq_alternative_char(c)
 //is_meteg_layout_char(c) {
 mod tests4_is_valid_hebrew_char {
+    use crate::sentence_ctx_funcs::is_valid_hebrew_char;
+
+    #[test]
+    fn tests_exact_boundaries_of_all_ranges() {
+        // Hebrew Block Start
+        assert!(!is_valid_hebrew_char('\u{058F}'));
+
+        // Hebrew Block End
+        assert!(!is_valid_hebrew_char('\u{0600}'));
+    }
+
     mod tests4_is_hebrew_block {
         // --- Hebrew Block Characters (U+0590 - U+05FF) ---
+        // not used U+0590
+        // not used U+05C8 - U+05CF
+        // not used U+05F5 - U+05FF
         use crate::sentence_ctx_funcs::is_valid_hebrew_char;
-        
+        #[test]
+        fn hebrew_block_0591() {
+            for c in '\u{0591}'..'\u{05C7}' {
+                assert!(
+                    is_valid_hebrew_char(c),
+                    "Explicitly accepted character '{:?}' (U+{:04X}) should pass main function",
+                    c,
+                    c as u32
+                );
+            }
+        }
+        #[test]
+        fn hebrew_block_05d0() {
+            for c in '\u{05D0}'..'\u{05EA}' {
+                assert!(
+                    is_valid_hebrew_char(c),
+                    "Explicitly accepted character '{:?}' (U+{:04X}) should pass main function",
+                    c,
+                    c as u32
+                );
+            }
+        }
+        #[test]
+        fn hebrew_block_05ef() {
+            for c in '\u{05EF}'..'\u{05F4}' {
+                assert!(
+                    is_valid_hebrew_char(c),
+                    "Explicitly accepted character '{:?}' (U+{:04X}) should pass main function",
+                    c,
+                    c as u32
+                );
+            }
+        }
 
         #[test]
         fn rejects_outside_hebrew_block_start() {
@@ -986,17 +1083,15 @@ mod tests4_is_valid_hebrew_char {
         }
     }
     mod edge_cases {
-        use crate::sentence_ctx_funcs::is_valid_hebrew_char;
         use crate::sentence_ctx_funcs::is_meteg_layout_char;
+        use crate::sentence_ctx_funcs::is_valid_hebrew_char;
 
         #[test]
         fn tests_exact_boundaries_of_all_ranges() {
             // Hebrew Block Start
-            assert!(is_valid_hebrew_char('\u{0590}'));
             assert!(!is_valid_hebrew_char('\u{058F}'));
 
             // Hebrew Block End
-            assert!(is_valid_hebrew_char('\u{05FF}'));
             assert!(!is_valid_hebrew_char('\u{0600}'));
         }
 
@@ -1076,29 +1171,24 @@ mod tests4_is_valid_hebrew_char {
             // assert!(!is_valid_hebrew_char('\t'));
         }
 
-
         #[test]
         fn handles_mixed_script_string_correctly() {
             let mixed = "אב| cd "; // Hebrew + vertical bar + Latin + space
-
-            // Check each character individually
             let chars: Vec<char> = mixed.chars().collect();
+            // Check nr. of characters
             assert_eq!(chars.len(), 7);
-
-            // First two (Hebrew) should be valid
+            // First two characters (Hebrew) should be valid
             assert!(is_valid_hebrew_char(chars[0]));
             assert!(is_valid_hebrew_char(chars[1]));
-
-            // Third (vertical bar) should be valid
+            // Third character (vertical bar) should be valid
             assert!(is_valid_hebrew_char(chars[2]));
-
-            // Fourth and fifth (Latin) should be invalid
-            assert!(!is_valid_hebrew_char(chars[3]));
+            // Fouth character (space) should be valid
+            assert!(is_valid_hebrew_char(chars[3]));
+            // Fifth and sixth characters(Latin) invalid
             assert!(!is_valid_hebrew_char(chars[4]));
-
-            // Sixth and seventh (space and 'd') - space valid, d invalid
-            assert!(is_valid_hebrew_char(chars[5]));
-            assert!(!is_valid_hebrew_char(chars[6]));
+            assert!(!is_valid_hebrew_char(chars[5]));
+            // Seventh character (space) should be valid
+            assert!(is_valid_hebrew_char(chars[6]));
         }
 
         #[test]
@@ -1115,7 +1205,7 @@ mod tests4_is_valid_hebrew_char {
         // --- Real World Sample ---
         #[test]
         fn accepts_sample_biblical_text() {
-            let sample = "וַיַּעַשׂ֩";
+            let sample = " בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ׃";
             for c in sample.chars() {
                 assert!(
                     is_valid_hebrew_char(c),

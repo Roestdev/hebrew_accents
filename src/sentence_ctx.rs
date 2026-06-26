@@ -1,8 +1,8 @@
 //! Main file
 
 use crate::{
-    sentenc_ctx_error::SentenceContextError, sentence_ctx_funcs::validate_sentence, PoetryAccent,
-    ProseAccent,
+    sentenc_ctx_error::SentenceContextError,
+    sentence_ctx_funcs::{detect_context_from_sentence, validate_sentence},
 };
 
 /// Sentence including the context
@@ -75,7 +75,7 @@ impl SentenceContext {
     /// ```
     pub fn with_valid_default() -> Result<Self, SentenceContextError> {
         let genesis_1_verse_1 = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
-        Ok(Self::new(genesis_1_verse_1, Context::default())?)
+        Self::new(genesis_1_verse_1, Context::default())
     }
 
     /// Returns a reference to the sentence content.
@@ -162,56 +162,34 @@ impl SentenceContext {
     ///     Err(e) => println!("Could not determine context: {}", e),
     /// }
     /// ```
+    /// Try to determine the context of the given sentence
+    ///
+    /// For a standalone version that doesn't require an existing `SentenceContext`,
+    /// see [`try_determine_context`](crate::try_determine_context).
     pub fn try_determine_context(&self) -> Result<Context, SentenceContextError> {
-        let mut could_be_prose = false;
-        let mut could_be_poetry = false;
-
-        // store original Context
-        let _org_context = self.ctx;
-
-        // Assume the sentence is Prosaic
-        let mut assume_prose = self.clone();
-        assume_prose.ctx = Context::Prosaic;
-        if assume_prose.contains_accent(ProseAccent::Segolta.into())
-            || assume_prose.contains_accent(ProseAccent::ZaqephQatan.into())
-            || assume_prose.contains_accent(ProseAccent::ZaqephGadol.into())
-            || assume_prose.contains_accent(ProseAccent::Pashta.into())
-            || assume_prose.contains_accent(ProseAccent::Tevir.into())
-            || assume_prose.contains_accent(ProseAccent::Yetiv.into())
-            || assume_prose.contains_accent(ProseAccent::Gershayim.into())
-            || assume_prose.contains_accent(ProseAccent::PazerGadol.into())
-            || assume_prose.contains_accent(ProseAccent::TelishaGedolah.into())
-            || assume_prose.contains_accent(ProseAccent::MerkhaKephulah.into())
-            || assume_prose.contains_accent(ProseAccent::Darga.into())
-            || assume_prose.contains_accent(ProseAccent::TelishaQetannah.into())
-        {
-            could_be_prose = true;
-        }
-
-        // Assume the sentence is Poetic
-        let mut assume_poetry = self.clone();
-        assume_poetry.ctx = Context::Poetic;
-        if assume_poetry.contains_accent(PoetryAccent::OlehWeYored.into())
-            || assume_poetry.contains_accent(PoetryAccent::Dechi.into())
-            || assume_poetry.contains_accent(PoetryAccent::Illuy.into())
-            || assume_poetry.contains_accent(PoetryAccent::TsinnoritMerkha.into())
-            || assume_poetry.contains_accent(PoetryAccent::TsinnoritMahpakh.into())
-        {
-            could_be_poetry = true;
-        }
-
-        // Determine context based upon the findings using match
-        match (could_be_prose, could_be_poetry) {
-            (true, false) => Ok(Context::Prosaic),
-            (false, true) => Ok(Context::Poetic),
-            (true, true) => Err(SentenceContextError::DerivationFailed(
-                "Unique prose and poetry accent markers identified",
-            )),
-            (false, false) => Err(SentenceContextError::DerivationFailed(
-                "No unique prose or poetry accent markers identified",
-            )),
-        }
+        // Delegate to the shared helper for consistency
+        detect_context_from_sentence(&self.sentence)
     }
+}
+
+/// Try to determine the context of a Hebrew sentence from its accent marks.
+///
+/// This is a convenience function for detecting context without creating a
+/// [`SentenceContext`] instance first. 
+/// See [`try_determine_context`] on `SentenceContext` for detailed documentation.
+///
+/// # Example
+/// ``` rust
+/// use hebrew_accents::{try_determine_context, Context};
+///
+/// let result = try_determine_context("וַיְהִ֣י בְיָמֵ֗י אֲחַשְׁוֵרֹ֡שׁ");
+/// match result {
+///     Ok(context) => println!("Context: {:?}", context),
+///     Err(e) => println!("Could not determine context: {}", e),
+/// }
+/// ```
+pub fn try_determine_context(sentence: &str) -> Result<Context, SentenceContextError> {
+    detect_context_from_sentence(sentence)
 }
 
 /// Represents a single match if the accent is found
@@ -567,9 +545,9 @@ mod try_determine_context {
     #[test]
     fn test_detect_prose_only() {
         let sentence_ctx = SentenceContext::new(TEXT_PROSE_ONLY, Context::Prosaic).unwrap();
-
+        println!("test_detect_prose_only: {:?}", sentence_ctx);
         let result = sentence_ctx.try_determine_context();
-
+        println!("test_detect_prose_only: {:?}", result);
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), Context::Prosaic);
     }
