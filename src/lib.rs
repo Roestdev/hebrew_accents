@@ -114,7 +114,7 @@
 //!
 //! ### Accent metadata
 //!
-//! *Note: For more information see [DESIGN]("DESIGN.md")*
+//! *Note: For more information see [DESIGN](DESIGN.md)*
 
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
@@ -138,6 +138,6 @@ mod accent_display;
 
 // exports
 pub use accent::*;
-pub use accent_display::*;
+//pub use accent_display::*;
 pub use sentenc_ctx_error::SentenceContextError;
 pub use sentence_ctx::*;

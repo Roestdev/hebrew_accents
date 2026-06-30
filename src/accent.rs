@@ -214,6 +214,8 @@ impl PseudoAccent {
     }
 }
 
+
+
 /// Used for retrieving information
 pub trait Accent: Copy + Sized {
     /// indicates the relative_strength of a selected accent (1 is the strongest)
@@ -258,6 +260,7 @@ pub trait Accent: Copy + Sized {
     /// number of UTF-8 code points of the Hebrew Accent
     fn code_points(self) -> u8;
 }
+
 
 impl Accent for HebrewAccent {
     #[inline]
@@ -435,7 +438,17 @@ pub struct Utf8CodePointInfo {
     /// An array containing information of various Jewish traditions
     pub traditions: &'static [Tradition],
 }
-/// Names according one of four Hebrew Traditions
+/// Accents names according one of four Hebrew Traditions
+/// 
+/// Biblical Hebrew does not have a single, universal pronunciation. 
+/// It has been transmitted through four principal reading traditions,
+/// each of which handles stress placement differently.
+/// 
+/// The four Traditions:
+/// - Ashkenazi (the Eastern European tradition)
+/// - Sephardi (the Iberian and North African tradition)
+/// - Yemenite (the most archaic, from the Yemenite Jewish community)
+/// - Italian (the tradition of the Italian Jewish community)
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[non_exhaustive]
 pub enum Tradition {

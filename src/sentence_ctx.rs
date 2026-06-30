@@ -176,7 +176,7 @@ impl SentenceContext {
 ///
 /// This is a convenience function for detecting context without creating a
 /// [`SentenceContext`] instance first. 
-/// See [`try_determine_context`] on `SentenceContext` for detailed documentation.
+/// See `try_determine_context` on `SentenceContext` for detailed documentation.
 ///
 /// # Example
 /// ``` rust
@@ -422,82 +422,6 @@ mod tests {
         let hash2 = hasher2.finish();
 
         assert_eq!(hash1, hash2);
-    }
-}
-
-#[cfg(test)]
-mod lumo_tests {
-    use crate::accent_data::POETRY_ACCENT_TABLE;
-    use crate::accent_data::PROSE_ACCENT_TABLE;
-    use crate::accent_data::PSEUDO_ACCENT_TABLE;
-    use crate::display_accent_table;
-    use crate::display_poetry_accent_table;
-    use crate::display_prose_accent_table;
-    use crate::display_pseudo_accent_table;
-    use crate::AccentInformation;
-    // ========================================================================
-    // 1. Specific Wrapper Tests (Ensure each wrapper is called)
-    // ========================================================================
-
-    #[test]
-    fn test_display_prose_accent_table() {
-        // Calls the specific wrapper
-        display_prose_accent_table();
-    }
-
-    #[test]
-    fn test_display_poetry_accent_table() {
-        // Calls the specific wrapper
-        display_poetry_accent_table();
-    }
-
-    #[test]
-    fn test_display_pseudo_accent_table() {
-        // Calls the specific wrapper
-        display_pseudo_accent_table();
-    }
-
-    // ========================================================================
-    // 2. Generic Function Tests (Ensure the core logic is covered)
-    // ========================================================================
-
-    #[test]
-    fn test_display_accent_table_with_data() {
-        // Calls the generic function with a non-empty table (loop enters)
-        display_accent_table("TEST PROSE", PROSE_ACCENT_TABLE.as_ref());
-    }
-
-    #[test]
-    fn test_display_accent_table_empty() {
-        // Calls the generic function with an empty table (loop skips)
-        // This covers the branch where the loop body is NOT executed.
-        let empty_table: Vec<&AccentInformation> = vec![];
-        display_accent_table("EMPTY TEST", &empty_table);
-    }
-
-    #[test]
-    fn test_display_accent_table_poetry() {
-        // Calls the generic function with poetry data
-        display_accent_table("TEST POETRY", POETRY_ACCENT_TABLE.as_ref());
-    }
-
-    #[test]
-    fn test_display_accent_table_pseudo() {
-        // Calls the generic function with pseudo data
-        display_accent_table("TEST PSEUDO", PSEUDO_ACCENT_TABLE.as_ref());
-    }
-
-    // ========================================================================
-    // 3. Integration / Stress Test (Ensure all functions run together)
-    // ========================================================================
-
-    #[test]
-    fn test_all_display_functions_run() {
-        // Run all functions in one test to ensure they are all registered as "called"
-        display_prose_accent_table();
-        display_poetry_accent_table();
-        display_pseudo_accent_table();
-        display_accent_table("Integration", PROSE_ACCENT_TABLE.as_ref());
     }
 }
 
