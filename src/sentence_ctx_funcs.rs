@@ -927,8 +927,6 @@ mod tests4_is_followed_by_oleh_we_yore {
     // use super::*;
 }
 
-
-
 #[cfg(test)]
 mod tests4_detect_context_from_sentence {
     // use super::*;

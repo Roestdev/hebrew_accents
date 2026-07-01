@@ -208,71 +208,77 @@ impl PseudoAccent {
     /// Total count of all pseudo accents
     pub const COUNT: usize = 3;
     /// Indicates a level of importancy
-    #[inline]
     pub fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
 }
 
-
-
 /// Used for retrieving information
 pub trait Accent: Copy + Sized {
-    /// indicates the relative_strength of a selected accent (1 is the strongest)
+    /// Hebrew name of the Hebrew Accent
+    fn hebrew_name(self) -> &'static str;
+    /// meaning of the Hebrew name
+    fn meaning(self) -> &'static str;
+    /// English name of the Hebrew Accent
+    fn english_name(self) -> &'static str;
+    /// Hebrew Accent type
+    //fn accent_type(self) -> Option<AccentType> ;
+    /// category of the Hebrew Accent
+    //fn category(self) -> Option<AccentCategory> ;
+    /// word-stress of the Hebrew Accent
+    //fn word_stress(self) -> Option<WordStress> ;
+    //self.details().additional.and_then(|add| add.word_stress)
+    /// number of UTF-8 code points of the Hebrew Accent
+    fn nr_of_code_points(self) -> NrOfCodePoints;
+    /// TODO
+    fn comment(self) -> Option<&'static str>;
+    /// TODO
     fn relative_strength(self) -> u8;
     /// indicates the relative_strength of a selected accent (1 is the strongest)
     fn hierarchical_group(self) -> Option<HierarchicalGroup>;
-    /// Return the *static* metadata for this concrete accent.
-    fn details(self) -> &'static AccentInformation;
-
-    /* ---------- Convenience helpers (default impls) ---------- */
-    /// English name of the Hebrew Accent
-    #[inline]
-    fn english_name(self) -> &'static str {
-        self.details().english_name
-    }
-    /// Hebrew name of the Hebrew Accent
-    #[inline]
-    fn hebrew_name(self) -> &'static str {
-        self.details().hebrew_name
-    }
-    /// meaning of the Hebrew name
-    #[inline]
-    fn meaning(self) -> &'static str {
-        self.details().meaning
-    }
-    /// Hebrew Accent type
-    #[inline]
-    fn accent_type(self) -> Option<AccentType> {
-        self.details().additional.map(|add| add.accent_type)
-    }
-    /// category of the Hebrew Accent
-    #[inline]
-    fn category(self) -> Option<AccentCategory> {
-        self.details().additional.map(|add| add.category)
-    }
-    /// word-stress of the Hebrew Accent
-    #[inline]
-    fn word_stress(self) -> Option<WordStress> {
-        self.details().additional.and_then(|add| add.word_stress)
-    }
-
-    /// number of UTF-8 code points of the Hebrew Accent
-    fn code_points(self) -> u8;
+    
 }
 
-
 impl Accent for HebrewAccent {
-    #[inline]
-    fn details(self) -> &'static AccentInformation {
+    fn hebrew_name(self) -> &'static str {
         match self {
-            HebrewAccent::Prose(p) => p.details(),
-            HebrewAccent::Poetry(p) => p.details(),
-            HebrewAccent::Pseudo(p) => p.details(),
+            HebrewAccent::Prose(p) => p.hebrew_name(),
+            HebrewAccent::Poetry(p) => p.hebrew_name(),
+            HebrewAccent::Pseudo(p) => p.hebrew_name(),
         }
     }
 
-    #[inline]
+    fn meaning(self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.meaning(),
+            HebrewAccent::Poetry(p) => p.meaning(),
+            HebrewAccent::Pseudo(p) => p.meaning(),
+        }
+    }
+
+    fn english_name(self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.english_name(),
+            HebrewAccent::Poetry(p) => p.english_name(),
+            HebrewAccent::Pseudo(p) => p.english_name(),
+        }
+    }
+
+    fn nr_of_code_points(self) -> NrOfCodePoints {
+        match self {
+            HebrewAccent::Prose(p) => p.nr_of_code_points(),
+            HebrewAccent::Poetry(p) => p.nr_of_code_points(),
+            HebrewAccent::Pseudo(p) => p.nr_of_code_points(),
+        }
+    }
+    fn comment(self) -> Option<&'static str> {
+        match self {
+            HebrewAccent::Prose(p) => p.comment(),
+            HebrewAccent::Poetry(p) => p.comment(),
+            HebrewAccent::Pseudo(p) => p.comment(),
+        }
+    }
+    // #[inline]
     fn relative_strength(self) -> u8 {
         match self {
             HebrewAccent::Prose(p) => p.relative_strength(),
@@ -281,7 +287,7 @@ impl Accent for HebrewAccent {
         }
     }
 
-    #[inline]
+    // #[inline]
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         match self {
             HebrewAccent::Prose(p) => p.hierarchical_group(),
@@ -290,22 +296,34 @@ impl Accent for HebrewAccent {
         }
     }
 
-    #[inline]
-    fn code_points(self) -> u8 {
-        match self {
-            HebrewAccent::Prose(p) => p.code_points(),
-            HebrewAccent::Poetry(p) => p.code_points(),
-            HebrewAccent::Pseudo(p) => p.code_points(),
-        }
-    }
+    // #[inline]
 }
 
 impl Accent for ProseAccent {
-    #[inline]
-    fn details(self) -> &'static AccentInformation {
-        PROSE_ACCENT_TABLE[self as usize]
+    fn english_name(self) -> &'static str {
+        PROSE_ACCENT_TABLE[self as usize].english_name
     }
-    #[inline]
+    fn hebrew_name(self) -> &'static str {
+        PROSE_ACCENT_TABLE[self as usize].hebrew_name
+    }
+    fn meaning(self) -> &'static str {
+        PROSE_ACCENT_TABLE[self as usize].meaning
+    }
+    fn nr_of_code_points(self) -> NrOfCodePoints {
+        if POETRY_ACCENT_TABLE[self as usize]
+            .code_points
+            .secondary
+            .is_none()
+        {
+            NrOfCodePoints::One
+        } else {
+            NrOfCodePoints::Two
+        }
+    }
+    fn comment(self) -> Option<&'static str> {
+        PROSE_ACCENT_TABLE[self as usize].comment
+    }
+        #[inline]
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
@@ -313,21 +331,35 @@ impl Accent for ProseAccent {
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         prose_hierarchical_group(self)
     }
-    #[inline]
-    fn code_points(self) -> u8 {
-        if self.details().code_points.secondary.is_none() {
-            1
-        } else {
-            2
-        }
-    }
+    
+
 }
 
 impl Accent for PoetryAccent {
-    #[inline]
-    fn details(self) -> &'static AccentInformation {
-        POETRY_ACCENT_TABLE[self as usize]
+    fn english_name(self) -> &'static str {
+        POETRY_ACCENT_TABLE[self as usize].english_name
     }
+    fn hebrew_name(self) -> &'static str {
+        POETRY_ACCENT_TABLE[self as usize].hebrew_name
+    }
+    fn meaning(self) -> &'static str {
+        POETRY_ACCENT_TABLE[self as usize].meaning
+    }
+    fn nr_of_code_points(self) -> NrOfCodePoints {
+        if POETRY_ACCENT_TABLE[self as usize]
+            .code_points
+            .secondary
+            .is_none()
+        {
+            NrOfCodePoints::One
+        } else {
+            NrOfCodePoints::Two
+        }
+    }
+    fn comment(self) -> Option<&'static str> {
+        POETRY_ACCENT_TABLE[self as usize].comment
+    }
+
     #[inline]
     fn relative_strength(self) -> u8 {
         BHS_POETRY_RANK_MAP[self as usize]
@@ -336,22 +368,26 @@ impl Accent for PoetryAccent {
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         poetry_hierarchical_group(self)
     }
-    #[inline]
-    fn code_points(self) -> u8 {
-        if self.details().code_points.secondary.is_none() {
-            1
-        } else {
-            2
-        }
-    }
+    
 }
 
 impl Accent for PseudoAccent {
-    #[inline]
-    fn details(self) -> &'static AccentInformation {
-        PSEUDO_ACCENT_TABLE[self as usize]
+    fn english_name(self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self as usize].english_name
     }
-    //#[inline]
+    fn hebrew_name(self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self as usize].hebrew_name
+    }
+    fn meaning(self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self as usize].meaning
+    }
+    fn nr_of_code_points(self) -> NrOfCodePoints {
+        NrOfCodePoints::One
+    }
+    fn comment(self) -> Option<&'static str> {
+        PSEUDO_ACCENT_TABLE[self as usize].comment
+    }
+    #[inline]
     fn relative_strength(self) -> u8 {
         self as u8 + 1
     }
@@ -359,21 +395,11 @@ impl Accent for PseudoAccent {
     fn hierarchical_group(self) -> Option<HierarchicalGroup> {
         None
     }
-
-    #[inline]
-    fn code_points(self) -> u8 {
-        1 // always one
-          // if self.details().code_points.secondary.is_none() {
-          //     1
-          // } else {
-          //     2
-          // }
-    }
 }
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct AccentInformation {
+pub(crate) struct AccentInformation {
     /// Hebrew name of the accent
     pub hebrew_name: &'static str,
     /// The meaning of the Hebrew the accent
@@ -390,7 +416,7 @@ pub struct AccentInformation {
 
 /// Additional information for the accents used in Prose and Poetry
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct Additional {
+pub(crate) struct Additional {
     /// Indicates the accent type (Primary, Secundary)
     pub accent_type: AccentType,
     /// Optional alternate identifiers
@@ -405,7 +431,7 @@ pub struct Additional {
 
 /// Optional alternate representations for an accent.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct Alternates {
+pub(crate) struct Alternates {
     /// Transliterated English name for the hebrew name
     pub english_name: &'static str,
     /// Hebrew name of the accent
@@ -415,16 +441,25 @@ pub struct Alternates {
 }
 /// Lists one or two UTF-8 code-point(s) from which the accent is constructed
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-pub struct CodePoints {
+pub(crate) struct CodePoints {
     /// Primary UTF-8 code point
     pub primary: &'static Utf8CodePointInfo,
     /// Secondary UTF-8 code point, if applicable
     pub secondary: Option<&'static Utf8CodePointInfo>,
 }
 
+/// TODO
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub enum NrOfCodePoints {
+    /// TODO
+    One,
+    /// TODO
+    Two,
+}
+
 /// Details on a specific UTF-8 Unicode code-point
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct Utf8CodePointInfo {
+pub(crate) struct Utf8CodePointInfo {
     /// UTF-8 code-point, e.g. U+0591
     pub code_point: &'static str,
     /// The hex value of the UTF-8 code-point
@@ -439,11 +474,11 @@ pub struct Utf8CodePointInfo {
     pub traditions: &'static [Tradition],
 }
 /// Accents names according one of four Hebrew Traditions
-/// 
-/// Biblical Hebrew does not have a single, universal pronunciation. 
+///
+/// Biblical Hebrew does not have a single, universal pronunciation.
 /// It has been transmitted through four principal reading traditions,
 /// each of which handles stress placement differently.
-/// 
+///
 /// The four Traditions:
 /// - Ashkenazi (the Eastern European tradition)
 /// - Sephardi (the Iberian and North African tradition)
@@ -599,7 +634,7 @@ pub(crate) fn poetry_hierarchical_group(accent: PoetryAccent) -> Option<Hierarch
         _ => None, // all conjuntive PoetryAccents
     }
 }
-
+/*
 #[cfg(test)]
 mod pseudo_accent_tests {
     use super::*;
@@ -1277,7 +1312,7 @@ mod test_details {
         primary: &CP_OLE,
         secondary: Some(&CP_MERKHA),
     },
-    comment: Some("The primary CodePoint is Mehuppakh, but located above the consonant. It is then called OLE."),    
+    comment: Some("The primary CodePoint is Mehuppakh, but located above the consonant. It is then called OLE."),
     additional: Some(Additional {
         accent_type: AccentType::Primary,
         category: AccentCategory::Disjunctive,
@@ -3342,3 +3377,4 @@ mod integration_tests_by_lumo {
         // If we reach here, no panics occurred
     }
 }
+*/

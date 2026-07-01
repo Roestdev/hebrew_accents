@@ -175,7 +175,7 @@ impl SentenceContext {
 /// Try to determine the context of a Hebrew sentence from its accent marks.
 ///
 /// This is a convenience function for detecting context without creating a
-/// [`SentenceContext`] instance first. 
+/// [`SentenceContext`] instance first.
 /// See `try_determine_context` on `SentenceContext` for detailed documentation.
 ///
 /// # Example

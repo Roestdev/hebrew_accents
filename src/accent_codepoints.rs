@@ -85,7 +85,11 @@ pub(crate) const CP_SEGOL: Utf8CodePointInfo = utf8_cp_constructor(
     "HEBREW ACCENT SEGOL",
     "֒",
     CodePointPosition::Above,
-    &[TRAD_SEGOL_ASHKENAZI, TRAD_SEGOL_SEPHARDI, TRAD_SEGOL_ITALIAN],
+    &[
+        TRAD_SEGOL_ASHKENAZI,
+        TRAD_SEGOL_SEPHARDI,
+        TRAD_SEGOL_ITALIAN,
+    ],
 );
 
 pub(crate) const TRAD_SHALSHELET_ASHKENAZI: Tradition = Tradition::Ashkenazi {
@@ -524,7 +528,11 @@ pub(crate) const CP_PAZER: Utf8CodePointInfo = utf8_cp_constructor(
     "HEBREW ACCENT PAZER",
     "֡",
     CodePointPosition::Above,
-    &[TRAD_PAZER_ASHKENAZI, TRAD_PAZER_SEPHARDI, TRAD_PAZER_ITALIAN],
+    &[
+        TRAD_PAZER_ASHKENAZI,
+        TRAD_PAZER_SEPHARDI,
+        TRAD_PAZER_ITALIAN,
+    ],
 );
 
 // TODO CP_ATNAH_HAFUKH
@@ -571,7 +579,11 @@ pub(crate) const CP_MUNAH: Utf8CodePointInfo = utf8_cp_constructor(
     "HEBREW ACCENT MUNAH",
     "֣",
     CodePointPosition::Under,
-    &[TRAD_MUNAH_ASHKENAZI, TRAD_MUNAH_SEPHARDI, TRAD_MUNAH_ITALIAN],
+    &[
+        TRAD_MUNAH_ASHKENAZI,
+        TRAD_MUNAH_SEPHARDI,
+        TRAD_MUNAH_ITALIAN,
+    ],
 );
 
 pub(crate) const TRAD_MAHAPAKH_ASHKENAZI: Tradition = Tradition::Ashkenazi {
@@ -709,7 +721,11 @@ pub(crate) const CP_QADMA: Utf8CodePointInfo = utf8_cp_constructor(
     "HEBREW ACCENT QADMA",
     "֨",
     CodePointPosition::Above,
-    &[TRAD_QADMA_ASHKENAZI, TRAD_QADMA_SEPHARDI, TRAD_QADMA_ITALIAN],
+    &[
+        TRAD_QADMA_ASHKENAZI,
+        TRAD_QADMA_SEPHARDI,
+        TRAD_QADMA_ITALIAN,
+    ],
 );
 
 pub(crate) const TRAD_TELISHA_QETANA_ASHKENAZI: Tradition = Tradition::Ashkenazi {
@@ -1004,7 +1020,7 @@ pub(crate) const CP_SOPH_PASUQ: Utf8CodePointInfo = utf8_cp_constructor(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Accent, HebrewAccent, ProseAccent};
+    use crate::{Accent, HebrewAccent, ProseAccent,NrOfCodePoints};
 
     fn assert_tradition(trad: &Tradition, exp_hebrew_name: &str, exp_english_name: &str) {
         match trad {
@@ -1269,42 +1285,42 @@ mod tests {
     }
 
     #[test]
-    fn testing_prose_accent_code_points() {
+    fn testing_prose_accent_nr_of_code_points() {
         // Disjunctives
-        assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).code_points(), 1);
+        assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).nr_of_code_points(), NrOfCodePoints::One);
         assert_eq!(
-            HebrewAccent::Prose(ProseAccent::Shalshelet).code_points(),
-            2
+            HebrewAccent::Prose(ProseAccent::Shalshelet).nr_of_code_points(),
+            NrOfCodePoints::Two
         );
 
-        assert_eq!(ProseAccent::Silluq.code_points(), 1);
-        assert_eq!(ProseAccent::Atnach.code_points(), 1);
-        assert_eq!(ProseAccent::Segolta.code_points(), 1);
-        assert_eq!(ProseAccent::Shalshelet.code_points(), 2);
-        assert_eq!(ProseAccent::ZaqephQatan.code_points(), 1);
-        assert_eq!(ProseAccent::ZaqephGadol.code_points(), 1);
-        assert_eq!(ProseAccent::Revia.code_points(), 1);
-        assert_eq!(ProseAccent::Tiphcha.code_points(), 1);
-        assert_eq!(ProseAccent::Zarqa.code_points(), 1);
-        assert_eq!(ProseAccent::Pashta.code_points(), 1);
-        assert_eq!(ProseAccent::Yetiv.code_points(), 1);
-        assert_eq!(ProseAccent::Tevir.code_points(), 1);
-        assert_eq!(ProseAccent::Geresh.code_points(), 1);
-        assert_eq!(ProseAccent::Gershayim.code_points(), 1);
-        assert_eq!(ProseAccent::Pazer.code_points(), 1);
-        assert_eq!(ProseAccent::PazerGadol.code_points(), 1);
-        assert_eq!(ProseAccent::TelishaGedolah.code_points(), 1);
-        assert_eq!(ProseAccent::Legarmeh.code_points(), 2);
+        assert_eq!(ProseAccent::Silluq.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Atnach.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Segolta.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Shalshelet.nr_of_code_points(), NrOfCodePoints::Two);
+        assert_eq!(ProseAccent::ZaqephQatan.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::ZaqephGadol.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Revia.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Tiphcha.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Zarqa.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Pashta.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Yetiv.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Tevir.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Geresh.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Gershayim.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Pazer.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::PazerGadol.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::TelishaGedolah.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Legarmeh.nr_of_code_points(), NrOfCodePoints::Two);
         // Conjunctives
-        assert_eq!(ProseAccent::Munach.code_points(), 1);
-        assert_eq!(ProseAccent::Mahpakh.code_points(), 1);
-        assert_eq!(ProseAccent::Merkha.code_points(), 1);
-        assert_eq!(ProseAccent::MerkhaKephulah.code_points(), 1);
-        assert_eq!(ProseAccent::Darga.code_points(), 1);
-        assert_eq!(ProseAccent::Azla.code_points(), 1);
-        assert_eq!(ProseAccent::TelishaQetannah.code_points(), 1);
-        assert_eq!(ProseAccent::Galgal.code_points(), 1);
-        assert_eq!(ProseAccent::Mayela.code_points(), 1);
-        assert_eq!(ProseAccent::Meteg.code_points(), 1);
+        assert_eq!(ProseAccent::Munach.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Mahpakh.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Merkha.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::MerkhaKephulah.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Darga.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Azla.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::TelishaQetannah.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Galgal.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Mayela.nr_of_code_points(), NrOfCodePoints::One);
+        assert_eq!(ProseAccent::Meteg.nr_of_code_points(), NrOfCodePoints::One);
     }
 }

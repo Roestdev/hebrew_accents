@@ -1013,8 +1013,8 @@ pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
 
 #[cfg(test)]
 mod accent_data_tests {
-    //use crate::Accent;
-    // Import the tables and map
+    use crate::NrOfCodePoints;
+// Import the tables and maps
     use crate::accent::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
     use crate::accent_data::{
         BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
@@ -1221,26 +1221,6 @@ mod accent_data_tests {
     // ========================================================================
 
     /// Tests that the `details()` method (which uses table indexing) works for all variants
-    #[test]
-    fn test_details_lookup_all_prose_variants() {
-        // Instead of reconstructing the enum, just iterate the table
-        // and assume the table order matches the enum order (which it must for your logic)
-        for (i, &info) in PROSE_ACCENT_TABLE.iter().enumerate() {
-            // If you need to test the `details()` method specifically, you still need the enum.
-            // But if you just want to verify the table data, this is enough.
-
-            // If you MUST call variant.details():
-            // You need a safe way to get the enum from index.
-            // Without num_enum, you are stuck with unsafe or a match.
-
-            // Let's stick to the safe cast if you are sure about the repr:
-            // (Requires ProseAccent to be #[repr(u8)])
-            let variant = unsafe { std::mem::transmute::<u8, ProseAccent>(i as u8) };
-            let info_from_trait = variant.details();
-
-            assert_eq!(info_from_trait.english_name, info.english_name);
-        }
-    }
 
     /// Tests that `code_points()` logic works for all variants (covering the if/else branch)
     #[test]
@@ -1248,22 +1228,22 @@ mod accent_data_tests {
         // Prose
         for i in 0..ProseAccent::COUNT {
             let variant: ProseAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.code_points();
-            assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+            let cp = variant.nr_of_code_points();
+            assert!(cp == NrOfCodePoints::One || cp == NrOfCodePoints::Two, "Invalid code_points count: {:?}", cp);
         }
 
         // Poetry
         for i in 0..PoetryAccent::COUNT {
             let variant: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.code_points();
-            assert!(cp == 1 || cp == 2, "Invalid code_points count: {}", cp);
+            let cp = variant.nr_of_code_points();
+            assert!(cp == NrOfCodePoints::One || cp == NrOfCodePoints::Two, "Invalid code_points count: {:?}", cp);
         }
 
-        // Pseudo (should always be 1)
+        // Pseudo (should always be NrOfCodePoints::One)
         for i in 0..PseudoAccent::COUNT {
             let variant: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.code_points();
-            assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
+            let cp = variant.nr_of_code_points();
+            assert_eq!(cp, NrOfCodePoints::One, "PseudoAccent code_points should always be 1");
         }
     }
 
