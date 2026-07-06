@@ -165,7 +165,7 @@ pub(crate) static RE_OUTER_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
 /*
 Geresh (גֵּרֶשׁ)
 -----------
-Function – In the system of Biblical Hebrew cantillation (taʽamim) it is a disjunctive accent that marks a pause or syntactic break.
+Function – In the system of Biblical Hebrew cantillation (taʽamim) it is a disjunctive accent that CantillationSymbol a pause or syntactic break.
 Form – The regular cantillation geresh is written above the accented letter (Unicode U+059C).
 Placement – It sits directly over the letter it belongs to.
 
@@ -177,7 +177,7 @@ Placement – The mark appears above and a little before the first letter of the
 
 This mark is characteristic of the three poetic books (Job, Proverbs, Psalms – the “Emet” books); there it often changes the usual function of nearby accents (e.g., turning a strong disjunctive into a weaker one).
 
-In short, both are cantillation marks, but geresh muqdam is positioned slightly earlier (to the left) of the accented letter, whereas the ordinary geresh sits directly over the letter. This subtle shift signals a different nuance in the chanting and parsing of the biblical text.
+In short, both are cantillation CantillationSymbol, but geresh muqdam is positioned slightly earlier (to the left) of the accented letter, whereas the ordinary geresh sits directly over the letter. This subtle shift signals a different nuance in the chanting and parsing of the biblical text.
 */
 // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {

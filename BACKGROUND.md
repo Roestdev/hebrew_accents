@@ -1,11 +1,11 @@
 ## Brief overview in the accents in the Tanach
 
-Below is a concise introduction to the Hebrew cantillation marks.
+Below is a concise introduction to the Hebrew cantillation CantillationSymbol.
 For a deeper dive into the history, theory, and practical use of these accents, see the **Further Reading** section at the end of the document.
 
 ### 1 Two different accent systems
 
-   The Masoretic tradition distinguishes two primary systems of cantillation marks, one system for the majority of the books, known as the `Twenty-One Books` (Prose style) and the other system for the remaining books, known as `Three Books` (Poetry style)
+   The Masoretic tradition distinguishes two primary systems of cantillation CantillationSymbol, one system for the majority of the books, known as the `Twenty-One Books` (Prose style) and the other system for the remaining books, known as `Three Books` (Poetry style)
 
    - `Prose` ( Hebrew: סגנון פרוזאי ): This style is used for narrative and descriptive passages, such as historical accounts, genealogies, and instructional texts. Prose is characterized by a straightforward and simple writing style, with a focus on conveying information and telling a story.
 
@@ -15,7 +15,7 @@ For a deeper dive into the history, theory, and practical use of these accents, 
 
    It's worth noting that the distinction between prose and poetry in the Tanach is not always clear-cut, and different scholars and traditions may have different opinions on the matter. 
    
-   Additionally, the writing styles in the Tanach have evolved over time, and different books and sections may reflect different literary and cultural influences
+   AccentMetadataly, the writing styles in the Tanach have evolved over time, and different books and sections may reflect different literary and cultural influences
 
 ### 2 Function of the Accents
 
@@ -59,7 +59,7 @@ For a deeper dive into the history, theory, and practical use of these accents, 
   
   - [Basics of Hebrew Accents](<https:://zondervanacademic.com/products/basics-of-hebrew-accents>), written by Mark D. Futato, Sr.
 
-  - [Hebrew Cantillation Marks And Their Encoding](<https:://mechon-mamre.org/c/hr/index.htm>) by Helmut Richter.
+  - [Hebrew Cantillation CantillationSymbol And Their Encoding](<https:://mechon-mamre.org/c/hr/index.htm>) by Helmut Richter.
   
   - [Gesenius Hebrew Grammar - §15. The Accents.](<https:://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents>)
 
@@ -85,7 +85,7 @@ For a deeper dive into the history, theory, and practical use of these accents, 
 
 #### Notes
 
- - Accents are sometimes referred to as *Hebrew Cantilationmarks*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
+ - Accents are sometimes referred to as *Hebrew CantilationCantillationSymbol*, *taʿamei ha-mikra* (טעמי המקרא) or *teʿamim* (טעמים).
 
  - `Disjunctives` are sometimes referred to as *pausal* or *domini*
 

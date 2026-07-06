@@ -23,7 +23,7 @@ pub enum SentenceContextError {
     #[error("Final-form letter '{}' cannot appear at sentence start", .0)]
     StartsWithFinalForm(char),
 
-    /// Ambiguous or insufficient accent marks for context determination
+    /// Ambiguous or insufficient accent CantillationSymbol for context determination
     #[error("Derivation failed: {0}")]
     DerivationFailed(&'static str),
 }

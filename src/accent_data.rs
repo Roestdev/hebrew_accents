@@ -3,17 +3,14 @@
 // Standard library
 use once_cell::sync::Lazy;
 
-// External crates
-// N/A
-
 // Crate‑internal (local modules)
-use crate::accent::{
-    AccentCategory, AccentInformation, AccentType, Alternates, CodePoints, PoetryAccent,
-    ProseAccent, WordStress,
+use crate::{
+    accent_codepoints::*, AccentCategory, AccentInformation, AccentType, AlternateNames,
+    CantillationSymbol, WordStress,
 };
-use crate::{accent_codepoints::*, Additional, PseudoAccent};
+use crate::{PoetryAccent, ProseAccent, PseudoAccent};
 
-pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; ProseAccent::COUNT]> =
+pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; ProseAccent::LEN]> =
     Lazy::new(|| {
         &[
             &SILLUQ_INFO,
@@ -47,7 +44,7 @@ pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; ProseA
             &METEG_INFO,
         ]
     });
-pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PoetryAccent::COUNT]> =
+pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PoetryAccent::LEN]> =
     Lazy::new(|| {
         &[
             &SILLUQ_INFO,
@@ -77,16 +74,16 @@ pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; Poetr
         ]
     });
 
-pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PseudoAccent::COUNT]> =
+pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PseudoAccent::LEN]> =
     Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO, &PASEQ_INFO]);
 
 /// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
 ///
 /// The order **must** correspond exactly to the order of the variants
-/// declared in `PoetryAccent`.  If you add a new variant, extend this
+/// declared in `PoetryAccent`.  If you add a new variantextend this
 /// array accordingly – the `static_assertions` check below will remind you.
-pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
-    // ---- Disjunctives ----------------------------------------------------
+pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
+    // ---- Disjunctives -----------------------------------------
     /* 0 */
     1, // Silluq
     /* 1 */ 2, // OlehWeYored
@@ -110,555 +107,471 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::COUNT] = [
     /*17 */ 18, // Mehuppakh
     /*18 */ 19, // Azla
     /*19 */ 20, // ShalsheletQetannah
-    /*20 */ 21, // TsinnoritMerkha (Same rank as TsinnoritMahpakh!)
-    /*21 */ 21, // TsinnoritMahpakh (Same rank as TsinnoritMerkha!)
+    /*20 */ 21, // TsinnoritMerkha (Same rank as TsinnoritMahpakh!!!)
+    /*21 */ 21, // TsinnoritMahpakh (Same rank as TsinnoritMerkha!!!)
     /*22 */ 22, // Meteg
 ];
 
 pub(crate) const SILLUQ_INFO: AccentInformation = AccentInformation {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
-    meaning: "close, cessation",
-    code_points: CodePoints {
-        primary: &CP_SILLUQ,
-        secondary: None,
+    hebrew_concept: "closecessation",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SILLUQ,
+        secondary_mark: None,
     },
-    comment: Some(
+    alternate_names: None,
+    notes: Some(
         "The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.",
     ),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const ATNACH_INFO: AccentInformation = AccentInformation {
     english_name: "Atnach",
     hebrew_name: "אתְנָח",
-    meaning: "a causing to rest",
-    code_points: CodePoints {
-        primary: &CP_ETNAHTA,
-        secondary: None,
+    hebrew_concept: "a causing to rest",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ETNAHTA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const SEGOLTA_INFO: AccentInformation = AccentInformation {
     english_name: "Segolta",
     hebrew_name: "סְגֹולְתָּא",
-    meaning: "a little grape-bunch",
-    code_points: CodePoints {
-        primary: &CP_SEGOL,
-        secondary: None,
+    hebrew_concept: "a little grape-bunch",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SEGOL,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PostPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Post),
 };
 
 pub(crate) const SHALSHELET_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet",
     hebrew_name: "שַׁלְשֶׁלֶת",
-    meaning: "chain or link",
-    code_points: CodePoints {
-        primary: &CP_SHALSHELET,
-        secondary: Some(&CP_PASEQ),
+    hebrew_concept: "chain or link",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SHALSHELET,
+        secondary_mark: Some(&CODEPOINT_PASEQ),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
-    meaning: "small upright",
-    code_points: CodePoints {
-        primary: &CP_ZAQEF_QATAN,
-        secondary: None,
+    hebrew_concept: "small upright",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZAQEF_QATAN,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Zaqeph Qatan",
-            hebrew_name: "זָקֵף קָטָן",
-            meaning: "todo",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Zaqeph Qatan",
+        hebrew_name: "זָקֵף קָטָן",
+        hebrew_concept: "todo",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Zaqeph Gadol",
     hebrew_name: "זָקֵף גָּדוֹל",
-    meaning: "large upright",
-    code_points: CodePoints {
-        primary: &CP_ZAQEF_GADOL,
-        secondary: None,
+    hebrew_concept: "large upright",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZAQEF_GADOL,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const REVIA_INFO: AccentInformation = AccentInformation {
     english_name: "Revia",
     hebrew_name: "רְבִיעַ",
-    meaning: "fourth [in a sequence]",
-    code_points: CodePoints {
-        primary: &CP_REVIA,
-        secondary: None,
+    hebrew_concept: "fourth [in a sequence]",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_REVIA,
+        secondary_mark: None,
     },
-    comment: Some("probably due to its four-note tune."),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("probably due to its four-note tune."),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TIPHCHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tiphcha", // ADD TARCHA
     hebrew_name: "טִפְחָא",
-    meaning: "handbreadth or diagonal",
-    code_points: CodePoints {
-        primary: &CP_TIPEHA,
-        secondary: None,
+    hebrew_concept: "handbreadth or diagonal",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TIPEHA,
+        secondary_mark: None,
     },
-    comment: Some("before Atnach and Silluq"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("before Atnach and Silluq"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const ZARQA_INFO: AccentInformation = AccentInformation {
     english_name: "Zarqa",
     hebrew_name: "זַרְקָא",
-    meaning: "to sprinkle, scatter",
-    code_points: CodePoints {
-        primary: &CP_ZINOR,
-        secondary: None,
+    hebrew_concept: "to sprinklescatter",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZINOR,
+        secondary_mark: None,
     },
-    comment: Some("before  Segolta"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PostPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("before  Segolta"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Post),
 };
 
 pub(crate) const PASHTA_INFO: AccentInformation = AccentInformation {
     english_name: "Pashta",
     hebrew_name: "פַּשְׁטָא",
-    meaning: "extending, stretching out in length",
-    code_points: CodePoints {
-        primary: &CP_PASHTA,
-        secondary: None,
+    hebrew_concept: "extendingstretching out in length",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_PASHTA,
+        secondary_mark: None,
     },
-    comment: Some("if you sound almost last (2 pasta’s in one word)"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PostPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("if you sound almost last (2 pasta’s in one word)"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Post),
 };
 
 pub(crate) const YETIV_INFO: AccentInformation = AccentInformation {
     english_name: "Yetiv",
     hebrew_name: "יְתִיב",
-    meaning: "resting or sitting",
-    code_points: CodePoints {
-        primary: &CP_YETIV,
-        secondary: None,
+    hebrew_concept: "resting or sitting",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_YETIV,
+        secondary_mark: None,
     },
-    comment: Some("occasionally for a Pashta"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PrePositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("occasionally for a Pashta"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Pre),
 };
 
 pub(crate) const TEVIR_INFO: AccentInformation = AccentInformation {
     english_name: "Tevir",
     hebrew_name: "תְּבִיר",
-    meaning: "broken, downward tumble",
-    code_points: CodePoints {
-        primary: &CP_TEVIR,
-        secondary: None,
+    hebrew_concept: "brokendownward tumble",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TEVIR,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const GERESH_INFO: AccentInformation = AccentInformation {
     english_name: "Geresh",
     hebrew_name: "גֵּרֵישׁ",
-    meaning: "expulsion, driving out, divorce",
-    code_points: CodePoints {
-        primary: &CP_GERESH,
-        secondary: None,
+    hebrew_concept: "expulsiondriving outdivorce",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_GERESH,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Teres",
-            hebrew_name: "טֶרֶס",
-            meaning: "todo",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Teres",
+        hebrew_name: "טֶרֶס",
+        hebrew_concept: "todo",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const GERSHAYIM_INFO: AccentInformation = AccentInformation {
     english_name: "Gershayim",
     hebrew_name: "גֵּרְשַׁיִם",
-    meaning: "double of expulsion, driving out, divorce",
-    code_points: CodePoints {
-        primary: &CP_GERSHAYIM,
-        secondary: None,
+    hebrew_concept: "double of expulsiondriving outdivorce",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_GERSHAYIM,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const PAZER_INFO: AccentInformation = AccentInformation {
     english_name: "Pazer",
     hebrew_name: "פָּזֶר",
-    meaning: "lavish or scatter",
-    code_points: CodePoints {
-        primary: &CP_PAZER,
-        secondary: None,
+    hebrew_concept: "lavish or scatter",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_PAZER,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Pazer Qatan",
-            hebrew_name: "פָּזֵר קָטָן",
-            meaning: "small lavish or scatter",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Pazer Qatan",
+        hebrew_name: "פָּזֵר קָטָן",
+        hebrew_concept: "small lavish or scatter",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Pazer Gadol",
     hebrew_name: "פָּזֶר גּדוֹל",
-    meaning: "large lavish or scatter",
-    code_points: CodePoints {
-        primary: &CP_QARNEY_PARA,
-        secondary: None,
+    hebrew_concept: "large lavish or scatter",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_QARNEY_PARA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Qarne Pharah",
-            hebrew_name: "קַרְנֵי פָרָה",
-            meaning: "horns of a cow",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Qarne Pharah",
+        hebrew_name: "קַרְנֵי פָרָה",
+        hebrew_concept: "horns of a cow",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
     english_name: "Telisha Gedolah",
     hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
-    meaning: "great (long) detached",
-    code_points: CodePoints {
-        primary: &CP_TELISHA_GEDOLA,
-        secondary: None,
+    hebrew_concept: "great (long) detached",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TELISHA_GEDOLA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PrePositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Pre),
 };
 
 pub(crate) const LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
-    meaning: "for or by itself, independant",
-    code_points: CodePoints {
-        primary: &CP_MUNAH,
-        secondary: Some(&CP_PASEQ),
+    hebrew_concept: "for or by itselfindependent",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MUNAH,
+        secondary_mark: Some(&CODEPOINT_PASEQ),
     },
-    comment: Some("Munach with Passeq; Before Revia"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Munach Legarmeh",
-            hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
-            meaning: "todo",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Munach Legarmeh",
+        hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
+        hebrew_concept: "todo",
     }),
+    notes: Some("Munach with Passeq; Before Revia"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 // Conjunctives
 pub(crate) const MUNACH_INFO: AccentInformation = AccentInformation {
     english_name: "Munach",
     hebrew_name: "מוּנַ֣ח",
-    meaning: "resting or placed",
-    code_points: CodePoints {
-        primary: &CP_MUNAH,
-        secondary: None,
+    hebrew_concept: "resting or placed",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MUNAH,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const MAHPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Mahpakh",
     hebrew_name: "מַהְפַּךְ",
-    meaning: "turning round",
-    code_points: CodePoints {
-        primary: &CP_MAHAPAKH,
-        secondary: None,
+    hebrew_concept: "turning round",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MAHAPAKH,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Mehuppakh",
-            hebrew_name: "מְהֻפָּ֤ךְ",
-            meaning: "reversed",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Mehuppakh",
+        hebrew_name: "מְהֻפָּ֤ךְ",
+        hebrew_concept: "reversed",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const MERKHA_INFO: AccentInformation = AccentInformation {
     english_name: "Merkha",
     hebrew_name: "מֵרְכָא",
-    meaning: "lengthener, prolonging",
-    code_points: CodePoints {
-        primary: &CP_MERKHA,
-        secondary: None,
+    hebrew_concept: "lengthenerprolonging",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MERKHA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
     english_name: "Merkha Kephulah",
     hebrew_name: "מֵרְכָא כְּפוּלָה",
-    meaning: "double lengthener",
-    code_points: CodePoints {
-        primary: &CP_MERKHA_KEFULA,
-        secondary: None,
+    hebrew_concept: "double lengthener",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MERKHA_KEFULA,
+        secondary_mark: None,
     },
-    comment: Some("Merkha duplex"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("Merkha duplex"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const DARGA_INFO: AccentInformation = AccentInformation {
     english_name: "Darga",
     hebrew_name: "דַּרְגָּא",
-    meaning: "stairstep",
-    code_points: CodePoints {
-        primary: &CP_DARGA,
-        secondary: None,
+    hebrew_concept: "stairstep",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_DARGA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const AZLA_INFO: AccentInformation = AccentInformation {
     english_name: "Azla",
     hebrew_name: "אַזְלָא",
-    meaning: "going on (not pausing), depart",
-    code_points: CodePoints {
-        primary: &CP_QADMA,
-        secondary: None,
+    hebrew_concept: "going on (not pausing)depart",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_QADMA,
+        secondary_mark: None,
     },
-    comment: Some("When Geresh: Qadma"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Qadma",
-            hebrew_name: "קַדְמָ֨א",
-            meaning: "antiquity or a former state",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Qadma",
+        hebrew_name: "קַדְמָ֨א",
+        hebrew_concept: "antiquity or a former state",
     }),
+    notes: Some("When Geresh: Qadma"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
     english_name: "Telisha Qetannah",
     hebrew_name: "תְּלִישָא קְטַנָּה",
-    meaning: "small (short) detached",
-    code_points: CodePoints {
-        primary: &CP_TELISHA_QETANA,
-        secondary: None,
+    hebrew_concept: "small (short) detached",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TELISHA_QETANA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::PostPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Post),
 };
 
 pub(crate) const GALGAL_INFO: AccentInformation = AccentInformation {
     english_name: "Galgal",
     hebrew_name: "גַּלְגַּל",
-    meaning: "wheel, circle",
-    code_points: CodePoints {
-        primary: &CP_YERAH_BEN_YOMO,
-        secondary: None,
+    hebrew_concept: "wheelcircle",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_YERAH_BEN_YOMO,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Jerach Ben Jomo",
-            hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
-            meaning: "moon one day old",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Jerach Ben Jomo",
+        hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+        hebrew_concept: "moon one day old",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const MAYELA_INFO: AccentInformation = AccentInformation {
     english_name: "Mayela",
     hebrew_name: "מָאיְלָא",
-    meaning: "to be raised or elevated",
-    code_points: CodePoints {
-        primary: &CP_TIPEHA,
-        secondary: None,
+    hebrew_concept: "to be raised or elevated",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TIPEHA,
+        secondary_mark: None,
     },
-    comment: Some("Name given to a Tiphcha, when in the same word as Atnach or Silluq"),
-    additional: Some(Additional {
-        accent_type: AccentType::Secondary,
-        category: AccentCategory::Conjunctive,
-        word_stress: None,
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Meayyela",
-            hebrew_name: "מְאַיְּלָא",
-            meaning: "todo",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Meayyela",
+        hebrew_name: "מְאַיְּלָא",
+        hebrew_concept: "todo",
     }),
+    notes: Some("Name given to a Tiphchawhen in the same word as Atnach or Silluq"),
+    category: Some(AccentCategory::Conjunctive),
+    accent_type: Some(AccentType::Secondary),
+    word_stress: None,
 };
 
 pub(crate) const METEG_INFO: AccentInformation = AccentInformation {
     english_name: "Meteg",
     hebrew_name: "מֶתֶג",
-    meaning: "accent or mark",
-    code_points: CodePoints {
-        primary: &CP_METEG,
-        secondary: None,
+    hebrew_concept: "accent or mark",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_METEG,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Secondary,
-        category: AccentCategory::Conjunctive,
-        word_stress: None,
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Secondary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: None,
 };
 
 /*
-Shene Pashtin 	 ב֨ב   	U+0599, U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
+Shene Pashtin 	 ב֨ב   	U+0599U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
 Shene Pashtin 	תְּרֵ֨י קַדְמִין֙
 Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
 (Shene) pashtin
@@ -677,19 +590,16 @@ Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
 pub(crate) const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
     english_name: "Oleh We Yored",
     hebrew_name: "עוֹלֶה וְיוֹרֵד",
-    meaning: "ascending and descending",
-    code_points: CodePoints {
-        primary: &CP_OLE,
-        secondary: Some(&CP_MERKHA),
+    hebrew_concept: "ascending and descending",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_OLE,
+        secondary_mark: Some(&CODEPOINT_MERKHA),
     },
-    comment: Some("The primary CodePoint is Mehuppakh, but located above the consonant. It is then called OLE."),    
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+           alternate_names: None,
+ notes: Some("The primary_mark CodePoint is Mehuppakhbut located above the consonant. It is then called OLE."),
+        accent_type: Some(AccentType::Primary),
+        category:Some(AccentCategory::Disjunctive),
+     word_stress: Some(WordStress::Im)
 };
 
 // ATNACH see PROSE section above
@@ -697,117 +607,99 @@ pub(crate) const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
 pub(crate) const REVIA_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Gadol",
     hebrew_name: "רְבִיעַ גּדוֹל",
-    meaning: "big fourth",
-    code_points: CodePoints {
-        primary: &CP_REVIA,
-        secondary: None,
+    hebrew_concept: "big fourth",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_REVIA,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Mugrash",
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
-    meaning: "exiled fourth",
-    code_points: CodePoints {
-        primary: &CP_GERESH,
-        secondary: Some(&CP_REVIA),
+    hebrew_concept: "exiled fourth",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_GERESH,
+        secondary_mark: Some(&CODEPOINT_REVIA),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet Gadol",
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
-    meaning: "large chain or link",
-    code_points: CodePoints {
-        primary: &CP_SHALSHELET,
-        secondary: Some(&CP_PASEQ),
+    hebrew_concept: "large chain or link",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SHALSHELET,
+        secondary_mark: Some(&CODEPOINT_PASEQ),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TSINNOR_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnor",
     hebrew_name: "צִנּוֹר",
-    meaning: "pipe or tube",
-    code_points: CodePoints {
-        primary: &CP_ZINOR,
-        secondary: None,
+    hebrew_concept: "pipe or tube",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZINOR,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PostPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Zarqa",
-            hebrew_name: "זַרְקָא",
-            meaning: "to sprinkle, scatter",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Zarqa",
+        hebrew_name: "זַרְקָא",
+        hebrew_concept: "to sprinklescatter",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Post),
 };
 
 pub(crate) const REVIA_QATON_INFO: AccentInformation = AccentInformation {
     english_name: "Revia Qaton",
     hebrew_name: "רְבִיעַ קָטוֹן",
-    meaning: "small fourth",
-    code_points: CodePoints {
-        primary: &CP_REVIA,
-        secondary: None,
+    hebrew_concept: "small fourth",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_REVIA,
+        secondary_mark: None,
     },
-    comment: Some("After that occurs Oleh We Yored"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("After that occurs Oleh We Yored"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const DECHI_INFO: AccentInformation = AccentInformation {
     english_name: "Dechi",
     hebrew_name: "דֶּחִי",
-    meaning: "to push or drive away",
-    code_points: CodePoints {
-        primary: &CP_DEHI,
-        secondary: None,
+    hebrew_concept: "to push or drive away",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_DEHI,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::PrePositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Tiphcha",
-            hebrew_name: "טִפְחָא",
-            meaning: "handbreadth or diagonal",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Tiphcha",
+        hebrew_name: "טִפְחָא",
+        hebrew_concept: "handbreadth or diagonal",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Pre),
 };
 
 // PAZER see PROSE section above
@@ -815,37 +707,31 @@ pub(crate) const DECHI_INFO: AccentInformation = AccentInformation {
 pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Mehuppakh Legarmeh",
     hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
-    meaning: "reversed to its own",
-    code_points: CodePoints {
-        primary: &CP_MAHAPAKH,
-        secondary: Some(&CP_PASEQ),
+    hebrew_concept: "reversed to its own",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MAHAPAKH,
+        secondary_mark: Some(&CODEPOINT_PASEQ),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
     english_name: "Azla Legarmeh",
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
-    meaning: "goes to its own",
-    code_points: CodePoints {
-        primary: &CP_QADMA,
-        secondary: Some(&CP_PASEQ),
+    hebrew_concept: "goes to its own",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_QADMA,
+        secondary_mark: Some(&CODEPOINT_PASEQ),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Disjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Disjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 // MUNACH see PROSE section above
@@ -855,37 +741,31 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
 pub(crate) const ILLUY_INFO: AccentInformation = AccentInformation {
     english_name: "Illuy",
     hebrew_name: "עִלּוּי",
-    meaning: "elevation or raising",
-    code_points: CodePoints {
-        primary: &CP_ILUY,
-        secondary: None,
+    hebrew_concept: "elevation or raising",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ILUY,
+        secondary_mark: None,
     },
-    comment: Some("also called Munach superior"),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("also called Munach superior"),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TARCHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tarcha",
     hebrew_name: "טַרְחָא",
-    meaning: "trouble, difficulty, hardship, toil",
-    code_points: CodePoints {
-        primary: &CP_TIPEHA,
-        secondary: None,
+    hebrew_concept: "troubledifficultyhardshiptoil",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_TIPEHA,
+        secondary_mark: None,
     },
-    comment: Some("it refers to the effort, strain, or inconvenience involved in doing something."),
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: Some("it refers to the effortstrainor inconvenience involved in doing something."),
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 // GALGAL see PROSE section above
@@ -893,23 +773,20 @@ pub(crate) const TARCHA_INFO: AccentInformation = AccentInformation {
 pub(crate) const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Mehuppakh",
     hebrew_name: "מְהֻפָּ֤ךְ",
-    meaning: "reversed",
-    code_points: CodePoints {
-        primary: &CP_MAHAPAKH,
-        secondary: None,
+    hebrew_concept: "reversed",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MAHAPAKH,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: Some(Alternates {
-            english_name: "Mahpakh",
-            hebrew_name: "מַהְפַּךְ",
-            meaning: "turning round",
-        }),
+    alternate_names: Some(AlternateNames {
+        english_name: "Mahpakh",
+        hebrew_name: "מַהְפַּךְ",
+        hebrew_concept: "turning round",
     }),
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 // AZLA see PROSE section above
@@ -917,55 +794,46 @@ pub(crate) const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
 pub(crate) const SHALSHELET_QETANNAH_INFO: AccentInformation = AccentInformation {
     english_name: "Shalshelet Qetannah",
     hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
-    meaning: "small chain",
-    code_points: CodePoints {
-        primary: &CP_SHALSHELET,
-        secondary: None,
+    hebrew_concept: "small chain",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SHALSHELET,
+        secondary_mark: None,
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnorit Merkha",
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
-    meaning: "pipe of continuation",
-    code_points: CodePoints {
-        primary: &CP_ZARQA,
-        secondary: Some(&CP_MERKHA),
+    hebrew_concept: "pipe of continuation",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZARQA,
+        secondary_mark: Some(&CODEPOINT_MERKHA),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
     english_name: "Tsinnorit Mahpakh",
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
-    meaning: "pipe of reversal",
-    code_points: CodePoints {
-        primary: &CP_ZARQA,
-        secondary: Some(&CP_MAHAPAKH),
+    hebrew_concept: "pipe of reversal",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_ZARQA,
+        secondary_mark: Some(&CODEPOINT_MAHAPAKH),
     },
-    comment: None,
-    additional: Some(Additional {
-        accent_type: AccentType::Primary,
-        category: AccentCategory::Conjunctive,
-        word_stress: Some(WordStress::ImPositive),
-        hierarchical_group: Some(crate::HierarchicalGroup::PoetryGroup2),
-        alternates: None,
-    }),
+    alternate_names: None,
+    notes: None,
+    accent_type: Some(AccentType::Primary),
+    category: Some(AccentCategory::Conjunctive),
+    word_stress: Some(WordStress::Im),
 };
 
 /********************************************************
@@ -974,84 +842,92 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
 pub(crate) const SOPH_PASUQ_INFO: AccentInformation = AccentInformation {
     english_name: "Soph Pasuq",
     hebrew_name: "סוֹף פָּסוּק",
-    meaning: "end of verse",
-    code_points: CodePoints {
-        primary: &CP_SOPH_PASUQ,
-        secondary: None,
+    hebrew_concept: "end of verse",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_SOPH_PASUQ,
+        secondary_mark: None,
     },
-    comment: Some(
+    alternate_names: None,
+    notes: Some(
         "it doesn’t carry any theological or interpretive meaning beyond marking a boundary",
     ),
-    additional: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
 };
 
 pub(crate) const MAQQEPH_INFO: AccentInformation = AccentInformation {
     english_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
-    meaning:"binder",
-    code_points: CodePoints {
-        primary: &CP_MAQAF,
-        secondary: None,
+    hebrew_concept:"binder",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_MAQAF,
+        secondary_mark: None,
     },
-    comment: Some("Can link two (or more) short words together, after which they function as a single compound word bearing a single Hebrew accent."),
-    additional:  None,
+              alternate_names: None,
+ notes: Some("Can link two (or more) short words togetherafter which they function as a single compound word bearing a single Hebrew accent."),
+    accent_type: None,
+    category: None,
+    word_stress: None,
 };
 
 pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     english_name: "Paseq",
     hebrew_name: "פָּסֵק",
-    meaning: "to pause, to stop or to interrupt",
-    code_points: CodePoints {
-        primary: &CP_PASEQ,
-        secondary: None,
+    hebrew_concept: "to pauseto stop or to interrupt",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &CODEPOINT_PASEQ,
+        secondary_mark: None,
     },
-    comment: Some(
+    alternate_names: None,
+    notes: Some(
         "It’s indicating that someone or something is stopping temporarily or creating a pause.",
     ),
-    additional: None,
+    accent_type: None,
+    category: None,
+    word_stress: None,
 };
 
 #[cfg(test)]
 mod accent_data_tests {
-    use crate::NrOfCodePoints;
-// Import the tables and maps
+    // Import the tables and maps
     use crate::accent::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
     use crate::accent_data::{
         BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
     };
 
-    // Ensures the table length matches the enum COUNT constant
+    // Ensures the table length matches the enum LEN constant
     #[test]
     fn test_prose_table_length_matches_enum_count() {
         assert_eq!(
             PROSE_ACCENT_TABLE.len(),
-            ProseAccent::COUNT,
-            "PROSE_ACCENT_TABLE length ({}) does not match ProseAccent::COUNT ({})",
+            ProseAccent::LEN,
+            "PROSE_ACCENT_TABLE length ({}) does not match ProseAccent::LEN ({})",
             PROSE_ACCENT_TABLE.len(),
-            ProseAccent::COUNT
+            ProseAccent::LEN
         );
     }
     #[test]
     fn test_poetry_table_length_matches_enum_count() {
         assert_eq!(
             POETRY_ACCENT_TABLE.len(),
-            PoetryAccent::COUNT,
-            "POETRY_ACCENT_TABLE length ({}) does not match PoetryAccent::COUNT ({})",
+            PoetryAccent::LEN,
+            "POETRY_ACCENT_TABLE length ({}) does not match PoetryAccent::LEN ({})",
             POETRY_ACCENT_TABLE.len(),
-            PoetryAccent::COUNT
+            PoetryAccent::LEN
         );
     }
     #[test]
     fn test_pseudo_table_length_matches_enum_count() {
         assert_eq!(
             PSEUDO_ACCENT_TABLE.len(),
-            PseudoAccent::COUNT,
-            "PSEUDO_ACCENT_TABLE length ({}) does not match PseudoAccent::COUNT ({})",
+            PseudoAccent::LEN,
+            "PSEUDO_ACCENT_TABLE length ({}) does not match PseudoAccent::LEN ({})",
             PSEUDO_ACCENT_TABLE.len(),
-            PseudoAccent::COUNT
+            PseudoAccent::LEN
         );
     }
-    // Tests the branch logic: `if secondary.is_none() { 1 } else { 2 }`
+    // Tests the branch logic: `if secondary_mark.is_none() { 1 } else { 2 }`
     // This ensures we cover both the "single code point" and "double code point" paths.
     #[test]
     fn test_prose_accent_code_point_branches() {
@@ -1059,22 +935,22 @@ mod accent_data_tests {
         let mut double_count = 0;
 
         for &info in PROSE_ACCENT_TABLE.iter() {
-            if info.code_points.secondary.is_none() {
+            if info.cantillation_symbol.secondary_mark.is_none() {
                 single_count += 1;
                 assert_eq!(
-                    info.code_points.primary.code_point.len(),
+                    info.cantillation_symbol.primary_mark.code_point_value.len(),
                     6,
                     "Primary should be length 1"
                 );
             } else {
                 double_count += 1;
                 assert_eq!(
-                    info.code_points.primary.code_point.len(),
+                    info.cantillation_symbol.primary_mark.code_point_value.len(),
                     6,
                     "Primary should be length 1"
                 );
                 assert!(
-                    info.code_points.secondary.is_some(),
+                    info.cantillation_symbol.secondary_mark.is_some(),
                     "Secondary must be Some"
                 );
             }
@@ -1090,11 +966,11 @@ mod accent_data_tests {
             "No double-code-point accents found in Prose table"
         );
 
-        //     // Example: Shalshelet has a secondary Paseq
+        //     // Example: Shalshelet has a secondary_mark Paseq
         let shalshelet_info = PROSE_ACCENT_TABLE[ProseAccent::Shalshelet as usize];
         assert!(
-            shalshelet_info.code_points.secondary.is_some(),
-            "Shalshelet should have secondary"
+            shalshelet_info.cantillation_symbol.secondary_mark.is_some(),
+            "Shalshelet should have secondary_mark"
         );
     }
 
@@ -1104,7 +980,7 @@ mod accent_data_tests {
         let mut double_count = 0;
 
         for &info in POETRY_ACCENT_TABLE.iter() {
-            if info.code_points.secondary.is_none() {
+            if info.cantillation_symbol.secondary_mark.is_none() {
                 single_count += 1;
             } else {
                 double_count += 1;
@@ -1125,10 +1001,10 @@ mod accent_data_tests {
     fn test_poetry_rank_map_length() {
         assert_eq!(
             BHS_POETRY_RANK_MAP.len(),
-            PoetryAccent::COUNT,
-            "Rank map length ({}) does not match PoetryAccent::COUNT ({})",
+            PoetryAccent::LEN,
+            "Rank map length ({}) does not match PoetryAccent::LEN ({})",
             BHS_POETRY_RANK_MAP.len(),
-            PoetryAccent::COUNT
+            PoetryAccent::LEN
         );
     }
     /// Tests specific known ranks to ensure the map is populated correctly
@@ -1226,24 +1102,24 @@ mod accent_data_tests {
     #[test]
     fn test_code_points_calculation_all_variants() {
         // Prose
-        for i in 0..ProseAccent::COUNT {
+        for i in 0..ProseAccent::LEN {
             let variant: ProseAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.nr_of_code_points();
-            assert!(cp == NrOfCodePoints::One || cp == NrOfCodePoints::Two, "Invalid code_points count: {:?}", cp);
+            let cp = variant.number_of_symbols();
+            assert!(cp == 1 || cp == 2, "Invalid code_points count: {:?}", cp);
         }
 
         // Poetry
-        for i in 0..PoetryAccent::COUNT {
+        for i in 0..PoetryAccent::LEN {
             let variant: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.nr_of_code_points();
-            assert!(cp == NrOfCodePoints::One || cp == NrOfCodePoints::Two, "Invalid code_points count: {:?}", cp);
+            let cp = variant.number_of_symbols();
+            assert!(cp == 1 || cp == 2, "Invalid code_points count: {:?}", cp);
         }
 
-        // Pseudo (should always be NrOfCodePoints::One)
-        for i in 0..PseudoAccent::COUNT {
+        // Pseudo (should always be 1)
+        for i in 0..PseudoAccent::LEN {
             let variant: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.nr_of_code_points();
-            assert_eq!(cp, NrOfCodePoints::One, "PseudoAccent code_points should always be 1");
+            let cp = variant.number_of_symbols();
+            assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
         }
     }
 

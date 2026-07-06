@@ -5,6 +5,7 @@
 // External crates
 
 // Local modules / crate‑internal
+use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::char::{
     ATNACH, AZLA, DARGA, DECHI, GALGAL, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MEAYLA, MERKHA,
     MERKHA_KEFULA, METEG, MUNACH, MUNAH, PASEQ, PASHTA, PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA,
@@ -23,9 +24,7 @@ use crate::sentence_ctx_regex::{
     RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
     RE_OUTER_PROSE_MEAYLA,
 };
-use crate::{
-    Context, HebrewAccent, Match, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext,
-};
+use crate::{Context, Match, SentenceContext};
 
 pub(crate) const ACCENT_LEN_UTF8: usize = 2;
 
@@ -2103,7 +2102,7 @@ mod unit_tests_cross_context {
     }
 }
 #[cfg(test)]
-mod additional_function_coverage_tests {
+mod accent_metadata_function_coverage_tests {
     use super::*;
     // use crate::char::{
     //     DARGA, DECHI, GALGAL, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MEAYLA, MERKHA,

@@ -124,7 +124,7 @@ impl SentenceContext {
     /// While certain accents are exclusive to one register, others appear in both, creating ambiguity that can prevent
     /// definitive context determination.
     ///
-    /// The function works by checking for the presence of accent marks that are exclusive to
+    /// The function works by checking for the presence of accent CantillationSymbol that are exclusive to
     /// each context:
     ///
     /// **Prose-exclusive accents** (Segolta, Zaqeph Qatan/Gadol, Pashta, Tevir, Yetiv,
@@ -172,7 +172,7 @@ impl SentenceContext {
     }
 }
 
-/// Try to determine the context of a Hebrew sentence from its accent marks.
+/// Try to determine the context of a Hebrew sentence from its accent CantillationSymbol.
 ///
 /// This is a convenience function for detecting context without creating a
 /// [`SentenceContext`] instance first.

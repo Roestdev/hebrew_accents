@@ -1,6 +1,6 @@
 //! # Hebrew Accents
 //!
-//! A Rust library for working with the **Masoretic Hebrew cantillation marks**
+//! A Rust library for working with the **Masoretic Hebrew cantillation CantillationSymbol**
 //!
 //! ## Design
 //!

@@ -8,13 +8,14 @@
 use hebrew_unicode_script::{is_hbr_block, is_hbr_consonant_final, is_hbr_consonant_normal};
 
 // Crate‑internal (local modules)
+use crate::accent::{PoetryAccent, ProseAccent};
 use crate::char::{
     GERESH_AS_CHAR, MAHPAKH, MAQQEPH_AS_CHAR, MERKHA, OLEH_AS_CHAR, PASEQ_AS_CHAR, REVIA,
     TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YORED_AS_CHAR, ZARQA_AS_CHAR,
 };
 use crate::sentenc_ctx_error::SentenceContextError;
 use crate::sentence_ctx_find::ACCENT_LEN_UTF8;
-use crate::{Context, Match, PoetryAccent, ProseAccent, SentenceContext};
+use crate::{Context, Match, SentenceContext};
 
 pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
     // Merkha (as a poetry accent) is
