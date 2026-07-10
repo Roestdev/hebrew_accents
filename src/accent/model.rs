@@ -72,7 +72,7 @@ pub(crate) struct Utf8CodePointInfo {
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[non_exhaustive]
-pub(crate) enum AccentCategory {
+pub enum AccentCategory {
     /// accents that connect words
     Conjunctive,
     #[default]
@@ -83,7 +83,7 @@ pub(crate) enum AccentCategory {
 /// Hebrew Accent types (Primary, secondary_mark, None)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[non_exhaustive]
-pub(crate) enum AccentType {
+pub enum AccentType {
     #[default]
     /// Indicates that the Accent is Primary Accent
     Primary,
@@ -95,7 +95,7 @@ pub(crate) enum AccentType {
 
 /// WordStress, indicating the location of the accent in relation to the consonant
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub(crate) enum WordStress {
+pub enum WordStress {
     #[default]
     /// ImPositive: The accent is located above the stressed syllable
     Im,

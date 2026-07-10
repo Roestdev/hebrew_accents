@@ -1,10 +1,12 @@
 use crate::accent::resolve_disjunctive_group;
+use crate::accent::AccentCategory;
+use crate::accent::AccentType;
 use crate::accent::GroupLevel;
+use crate::accent::WordStress;
 use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
 };
-
 
 /// Used for retrieving information
 pub trait Accent: Copy + Sized {
@@ -15,20 +17,17 @@ pub trait Accent: Copy + Sized {
     /// English name of the Hebrew Accent
     fn english_name(self) -> &'static str;
     /// Hebrew Accent type
-    //fn accent_type(self) -> Option<AccentType> ;
+    fn accent_type(self) -> Option<AccentType>;
     /// category of the Hebrew Accent
-    //fn category(self) -> Option<AccentCategory> ;
+    fn category(self) -> Option<AccentCategory>;
     /// word-stress of the Hebrew Accent
-    //fn word_stress(self) -> Option<WordStress> ;
-    //self.details().accent_meta_data.and_then(|add| add.word_stress)
+    fn word_stress(self) -> Option<WordStress>;
     /// number of UTF-8 code points of the Hebrew Accent
     fn number_of_symbols(self) -> u8;
     /// Returns any accent_meta_data notes or context about this accent, if available.
     fn notes(self) -> Option<&'static str>;
-
     /// Indicates the relative strength where 1 represents the strongest accent.
     fn relative_strength(self) -> u8;
-
     /// indicates the relative_strength of a selected accent (1 is the strongest)
     fn group_level(self) -> Option<GroupLevel>;
 }
@@ -55,6 +54,30 @@ impl Accent for HebrewAccent {
             HebrewAccent::Prose(p) => p.english_name(),
             HebrewAccent::Poetry(p) => p.english_name(),
             HebrewAccent::Pseudo(p) => p.english_name(),
+        }
+    }
+
+    fn accent_type(self) -> Option<AccentType> {
+        match self {
+            HebrewAccent::Prose(p) => p.accent_type(),
+            HebrewAccent::Poetry(p) => p.accent_type(),
+            HebrewAccent::Pseudo(p) => p.accent_type(),
+        }
+    }
+
+    fn category(self) -> Option<AccentCategory> {
+        match self {
+            HebrewAccent::Prose(p) => p.category(),
+            HebrewAccent::Poetry(p) => p.category(),
+            HebrewAccent::Pseudo(p) => p.category(),
+        }
+    }
+
+    fn word_stress(self) -> Option<WordStress> {
+        match self {
+            HebrewAccent::Prose(p) => p.word_stress(),
+            HebrewAccent::Poetry(p) => p.word_stress(),
+            HebrewAccent::Pseudo(p) => p.word_stress(),
         }
     }
 
@@ -107,13 +130,35 @@ impl Accent for ProseAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-fn number_of_symbols(self) -> u8 {
-    PROSE_ACCENT_TABLE
-        .get(self as usize)
-        .map_or(1, |x| {
-            if x.cantillation_symbol.secondary_mark.is_some() { 2 } else { 1 }
+    fn accent_type(self) -> Option<AccentType> {
+        PROSE_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.accent_type)
+    }
+
+    #[inline]
+    fn category(self) -> Option<AccentCategory> {
+        PROSE_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.category)
+    }
+
+    #[inline]
+    fn word_stress(self) -> Option<WordStress> {
+        PROSE_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.word_stress)
+    }
+    #[inline]
+    fn number_of_symbols(self) -> u8 {
+        PROSE_ACCENT_TABLE.get(self as usize).map_or(1, |x| {
+            if x.cantillation_symbol.secondary_mark.is_some() {
+                2
+            } else {
+                1
+            }
         })
-}
+    }
     #[inline]
     fn notes(self) -> Option<&'static str> {
         PROSE_ACCENT_TABLE
@@ -150,15 +195,35 @@ impl Accent for PoetryAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn number_of_symbols(self) -> u8 {
-        
-            POETRY_ACCENT_TABLE
+    fn accent_type(self) -> Option<AccentType> {
+        POETRY_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.accent_type)
+    }
 
-        .get(self as usize)
-        .map_or(1, |x| {
-            if x.cantillation_symbol.secondary_mark.is_some() { 2 } else { 1 }
+    #[inline]
+    fn category(self) -> Option<AccentCategory> {
+        POETRY_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.category)
+    }
+
+    #[inline]
+    fn word_stress(self) -> Option<WordStress> {
+        PROSE_ACCENT_TABLE
+            .get(self as usize)
+            .map_or(None, |x| x.word_stress)
+    }
+    #[inline]
+    fn number_of_symbols(self) -> u8 {
+        POETRY_ACCENT_TABLE.get(self as usize).map_or(1, |x| {
+            if x.cantillation_symbol.secondary_mark.is_some() {
+                2
+            } else {
+                1
+            }
         })
-}
+    }
     #[inline]
     fn notes(self) -> Option<&'static str> {
         POETRY_ACCENT_TABLE
@@ -195,14 +260,32 @@ impl Accent for PseudoAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
+    fn accent_type(self) -> Option<AccentType> {
+        PSEUDO_ACCENT_TABLE
+            .get(self as usize)
+            .and_then(|x| x.accent_type)
+    }
+
+    #[inline]
+    fn category(self) -> Option<AccentCategory> {
+        PSEUDO_ACCENT_TABLE
+            .get(self as usize)
+            .and_then(|x| x.category)
+    }
+
+    #[inline]
+    fn word_stress(self) -> Option<WordStress> {
+        PSEUDO_ACCENT_TABLE
+            .get(self as usize)
+            .and_then(|x| x.word_stress)
+    }
+    #[inline]
     fn number_of_symbols(self) -> u8 {
         1
     }
     #[inline]
     fn notes(self) -> Option<&'static str> {
-        PSEUDO_ACCENT_TABLE
-            .get(self as usize)
-            .map_or(None, |x| x.notes)
+        PSEUDO_ACCENT_TABLE.get(self as usize).and_then(|x| x.notes)
     }
     #[inline]
     fn relative_strength(self) -> u8 {
@@ -213,4 +296,3 @@ impl Accent for PseudoAccent {
         None
     }
 }
-
