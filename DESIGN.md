@@ -44,13 +44,13 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 - The accent `Meteg`, which is not mentioned BHS will be added to the list of both (prose and poetry) conjunctives. The Meteg is just as the Meayla a **secondary accent**.
 
-- A new classification, `PseudoAccents`, will be introduced to accommodate specific Hebrew punctuation marks that are closely related to the accents but do not conform to the standard Prose or Poetry accent taxonomies. 
-These pseudo accents require distinct handling. The following marks are now categorized under PseudoAccents:
+- A new classification, `PseudoAccents`, will be introduced to accommodate specific Hebrew punctuation CantillationSymbol that are closely related to the accents but do not conform to the standard Prose or Poetry accent taxonomies. 
+These pseudo accents require distinct handling. The following CantillationSymbol are now categorized under PseudoAccents:
 
   - `SophPasuq`
    
       Function: Primarily denotes the end of a verse or sentence, analogous to a period. However, its application is not absolute; certain scholarly traditions equate its disjunctive weight to that of Silluq.
-      Marks the end of a sentence (like the period), but not always. Some sholars treat them as as equal as the Silluq (a disjuntive).
+      CantillationSymbol the end of a sentence (like the period), but not always. Some sholars treat them as as equal as the Silluq (a disjuntive).
 
    - `Maqqeph`
 
@@ -66,7 +66,7 @@ These pseudo accents require distinct handling. The following marks are now cate
 
 ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
-- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent marks in the Tanach, which has led to confusion and potential errors. These marks are:
+- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent CantillationSymbol in the Tanach, which has led to confusion and potential errors. These CantillationSymbol are:
 
    -  The Yetiv mark
    -  The Tevir mark
@@ -75,7 +75,7 @@ These pseudo accents require distinct handling. The following marks are now cate
 
 - Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
 
-- Additionally, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
+- AccentMetadataly, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
 
 For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
 
@@ -160,7 +160,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
    Prose, Poetry, Unknown
 
 6. **Accent Type**  
-   Two type of accents: Primary and Secundary
+   Two type of accents: Primary and Secondary
 
 7. **Accent Category**    
    Disjunctive, Conjunctive
@@ -192,14 +192,14 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 - relative_strength() 
    - gives the relative_strength number of the accent
-- const COUNT (total number of accents)
+- const LEN (total number of accents)
 
 ## Traits
 
 `Accent`
 
 - details()
-    - gives additional information for a specific accent, e.g. accents position etc. etc.
+    - gives accent_meta_data information for a specific accent, e.g. accents position etc. etc.
 - accent_type()
 - category()
 

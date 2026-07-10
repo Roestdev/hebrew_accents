@@ -1,6 +1,6 @@
 //! # Hebrew Accents
 //!
-//! A Rust library for working with the **Masoretic Hebrew cantillation CantillationSymbol**
+//! A Rust library for working with the *Masoretic Hebrew cantillation CantillationSymbol*
 //!
 //! ## Design
 //!
@@ -119,25 +119,26 @@
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
 #[cfg_attr(doctest, doc = include_str!("../README.md"))]
-// common items
-mod char;
+mod accent;
+mod codepoints;
+mod data;
+mod error;
+mod formatting;
+mod hierarchy;
+mod scholar;
+mod sentence;
+mod utils;
 
-// finding Hebrew Accents
-mod sentenc_ctx_error;
-mod sentence_ctx; // main entry
-mod sentence_ctx_contains;
-mod sentence_ctx_find;
-mod sentence_ctx_funcs;
-mod sentence_ctx_regex;
+// Re-export commonly used items at crate root for ergonomic imports
+pub use error::SentenceContextError;
 
-// static 'Hebrew Accent' data
-mod accent; // main entry
-mod accent_codepoints;
-mod accent_data;
-mod accent_display;
+pub use sentence::context::Context;
+pub use sentence::detector::try_determine_context;
+pub use sentence::sentence_context::SentenceContext;
+pub use utils::matcher::Match;
 
-// exports
-pub use accent::*;
-//pub use accent_display::*;
-pub use sentenc_ctx_error::SentenceContextError;
-pub use sentence_ctx::*;
+pub use accent::Accent;
+pub use accent::HebrewAccent;
+pub use accent::PoetryAccent;
+pub use accent::ProseAccent;
+pub use accent::PseudoAccent;

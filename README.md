@@ -20,7 +20,7 @@
 
 ### What is this crate?
 
-`hebrew_accents` provides a **Rust library for working with the Masoretic Hebrew cantillation marks** (the “accents” that appear in the Tanach). This crate abstracts the complexities of the Masoretic Hebrew cantillation marks (see the file [BACKGROUND](BACKGROUND) for more insight in the complexities) 
+`hebrew_accents` provides a **Rust library for working with the Masoretic Hebrew cantillation CantillationSymbol** (the “accents” that appear in the Tanach). This crate abstracts the complexities of the Masoretic Hebrew cantillation CantillationSymbol (see the file [BACKGROUND](BACKGROUND) for more insight in the complexities) 
 
 ### Why this crate?
  
@@ -105,4 +105,4 @@ at your option.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
-be dual licensed as above, without any additional terms or conditions.
+be dual licensed as above, without any accent_meta_data terms or conditions.

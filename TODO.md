@@ -27,7 +27,7 @@ Accent
 
 #### `ProseAccent` and `PoetryAccent`
 - [x] relative_strength()
-- [x] const COUNT
+- [x] const LEN
 - [x] Implement Accent trait
 - [x] info()
   - [x] rename to details()

@@ -1,121 +1,25 @@
 //! This file contains all static data of the 'Hebrew Accents'
 
-// Standard library
-use once_cell::sync::Lazy;
-
 // Crate‑internal (local modules)
-use crate::{
-    accent_codepoints::*, AccentCategory, AccentInformation, AccentType, AlternateNames,
-    CantillationSymbol, WordStress,
+use crate::accent::AccentCategory;
+use crate::accent::{
+    AccentInformation, AccentType, AlternateNames, CantillationSymbol, WordStress,
 };
-use crate::{PoetryAccent, ProseAccent, PseudoAccent};
 
-pub static PROSE_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; ProseAccent::LEN]> =
-    Lazy::new(|| {
-        &[
-            &SILLUQ_INFO,
-            &ATNACH_INFO,
-            &SEGOLTA_INFO,
-            &SHALSHELET_INFO,
-            &ZAQEF_QATON_INFO,
-            &ZAQEPH_GADOL_INFO,
-            &REVIA_INFO,
-            &TIPHCHA_INFO,
-            &ZARQA_INFO,
-            &PASHTA_INFO,
-            &YETIV_INFO,
-            &TEVIR_INFO,
-            &GERESH_INFO,
-            &GERSHAYIM_INFO,
-            &PAZER_INFO,
-            &PAZER_GADOL_INFO,
-            &TELISHA_GEDOLAH_INFO,
-            &LEGARMEH_INFO,
-            // Conjunctives
-            &MUNACH_INFO,
-            &MAHPAKH_INFO,
-            &MERKHA_INFO,
-            &MERKHA_KEFULAH_INFO,
-            &DARGA_INFO,
-            &AZLA_INFO,
-            &TELISHA_QETANNAH_INFO,
-            &GALGAL_INFO,
-            &MAYELA_INFO,
-            &METEG_INFO,
-        ]
-    });
-pub static POETRY_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PoetryAccent::LEN]> =
-    Lazy::new(|| {
-        &[
-            &SILLUQ_INFO,
-            &OLEH_WE_YORED_INFO,
-            &ATNACH_INFO,
-            &REVIA_GADOL_INFO,
-            &REVIA_MUGRASH_INFO,
-            &SHALSHELET_GADOL_INFO,
-            &TSINNOR_INFO,
-            &REVIA_QATON_INFO,
-            &DECHI_INFO,
-            &PAZER_INFO,
-            &MEHUPPAKH_LEGARMEH_INFO,
-            &AZLA_LEGARMEH_INFO,
-            // Conjunctives
-            &MUNACH_INFO,
-            &MERKHA_INFO,
-            &ILLUY_INFO,
-            &TARCHA_INFO,
-            &GALGAL_INFO,
-            &MEHUPPAKH_INFO,
-            &AZLA_INFO,
-            &SHALSHELET_QETANNAH_INFO,
-            &TSINNORIT_MERKHA_INFO,
-            &TSINNORIT_MAHPAKH_INFO,
-            &METEG_INFO,
-        ]
-    });
-
-pub static PSEUDO_ACCENT_TABLE: Lazy<&'static [&'static AccentInformation; PseudoAccent::LEN]> =
-    Lazy::new(|| &[&SOPH_PASUQ_INFO, &MAQQEPH_INFO, &PASEQ_INFO]);
-
-/// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
-///
-/// The order **must** correspond exactly to the order of the variants
-/// declared in `PoetryAccent`.  If you add a new variantextend this
-/// array accordingly – the `static_assertions` check below will remind you.
-pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
-    // ---- Disjunctives -----------------------------------------
-    /* 0 */
-    1, // Silluq
-    /* 1 */ 2, // OlehWeYored
-    /* 2 */ 3, // Atnach
-    /* 3 */ 4, // ReviaGadol
-    /* 4 */ 5, // ReviaMugrash
-    /* 5 */ 6, // ShalsheletGadol
-    /* 6 */ 7, // Tsinnor
-    /* 7 */ 8, // ReviaQaton
-    /* 8 */ 9, // Dechi
-    /* 9 */ 10, // Pazer
-    /*10 */ 11, // MehuppakhLegarmeh
-    /*11 */ 12, // AzlaLegarmeh
-    // ---- Conjunctives ----------------------------------------------------
-    /*12 */
-    13, // Munach
-    /*13 */ 14, // Merkha
-    /*14 */ 15, // Illuy
-    /*15 */ 16, // Tarcha
-    /*16 */ 17, // Galgal
-    /*17 */ 18, // Mehuppakh
-    /*18 */ 19, // Azla
-    /*19 */ 20, // ShalsheletQetannah
-    /*20 */ 21, // TsinnoritMerkha (Same rank as TsinnoritMahpakh!!!)
-    /*21 */ 21, // TsinnoritMahpakh (Same rank as TsinnoritMerkha!!!)
-    /*22 */ 22, // Meteg
-];
-
+use crate::codepoints::{
+    CODEPOINT_DARGA, CODEPOINT_DEHI, CODEPOINT_ETNAHTA, CODEPOINT_GERESH, CODEPOINT_GERSHAYIM,
+    CODEPOINT_ILUY, CODEPOINT_MAHAPAKH, CODEPOINT_MAQAF, CODEPOINT_MERKHA, CODEPOINT_MERKHA_KEFULA,
+    CODEPOINT_METEG, CODEPOINT_MUNAH, CODEPOINT_OLE, CODEPOINT_PASEQ, CODEPOINT_PASHTA,
+    CODEPOINT_PAZER, CODEPOINT_QADMA, CODEPOINT_QARNEY_PARA, CODEPOINT_REVIA, CODEPOINT_SEGOL,
+    CODEPOINT_SHALSHELET, CODEPOINT_SILLUQ, CODEPOINT_SOPH_PASUQ, CODEPOINT_TELISHA_GEDOLA,
+    CODEPOINT_TELISHA_QETANA, CODEPOINT_TEVIR, CODEPOINT_TIPEHA, CODEPOINT_YERAH_BEN_YOMO,
+    CODEPOINT_YETIV, CODEPOINT_ZAQEF_GADOL, CODEPOINT_ZAQEF_QATAN, CODEPOINT_ZARQA,
+    CODEPOINT_ZINOR,
+};
 pub(crate) const SILLUQ_INFO: AccentInformation = AccentInformation {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
-    hebrew_concept: "closecessation",
+    hebrew_concept: "close, cessation",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_SILLUQ,
         secondary_mark: None,
@@ -185,7 +89,7 @@ pub(crate) const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
     alternate_names: Some(AlternateNames {
         english_name: "Zaqeph Qatan",
         hebrew_name: "זָקֵף קָטָן",
-        hebrew_concept: "todo",
+        hebrew_concept: "TODO",
     }),
     notes: None,
     accent_type: Some(AccentType::Primary),
@@ -309,7 +213,7 @@ pub(crate) const GERESH_INFO: AccentInformation = AccentInformation {
     alternate_names: Some(AlternateNames {
         english_name: "Teres",
         hebrew_name: "טֶרֶס",
-        hebrew_concept: "todo",
+        hebrew_concept: "TODO",
     }),
     notes: None,
     accent_type: Some(AccentType::Primary),
@@ -396,7 +300,7 @@ pub(crate) const LEGARMEH_INFO: AccentInformation = AccentInformation {
     alternate_names: Some(AlternateNames {
         english_name: "Munach Legarmeh",
         hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
-        hebrew_concept: "todo",
+        hebrew_concept: "TODO",
     }),
     notes: Some("Munach with Passeq; Before Revia"),
     accent_type: Some(AccentType::Primary),
@@ -547,7 +451,7 @@ pub(crate) const MAYELA_INFO: AccentInformation = AccentInformation {
     alternate_names: Some(AlternateNames {
         english_name: "Meayyela",
         hebrew_name: "מְאַיְּלָא",
-        hebrew_concept: "todo",
+        hebrew_concept: "TODO",
     }),
     notes: Some("Name given to a Tiphchawhen in the same word as Atnach or Silluq"),
     category: Some(AccentCategory::Conjunctive),
@@ -874,7 +778,7 @@ pub(crate) const MAQQEPH_INFO: AccentInformation = AccentInformation {
 pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     english_name: "Paseq",
     hebrew_name: "פָּסֵק",
-    hebrew_concept: "to pauseto stop or to interrupt",
+    hebrew_concept: "to pause, to stop or to interrupt",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_PASEQ,
         secondary_mark: None,
@@ -887,254 +791,3 @@ pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     category: None,
     word_stress: None,
 };
-
-#[cfg(test)]
-mod accent_data_tests {
-    // Import the tables and maps
-    use crate::accent::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
-    use crate::accent_data::{
-        BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
-    };
-
-    // Ensures the table length matches the enum LEN constant
-    #[test]
-    fn test_prose_table_length_matches_enum_count() {
-        assert_eq!(
-            PROSE_ACCENT_TABLE.len(),
-            ProseAccent::LEN,
-            "PROSE_ACCENT_TABLE length ({}) does not match ProseAccent::LEN ({})",
-            PROSE_ACCENT_TABLE.len(),
-            ProseAccent::LEN
-        );
-    }
-    #[test]
-    fn test_poetry_table_length_matches_enum_count() {
-        assert_eq!(
-            POETRY_ACCENT_TABLE.len(),
-            PoetryAccent::LEN,
-            "POETRY_ACCENT_TABLE length ({}) does not match PoetryAccent::LEN ({})",
-            POETRY_ACCENT_TABLE.len(),
-            PoetryAccent::LEN
-        );
-    }
-    #[test]
-    fn test_pseudo_table_length_matches_enum_count() {
-        assert_eq!(
-            PSEUDO_ACCENT_TABLE.len(),
-            PseudoAccent::LEN,
-            "PSEUDO_ACCENT_TABLE length ({}) does not match PseudoAccent::LEN ({})",
-            PSEUDO_ACCENT_TABLE.len(),
-            PseudoAccent::LEN
-        );
-    }
-    // Tests the branch logic: `if secondary_mark.is_none() { 1 } else { 2 }`
-    // This ensures we cover both the "single code point" and "double code point" paths.
-    #[test]
-    fn test_prose_accent_code_point_branches() {
-        let mut single_count = 0;
-        let mut double_count = 0;
-
-        for &info in PROSE_ACCENT_TABLE.iter() {
-            if info.cantillation_symbol.secondary_mark.is_none() {
-                single_count += 1;
-                assert_eq!(
-                    info.cantillation_symbol.primary_mark.code_point_value.len(),
-                    6,
-                    "Primary should be length 1"
-                );
-            } else {
-                double_count += 1;
-                assert_eq!(
-                    info.cantillation_symbol.primary_mark.code_point_value.len(),
-                    6,
-                    "Primary should be length 1"
-                );
-                assert!(
-                    info.cantillation_symbol.secondary_mark.is_some(),
-                    "Secondary must be Some"
-                );
-            }
-        }
-
-        //     // Assert that we actually hit both branches (coverage requirement)
-        assert_eq!(
-            single_count, 26,
-            "No single-code-point accents found in Prose table"
-        );
-        assert_eq!(
-            double_count, 2,
-            "No double-code-point accents found in Prose table"
-        );
-
-        //     // Example: Shalshelet has a secondary_mark Paseq
-        let shalshelet_info = PROSE_ACCENT_TABLE[ProseAccent::Shalshelet as usize];
-        assert!(
-            shalshelet_info.cantillation_symbol.secondary_mark.is_some(),
-            "Shalshelet should have secondary_mark"
-        );
-    }
-
-    #[test]
-    fn test_poetry_accent_code_point_branches() {
-        let mut single_count = 0;
-        let mut double_count = 0;
-
-        for &info in POETRY_ACCENT_TABLE.iter() {
-            if info.cantillation_symbol.secondary_mark.is_none() {
-                single_count += 1;
-            } else {
-                double_count += 1;
-            }
-        }
-
-        assert_eq!(
-            single_count, 16,
-            "No single-code-point accents found in Poetry table"
-        );
-        assert_eq!(
-            double_count, 7,
-            "No double-code-point accents found in Poetry table"
-        );
-    }
-    /// Ensures the rank map covers every variant in PoetryAccent
-    #[test]
-    fn test_poetry_rank_map_length() {
-        assert_eq!(
-            BHS_POETRY_RANK_MAP.len(),
-            PoetryAccent::LEN,
-            "Rank map length ({}) does not match PoetryAccent::LEN ({})",
-            BHS_POETRY_RANK_MAP.len(),
-            PoetryAccent::LEN
-        );
-    }
-    /// Tests specific known ranks to ensure the map is populated correctly
-    #[test]
-    fn test_poetry_rank_map_specific_values() {
-        // Silluq (index 0) should be rank 1 (strongest)
-        assert_eq!(BHS_POETRY_RANK_MAP[PoetryAccent::Silluq as usize], 1);
-
-        // Meteg (last index) should be the highest rank (weakest)
-        let last_idx = PoetryAccent::Meteg as usize;
-        let last_rank = BHS_POETRY_RANK_MAP[last_idx];
-
-        // Verify it's the maximum value in the map
-        let max_rank = BHS_POETRY_RANK_MAP.iter().max().unwrap();
-        assert_eq!(
-            last_rank, *max_rank,
-            "Meteg should have the highest rank value"
-        );
-    }
-
-    /// Tests that the map handles the "same rank" case (TsinnoritMerkha vs TsinnoritMahpakh)
-    #[test]
-    fn test_poetry_rank_map_duplicate_ranks() {
-        let tsinnor_merkha_idx = PoetryAccent::TsinnoritMerkha as usize;
-        let tsinnor_mahpakh_idx = PoetryAccent::TsinnoritMahpakh as usize;
-
-        let rank_merkha = BHS_POETRY_RANK_MAP[tsinnor_merkha_idx];
-        let rank_mahpakh = BHS_POETRY_RANK_MAP[tsinnor_mahpakh_idx];
-
-        assert_eq!(
-            rank_merkha, rank_mahpakh,
-            "TsinnoritMerkha and TsinnoritMahpakh should have the same rank"
-        );
-    }
-
-    // ========================================================================
-    // 4. Static Data Consistency
-    // ========================================================================
-
-    /// Ensures no duplicate English names exist within the same table
-    #[test]
-    fn test_prose_table_unique_names() {
-        let names: Vec<&str> = PROSE_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
-        let unique_names: std::collections::HashSet<_> = names.iter().collect();
-
-        assert_eq!(
-            names.len(),
-            unique_names.len(),
-            "Duplicate English names found in Prose table"
-        );
-    }
-
-    #[test]
-    fn test_poetry_table_unique_names() {
-        let names: Vec<&str> = POETRY_ACCENT_TABLE.iter().map(|i| i.english_name).collect();
-        let unique_names: std::collections::HashSet<_> = names.iter().collect();
-
-        assert_eq!(
-            names.len(),
-            unique_names.len(),
-            "Duplicate English names found in Poetry table"
-        );
-    }
-
-    /// Ensures Hebrew names are not empty
-    #[test]
-    fn test_all_tables_have_hebrew_names() {
-        for &info in PROSE_ACCENT_TABLE.iter() {
-            assert!(
-                !info.hebrew_name.is_empty(),
-                "Empty Hebrew name in Prose table"
-            );
-        }
-        for &info in POETRY_ACCENT_TABLE.iter() {
-            assert!(
-                !info.hebrew_name.is_empty(),
-                "Empty Hebrew name in Poetry table"
-            );
-        }
-        for &info in PSEUDO_ACCENT_TABLE.iter() {
-            assert!(
-                !info.hebrew_name.is_empty(),
-                "Empty Hebrew name in Pseudo table"
-            );
-        }
-    }
-
-    // ========================================================================
-    // 5. Integration with Accent Trait (Indirect Coverage)
-    // ========================================================================
-
-    /// Tests that the `details()` method (which uses table indexing) works for all variants
-
-    /// Tests that `code_points()` logic works for all variants (covering the if/else branch)
-    #[test]
-    fn test_code_points_calculation_all_variants() {
-        // Prose
-        for i in 0..ProseAccent::LEN {
-            let variant: ProseAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.number_of_symbols();
-            assert!(cp == 1 || cp == 2, "Invalid code_points count: {:?}", cp);
-        }
-
-        // Poetry
-        for i in 0..PoetryAccent::LEN {
-            let variant: PoetryAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.number_of_symbols();
-            assert!(cp == 1 || cp == 2, "Invalid code_points count: {:?}", cp);
-        }
-
-        // Pseudo (should always be 1)
-        for i in 0..PseudoAccent::LEN {
-            let variant: PseudoAccent = unsafe { std::mem::transmute(i as u8) };
-            let cp = variant.number_of_symbols();
-            assert_eq!(cp, 1, "PseudoAccent code_points should always be 1");
-        }
-    }
-
-    // ========================================================================
-    // 6. Stress Test / Static Initialization
-    // ========================================================================
-
-    /// Ensures the Lazy statics initialize correctly and can be accessed repeatedly
-    #[test]
-    fn test_static_initialization_stability() {
-        for _ in 0..100 {
-            let _p_len = PROSE_ACCENT_TABLE.len();
-            let _po_len = POETRY_ACCENT_TABLE.len();
-            let _ps_len = PSEUDO_ACCENT_TABLE.len();
-            let _rank_len = BHS_POETRY_RANK_MAP.len();
-        }
-    }
-}

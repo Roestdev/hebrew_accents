@@ -1,0 +1,48 @@
+use crate::accent::{AccentInformation, PoetryAccent};
+
+use crate::data::accent_information::{
+    ATNACH_INFO, AZLA_INFO, AZLA_LEGARMEH_INFO, DECHI_INFO, GALGAL_INFO, ILLUY_INFO,
+    MEHUPPAKH_INFO, MEHUPPAKH_LEGARMEH_INFO, MERKHA_INFO, METEG_INFO, MUNACH_INFO,
+    OLEH_WE_YORED_INFO, PAZER_INFO, REVIA_GADOL_INFO, REVIA_MUGRASH_INFO, REVIA_QATON_INFO,
+    SHALSHELET_GADOL_INFO, SHALSHELET_QETANNAH_INFO, SILLUQ_INFO, TARCHA_INFO,
+    TSINNORIT_MAHPAKH_INFO, TSINNORIT_MERKHA_INFO, TSINNOR_INFO,
+};
+
+pub(crate) static POETRY_ACCENT_TABLE: [AccentInformation; PoetryAccent::LEN] = [
+    // Disjunctives
+    SILLUQ_INFO,
+    OLEH_WE_YORED_INFO,
+    ATNACH_INFO,
+    REVIA_GADOL_INFO,
+    REVIA_MUGRASH_INFO,
+    SHALSHELET_GADOL_INFO,
+    TSINNOR_INFO,
+    REVIA_QATON_INFO,
+    DECHI_INFO,
+    PAZER_INFO,
+    MEHUPPAKH_LEGARMEH_INFO,
+    AZLA_LEGARMEH_INFO,
+    // Conjunctives
+    MUNACH_INFO,
+    MERKHA_INFO,
+    ILLUY_INFO,
+    TARCHA_INFO,
+    GALGAL_INFO,
+    MEHUPPAKH_INFO,
+    AZLA_INFO,
+    SHALSHELET_QETANNAH_INFO,
+    TSINNORIT_MERKHA_INFO,
+    TSINNORIT_MAHPAKH_INFO,
+    METEG_INFO,
+];
+
+// Compile-time guard
+const _: () = assert!(
+    POETRY_ACCENT_TABLE.len() == PoetryAccent::LEN,
+    "POETRY_ACCENT_TABLE length mismatch!"
+);
+
+#[test]
+fn table_length_matches_enum_count() {
+    assert_eq!(POETRY_ACCENT_TABLE.len(), PoetryAccent::LEN);
+}

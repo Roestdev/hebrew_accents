@@ -8,7 +8,7 @@ use fancy_regex::Regex as FancyRegex;
 use regex::Regex;
 
 // Crate‑internal (local modules)
-use crate::char::{
+use crate::sentence::char::{
     ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
     SOF_PASUQ, TSINNORIT, YORED,
 };
@@ -20,7 +20,7 @@ const HEBREW: &str = r"\p{Hebrew}";
 const OPTIONAL_SPACE: &str = r"\s?";
 
 // One or more spaces (greedy).
-// ONE_OR_MORE_SPACES: &str = r"\s+";
+//const ONE_OR_MORE_SPACES: &str = r"\s+";
 
 /// Any character that is **not** a space nor Maqqeph (U+05BE).
 const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";

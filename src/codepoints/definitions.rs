@@ -8,9 +8,9 @@
 //! - the position of the accent relative to the related consonant
 
 // Crate‑internal (local modules)
-use crate::accent::CodePointPosition;
-use crate::accent::Tradition;
-use crate::accent::Utf8CodePointInfo;
+use crate::accent::model::Utf8CodePointInfo;
+use crate::codepoints::CodePointPosition;
+use crate::codepoints::Tradition;
 
 /// Constructor for a single code‑point description
 const fn utf8_cp_constructor(
