@@ -10,7 +10,6 @@ pub use poetry::PoetryAccent; // public API
 pub use prose::ProseAccent; // public API
 pub use pseudo::PseudoAccent; // public API
 pub use wrapper::HebrewAccent; // public API
-
 pub use accent_trait::Accent; // public API
 
 pub(crate) use model::AccentInformation;
@@ -20,3 +19,5 @@ pub(crate) use model::Category;
 pub(crate) use model::Kind;
 pub(crate) use model::Utf8CodePointInfo;
 pub(crate) use model::WordStress;
+
+

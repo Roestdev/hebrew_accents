@@ -61,7 +61,7 @@ pub(crate) static FA_RE_OUTER_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
         "{SILLUQ}{NOT_FOLLOWED_BY_MAQAF}{HEBREW}*{OPTIONAL_SPACE}{SOF_PASUQ}{OPTIONAL_SPACE}{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}$"
     );
     FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", pattern))
 });
 
 // A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
@@ -73,13 +73,13 @@ pub(crate) static RE_OUTER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!(
         "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_SHALSHELET: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_SHALSHELET: {}", pattern))
 });
 
 pub(crate) static RE_INNER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", pattern))
 });
 
 // A 'Legarmeh' consists of the following two UTF-8 code-points:
@@ -92,13 +92,13 @@ pub(crate) static RE_OUTER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
         "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}"
     );
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_LEGARMEH: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_LEGARMEH: {}", pattern))
 });
 
 pub(crate) static RE_INNER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_PROSE_LEGARMEH: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_PROSE_LEGARMEH: {}", pattern))
 });
 
 // A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
@@ -110,7 +110,7 @@ pub(crate) static RE_INNER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
 pub(crate) static FA_RE_OUTER_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!("{MUNAH}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
     FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", pattern))
 });
 
 // A Mayela is a Tiphcha before Silluq or Atnach in the same word
@@ -124,7 +124,7 @@ pub(crate) static RE_OUTER_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
         "{MEAYLA}{HEBREW}+{ATNACH}{OR}{MEAYLA}{HEBREW}*?{SILLUQ}{HEBREW}?{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}"
     );
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", pattern))
 });
 
 // A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
@@ -135,7 +135,7 @@ const METEG_CONSTRAINS: &str =
 pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern = format!("{}{}", METEG, METEG_CONSTRAINS,);
     FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", pattern))
 });
 
 // Two UCP's: u{05BD} -> at least the first one is a Meteg
@@ -154,7 +154,7 @@ pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
 pub(crate) static RE_OUTER_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{}{}+{}{}*{}", OLEH, HEBREW, OPTIONAL_SPACE, HEBREW, YORED);
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WE_YORED: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WE_YORED: {}", pattern))
 });
 
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
@@ -200,7 +200,7 @@ pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
     //let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
     let pattern = format!("{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", pattern))
 });
 
 // An 'Mehuppakh Legarmeh' consists of the following two UTF-8 code-points:
@@ -213,7 +213,7 @@ pub(crate) static RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(||
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: {}",
-            &pattern
+            pattern
         )
     })
 });
@@ -226,7 +226,7 @@ pub(crate) static RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(||
 pub(crate) static RE_OUTER_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{AZLA}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_AZLA_LEGARMEH: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_AZLA_LEGARMEH: {}", pattern))
 });
 
 // pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
@@ -240,7 +240,7 @@ pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
     let pattern =
         format!("{AZLA}{HEBREW}*?{MAQAF}{OR}{AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
     FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_POETRY_AZLA: {}", &pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_POETRY_AZLA: {}", pattern))
 });
 
 // A Shalshalet NOT followed by a Sof Passuq (or a vertical line)
@@ -251,7 +251,7 @@ pub(crate) static FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: Lazy<FancyRegex> = Laz
     FancyRegex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: {}",
-            &pattern
+            pattern
         )
     })
 });
@@ -268,7 +268,7 @@ pub(crate) static RE_OUTER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_OUTER_POETRY_TSINNORIT_MERKHA: {}",
-            &pattern
+            pattern
         )
     })
 });
@@ -278,7 +278,7 @@ pub(crate) static RE_INNER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_INNER_POETRY_TSINNORIT_MERKHA: {}",
-            &pattern
+            pattern
         )
     })
 });
@@ -295,7 +295,7 @@ pub(crate) static RE_OUTER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| 
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
-            &pattern
+            pattern
         )
     })
 });
@@ -305,7 +305,7 @@ pub(crate) static RE_INNER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| 
     Regex::new(&pattern).unwrap_or_else(|_| {
         panic!(
             "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
-            &pattern
+            pattern
         )
     })
 });

@@ -1,5 +1,6 @@
 //! Main entry point for Hebrew Accent information
 
+
 // Crate‑internal (local modules)
 use crate::accent::public_model::AccentCategory;
 use crate::accent::public_model::AccentKind;
@@ -8,7 +9,7 @@ use crate::accent::public_model::GroupLevel;
 use crate::accent::HebrewAccent;
 use crate::accent::PoetryAccent;
 use crate::accent::ProseAccent;
-use crate::codepoints::{CodePointPosition, Tradition};
+use crate::codepoints::{TraditionNames,CodePointPosition};
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -48,6 +49,13 @@ pub(crate) struct AlternateNames {
 /// Struct containing the cantillation symbol of a Hebrew Accent
 /// Which may consist of one or (max) two cantillation marks
 /// One cantilation mark is one UTF8 code point
+/// A cantillation mark is a diacritical symbol attached to a letter or a word. 
+/// It is characterised by its shape and its position relative to the letter or 
+/// word it is attached to.
+/// 
+/// A cantillation symbol consists of one or two cantillation marks. 
+/// It is characterised by its meaning and by the rules for its usage in a given context.
+
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct CantillationSymbol {
     /// Primary UTF-8 code point, the one that is encountered first
@@ -69,8 +77,8 @@ pub(crate) struct Utf8CodePointInfo {
     pub(crate) symbol: &'static str,
     /// The position of the code-point in relation to the consonant
     pub(crate) position: CodePointPosition,
-    /// An array containing information of various Jewish traditions
-    pub(crate) traditions: &'static [Tradition],
+    /// Tradition-specific naming information
+    pub(crate) traditions: TraditionNames,  // ← Changed from &'static [Tradition]
 }
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
@@ -210,3 +218,4 @@ pub(crate) fn resolve_disjunctive_group(accent: HebrewAccent) -> Option<Disjunct
         _ => None, // conjunctives and pseudo-accents lack hierarchy
     }
 }
+

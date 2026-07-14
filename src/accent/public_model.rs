@@ -1,3 +1,6 @@
+use crate::codepoints::CodePointPosition;
+
+
 /// Hebrew Accent kind — (absence is expressed via Option<T>)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum AccentKind {
@@ -68,6 +71,21 @@ pub enum AccentWordStress {
     PostPositive,
     /// PrePositive: Accent is NOT located above the stressed syllable, but at the very beginning of the word
     PrePositive,
+}
+
+/// Public-facing representation of a cantillation codepoint
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub struct CantillationMark {
+    /// Unicode codepoint value, e.g. "U+0597"
+    pub unicode_value: &'static str,
+    /// Hex byte representation, e.g. "0xd6 0x97"
+    pub hex_bytes: &'static str,
+    /// The actual Hebrew character/symbol, e.g. "֗"
+    pub symbol: &'static str,
+    /// Canonical name from UTF-8 character tables
+    pub canonical_name: &'static str,
+    /// Position relative to the consonant
+    pub position: CodePointPosition,
 }
 
 /// Disjunctive accent hierarchy level following Futato's classification system.
