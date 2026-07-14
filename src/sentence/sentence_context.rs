@@ -364,7 +364,7 @@ mod try_determine_context1 {
     const TEXT_POETRY_ONLY: &str =
         "אַ֥שְֽׁרֵי־הָאִ֗ישׁ אֲשֶׁ֤ר לֹ֥א הָלַךְ֮ בַּעֲצַ֪ת רְשָׁ֫עִ֥ים וּבְדֶ֣רֶךְ חַ֭טָּאִים לֹ֥א עָמָ֑ד וּבְמוֹשַׁ֥ב לֵ֝צִ֗ים לֹ֣א יָשָֽׁב׃"; // Psalm 1:1
 
-    // 3. Text with BOTH types
+    // 3. Text with BOTH accenttypes
     const TEXT_AMBIGUOUS: &str = "מַעֲשֵׂ֣ה אֱלֹהִ֑ים"; // Hypothetical mix
 
     // 4. Text with NEITHER (common accents like Munakh, Makhpakh which appear in both?)

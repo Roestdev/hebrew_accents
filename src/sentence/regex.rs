@@ -178,6 +178,22 @@ Placement – The mark appears above and a little before the first letter of the
 This mark is characteristic of the three poetic books (Job, Proverbs, Psalms – the “Emet” books); there it often changes the usual function of nearby accents (e.g., turning a strong disjunctive into a weaker one).
 
 In short, both are cantillation CantillationSymbol, but geresh muqdam is positioned slightly earlier (to the left) of the accented letter, whereas the ordinary geresh sits directly over the letter. This subtle shift signals a different nuance in the chanting and parsing of the biblical text.
+-------------------------------------------------------------------
+Yes, the Geresh Muqdam (גֵּרֵשׁ מוּקְדָם, literally "preceding geresh") does appear in the BHS.
+Since the BHS reproduces the full Masoretic notation of the Leningrad Codex,
+it includes all the cantillation marks of both accent systems — the prose system (21 books)
+and the poetic system (3 books).The Geresh Muqdam belongs specifically to the
+poetic accent system, which is used exclusively in the three Sifrei Emet —
+Psalms, Proverbs, and Job.
+These three books use a distinct set of te'amim that differs from the 21 prose books,
+and the Geresh Muqdam is one of the distinctive marks unique to that system.
+The name "Muqdam" ("preceding" or "moved forward") refers to its placement:
+unlike a regular Geresh which sits on the accented syllable of its own word,
+the Geresh Muqdam is attached to the end of the preceding word, effectively 
+"moved forward" from its logical position.
+It functions as a disjunctive accent, creating a moderate pause in the verse structure,
+and helps parse the parallelism characteristic of biblical poetry.
+So if you're reading Psalms, Proverbs, or Job in the BHS, you'll encounter it.
 */
 // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
 pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {

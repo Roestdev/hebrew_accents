@@ -6,7 +6,7 @@ use crate::accent::PoetryAccent;
 /// declared in `PoetryAccent`.  If you add a new variantextend this
 /// array accordingly – the `static_assertions` check below will remind you.
 pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
-    // ----------------------------- Disjunctives
+    // Disjunctives
     /* 0 */ 1, // Silluq
     /* 1 */ 2, // OlehWeYored
     /* 2 */ 3, // Atnach
@@ -19,7 +19,7 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
     /* 9 */ 10, // Pazer
     /*10 */ 11, // MehuppakhLegarmeh
     /*11 */ 12, // AzlaLegarmeh
-    // ------------------------------ Conjunctives
+    // Conjunctives
     /*12 */ 13, // Munach
     /*13 */ 14, // Merkha
     /*14 */ 15, // Illuy
@@ -28,7 +28,7 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
     /*17 */ 18, // Mehuppakh
     /*18 */ 19, // Azla
     /*19 */ 20, // ShalsheletQetannah
-    /*20 */ 21, // TsinnoritMerkha (Same rank as TsinnoritMahpakh!!!)
-    /*21 */ 21, // TsinnoritMahpakh (Same rank as TsinnoritMerkha!!!)
+    /*20 */ 21, // TsinnoritMerkha - same rank as TsinnoritMahpakh
+    /*21 */ 21, // TsinnoritMahpakh - same rank as TsinnoritMerkha
     /*22 */ 22, // Meteg
 ];

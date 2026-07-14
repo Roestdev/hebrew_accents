@@ -2,13 +2,13 @@
 //!
 //! Constants below are a mix of the following:
 //! - UTF-8 code table (<https://utf8-chartable.de/unicode-utf8-table.pl>)
-//! - naming of the accents according different traditionssee:
+//! - naming of the accents according **to** different traditions:
 //!   - <https://en.wikipedia.org/wiki/Hebrew_cantillation>
 //!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
 //! - the position of the accent relative to the related consonant
 
 // Crate‑internal (local modules)
-use crate::accent::model::Utf8CodePointInfo;
+use crate::accent::Utf8CodePointInfo;
 use crate::codepoints::CodePointPosition;
 use crate::codepoints::Tradition;
 
@@ -117,20 +117,20 @@ pub(crate) const CODEPOINT_SHALSHELET: Utf8CodePointInfo = utf8_cp_constructor(
     ],
 );
 
-pub(crate) const CODEPOINT_ZAQEF_QATAN_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TRAD_ZAQEF_QATAN_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "זָקֵף קָטָ֔ן",
     english_name: "zaqeph qatan",
 };
-pub(crate) const CODEPOINT_ZAQEF_QATAN_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TRAD_ZAQEF_QATAN_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
 
-pub(crate) const CODEPOINT_ZAQEF_QATAN_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TRAD_ZAQEF_QATAN_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
-pub(crate) const CODEPOINT_ZAQEF_QATAN_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TRAD_ZAQEF_QATAN_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "זָקֵף קָט֔וֹן",
     english_name: "zaqeph qaton",
 };
@@ -142,25 +142,25 @@ pub(crate) const CODEPOINT_ZAQEF_QATAN: Utf8CodePointInfo = utf8_cp_constructor(
     "֔",
     CodePointPosition::Above,
     &[
-        CODEPOINT_ZAQEF_QATAN_ASHKENAZI,
-        CODEPOINT_ZAQEF_QATAN_SEPHARDI,
-        CODEPOINT_ZAQEF_QATAN_ITALIAN,
-        CODEPOINT_ZAQEF_QATAN_YEMENITE,
+        TRAD_ZAQEF_QATAN_ASHKENAZI,
+        TRAD_ZAQEF_QATAN_SEPHARDI,
+        TRAD_ZAQEF_QATAN_ITALIAN,
+        TRAD_ZAQEF_QATAN_YEMENITE,
     ],
 );
-pub(crate) const CODEPOINT_ZAQEF_GADOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
+pub(crate) const TRAD_ZAQEF_GADOL_ASHKENAZI: Tradition = Tradition::Ashkenazi {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub(crate) const CODEPOINT_ZAQEF_GADOL_SEPHARDI: Tradition = Tradition::Sephardi {
+pub(crate) const TRAD_ZAQEF_GADOL_SEPHARDI: Tradition = Tradition::Sephardi {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub(crate) const CODEPOINT_ZAQEF_GADOL_ITALIAN: Tradition = Tradition::Italian {
+pub(crate) const TRAD_ZAQEF_GADOL_ITALIAN: Tradition = Tradition::Italian {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
-pub(crate) const CODEPOINT_ZAQEF_GADOL_YEMENITE: Tradition = Tradition::Yemenite {
+pub(crate) const TRAD_ZAQEF_GADOL_YEMENITE: Tradition = Tradition::Yemenite {
     hebrew_name: "זָקֵף גָּד֕וֹל",
     english_name: "zaqeph gadol",
 };
@@ -171,10 +171,10 @@ pub(crate) const CODEPOINT_ZAQEF_GADOL: Utf8CodePointInfo = utf8_cp_constructor(
     "֕",
     CodePointPosition::Above,
     &[
-        CODEPOINT_ZAQEF_GADOL_ASHKENAZI,
-        CODEPOINT_ZAQEF_GADOL_SEPHARDI,
-        CODEPOINT_ZAQEF_GADOL_ITALIAN,
-        CODEPOINT_ZAQEF_GADOL_YEMENITE,
+        TRAD_ZAQEF_GADOL_ASHKENAZI,
+        TRAD_ZAQEF_GADOL_SEPHARDI,
+        TRAD_ZAQEF_GADOL_ITALIAN,
+        TRAD_ZAQEF_GADOL_YEMENITE,
     ],
 );
 
@@ -388,7 +388,9 @@ pub(crate) const CODEPOINT_GERESH: Utf8CodePointInfo = utf8_cp_constructor(
     ],
 );
 
-// TODO CODEPOINT_GERESH_MUQDAM
+// TICKET #1 CODEPOINT_GERESH_MUQDAM
+// see https://github.com/Roestdev/hebrew_accents/issues/1
+//
 // pub(crate) const CODEPOINT_GERESH_MUQDAM: Utf8CodePointInfo = utf8_cp_constructor(
 //     "U+059D",
 //     "0xd6 0x9d",
@@ -516,7 +518,9 @@ pub(crate) const CODEPOINT_PAZER: Utf8CodePointInfo = utf8_cp_constructor(
     ],
 );
 
-// TODO CODEPOINT_ATNAH_HAFUKH
+// TICKET #3 CODEPOINT_ATNAH_HAFUKH
+// (see: https://github.com/Roestdev/hebrew_accents/issues/3)
+//
 // pub(crate) const CODEPOINT_ATNAH_HAFUKH: Utf8CodePointInfo = utf8_cp_constructor(
 //     "U+05A2",
 //     "0xd6 0xa2",
@@ -921,6 +925,17 @@ pub(crate) const TRAD_METEG_YEMENITE: Tradition = Tradition::Yemenite {
     english_name: "meteg",
 };
 
+/// NOTE: CODEPOINT_METEG shares the same Unicode code point (U+05BD) as
+/// CODEPOINT_SILLUQ, but represents a distinct cantillation function with
+/// different tradition names. While both render as the same glyph "ֽ",
+/// they serve different linguistic roles:
+///
+/// - SILLUQ: Marks verse end (סוֹף פָּסֽוּק / sof pasuq)
+/// - METEG: Marks secondary stress (מֶתֶג / meteg)
+///
+/// This is intentional—not a duplication error. Both constants are required
+/// because their tradition-specific names differ, even though they use the
+/// same Unicode character in different contexts.
 pub(crate) const CODEPOINT_METEG: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BD",
     "0xd6 0xbd",
@@ -1171,7 +1186,7 @@ mod tests {
         assert_eq!(CODEPOINT_SOPH_PASUQ.traditions.len(), 0); // FIXED
     }
 
-    // NEW TEST: Test all four tradition types individually
+    // NEW TEST: Test all four tradition accenttypes individually
     #[test]
     fn ashkenazi_tradition_constructs_correctly() {
         let trad = Tradition::Ashkenazi {
@@ -1293,5 +1308,19 @@ mod tests {
         assert_eq!(ProseAccent::Galgal.number_of_symbols(), 1); // FIXED
         assert_eq!(ProseAccent::Mayela.number_of_symbols(), 1); // FIXED
         assert_eq!(ProseAccent::Meteg.number_of_symbols(), 1); // FIXED
+    }
+    #[test]
+    fn cp_silluq_and_meteg_share_code_point_but_differ_in_traditions() {
+        // Same Unicode
+        assert_eq!(
+            CODEPOINT_SILLUQ.code_point_value,
+            CODEPOINT_METEG.code_point_value
+        );
+        assert_eq!(CODEPOINT_SILLUQ.symbol, CODEPOINT_METEG.symbol);
+
+        // Different traditions
+        assert_ne!(CODEPOINT_SILLUQ.traditions, CODEPOINT_METEG.traditions);
+        assert_eq!(CODEPOINT_SILLUQ.traditions.len(), 4);
+        assert_eq!(CODEPOINT_METEG.traditions.len(), 4);
     }
 }

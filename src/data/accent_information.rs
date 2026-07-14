@@ -1,10 +1,8 @@
 //! This file contains all static data of the 'Hebrew Accents'
 
 // Crate‑internal (local modules)
-use crate::accent::AccentCategory;
-use crate::accent::{
-    AccentInformation, AccentType, AlternateNames, CantillationSymbol, WordStress,
-};
+use crate::accent::{AccentInformation, AlternateNames, CantillationSymbol, WordStress};
+use crate::accent::{Category, Kind};
 
 use crate::codepoints::{
     CODEPOINT_DARGA, CODEPOINT_DEHI, CODEPOINT_ETNAHTA, CODEPOINT_GERESH, CODEPOINT_GERSHAYIM,
@@ -28,9 +26,9 @@ pub(crate) const SILLUQ_INFO: AccentInformation = AccentInformation {
     notes: Some(
         "The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.",
     ),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const ATNACH_INFO: AccentInformation = AccentInformation {
@@ -43,9 +41,9 @@ pub(crate) const ATNACH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const SEGOLTA_INFO: AccentInformation = AccentInformation {
@@ -58,9 +56,9 @@ pub(crate) const SEGOLTA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Post),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Post,
 };
 
 pub(crate) const SHALSHELET_INFO: AccentInformation = AccentInformation {
@@ -73,9 +71,9 @@ pub(crate) const SHALSHELET_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
@@ -92,9 +90,9 @@ pub(crate) const ZAQEF_QATON_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "TODO",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
@@ -107,9 +105,9 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const REVIA_INFO: AccentInformation = AccentInformation {
@@ -122,9 +120,9 @@ pub(crate) const REVIA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("probably due to its four-note tune."),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TIPHCHA_INFO: AccentInformation = AccentInformation {
@@ -137,9 +135,9 @@ pub(crate) const TIPHCHA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("before Atnach and Silluq"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const ZARQA_INFO: AccentInformation = AccentInformation {
@@ -152,9 +150,9 @@ pub(crate) const ZARQA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("before  Segolta"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Post),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Post,
 };
 
 pub(crate) const PASHTA_INFO: AccentInformation = AccentInformation {
@@ -167,9 +165,9 @@ pub(crate) const PASHTA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("if you sound almost last (2 pasta’s in one word)"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Post),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Post,
 };
 
 pub(crate) const YETIV_INFO: AccentInformation = AccentInformation {
@@ -182,9 +180,9 @@ pub(crate) const YETIV_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("occasionally for a Pashta"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Pre),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Pre,
 };
 
 pub(crate) const TEVIR_INFO: AccentInformation = AccentInformation {
@@ -197,9 +195,9 @@ pub(crate) const TEVIR_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const GERESH_INFO: AccentInformation = AccentInformation {
@@ -216,9 +214,9 @@ pub(crate) const GERESH_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "TODO",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const GERSHAYIM_INFO: AccentInformation = AccentInformation {
@@ -231,9 +229,9 @@ pub(crate) const GERSHAYIM_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const PAZER_INFO: AccentInformation = AccentInformation {
@@ -250,9 +248,9 @@ pub(crate) const PAZER_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "small lavish or scatter",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
@@ -269,9 +267,9 @@ pub(crate) const PAZER_GADOL_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "horns of a cow",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
@@ -284,9 +282,9 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Pre),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Pre,
 };
 
 pub(crate) const LEGARMEH_INFO: AccentInformation = AccentInformation {
@@ -303,9 +301,9 @@ pub(crate) const LEGARMEH_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "TODO",
     }),
     notes: Some("Munach with Passeq; Before Revia"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 // Conjunctives
 pub(crate) const MUNACH_INFO: AccentInformation = AccentInformation {
@@ -318,9 +316,9 @@ pub(crate) const MUNACH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const MAHPAKH_INFO: AccentInformation = AccentInformation {
@@ -337,9 +335,9 @@ pub(crate) const MAHPAKH_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "reversed",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const MERKHA_INFO: AccentInformation = AccentInformation {
@@ -352,9 +350,9 @@ pub(crate) const MERKHA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
@@ -367,9 +365,9 @@ pub(crate) const MERKHA_KEFULAH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("Merkha duplex"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const DARGA_INFO: AccentInformation = AccentInformation {
@@ -382,9 +380,9 @@ pub(crate) const DARGA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const AZLA_INFO: AccentInformation = AccentInformation {
@@ -401,9 +399,9 @@ pub(crate) const AZLA_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "antiquity or a former state",
     }),
     notes: Some("When Geresh: Qadma"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
@@ -416,9 +414,9 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Post),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Post,
 };
 
 pub(crate) const GALGAL_INFO: AccentInformation = AccentInformation {
@@ -435,9 +433,9 @@ pub(crate) const GALGAL_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "moon one day old",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const MAYELA_INFO: AccentInformation = AccentInformation {
@@ -454,9 +452,9 @@ pub(crate) const MAYELA_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "TODO",
     }),
     notes: Some("Name given to a Tiphchawhen in the same word as Atnach or Silluq"),
-    category: Some(AccentCategory::Conjunctive),
-    accent_type: Some(AccentType::Secondary),
-    word_stress: None,
+    accent_category: Category::Conjunctive,
+    kind: Kind::Secondary,
+    word_stress: WordStress::None,
 };
 
 pub(crate) const METEG_INFO: AccentInformation = AccentInformation {
@@ -469,9 +467,9 @@ pub(crate) const METEG_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Secondary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: None,
+    kind: Kind::Secondary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::None,
 };
 
 /*
@@ -501,9 +499,9 @@ pub(crate) const OLEH_WE_YORED_INFO: AccentInformation = AccentInformation {
     },
            alternate_names: None,
  notes: Some("The primary_mark CodePoint is Mehuppakhbut located above the consonant. It is then called OLE."),
-        accent_type: Some(AccentType::Primary),
-        category:Some(AccentCategory::Disjunctive),
-     word_stress: Some(WordStress::Im)
+        kind: Kind::Primary,
+        accent_category:Category::Disjunctive,
+     word_stress: WordStress::Im
 };
 
 // ATNACH see PROSE section above
@@ -518,9 +516,9 @@ pub(crate) const REVIA_GADOL_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
@@ -533,9 +531,9 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
@@ -548,9 +546,9 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TSINNOR_INFO: AccentInformation = AccentInformation {
@@ -567,9 +565,9 @@ pub(crate) const TSINNOR_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "to sprinklescatter",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Post),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Post,
 };
 
 pub(crate) const REVIA_QATON_INFO: AccentInformation = AccentInformation {
@@ -582,9 +580,9 @@ pub(crate) const REVIA_QATON_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("After that occurs Oleh We Yored"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const DECHI_INFO: AccentInformation = AccentInformation {
@@ -601,9 +599,9 @@ pub(crate) const DECHI_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "handbreadth or diagonal",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Pre),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Pre,
 };
 
 // PAZER see PROSE section above
@@ -618,9 +616,9 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentInformation = AccentInformation 
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
@@ -633,9 +631,9 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Disjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Disjunctive,
+    word_stress: WordStress::Im,
 };
 
 // MUNACH see PROSE section above
@@ -652,9 +650,9 @@ pub(crate) const ILLUY_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("also called Munach superior"),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TARCHA_INFO: AccentInformation = AccentInformation {
@@ -667,9 +665,9 @@ pub(crate) const TARCHA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: Some("it refers to the effortstrainor inconvenience involved in doing something."),
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 // GALGAL see PROSE section above
@@ -688,9 +686,9 @@ pub(crate) const MEHUPPAKH_INFO: AccentInformation = AccentInformation {
         hebrew_concept: "turning round",
     }),
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 // AZLA see PROSE section above
@@ -705,9 +703,9 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentInformation = AccentInformation
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
@@ -720,9 +718,9 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
@@ -735,9 +733,9 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentInformation = AccentInformation {
     },
     alternate_names: None,
     notes: None,
-    accent_type: Some(AccentType::Primary),
-    category: Some(AccentCategory::Conjunctive),
-    word_stress: Some(WordStress::Im),
+    kind: Kind::Primary,
+    accent_category: Category::Conjunctive,
+    word_stress: WordStress::Im,
 };
 
 /********************************************************
@@ -755,9 +753,9 @@ pub(crate) const SOPH_PASUQ_INFO: AccentInformation = AccentInformation {
     notes: Some(
         "it doesn’t carry any theological or interpretive meaning beyond marking a boundary",
     ),
-    accent_type: None,
-    category: None,
-    word_stress: None,
+    kind: Kind::None,
+    accent_category: Category::None,
+    word_stress: WordStress::None,
 };
 
 pub(crate) const MAQQEPH_INFO: AccentInformation = AccentInformation {
@@ -770,9 +768,9 @@ pub(crate) const MAQQEPH_INFO: AccentInformation = AccentInformation {
     },
               alternate_names: None,
  notes: Some("Can link two (or more) short words togetherafter which they function as a single compound word bearing a single Hebrew accent."),
-    accent_type: None,
-    category: None,
-    word_stress: None,
+    kind: Kind::None,
+    accent_category: Category::None,
+    word_stress: WordStress::None,
 };
 
 pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
@@ -787,7 +785,7 @@ pub(crate) const PASEQ_INFO: AccentInformation = AccentInformation {
     notes: Some(
         "It’s indicating that someone or something is stopping temporarily or creating a pause.",
     ),
-    accent_type: None,
-    category: None,
-    word_stress: None,
+    kind: Kind::None,
+    accent_category: Category::None,
+    word_stress: WordStress::None,
 };

@@ -1,12 +1,3 @@
-/*
-├── data/                            # Static lookup tables
-│   ├── mod.rs                       # Public data exports
-│   ├── prose_table.rs               # PROSE_ACCENT_TABLE
-│   ├── poetry_table.rs              # POETRY_ACCENT_TABLE
-│   ├── pseudo_table.rs              # PSEUDO_ACCENT_TABLE
-│   └── poetry_rank_map.rs           # BHS_POETRY_RANK_MAP
-*/
-
 mod accent_information;
 mod poetry_table;
 mod prose_table;

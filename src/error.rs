@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-/// Define the error type for validation failures
+/// Define the error accenttype for validation failures
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SentenceContextError {
     /// Character outside the allowed set was encountered
@@ -152,7 +152,7 @@ mod tests {
         let h2 = get_hash(&SentenceContextError::MultipleLines);
         let h3 = get_hash(&err3);
 
-        // Verify distinct error types have different hashes
+        // Verify distinct error accenttypes have different hashes
         assert_ne!(h1, h2);
         assert_ne!(h1, h3); // EmptySentence vs InvalidCharacter('!', 0)
         assert_ne!(h2, h3); // MultipleLines vs InvalidCharacter('@', 0)

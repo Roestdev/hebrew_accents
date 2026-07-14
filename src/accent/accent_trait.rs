@@ -1,8 +1,5 @@
-use crate::accent::resolve_disjunctive_group;
-use crate::accent::AccentCategory;
-use crate::accent::AccentType;
-use crate::accent::GroupLevel;
-use crate::accent::WordStress;
+use crate::accent::model::{resolve_disjunctive_group, AccentInformation};
+use crate::accent::public_model::{AccentCategory, AccentKind, AccentWordStress, GroupLevel};
 use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
@@ -10,25 +7,25 @@ use crate::data::{
 
 /// Used for retrieving information
 pub trait Accent: Copy + Sized {
-    /// Hebrew name of the Hebrew Accent
+    /// Hebrew name of the accent
     fn hebrew_name(self) -> &'static str;
-    /// hebrew_concept of the Hebrew name
+    /// Semantic meaning of the Hebrew name
     fn hebrew_concept(self) -> &'static str;
-    /// English name of the Hebrew Accent
+    /// English transliteration of the accent name
     fn english_name(self) -> &'static str;
-    /// Hebrew Accent type
-    fn accent_type(self) -> Option<AccentType>;
-    /// category of the Hebrew Accent
+    /// Accent kind (primary, secondary), if applicable
+    fn kind(self) -> Option<AccentKind>;
+    /// Accent category (disjunctive, conjunctive), if applicable
     fn category(self) -> Option<AccentCategory>;
-    /// word-stress of the Hebrew Accent
-    fn word_stress(self) -> Option<WordStress>;
-    /// number of UTF-8 code points of the Hebrew Accent
+    /// Word stress position relative to the consonant, if applicable
+    fn word_stress(self) -> Option<AccentWordStress>;
+    /// Number of UTF-8 code points comprising the accent
     fn number_of_symbols(self) -> u8;
-    /// Returns any accent_meta_data notes or context about this accent, if available.
+    /// Scholarly notes or context about this accent, if available
     fn notes(self) -> Option<&'static str>;
-    /// Indicates the relative strength where 1 represents the strongest accent.
+    /// Indicates the relative strength where 1 represents the strongest accent
     fn relative_strength(self) -> u8;
-    /// indicates the relative_strength of a selected accent (1 is the strongest)
+    /// Hierarchical disjunctive group level (Futato classification)
     fn group_level(self) -> Option<GroupLevel>;
 }
 
@@ -57,11 +54,11 @@ impl Accent for HebrewAccent {
         }
     }
 
-    fn accent_type(self) -> Option<AccentType> {
+    fn kind(self) -> Option<AccentKind> {
         match self {
-            HebrewAccent::Prose(p) => p.accent_type(),
-            HebrewAccent::Poetry(p) => p.accent_type(),
-            HebrewAccent::Pseudo(p) => p.accent_type(),
+            HebrewAccent::Prose(p) => p.kind(),
+            HebrewAccent::Poetry(p) => p.kind(),
+            HebrewAccent::Pseudo(p) => p.kind(),
         }
     }
 
@@ -73,7 +70,7 @@ impl Accent for HebrewAccent {
         }
     }
 
-    fn word_stress(self) -> Option<WordStress> {
+    fn word_stress(self) -> Option<AccentWordStress> {
         match self {
             HebrewAccent::Prose(p) => p.word_stress(),
             HebrewAccent::Poetry(p) => p.word_stress(),
@@ -130,24 +127,23 @@ impl Accent for ProseAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn accent_type(self) -> Option<AccentType> {
+    fn kind(self) -> Option<AccentKind> {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.accent_type)
+            .and_then(|x| x.kind.to_public())
     }
-
     #[inline]
     fn category(self) -> Option<AccentCategory> {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.category)
+            .and_then(|x: &AccentInformation| x.accent_category.to_public())
     }
 
     #[inline]
-    fn word_stress(self) -> Option<WordStress> {
+    fn word_stress(self) -> Option<AccentWordStress> {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.word_stress)
+            .and_then(|x: &AccentInformation| x.word_stress.to_public())
     }
     #[inline]
     fn number_of_symbols(self) -> u8 {
@@ -195,24 +191,24 @@ impl Accent for PoetryAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn accent_type(self) -> Option<AccentType> {
+    fn kind(self) -> Option<AccentKind> {
         POETRY_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.accent_type)
+            .and_then(|x| x.kind.to_public())
     }
 
     #[inline]
     fn category(self) -> Option<AccentCategory> {
         POETRY_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.category)
+            .and_then(|x| x.accent_category.to_public())
     }
 
     #[inline]
-    fn word_stress(self) -> Option<WordStress> {
-        PROSE_ACCENT_TABLE
+    fn word_stress(self) -> Option<AccentWordStress> {
+        POETRY_ACCENT_TABLE
             .get(self as usize)
-            .map_or(None, |x| x.word_stress)
+            .and_then(|x: &AccentInformation| x.word_stress.to_public())
     }
     #[inline]
     fn number_of_symbols(self) -> u8 {
@@ -260,24 +256,24 @@ impl Accent for PseudoAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn accent_type(self) -> Option<AccentType> {
+    fn kind(self) -> Option<AccentKind> {
         PSEUDO_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x| x.accent_type)
+            .and_then(|x| x.kind.to_public())
     }
 
     #[inline]
     fn category(self) -> Option<AccentCategory> {
         PSEUDO_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x| x.category)
+            .and_then(|x| x.accent_category.to_public())
     }
 
     #[inline]
-    fn word_stress(self) -> Option<WordStress> {
+    fn word_stress(self) -> Option<AccentWordStress> {
         PSEUDO_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x| x.word_stress)
+            .and_then(|x| x.word_stress.to_public())
     }
     #[inline]
     fn number_of_symbols(self) -> u8 {

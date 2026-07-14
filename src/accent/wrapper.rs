@@ -132,7 +132,7 @@ impl HebrewAccent {
     ///
     /// let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
     ///
-    /// // Check the accent type exists before accessing its data
+    /// // Check the accent accenttype exists before accessing its data
     /// if let Some(pseudo) = accent.as_pseudo() {
     ///     println!("English name: {}", pseudo.english_name());      // "Maqqeph"
     ///     println!("Concept: {}", pseudo.hebrew_concept());         // "binder"
@@ -185,7 +185,7 @@ impl From<ProseAccent> for HebrewAccent {
     /// assert!(matches!(accent, HebrewAccent::Prose(ProseAccent::Atnach)));
     /// ```
     ///
-    /// Type inference works when the target type is clear from context:
+    /// Type inference works when the target accenttype is clear from context:
     ///
     /// ```
     /// use hebrew_accents::{HebrewAccent, ProseAccent};
@@ -277,7 +277,7 @@ impl From<PoetryAccent> for HebrewAccent {
 /// assert!(matches!(accent, HebrewAccent::Pseudo(PseudoAccent::Maqqeph)));
 /// ```
 ///
-/// Automatic type coercion in function arguments:
+/// Automatic accenttype coercion in function arguments:
 ///
 /// ```
 /// use hebrew_accents::{HebrewAccent, PseudoAccent};

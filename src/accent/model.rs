@@ -1,6 +1,10 @@
 //! Main entry point for Hebrew Accent information
 
 // Crate‑internal (local modules)
+use crate::accent::public_model::AccentCategory;
+use crate::accent::public_model::AccentKind;
+use crate::accent::public_model::AccentWordStress;
+use crate::accent::public_model::GroupLevel;
 use crate::accent::HebrewAccent;
 use crate::accent::PoetryAccent;
 use crate::accent::ProseAccent;
@@ -17,16 +21,16 @@ pub(crate) struct AccentInformation {
     pub(crate) english_name: &'static str,
     /// Associated Cantillation Symbol
     pub(crate) cantillation_symbol: CantillationSymbol,
-    /// Contextual notes or scholarly commentary.
-    pub(crate) notes: Option<&'static str>,
     /// Optional alternate identifiers for hebrew_name, hebrew_concept, english_name
     pub(crate) alternate_names: Option<AlternateNames>,
-    /// Indicates the accent type (Primary, Secondary)
-    pub(crate) accent_type: Option<AccentType>,
+    /// Indicates the accent accenttype (Primary, Secondary)
+    pub(crate) kind: Kind,
     /// Indicates the accent category (Disjunctive, Conjunctive)
-    pub(crate) category: Option<AccentCategory>,
+    pub(crate) accent_category: Category,
     /// Indicates if the accent is on the stressed syllable
-    pub(crate) word_stress: Option<WordStress>,
+    pub(crate) word_stress: WordStress,
+    /// Contextual notes or scholarly commentary.
+    pub(crate) notes: Option<&'static str>,
 }
 
 /// Optional alternate representations for an accent.
@@ -71,31 +75,59 @@ pub(crate) struct Utf8CodePointInfo {
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-#[non_exhaustive]
-pub enum AccentCategory {
+pub(crate) enum Category {
     /// accents that connect words
     Conjunctive,
     #[default]
     /// accents that separate words
     Disjunctive,
+    /// Only applicable for PseudoAccent's
+    None,
 }
 
-/// Hebrew Accent types (Primary, secondary_mark, None)
+impl Category {
+    pub(crate) const fn to_public(self) -> Option<AccentCategory> {
+        match self {
+            Category::Conjunctive => Some(AccentCategory::Conjunctive),
+            Category::Disjunctive => Some(AccentCategory::Disjunctive),
+            Category::None => None,
+        }
+    }
+}
+
+/// Internal type — has None variant for pseudo accents
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-#[non_exhaustive]
-pub enum AccentType {
+pub(crate) enum Kind {
     #[default]
-    /// Indicates that the Accent is Primary Accent
     Primary,
-    /// Secondary Accent e.g. Meayla and Meteg
     Secondary,
-    // Used for Pseudo Accents
-    //None,
+    None,
+}
+
+impl Kind {
+    pub(crate) const fn to_public(self) -> Option<super::public_model::AccentKind> {
+        match self {
+            Kind::Primary => Some(AccentKind::Primary),
+            Kind::Secondary => Some(AccentKind::Secondary),
+            Kind::None => None,
+        }
+    }
+}
+
+impl WordStress {
+    pub(crate) const fn to_public(self) -> Option<AccentWordStress> {
+        match self {
+            WordStress::Im => Some(AccentWordStress::ImPositive),
+            WordStress::Post => Some(AccentWordStress::PostPositive),
+            WordStress::Pre => Some(AccentWordStress::PrePositive),
+            WordStress::None => None,
+        }
+    }
 }
 
 /// WordStress, indicating the location of the accent in relation to the consonant
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum WordStress {
+pub(crate) enum WordStress {
     #[default]
     /// ImPositive: The accent is located above the stressed syllable
     Im,
@@ -103,73 +135,13 @@ pub enum WordStress {
     Post,
     /// PrePositive: Accent is NOT located above the stressed syllable, but at the very beginning of the word
     Pre,
-}
-
-/// Disjunctive accent hierarchy level following Futato's classification system.
-///
-/// Ranges from 1 (strongest pause/break) to higher numbers (weaker pauses).
-/// Conjunctive accents and pseudo-accent markers return `None` as they lack
-/// hierarchical disjunctive function.
-///
-/// # Example
-/// ```
-/// use hebrew_accents::{Accent, HebrewAccent, ProseAccent, GroupLevel};
-///
-/// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
-/// assert_eq!(silluq.group_level(), Some(GroupLevel::Level1));
-///
-/// let conjunctive = HebrewAccent::Prose(ProseAccent::Munach);
-/// assert_eq!(conjunctive.group_level(), None);
-/// ```
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-#[repr(u8)]
-pub enum GroupLevel {
-    /// Primary disjunctive tier — creates major clause/phrasal breaks
-    Level1 = 1, // value represents group number for extension in future
-    /// Secondary disjunctive tier — subordinate phrase boundaries
-    Level2,
-    /// Tertiary disjunctive tier — minor phrasal divisions
-    Level3,
-    /// Quaternary disjunctive tier — fine-grained subdivisions
-    Level4,
-}
-
-impl GroupLevel {
-    /// Raw numeric strength value (1 = strongest disjunctive)
-    pub const fn value(self) -> u8 {
-        match self {
-            Self::Level1 => 1,
-            Self::Level2 => 2,
-            Self::Level3 => 3,
-            Self::Level4 => 4,
-        }
-    }
-
-    /// Human-readable description of hierarchy tier
-    pub const fn description(self) -> &'static str {
-        match self {
-            Self::Level1 => "Primary disjunctive (major clause break)",
-            Self::Level2 => "Secondary disjunctive (phrase boundary)",
-            Self::Level3 => "Tertiary disjunctive (minor division)",
-            Self::Level4 => "Quaternary disjunctive (fine subdivision)",
-        }
-    }
-}
-
-impl std::fmt::Display for GroupLevel {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Level1 => write!(f, "Tier 1 (Primary disjunctive)"),
-            Self::Level2 => write!(f, "Tier 2 (Secondary disjunctive)"),
-            Self::Level3 => write!(f, "Tier 3 (Tertiary disjunctive)"),
-            Self::Level4 => write!(f, "Tier 4 (Quaternary disjunctive)"),
-        }
-    }
+    /// internal use only
+    None,
 }
 
 /// Full Futato hierarchy classification with prose/poetry distinction.
 ///
-/// **Internal use only**—do not rely on this type publicly as it may change
+/// **Internal use only**—do not rely on this accenttype publicly as it may change
 /// without semver warning. Use [`super::GroupLevel`] instead.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[repr(u8)]

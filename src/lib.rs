@@ -19,13 +19,13 @@
 //! By separating the static accent data from the dynamic text‑processing
 //! capabilities, the library remains flexible and easy to extend
 //!
-//! All `accent` related code can be found in the files starting with *`accent`*  
-//! All `text inspection` related code can be found in files starting wit *`senctence_ctx`*
+//! All `accent` related code can be found in the files starting with *`accent`*
+//! All `text inspection` related code can be found in files starting with *`sentence_ctx`*
 //!
-//! ### Main types
+//! ### Main accenttypes
 //!
-//! The whole crate is build around the main type **`HebrewAccent`**,
-//!  with its three subtypes:
+//! The whole crate is build around the main accenttype **`HebrewAccent`**,
+//!  with its three subaccenttypes:
 //!  - *`ProseAccent`* (all prose accents)
 //!  - *`PoetryAccent`* (all poetry accents)
 //!  - *`PseudoAccent`* (actually non-accents, but accent related)
@@ -61,7 +61,7 @@
 //!
 //! Meaning that we need the context of the sentence in advance.
 //!
-//! For this reason there is a new type called `SentenceContext`, which is a struct  that contains both the sentence and the corresponding context.
+//! For this reason there is a new accenttype called `SentenceContext`, which is a struct  that contains both the sentence and the corresponding context.
 //!
 //! ```none
 //! Definition of `SentenceContext`:
@@ -78,7 +78,7 @@
 //!     Prose,
 //! }
 //! ```
-//! The following funtions are avaiable for `SentenceContext`:
+//! The following functions are available for `SentenceContext`:
 //!
 //! - new() -> `SentenceContext`
 //! - contains_accent(HebrewAccent) -> bool
@@ -99,7 +99,7 @@
 //!
 //!  Optional attributes:
 //!
-//!  - accent_type          (Primary, Secondary)
+//!  - accent type          (Primary, Secondary)
 //!  - category             (Disjunctive, Conjunctive)
 //!  - word_stress          (ImPositive, PostPositive, PrePositive)
 //!
@@ -142,3 +142,8 @@ pub use accent::HebrewAccent;
 pub use accent::PoetryAccent;
 pub use accent::ProseAccent;
 pub use accent::PseudoAccent;
+
+pub use accent::public_model::AccentCategory;
+pub use accent::public_model::AccentKind;
+pub use accent::public_model::AccentWordStress;
+pub use accent::public_model::GroupLevel;

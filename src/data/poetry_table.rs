@@ -7,7 +7,6 @@ use crate::data::accent_information::{
     SHALSHELET_GADOL_INFO, SHALSHELET_QETANNAH_INFO, SILLUQ_INFO, TARCHA_INFO,
     TSINNORIT_MAHPAKH_INFO, TSINNORIT_MERKHA_INFO, TSINNOR_INFO,
 };
-
 pub(crate) static POETRY_ACCENT_TABLE: [AccentInformation; PoetryAccent::LEN] = [
     // Disjunctives
     SILLUQ_INFO,

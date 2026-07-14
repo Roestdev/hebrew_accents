@@ -2389,12 +2389,6 @@ mod unit_tests_cross_context {
             sc.unwrap().find_accent(PoetryAccent::AzlaLegarmeh.into()),
             None
         );
-        //  TODO
-        // let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        // assert_eq!(sc.unwrap().find_accent(PoetryAccent::Munach.into()), None);
-        // TODO
-        // let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        // assert_eq!(sc.unwrap().find_accent(PoetryAccent::Merkha.into()), None);
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Illuy.into()), None);
         // try find ACCENT in PoetProseic context TODO
