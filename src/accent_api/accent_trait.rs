@@ -1,9 +1,11 @@
-use crate::accent::model::{resolve_disjunctive_group, AccentInformation};
-use crate::accent::public_model::{AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel};
-use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+use crate::accent::{resolve_disjunctive_group, AccentInformation};
 use crate::codepoints::CODEPOINT_METEG;
 use crate::data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
+};
+use crate::{
+    AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel, HebrewAccent,
+    PoetryAccent, ProseAccent, PseudoAccent,
 };
 
 /// Used for retrieving information
@@ -83,7 +85,7 @@ impl Accent for HebrewAccent {
         }
     }
 
-   #[inline]
+    #[inline]
     fn is_compound(self) -> bool {
         match self {
             HebrewAccent::Prose(p) => p.is_compound(),
@@ -91,7 +93,7 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.is_compound(),
         }
     }
-    
+
     #[inline]
     fn primary_cantillation_mark(self) -> CantillationMark {
         match self {
@@ -100,7 +102,7 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.primary_cantillation_mark(),
         }
     }
-    
+
     #[inline]
     fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
         match self {
@@ -177,23 +179,23 @@ impl Accent for ProseAccent {
             .map(|x| x.cantillation_symbol.secondary_mark.is_some())
             .unwrap_or(false)
     }
-    
+
     #[inline]
     fn primary_cantillation_mark(self) -> CantillationMark {
         let info = PROSE_ACCENT_TABLE
             .get(self as usize)
             .map(|x| x.cantillation_symbol.primary_mark)
             .unwrap_or(&CODEPOINT_METEG);
-        
+
         CantillationMark {
             unicode_value: info.code_point_value,
             hex_bytes: info.hex_value,
             symbol: info.symbol,
             canonical_name: info.name,
-            position: info.position,  // Already public now
+            position: info.position.into(),
         }
     }
-    
+
     #[inline]
     fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
         PROSE_ACCENT_TABLE
@@ -204,13 +206,12 @@ impl Accent for ProseAccent {
                 hex_bytes: info.hex_value,
                 symbol: info.symbol,
                 canonical_name: info.name,
-                position: info.position,
+                position: info.position.into(),
             })
     }
     #[inline]
     fn notes(self) -> Option<&'static str> {
-        PROSE_ACCENT_TABLE
-            .get(self as usize).and_then(|x| x.notes)
+        PROSE_ACCENT_TABLE.get(self as usize).and_then(|x| x.notes)
     }
     #[inline]
     fn relative_strength(self) -> u8 {
@@ -268,23 +269,23 @@ impl Accent for PoetryAccent {
             .map(|x| x.cantillation_symbol.secondary_mark.is_some())
             .unwrap_or(false)
     }
-    
+
     #[inline]
     fn primary_cantillation_mark(self) -> CantillationMark {
         let info = POETRY_ACCENT_TABLE
             .get(self as usize)
             .map(|x| x.cantillation_symbol.primary_mark)
             .unwrap_or(&CODEPOINT_METEG);
-        
+
         CantillationMark {
             unicode_value: info.code_point_value,
             hex_bytes: info.hex_value,
             symbol: info.symbol,
             canonical_name: info.name,
-            position: info.position,  // Already public now
+            position: info.position.into(),
         }
     }
-    
+
     #[inline]
     fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
         POETRY_ACCENT_TABLE
@@ -295,13 +296,12 @@ impl Accent for PoetryAccent {
                 hex_bytes: info.hex_value,
                 symbol: info.symbol,
                 canonical_name: info.name,
-                position: info.position,
+                position: info.position.into(),
             })
     }
     #[inline]
     fn notes(self) -> Option<&'static str> {
-        POETRY_ACCENT_TABLE
-            .get(self as usize).and_then(|x| x.notes)
+        POETRY_ACCENT_TABLE.get(self as usize).and_then(|x| x.notes)
     }
     #[inline]
     fn relative_strength(self) -> u8 {
@@ -359,23 +359,23 @@ impl Accent for PseudoAccent {
             .map(|x| x.cantillation_symbol.secondary_mark.is_some())
             .unwrap_or(false)
     }
-    
+
     #[inline]
     fn primary_cantillation_mark(self) -> CantillationMark {
         let info = PSEUDO_ACCENT_TABLE
             .get(self as usize)
             .map(|x| x.cantillation_symbol.primary_mark)
             .unwrap_or(&CODEPOINT_METEG);
-        
+
         CantillationMark {
             unicode_value: info.code_point_value,
             hex_bytes: info.hex_value,
             symbol: info.symbol,
             canonical_name: info.name,
-            position: info.position,  // Already public now
+            position: info.position.into(),
         }
     }
-    
+
     #[inline]
     fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
         PSEUDO_ACCENT_TABLE
@@ -386,7 +386,7 @@ impl Accent for PseudoAccent {
                 hex_bytes: info.hex_value,
                 symbol: info.symbol,
                 canonical_name: info.name,
-                position: info.position,
+                position: info.position.into(),
             })
     }
     #[inline]

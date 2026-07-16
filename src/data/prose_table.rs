@@ -1,4 +1,4 @@
-use crate::accent::{AccentInformation, ProseAccent};
+use crate::accent::AccentInformation;
 use crate::data::accent_information::{
     ATNACH_INFO,
     AZLA_INFO,
@@ -31,6 +31,7 @@ use crate::data::accent_information::{
     ZAQEPH_GADOL_INFO,
     ZARQA_INFO,
 };
+use crate::ProseAccent;
 
 /// Static lookup table for prose cantillation metadata.
 ///

@@ -1,5 +1,8 @@
-use crate::accent::{AccentInformation, PseudoAccent};
-use crate::data::accent_information::{MAQQEPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO};
+use crate::{
+    accent::AccentInformation,
+    data::accent_information::{MAQQEPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO},
+    PseudoAccent,
+};
 
 /// Static lookup table mapping `PseudoAccent` discriminants to metadata records.
 ///

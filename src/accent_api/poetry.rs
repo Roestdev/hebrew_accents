@@ -1,5 +1,5 @@
-use crate::accent::Accent;
 use crate::data::BHS_POETRY_RANK_MAP;
+use crate::Accent;
 
 /// All variants of the Hebrew Poetry Accents
 /// 12 Disjunctives and 12 Conjunctives.

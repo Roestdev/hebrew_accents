@@ -1,15 +1,15 @@
 //! Main entry point for Hebrew Accent information
 
-
+use crate::codepoints::traditions::TraditionNames;
 // Crate‑internal (local modules)
-use crate::accent::public_model::AccentCategory;
-use crate::accent::public_model::AccentKind;
-use crate::accent::public_model::AccentWordStress;
-use crate::accent::public_model::GroupLevel;
-use crate::accent::HebrewAccent;
-use crate::accent::PoetryAccent;
-use crate::accent::ProseAccent;
-use crate::codepoints::{TraditionNames,CodePointPosition};
+use crate::codepoints::CodePointPosition;
+use crate::AccentCategory;
+use crate::AccentKind;
+use crate::AccentWordStress;
+use crate::GroupLevel;
+use crate::HebrewAccent;
+use crate::PoetryAccent;
+use crate::ProseAccent;
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -49,11 +49,11 @@ pub(crate) struct AlternateNames {
 /// Struct containing the cantillation symbol of a Hebrew Accent
 /// Which may consist of one or (max) two cantillation marks
 /// One cantilation mark is one UTF8 code point
-/// A cantillation mark is a diacritical symbol attached to a letter or a word. 
-/// It is characterised by its shape and its position relative to the letter or 
+/// A cantillation mark is a diacritical symbol attached to a letter or a word.
+/// It is characterised by its shape and its position relative to the letter or
 /// word it is attached to.
-/// 
-/// A cantillation symbol consists of one or two cantillation marks. 
+///
+/// A cantillation symbol consists of one or two cantillation marks.
 /// It is characterised by its meaning and by the rules for its usage in a given context.
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -78,7 +78,7 @@ pub(crate) struct Utf8CodePointInfo {
     /// The position of the code-point in relation to the consonant
     pub(crate) position: CodePointPosition,
     /// Tradition-specific naming information
-    pub(crate) traditions: TraditionNames,  // ← Changed from &'static [Tradition]
+    pub(crate) traditions: TraditionNames,
 }
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)
@@ -113,7 +113,7 @@ pub(crate) enum Kind {
 }
 
 impl Kind {
-    pub(crate) const fn to_public(self) -> Option<super::public_model::AccentKind> {
+    pub(crate) const fn to_public(self) -> Option<AccentKind> {
         match self {
             Kind::Primary => Some(AccentKind::Primary),
             Kind::Secondary => Some(AccentKind::Secondary),
@@ -218,4 +218,3 @@ pub(crate) fn resolve_disjunctive_group(accent: HebrewAccent) -> Option<Disjunct
         _ => None, // conjunctives and pseudo-accents lack hierarchy
     }
 }
-

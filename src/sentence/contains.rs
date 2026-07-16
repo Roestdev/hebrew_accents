@@ -1,7 +1,7 @@
 //! Implementation of contains_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
-use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
 use crate::sentence::char::{
     DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MERKHA, MERKHA_KEFULA, MUNAH,
@@ -195,9 +195,9 @@ impl SentenceContext {
 
 #[cfg(test)]
 mod tests {
-    use crate::accent::{PoetryAccent, ProseAccent, PseudoAccent};
     use crate::sentence::context::Context;
     use crate::sentence::sentence_context::SentenceContext;
+    use crate::{PoetryAccent, ProseAccent, PseudoAccent};
     #[test]
     fn test_contains_prose_poetry_silluq() {
         //let sc = SentenceContext::new("test", Context::Prosaic);

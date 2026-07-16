@@ -1,7 +1,8 @@
 /// Accent position, indicating the location of the accent in relation to the consonant
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[non_exhaustive]
-pub enum CodePointPosition {
+pub(crate) enum CodePointPosition {
+    // Changed from `pub` to `pub(crate)`
     /// UTF-8 code point is located above the consonant
     Above,
     /// UTF-8 code point is located after the consonant

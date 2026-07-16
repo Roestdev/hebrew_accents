@@ -1,4 +1,5 @@
-use crate::accent::{AccentInformation, PoetryAccent};
+use crate::accent::AccentInformation;
+use crate::PoetryAccent;
 
 use crate::data::accent_information::{
     ATNACH_INFO, AZLA_INFO, AZLA_LEGARMEH_INFO, DECHI_INFO, GALGAL_INFO, ILLUY_INFO,

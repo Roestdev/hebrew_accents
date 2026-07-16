@@ -1,4 +1,4 @@
-use crate::accent::Accent;
+use crate::Accent;
 
 /// Syntactic markers associated with biblical Hebrew cantillation but distinct from true accents.
 ///

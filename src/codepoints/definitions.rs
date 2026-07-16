@@ -8,8 +8,8 @@
 //! - the position of the accent relative to the related consonant
 
 use crate::accent::Utf8CodePointInfo;
-use crate::codepoints::CodePointPosition;
 use crate::codepoints::traditions::{AccentName, TraditionNames};
+use crate::codepoints::CodePointPosition;
 
 const fn utf8_cp_constructor(
     code_point_value: &'static str,
@@ -76,7 +76,7 @@ pub(crate) const TRAD_SEGOL: TraditionNames = TraditionNames {
         hebrew_name: "שְׁרֵי֒",
         english_name: "shere",
     }),
-    yemenite: None,  // Not present in Yemenite tradition
+    yemenite: None, // Not present in Yemenite tradition
 };
 
 pub(crate) const CODEPOINT_SEGOL: Utf8CodePointInfo = utf8_cp_constructor(
@@ -455,7 +455,7 @@ pub(crate) const TRAD_PAZER: TraditionNames = TraditionNames {
         hebrew_name: "פָּזֵר גָּד֡וֹל",
         english_name: "pazer gadol",
     }),
-    yemenite: None,  // Not present in Yemenite tradition
+    yemenite: None, // Not present in Yemenite tradition
 };
 
 pub(crate) const CODEPOINT_PAZER: Utf8CodePointInfo = utf8_cp_constructor(
@@ -485,7 +485,7 @@ pub(crate) const TRAD_MUNAH: TraditionNames = TraditionNames {
         hebrew_name: "שׁוֹפָר עִלּ֣וּי",
         english_name: "shophar illuy",
     }),
-    yemenite: None,  // Not present in Yemenite tradition
+    yemenite: None, // Not present in Yemenite tradition
 };
 
 pub(crate) const CODEPOINT_MUNAH: Utf8CodePointInfo = utf8_cp_constructor(
@@ -575,7 +575,7 @@ pub(crate) const TRAD_MERKHA_KEFULA: TraditionNames = TraditionNames {
         hebrew_name: "תְּרֵין חוּטְרִ֦ין",
         english_name: "teren chutrin",
     }),
-    yemenite: None,  // Not present in Yemenite tradition
+    yemenite: None, // Not present in Yemenite tradition
 };
 
 pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePointInfo = utf8_cp_constructor(
@@ -590,8 +590,7 @@ pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePointInfo = utf8_cp_constructo
 // ============================================================================
 // DARGA (U+05A7) - All identical
 // ============================================================================
-pub(crate) const TRAD_DARGA: TraditionNames =
-    TraditionNames::uniform("דַּרְגָּ֧א", "darga");
+pub(crate) const TRAD_DARGA: TraditionNames = TraditionNames::uniform("דַּרְגָּ֧א", "darga");
 
 pub(crate) const CODEPOINT_DARGA: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05A7",
@@ -618,7 +617,7 @@ pub(crate) const TRAD_QADMA: TraditionNames = TraditionNames {
         hebrew_name: "קַדְמָ֨א",
         english_name: "qadma",
     }),
-    yemenite: None,  // Not present in Yemenite tradition
+    yemenite: None, // Not present in Yemenite tradition
 };
 
 pub(crate) const CODEPOINT_QADMA: Utf8CodePointInfo = utf8_cp_constructor(
@@ -679,8 +678,7 @@ pub(crate) const CODEPOINT_YERAH_BEN_YOMO: Utf8CodePointInfo = utf8_cp_construct
 // ============================================================================
 // OLE (U+05AB) - All identical
 // ============================================================================
-pub(crate) const TRAD_OLE: TraditionNames =
-    TraditionNames::uniform("עוֹלֶה", "oleh");
+pub(crate) const TRAD_OLE: TraditionNames = TraditionNames::uniform("עוֹלֶה", "oleh");
 
 pub(crate) const CODEPOINT_OLE: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AB",
@@ -694,8 +692,7 @@ pub(crate) const CODEPOINT_OLE: Utf8CodePointInfo = utf8_cp_constructor(
 // ============================================================================
 // ILUY (U+05AC) - All identical
 // ============================================================================
-pub(crate) const TRAD_ILUY: TraditionNames =
-    TraditionNames::uniform("עִלוּי", "iluy");
+pub(crate) const TRAD_ILUY: TraditionNames = TraditionNames::uniform("עִלוּי", "iluy");
 
 pub(crate) const CODEPOINT_ILUY: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AC",
@@ -709,8 +706,7 @@ pub(crate) const CODEPOINT_ILUY: Utf8CodePointInfo = utf8_cp_constructor(
 // ============================================================================
 // DEHI (U+05AD) - All identical
 // ============================================================================
-pub(crate) const TRAD_DEHI: TraditionNames =
-    TraditionNames::uniform("דחי", "dechi");
+pub(crate) const TRAD_DEHI: TraditionNames = TraditionNames::uniform("דחי", "dechi");
 
 pub(crate) const CODEPOINT_DEHI: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05AD",
@@ -739,8 +735,7 @@ pub(crate) const CODEPOINT_ZINOR: Utf8CodePointInfo = utf8_cp_constructor(
 // ============================================================================
 // SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics)
 // ============================================================================
-pub(crate) const TRAD_SILLUQ: TraditionNames =
-    TraditionNames::uniform("סוֹף פָּסֽוּק", "sof pasuq");
+pub(crate) const TRAD_SILLUQ: TraditionNames = TraditionNames::uniform("סוֹף פָּסֽוּק", "sof pasuq");
 
 pub(crate) const CODEPOINT_SILLUQ: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BD",
@@ -754,8 +749,7 @@ pub(crate) const CODEPOINT_SILLUQ: Utf8CodePointInfo = utf8_cp_constructor(
 // ============================================================================
 // METEG (U+05BD) - All identical (shares codepoint with Silluq)
 // ============================================================================
-pub(crate) const TRAD_METEG: TraditionNames =
-    TraditionNames::uniform("מֶתֶג", "meteg");
+pub(crate) const TRAD_METEG: TraditionNames = TraditionNames::uniform("מֶתֶג", "meteg");
 
 pub(crate) const CODEPOINT_METEG: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05BD",
@@ -788,8 +782,7 @@ pub(crate) const CODEPOINT_MAQAF: Utf8CodePointInfo = utf8_cp_constructor(
 // ============================================================================
 // PASEQ (U+05C0) - All identical
 // ============================================================================
-pub(crate) const TRAD_PASEQ: TraditionNames =
-    TraditionNames::uniform("פָּסֵק", "paseq");
+pub(crate) const TRAD_PASEQ: TraditionNames = TraditionNames::uniform("פָּסֵק", "paseq");
 
 pub(crate) const CODEPOINT_PASEQ: Utf8CodePointInfo = utf8_cp_constructor(
     "U+05C0",

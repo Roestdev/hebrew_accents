@@ -1,4 +1,4 @@
-use crate::accent::{PoetryAccent, ProseAccent, PseudoAccent};
+use crate::{PoetryAccent, ProseAccent, PseudoAccent};
 
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]

@@ -118,8 +118,11 @@
 
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
-#[cfg_attr(doctest, doc = include_str!("../README.md"))]
 mod accent;
+#[cfg_attr(doctest, doc = include_str!("../README.md"))]
+
+/// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
+pub mod accent_api;
 mod codepoints;
 mod data;
 mod error;
@@ -137,14 +140,15 @@ pub use sentence::detector::try_determine_context;
 pub use sentence::sentence_context::SentenceContext;
 pub use utils::matcher::Match;
 
-pub use accent::Accent;
-pub use accent::HebrewAccent;
-pub use accent::PoetryAccent;
-pub use accent::ProseAccent;
-pub use accent::PseudoAccent;
+pub use crate::accent_api::Accent;
+pub use crate::accent_api::HebrewAccent;
+pub use crate::accent_api::PoetryAccent;
+pub use crate::accent_api::ProseAccent;
+pub use crate::accent_api::PseudoAccent;
 
-pub use accent::public_model::AccentCategory;
-pub use accent::public_model::AccentKind;
-pub use accent::public_model::AccentWordStress;
-pub use accent::public_model::GroupLevel;
-
+pub use crate::accent_api::AccentCategory;
+pub use crate::accent_api::AccentKind;
+pub use crate::accent_api::AccentWordStress;
+pub use crate::accent_api::CantillationMark;
+pub use crate::accent_api::CantillationMarkPosition;
+pub use crate::accent_api::GroupLevel;

@@ -189,7 +189,7 @@ These three books use a distinct set of te'amim that differs from the 21 prose b
 and the Geresh Muqdam is one of the distinctive marks unique to that system.
 The name "Muqdam" ("preceding" or "moved forward") refers to its placement:
 unlike a regular Geresh which sits on the accented syllable of its own word,
-the Geresh Muqdam is attached to the end of the preceding word, effectively 
+the Geresh Muqdam is attached to the end of the preceding word, effectively
 "moved forward" from its logical position.
 It functions as a disjunctive accent, creating a moderate pause in the verse structure,
 and helps parse the parallelism characteristic of biblical poetry.

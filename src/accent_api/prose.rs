@@ -1,4 +1,4 @@
-use crate::accent::Accent;
+use crate::Accent;
 
 /// All variants of the Hebrew Prose Accents
 /// 18 Disjunctives and 11 Conjunctives.

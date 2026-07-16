@@ -1,7 +1,6 @@
 //! Implementation of find_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
-use crate::accent::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::sentence::char::{
     ATNACH, AZLA, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH,
     MAQQEPH_AS_CHAR, MEAYLA, MERKHA, MERKHA_KEFULA, METEG, MUNACH, MUNAH, OLEH_AS_CHAR, PASEQ,
@@ -9,6 +8,7 @@ use crate::sentence::char::{
     TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR,
     YETIV, YORED_AS_CHAR, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
+use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
 use crate::sentence::context::Context;
 use crate::sentence::regex::{

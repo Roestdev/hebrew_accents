@@ -1,6 +1,5 @@
 use crate::codepoints::CodePointPosition;
 
-
 /// Hebrew Accent kind — (absence is expressed via Option<T>)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum AccentKind {
@@ -85,7 +84,32 @@ pub struct CantillationMark {
     /// Canonical name from UTF-8 character tables
     pub canonical_name: &'static str,
     /// Position relative to the consonant
-    pub position: CodePointPosition,
+    pub position: CantillationMarkPosition,
+}
+
+/// Public-facing accent position type
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub enum CantillationMarkPosition {
+    /// UTF-8 code point is located above the consonant
+    Above,
+    /// UTF-8 code point is located after the consonant
+    After,
+    /// UTF-8 code point is located in between two words
+    InBetween,
+    /// UTF-8 code point is located under the consonant
+    Under,
+}
+
+// Add conversion from internal to public type
+impl From<CodePointPosition> for CantillationMarkPosition {
+    fn from(pos: CodePointPosition) -> Self {
+        match pos {
+            CodePointPosition::Above => CantillationMarkPosition::Above,
+            CodePointPosition::After => CantillationMarkPosition::After,
+            CodePointPosition::InBetween => CantillationMarkPosition::InBetween,
+            CodePointPosition::Under => CantillationMarkPosition::Under,
+        }
+    }
 }
 
 /// Disjunctive accent hierarchy level following Futato's classification system.

@@ -1,8 +1,8 @@
-use crate::accent::{PoetryAccent, ProseAccent};
 use crate::sentence::context::Context;
 use crate::sentence::sentence_context::SentenceContext;
 use crate::sentence::validator::validate_sentence;
 use crate::SentenceContextError;
+use crate::{PoetryAccent, ProseAccent};
 
 /// Try to determine the context of a Hebrew sentence from its accent CantillationSymbol.
 ///
