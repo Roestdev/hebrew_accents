@@ -10,7 +10,7 @@ pub enum PoetryAccent {
     #[default]
     /// Primary disjunctive poetry accent Silluq
     Silluq,
-    /// Primary disjunctive poetry accent Oleh We Yored
+    /// Primary disjunctive poetry accent Oleh Weyored
     OlehWeYored,
     /// Primary disjunctive poetry accent Atnach
     Atnach,

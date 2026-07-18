@@ -113,7 +113,7 @@ pub(crate) static FA_RE_OUTER_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
         .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", pattern))
 });
 
-// A Mayela is a Tiphcha before Silluq or Atnach in the same word
+// A Meayla is a Tiphcha before Silluq or Atnach in the same word
 // or words connected with a Maqqeph (\u{05BE})
 // Tiphcha: U+0596
 // Atnach:  U+0591
@@ -151,10 +151,10 @@ pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
 //      - Yored (\u{05A5}) aka Merkha
 // This accent can stretch over two words (a.k.a. word-unit)
 // Regex::new(r"\u{05AB}\p{Hebrew}+\s?\p{Hebrew}*\u{05A5}").unwrap());
-pub(crate) static RE_OUTER_POETRY_OLEH_WE_YORED: Lazy<Regex> = Lazy::new(|| {
+pub(crate) static RE_OUTER_POETRY_OLEH_WEYORED: Lazy<Regex> = Lazy::new(|| {
     let pattern = format!("{}{}+{}{}*{}", OLEH, HEBREW, OPTIONAL_SPACE, HEBREW, YORED);
     Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WE_YORED: {}", pattern))
+        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WEYORED: {}", pattern))
 });
 
 // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
@@ -381,10 +381,10 @@ mod regex_initialization_tests {
         let _ = regex.is_match(valid);
     }
 
-    // Test RE_OUTER_POETRY_OLEH_WE_YORED
+    // Test RE_OUTER_POETRY_OLEH_WEYORED
     #[test]
     fn test_re_outer_poetry_oleh_we_yored_init() {
-        let regex = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        let regex = &RE_OUTER_POETRY_OLEH_WEYORED;
         let valid = "עוֹלֶה֥"; // Ole + Yored
         let _ = regex.is_match(valid);
     }
@@ -473,7 +473,7 @@ mod regex_initialization_tests {
         let _ = &FA_RE_OUTER_PROSE_MUNACH;
         let _ = &RE_OUTER_PROSE_MEAYLA;
         let _ = &FA_RE_OUTER_COMMON_METEG;
-        let _ = &RE_OUTER_POETRY_OLEH_WE_YORED;
+        let _ = &RE_OUTER_POETRY_OLEH_WEYORED;
         let _ = &RE_OUTER_POETRY_REVIA_MUGRASH;
         let _ = &RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH;
         let _ = &RE_OUTER_POETRY_AZLA_LEGARMEH;

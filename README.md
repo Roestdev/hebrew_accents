@@ -76,7 +76,7 @@ Sub-goals:
 ### Non-Goals
 
 - Detect errors in the text related to accentuation rules.
-- Determine the type of text based on the identified accents.
+- Determine the accenttype of text based on the identified accents.
 - Achieve absolute accuracy.
 
 ### Project Status 

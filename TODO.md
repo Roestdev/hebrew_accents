@@ -19,7 +19,7 @@ Below a todo list.
 Accent
 - [x] info()
 - [x] category()
-- [x] accent_type()
+- [x] accenttype()
 
 #### `HebrewAccent` 
 - [ ] details()

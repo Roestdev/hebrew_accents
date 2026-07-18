@@ -17,7 +17,7 @@ Looking roughly I noticed the following similarities and differences.
     - 10 conjuntives
 
   Notes: 
-    - Mayela and Meteg are secondary accents
+    - Meayla and Meteg are secondary accents
     - Some accents are in multiple groups (see p.e. Helmut Righter) 
 
 ### Differences
@@ -160,9 +160,9 @@ In general all mappings can be resolved using either the [String](https://doc.ru
    Prose, Poetry, Unknown
 
 6. **Accent Type**  
-   Two type of accents: Primary and Secondary
+   Two accenttype of accents: Primary and Secondary
 
-7. **Accent Category**    
+7. **Accent AccentCategory**    
    Disjunctive, Conjunctive
 
 8. **Accent Position**  
@@ -173,7 +173,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 10. **Accent Information**   
    Contains all kind of attributes of the accents.
-   e.g. position, type etc.
+   e.g. position, accenttype etc.
 
 ## Functions
 
@@ -200,7 +200,7 @@ In general all mappings can be resolved using either the [String](https://doc.ru
 
 - details()
     - gives accent_meta_data information for a specific accent, e.g. accents position etc. etc.
-- accent_type()
+- accenttype()
 - category()
 
 ## Input validation

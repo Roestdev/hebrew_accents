@@ -1,4 +1,4 @@
-use crate::accent::{resolve_disjunctive_group, AccentInformation};
+use crate::accent::{resolve_disjunctive_group, AccentMetaData};
 use crate::codepoints::CODEPOINT_METEG;
 use crate::data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
@@ -163,14 +163,14 @@ impl Accent for ProseAccent {
     fn category(self) -> Option<AccentCategory> {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x: &AccentInformation| x.accent_category.to_public())
+            .and_then(|x: &AccentMetaData| x.accent_category.to_public())
     }
 
     #[inline]
     fn word_stress(self) -> Option<AccentWordStress> {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x: &AccentInformation| x.word_stress.to_public())
+            .and_then(|x: &AccentMetaData| x.word_stress.to_public())
     }
     #[inline]
     fn is_compound(self) -> bool {
@@ -189,9 +189,9 @@ impl Accent for ProseAccent {
 
         CantillationMark {
             unicode_value: info.code_point_value,
-            hex_bytes: info.hex_value,
+            hex_bytes: info.hex_bytes,
             symbol: info.symbol,
-            canonical_name: info.name,
+            canonical_name: info.canonical_name,
             position: info.position.into(),
         }
     }
@@ -203,9 +203,9 @@ impl Accent for ProseAccent {
             .and_then(|x| x.cantillation_symbol.secondary_mark)
             .map(|info| CantillationMark {
                 unicode_value: info.code_point_value,
-                hex_bytes: info.hex_value,
+                hex_bytes: info.hex_bytes,
                 symbol: info.symbol,
-                canonical_name: info.name,
+                canonical_name: info.canonical_name,
                 position: info.position.into(),
             })
     }
@@ -260,7 +260,7 @@ impl Accent for PoetryAccent {
     fn word_stress(self) -> Option<AccentWordStress> {
         POETRY_ACCENT_TABLE
             .get(self as usize)
-            .and_then(|x: &AccentInformation| x.word_stress.to_public())
+            .and_then(|x: &AccentMetaData| x.word_stress.to_public())
     }
     #[inline]
     fn is_compound(self) -> bool {
@@ -279,9 +279,9 @@ impl Accent for PoetryAccent {
 
         CantillationMark {
             unicode_value: info.code_point_value,
-            hex_bytes: info.hex_value,
+            hex_bytes: info.hex_bytes,
             symbol: info.symbol,
-            canonical_name: info.name,
+            canonical_name: info.canonical_name,
             position: info.position.into(),
         }
     }
@@ -293,9 +293,9 @@ impl Accent for PoetryAccent {
             .and_then(|x| x.cantillation_symbol.secondary_mark)
             .map(|info| CantillationMark {
                 unicode_value: info.code_point_value,
-                hex_bytes: info.hex_value,
+                hex_bytes: info.hex_bytes,
                 symbol: info.symbol,
-                canonical_name: info.name,
+                canonical_name: info.canonical_name,
                 position: info.position.into(),
             })
     }
@@ -369,9 +369,9 @@ impl Accent for PseudoAccent {
 
         CantillationMark {
             unicode_value: info.code_point_value,
-            hex_bytes: info.hex_value,
+            hex_bytes: info.hex_bytes,
             symbol: info.symbol,
-            canonical_name: info.name,
+            canonical_name: info.canonical_name,
             position: info.position.into(),
         }
     }
@@ -383,9 +383,9 @@ impl Accent for PseudoAccent {
             .and_then(|x| x.cantillation_symbol.secondary_mark)
             .map(|info| CantillationMark {
                 unicode_value: info.code_point_value,
-                hex_bytes: info.hex_value,
+                hex_bytes: info.hex_bytes,
                 symbol: info.symbol,
-                canonical_name: info.name,
+                canonical_name: info.canonical_name,
                 position: info.position.into(),
             })
     }

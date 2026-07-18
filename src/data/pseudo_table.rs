@@ -1,5 +1,5 @@
 use crate::{
-    accent::AccentInformation,
+    accent::AccentMetaData,
     data::accent_information::{MAQQEPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO},
     PseudoAccent,
 };
@@ -18,7 +18,7 @@ use crate::{
 /// - Entries must correspond exactly to enum declaration order
 /// - All name fields populated (no "todo" placeholders)
 ///
-pub(crate) static PSEUDO_ACCENT_TABLE: [AccentInformation; PseudoAccent::LEN] =
+pub(crate) static PSEUDO_ACCENT_TABLE: [AccentMetaData; PseudoAccent::LEN] =
     [SOPH_PASUQ_INFO, MAQQEPH_INFO, PASEQ_INFO];
 
 const _: () = assert!(

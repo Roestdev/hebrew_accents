@@ -16,9 +16,8 @@ use crate::sentence::regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_OUTER_COMMON_SHALSHELET,
     RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
-    RE_OUTER_POETRY_OLEH_WE_YORED, RE_OUTER_POETRY_REVIA_MUGRASH,
-    RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
-    RE_OUTER_PROSE_MEAYLA,
+    RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
+    RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::sentence::sentence_context::SentenceContext;
 
@@ -119,7 +118,7 @@ impl SentenceContext {
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
             | HebrewAccent::Poetry(PoetryAccent::Galgal) => self.sentence.contains(YERAH_BEN_YOMO),
-            HebrewAccent::Prose(ProseAccent::Mayela) if self.ctx == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::Meayla) if self.ctx == Context::Prosaic => {
                 RE_OUTER_PROSE_MEAYLA.is_match(&self.sentence)
             }
             HebrewAccent::Prose(ProseAccent::Meteg) | HebrewAccent::Poetry(PoetryAccent::Meteg) => {
@@ -131,7 +130,7 @@ impl SentenceContext {
              * *********************************************************/
             // Disjunctives
             HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.ctx == Context::Poetic => {
-                RE_OUTER_POETRY_OLEH_WE_YORED.is_match(&self.sentence)
+                RE_OUTER_POETRY_OLEH_WEYORED.is_match(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::ReviaGadol) if self.ctx == Context::Poetic => {
                 find_poetry_revia_gadol(&self.sentence).is_some()
@@ -535,19 +534,19 @@ mod tests {
         // Tiphcha followed by Atnach
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹ֖הִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::Mayela.into()));
+        assert!(binding.contains_accent(ProseAccent::Meayla.into()));
         // Tiphcha followed by Atnach, two words connected with a Maqqeph
         let sc = SentenceContext::new("ויּ֖צא־נ֑ח וּבנ֛יו ואשׁתּ֥ו וּנשֽׁי־בנ֖יו אתּֽו׃", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::Mayela.into()));
+        assert!(binding.contains_accent(ProseAccent::Meayla.into()));
         // Tiphcha followed by silluq
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָ֖אָֽרֶץ", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::Mayela.into()));
+        assert!(binding.contains_accent(ProseAccent::Meayla.into()));
         // only Tiphcha
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(!binding.contains_accent(ProseAccent::Mayela.into()));
+        assert!(!binding.contains_accent(ProseAccent::Meayla.into()));
     }
     #[test]
     fn test_contains_prose_meteg() {
@@ -617,19 +616,19 @@ mod tests {
         let sc = SentenceContext::new("בּר֗אשׁית בּרא אלהים את השּׁ֗מים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
-        // Revia followed by Oleh We Yored (1 word)
+        // Revia followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫ר֥א אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
-        // Revia followed by Oleh We Yored (2 words)
+        // Revia followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלה֥ים את השּׁמים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
-        // Revia followed by 'Oleh We Yored' (3 words)
+        // Revia followed by 'Oleh Weyored' (3 words)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
-        // Revia not directly followed by Oleh We Yored (1 word)
+        // Revia not directly followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּרא אלה֫י֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
@@ -700,19 +699,19 @@ mod tests {
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת השּׁמים ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
-        // Revia directly followed by Oleh We Yored (1 word)
+        // Revia directly followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמי֥ם ואת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaQaton.into()));
-        // Revia directly followed by Oleh We Yored (2 words)
+        // Revia directly followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaQaton.into()));
-        // Revia directly followed by 'Oleh We Yored' (3 words)
+        // Revia directly followed by 'Oleh Weyored' (3 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים ואת האר֥ץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
-        // Revia NOT directly followed by Oleh We Yored (2 words)
+        // Revia NOT directly followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּראשׁית בּרא א֗להים א֓ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));

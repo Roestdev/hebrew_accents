@@ -1,6 +1,6 @@
 //! Main entry point for Hebrew Accent information
 
-use crate::codepoints::traditions::TraditionNames;
+use crate::codepoints::TraditionNames;
 // Crate‑internal (local modules)
 use crate::codepoints::CodePointPosition;
 use crate::AccentCategory;
@@ -13,24 +13,28 @@ use crate::ProseAccent;
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub(crate) struct AccentInformation {
+pub(crate) struct AccentMetaData {
     /// Official Hebrew name of the accent according to BHS
     pub(crate) hebrew_name: &'static str,
-    /// Semantic meaning of the Hebrew term.
+    /// Semantic meaning of the Hebrew term
     pub(crate) hebrew_concept: &'static str,
-    /// Transliterated English name of the accent.
+    /// Transliterated English name of the accent
     pub(crate) english_name: &'static str,
+    /// Transliterated according `SLB academic`` 
+    pub(crate) sbl_academic: &'static str,
     /// Associated Cantillation Symbol
     pub(crate) cantillation_symbol: CantillationSymbol,
     /// Optional alternate identifiers for hebrew_name, hebrew_concept, english_name
     pub(crate) alternate_names: Option<AlternateNames>,
-    /// Indicates the accent accenttype (Primary, Secondary)
+    /// Indicates the accent accenttype (Primary, Secondary),
     pub(crate) kind: Kind,
     /// Indicates the accent category (Disjunctive, Conjunctive)
     pub(crate) accent_category: Category,
     /// Indicates if the accent is on the stressed syllable
     pub(crate) word_stress: WordStress,
-    /// Contextual notes or scholarly commentary.
+    /// Tradition-specific naming information
+    pub(crate) traditions: TraditionNames,
+    /// Contextual notes or scholarly commentary
     pub(crate) notes: Option<&'static str>,
 }
 
@@ -38,12 +42,14 @@ pub(crate) struct AccentInformation {
 /// Used by some scholars
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct AlternateNames {
-    /// Transliterated English name for the hebrew name
-    pub(crate) english_name: &'static str,
     /// Hebrew name of the accent
     pub(crate) hebrew_name: &'static str,
     /// Meaning of the Hebrew name
     pub(crate) hebrew_concept: &'static str,
+    /// Transliterated English name of the accent
+    pub(crate) english_name: &'static str,
+    /// Transliterated according `SLB academic`` 
+    pub(crate) sbl_academic: &'static str,
 }
 
 /// Struct containing the cantillation symbol of a Hebrew Accent
@@ -59,26 +65,24 @@ pub(crate) struct AlternateNames {
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct CantillationSymbol {
     /// Primary UTF-8 code point, the one that is encountered first
-    pub(crate) primary_mark: &'static Utf8CodePointInfo,
+    pub(crate) primary_mark: &'static Utf8CodePoint,
     /// Secondary UTF-8 code point, if applicable
-    pub(crate) secondary_mark: Option<&'static Utf8CodePointInfo>,
+    pub(crate) secondary_mark: Option<&'static Utf8CodePoint>,
 }
 
 /// Details on a specific UTF-8 Unicode code-point
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub(crate) struct Utf8CodePointInfo {
+pub(crate) struct Utf8CodePoint {
     /// UTF-8 code-point id, e.g. U+0591
     pub(crate) code_point_value: &'static str,
     /// The hex value of the UTF-8 code-point
-    pub(crate) hex_value: &'static str,
+    pub(crate) hex_bytes: &'static str,
     /// The name of the UTF-8 code-point as mentioned in the UTF-8 code tables
-    pub(crate) name: &'static str,
+    pub(crate) canonical_name: &'static str,
     /// The symbol of the UTF-8 code-point
     pub(crate) symbol: &'static str,
     /// The position of the code-point in relation to the consonant
     pub(crate) position: CodePointPosition,
-    /// Tradition-specific naming information
-    pub(crate) traditions: TraditionNames,
 }
 
 /// Hebrew Accent category (either Conjunctive or Disjunctive)

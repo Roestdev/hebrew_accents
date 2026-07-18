@@ -1,4 +1,4 @@
-use crate::accent::AccentInformation;
+use crate::accent::AccentMetaData;
 use crate::data::accent_information::{
     ATNACH_INFO,
     AZLA_INFO,
@@ -8,9 +8,9 @@ use crate::data::accent_information::{
     GERSHAYIM_INFO,
     LEGARMEH_INFO,
     MAHPAKH_INFO,
-    MAYELA_INFO,
+    MEAYLA_INFO,
     MERKHA_INFO,
-    MERKHA_KEFULAH_INFO,
+    MERKHA_KEPHULAH_INFO,
     METEG_INFO,
     // Conjunctives
     MUNACH_INFO,
@@ -27,15 +27,15 @@ use crate::data::accent_information::{
     TEVIR_INFO,
     TIPHCHA_INFO,
     YETIV_INFO,
-    ZAQEF_QATON_INFO,
     ZAQEPH_GADOL_INFO,
+    ZAQEPH_QATON_INFO,
     ZARQA_INFO,
 };
 use crate::ProseAccent;
 
 /// Static lookup table for prose cantillation metadata.
 ///
-/// Maps `ProseAccent` variants (indices 0–27) to [`AccentInformation`] records.
+/// Maps `ProseAccent` variants (indices 0–27) to [`AccentMetaData`] records.
 /// Used by the [`Accent`](crate::accent::Accent) trait for information retrieval.
 ///
 /// ## Structure
@@ -45,7 +45,7 @@ use crate::ProseAccent;
 /// discriminant arithmetic (`self as u8 + 1`).
 ///
 /// ### Conjunctive Accents (Indices 18–26)  
-/// Connect words within phrases. Include secondary marks like Meteg/Mayela.
+/// Connect words within phrases. Include secondary marks like Meteg/Meayla.
 ///
 /// ## Safety Requirements
 /// - Order MUST match `ProseAccent` discriminant values exactly
@@ -55,13 +55,13 @@ use crate::ProseAccent;
 /// ## Sources
 /// - Biblia Hebraica Stuttgartensia (Kittel 4th ed.)
 /// - Waltke & O'Connor, *Introduction to Biblical Hebrew Syntax* (§§10.2–10.4)
-pub(crate) static PROSE_ACCENT_TABLE: [AccentInformation; ProseAccent::LEN] = [
+pub(crate) static PROSE_ACCENT_TABLE: [AccentMetaData; ProseAccent::LEN] = [
     // --------------------Disjunctives
     SILLUQ_INFO,
     ATNACH_INFO,
     SEGOLTA_INFO,
     SHALSHELET_INFO,
-    ZAQEF_QATON_INFO,
+    ZAQEPH_QATON_INFO,
     ZAQEPH_GADOL_INFO,
     REVIA_INFO,
     TIPHCHA_INFO,
@@ -79,12 +79,12 @@ pub(crate) static PROSE_ACCENT_TABLE: [AccentInformation; ProseAccent::LEN] = [
     MUNACH_INFO,
     MAHPAKH_INFO,
     MERKHA_INFO,
-    MERKHA_KEFULAH_INFO,
+    MERKHA_KEPHULAH_INFO,
     DARGA_INFO,
     AZLA_INFO,
     TELISHA_QETANNAH_INFO,
     GALGAL_INFO,
-    MAYELA_INFO,
+    MEAYLA_INFO,
     METEG_INFO,
 ];
 

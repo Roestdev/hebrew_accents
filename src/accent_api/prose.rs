@@ -59,8 +59,8 @@ pub enum ProseAccent {
     TelishaQetannah,
     /// Primary conjunctive prose accent Galgal
     Galgal,
-    /// Secondary conjunctive prose accent Mayela
-    Mayela,
+    /// Secondary conjunctive prose accent Meayla
+    Meayla,
     /// Secondary conjunctive prose accent Meteg
     Meteg,
 }

@@ -16,9 +16,8 @@ use crate::sentence::regex::{
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
     RE_INNER_POETRY_TSINNORIT_MAHPAKH, RE_INNER_POETRY_TSINNORIT_MERKHA, RE_INNER_PROSE_LEGARMEH,
     RE_OUTER_COMMON_SHALSHELET, RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
-    RE_OUTER_POETRY_OLEH_WE_YORED, RE_OUTER_POETRY_REVIA_MUGRASH,
-    RE_OUTER_POETRY_TSINNORIT_MAHPAKH, RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH,
-    RE_OUTER_PROSE_MEAYLA,
+    RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
+    RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::sentence::sentence_context::SentenceContext;
 use crate::utils::matcher::Match;
@@ -282,7 +281,7 @@ impl<'a> SentenceContext {
                 .sentence
                 .find(GALGAL)
                 .map(|index| Match::new(GALGAL, index, index + ACCENT_LEN_UTF8)),
-            HebrewAccent::Prose(ProseAccent::Mayela) if self.ctx == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::Meayla) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
                     Some(m) => {
                         println!("\n==> RE_OUTER_PROSE_MEAYLA: FOUND!");
@@ -295,7 +294,7 @@ impl<'a> SentenceContext {
                         m
                     }
                     None => {
-                        println!("\n==> ProseAccent::Mayela is not found (outer match).");
+                        println!("\n==> ProseAccent::Meayla is not found (outer match).");
                         return None;
                     }
                 };
@@ -325,9 +324,9 @@ impl<'a> SentenceContext {
              * *********************************************************/
             // Disjunctives
             HebrewAccent::Poetry(PoetryAccent::OlehWeYored) if self.ctx == Context::Poetic => {
-                let outer_match = match RE_OUTER_POETRY_OLEH_WE_YORED.find(&self.sentence) {
+                let outer_match = match RE_OUTER_POETRY_OLEH_WEYORED.find(&self.sentence) {
                     Some(m) => {
-                        println!("\n==> RE_OUTER_POETRY_OLEH_WE_YORED: FOUND!");
+                        println!("\n==> RE_OUTER_POETRY_OLEH_WEYORED: FOUND!");
                         print!(
                             "\touter match :: start:{} ; end:{} ; str:{}",
                             m.start(),
@@ -639,7 +638,7 @@ impl<'a> SentenceContext {
 
 pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
     // Merkha (as a poetry accent) is
-    //   not part of Oleh We Yored (needs Negative Lookbehind)
+    //   not part of Oleh Weyored (needs Negative Lookbehind)
     //   AND
     //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
     let target_char = MERKHA;
@@ -722,7 +721,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
     // Revia Gadol is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
-    //   not followed by an Oleh We Yored (needs Negative Lookahead)
+    //   not followed by an Oleh Weyored (needs Negative Lookahead)
     let target_char = REVIA;
     // define possible combinations
     let possible_combinations_lookbehind = [GERESH_AS_CHAR];
@@ -764,7 +763,7 @@ pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> 
     // Revia Qaton is
     //   not part of Revia Mugrash (needs Negative Lookbehind)
     //   AND
-    //   followed by an Oleh We Yored (needs Positive LookAhead)
+    //   followed by an Oleh Weyored (needs Positive LookAhead)
     let target_char = REVIA;
     // define possible combinations
     let possible_combinations_lookbehind = [GERESH_AS_CHAR];
@@ -788,7 +787,7 @@ pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> 
             &possible_combinations_lookbehind,
             1,
         );
-        //println!("Followed by Oleh We Yored");
+        //println!("Followed by Oleh Weyored");
         let followed_by_owy = is_followed_by_oleh_we_yored(index, &char_vec);
         // 2cp   oleweyored     revia_qaton
         //  no      no      -       no
@@ -1411,26 +1410,26 @@ mod unit_tests {
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹ֖הִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
         let expected = Match::new(MEAYLA, 48, 56);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::Mayela.into()),
+            sc.unwrap().find_accent(ProseAccent::Meayla.into()),
             Some(expected)
         );
         // Tiphcha followed by Atnach, two words connected with a Maqqeph
         let sc = SentenceContext::new("ויּ֖צא־נ֑ח וּבנ֛יו ואשׁתּ֥ו וּנשֽׁי־בנ֖יו אתּֽו׃", Context::Prosaic);
         let expected = Match::new(MEAYLA, 6, 18);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::Mayela.into()),
+            sc.unwrap().find_accent(ProseAccent::Meayla.into()),
             Some(expected)
         );
         // Tiphcha followed by silluq
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵת הַשָּׁמַיִם וְאֵת הָ֖אָֽרֶץ", Context::Prosaic);
         let expected = Match::new(MEAYLA, 104, 114);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::Mayela.into()),
+            sc.unwrap().find_accent(ProseAccent::Meayla.into()),
             Some(expected)
         );
         // only Tiphcha
         let sc = SentenceContext::new("וְבְּרֵאשִׁית בָּרָא אֱלֹהִ֑ים אֵ֖ת הַשָּׁמַיִם וְאֵת הָאָֽרֶץ", Context::Prosaic);
-        assert_eq!(sc.unwrap().find_accent(ProseAccent::Mayela.into()), None);
+        assert_eq!(sc.unwrap().find_accent(ProseAccent::Meayla.into()), None);
     }
     #[test]
     fn test_find_prose_poetry_meteg() {
@@ -1516,26 +1515,26 @@ mod unit_tests {
             sc.unwrap().find_accent(PoetryAccent::ReviaGadol.into()),
             Some(expected)
         );
-        // Revia followed by Oleh We Yored (1 word)
+        // Revia followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫ר֥א אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaGadol.into()),
             None
         );
-        // Revia followed by Oleh We Yored (2 words)
+        // Revia followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלה֥ים את השּׁמים ואת הארץ׃", Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaGadol.into()),
             None
         );
-        // Revia followed by 'Oleh We Yored' (3 words)
+        // Revia followed by 'Oleh Weyored' (3 words)
         let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
         let expected = Match::new("\u{597}", 3, 5);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaGadol.into()),
             Some(expected)
         );
-        // Revia not directly followed by Oleh We Yored (1 word)
+        // Revia not directly followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּר֗אשׁית בּרא אלה֫י֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
         let expected = Match::new("\u{597}", 3, 5);
         assert_eq!(
@@ -1645,27 +1644,27 @@ mod unit_tests {
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
             None
         );
-        // Revia directly followed by Oleh We Yored (1 word)
+        // Revia directly followed by Oleh Weyored (1 word)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמי֥ם ואת הארץ׃", Context::Poetic);
         let expected = Match::new("\u{597}", 21, 23);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
             Some(expected)
         );
-        // Revia directly followed by Oleh We Yored (2 words)
+        // Revia directly followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         let expected = Match::new("\u{597}", 21, 23);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
             Some(expected)
         );
-        // Revia directly followed by 'Oleh We Yored' (3 words)
+        // Revia directly followed by 'Oleh Weyored' (3 words)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים ואת האר֥ץ׃", Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
             None
         );
-        // Revia NOT directly followed by Oleh We Yored (2 words)
+        // Revia NOT directly followed by Oleh Weyored (2 words)
         let sc = SentenceContext::new("בּראשׁית בּרא א֗להים א֓ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
@@ -2332,7 +2331,7 @@ mod unit_tests_cross_context {
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Galgal.into()), None);
         // try find Tevir in Poetic context
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        assert_eq!(sc.unwrap().find_accent(ProseAccent::Mayela.into()), None);
+        assert_eq!(sc.unwrap().find_accent(ProseAccent::Meayla.into()), None);
     }
     #[test]
     fn try_find_poetry_accent_in_prosaic_context() {
@@ -2668,7 +2667,7 @@ mod accent_metadata_function_coverage_tests {
         let _: HebrewAccent = ProseAccent::Azla.into();
         let _: HebrewAccent = ProseAccent::TelishaQetannah.into();
         let _: HebrewAccent = ProseAccent::Galgal.into();
-        let _: HebrewAccent = ProseAccent::Mayela.into();
+        let _: HebrewAccent = ProseAccent::Meayla.into();
         let _: HebrewAccent = ProseAccent::Meteg.into();
     }
 

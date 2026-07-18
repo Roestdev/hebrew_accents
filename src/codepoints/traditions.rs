@@ -49,23 +49,23 @@ impl TraditionNames {
         }
     }
 
-    /// Get name for a specific tradition
-    pub(crate) const fn get(&self, tradition: Tradition) -> Option<AccentName> {
-        match tradition {
-            Tradition::Ashkenazi => self.ashkenazi,
-            Tradition::Sephardi => self.sephardi,
-            Tradition::Italian => self.italian,
-            Tradition::Yemenite => self.yemenite,
-        }
-    }
+    // Get name for a specific tradition
+    // pub(crate) const fn get(&self, tradition: Tradition) -> Option<AccentName> {
+    //     match tradition {
+    //         Tradition::Ashkenazi => self.ashkenazi,
+    //         Tradition::Sephardi => self.sephardi,
+    //         Tradition::Italian => self.italian,
+    //         Tradition::Yemenite => self.yemenite,
+    //     }
+    // }
 }
 
-/// Which Hebrew reading tradition
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-#[non_exhaustive]
-pub(crate) enum Tradition {
-    Ashkenazi,
-    Sephardi,
-    Italian,
-    Yemenite,
-}
+// /// Which Hebrew reading tradition
+//#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+//#[non_exhaustive]
+// pub(crate) enum Tradition {
+//     Ashkenazi,
+//     Sephardi,
+//     Italian,
+//     Yemenite,
+//}
