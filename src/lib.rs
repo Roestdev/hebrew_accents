@@ -118,19 +118,21 @@
 
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
-mod accent;
 #[cfg_attr(doctest, doc = include_str!("../README.md"))]
 
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
+mod accent;
+/// TODO
 pub mod accent_api;
+/// TODO
+mod accent_data;
 mod codepoints;
-mod data;
-mod error;
+mod common;
 mod formatting;
 mod hierarchy;
-mod scholar;
 mod sentence;
 mod utils;
+mod error;
 
 // Re-export commonly used items at crate root for ergonomic imports
 pub use error::SentenceContextError;
@@ -152,3 +154,5 @@ pub use crate::accent_api::AccentWordStress;
 pub use crate::accent_api::CantillationMark;
 pub use crate::accent_api::CantillationMarkPosition;
 pub use crate::accent_api::GroupLevel;
+
+

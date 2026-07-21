@@ -17,7 +17,6 @@ pub mod public_model;
 pub mod wrapper;
 
 pub use accent_trait::Accent;
-
 pub use poetry::PoetryAccent;
 pub use prose::ProseAccent;
 pub use pseudo::PseudoAccent;

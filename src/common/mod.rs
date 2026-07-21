@@ -8,3 +8,6 @@
     └── export.rs                    # CSV/XML/RDF output formats
 
 */
+mod char;
+
+pub(crate) use char::*;

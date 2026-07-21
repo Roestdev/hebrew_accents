@@ -20,7 +20,7 @@ pub(crate) struct AccentMetaData {
     pub(crate) hebrew_concept: &'static str,
     /// Transliterated English name of the accent
     pub(crate) english_name: &'static str,
-    /// Transliterated according `SLB academic`` 
+    /// Transliterated according `SLB academic`
     pub(crate) sbl_academic: &'static str,
     /// Associated Cantillation Symbol
     pub(crate) cantillation_symbol: CantillationSymbol,
@@ -36,6 +36,17 @@ pub(crate) struct AccentMetaData {
     pub(crate) traditions: TraditionNames,
     /// Contextual notes or scholarly commentary
     pub(crate) notes: Option<&'static str>,
+    /// Maximum word span of the accent
+    pub(crate) max_word_span: Option<MaxWordSpan>,
+}
+
+/// Some compound accent may span two words.
+/// For most accents the rule is one acccent one word.
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub(crate) enum MaxWordSpan {
+    OneWord,
+    TwoWords,
+    None
 }
 
 /// Optional alternate representations for an accent.

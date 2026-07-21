@@ -1,5 +1,5 @@
 use crate::accent::AccentMetaData;
-use crate::data::accent_information::{
+use crate::accent_data::accent_information::{
     ATNACH_INFO,
     AZLA_INFO,
     DARGA_INFO,

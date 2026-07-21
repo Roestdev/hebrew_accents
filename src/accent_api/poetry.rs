@@ -1,4 +1,4 @@
-use crate::data::BHS_POETRY_RANK_MAP;
+use crate::accent_data::BHS_POETRY_RANK_MAP;
 use crate::Accent;
 
 /// All variants of the Hebrew Poetry Accents

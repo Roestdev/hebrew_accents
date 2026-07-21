@@ -9,3 +9,5 @@ pub(crate) use model::Category;
 pub(crate) use model::Kind;
 pub(crate) use model::Utf8CodePoint;
 pub(crate) use model::WordStress;
+
+pub(crate) use model::MaxWordSpan;

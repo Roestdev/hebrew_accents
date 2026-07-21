@@ -1,6 +1,6 @@
 use crate::accent::{resolve_disjunctive_group, AccentMetaData};
 use crate::codepoints::CODEPOINT_METEG;
-use crate::data::{
+use crate::accent_data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
 };
 use crate::{
@@ -17,6 +17,8 @@ pub trait Accent: Copy + Sized {
     /// English transliteration of the accent name
     fn english_name(self) -> &'static str;
     /// Accent kind (primary, secondary), if applicable
+    // TODO BLS academic name 
+    // fn bls_academic(self) -> Option<&'static str>;
     fn kind(self) -> Option<AccentKind>;
     /// Accent category (disjunctive, conjunctive), if applicable
     fn category(self) -> Option<AccentCategory>;
@@ -34,6 +36,8 @@ pub trait Accent: Copy + Sized {
     fn relative_strength(self) -> u8;
     /// Hierarchical disjunctive group level (Futato classification)
     fn group_level(self) -> Option<GroupLevel>;
+    // TODO Cantilation symbol
+    // fn cantillation_symbol(self) -> Option<&'static str>;
 }
 
 impl Accent for HebrewAccent {

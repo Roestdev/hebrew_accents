@@ -14,6 +14,7 @@
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct AccentName {
     pub(crate) hebrew_name: &'static str,
+    pub(crate) sbl_academic: &'static str,
     pub(crate) english_name: &'static str,
 }
 
@@ -28,22 +29,26 @@ pub(crate) struct TraditionNames {
 
 impl TraditionNames {
     /// Create uniform names across all four traditions
-    pub(crate) const fn uniform(hebrew: &'static str, english: &'static str) -> Self {
+    pub(crate) const fn uniform(hebrew: &'static str, sbl: &'static str ,english: &'static str) -> Self {
         Self {
             ashkenazi: Some(AccentName {
                 hebrew_name: hebrew,
+                sbl_academic: sbl,
                 english_name: english,
             }),
             sephardi: Some(AccentName {
                 hebrew_name: hebrew,
+                sbl_academic: sbl,
                 english_name: english,
             }),
             italian: Some(AccentName {
                 hebrew_name: hebrew,
+                sbl_academic: sbl,
                 english_name: english,
             }),
             yemenite: Some(AccentName {
                 hebrew_name: hebrew,
+                sbl_academic: sbl,
                 english_name: english,
             }),
         }

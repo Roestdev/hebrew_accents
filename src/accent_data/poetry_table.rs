@@ -1,7 +1,7 @@
 use crate::accent::AccentMetaData;
 use crate::PoetryAccent;
 
-use crate::data::accent_information::{
+use crate::accent_data::accent_information::{
     ATNACH_INFO, AZLA_INFO, AZLA_LEGARMEH_INFO, DECHI_INFO, GALGAL_INFO, ILLUY_INFO,
     MEHUPPAKH_INFO, MEHUPPAKH_LEGARMEH_INFO, MERKHA_INFO, METEG_INFO, MUNACH_INFO,
     OLEH_WEYORED_INFO, PAZER_INFO, REVIA_GADOL_INFO, REVIA_MUGRASH_INFO, REVIA_QATON_INFO,

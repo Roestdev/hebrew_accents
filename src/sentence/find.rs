@@ -1,7 +1,7 @@
 //! Implementation of find_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
-use crate::sentence::char::{
+use crate::common::{
     ATNACH, AZLA, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH,
     MAQQEPH_AS_CHAR, MEAYLA, MERKHA, MERKHA_KEFULA, METEG, MUNACH, MUNAH, OLEH_AS_CHAR, PASEQ,
     PASEQ_AS_CHAR, PASHTA, PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA,
@@ -1369,7 +1369,7 @@ mod unit_tests {
     }
     #[test]
     fn test_find_prose_azla() {
-        use crate::sentence::char::AZLA;
+        use crate::common::AZLA;
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֨ת השּׁמים ואת הארץ׃", Context::Prosaic);
         let expected = Match::new(AZLA, 39, 41);
         assert_eq!(
@@ -1932,7 +1932,7 @@ mod unit_tests {
 
     #[test]
     fn test_find_poetry_azla() {
-        use crate::sentence::char::AZLA;
+        use crate::common::AZLA;
 
         // contains Azla
         let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
