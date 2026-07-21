@@ -1,5 +1,5 @@
-use crate::{HebrewAccent, codepoints::CodePointPosition};
 use crate::Accent;
+use crate::{codepoints::CodePointPosition, HebrewAccent};
 
 /// Hebrew Accent kind — (absence is expressed via Option<T>)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -180,18 +180,20 @@ pub(crate) use crate::common::GENERIC_MARK_BASE;
 /// Returns the cantilation symbol
 /// May consist of two cantillation marks
 pub fn cantillation_symbol(accent: HebrewAccent) -> String {
-   // get first cantillation_mark
-   // if exist get second cantillation_mark
-   // stel output samen 
-   // gebruik generic mark base
-   // 
-   let cant1 = accent.primary_cantillation_mark();
-   let cp1 = cant1.unicode_value;
-   if accent.secondary_cantillation_mark().is_some() {
-    let cp2 = accent.secondary_cantillation_mark().unwrap().unicode_value;
-    format!("{}{}{}{}{}", GENERIC_MARK_BASE, cp1, GENERIC_MARK_BASE, cp2, " ")
-   } else {
-   format!("{}{}{}",GENERIC_MARK_BASE, cp1, " ")
-
-   }
+    // get first cantillation_mark
+    // if exist get second cantillation_mark
+    // stel output samen
+    // gebruik generic mark base
+    //
+    let cant1 = accent.primary_cantillation_mark();
+    let cp1 = cant1.unicode_value;
+    if accent.secondary_cantillation_mark().is_some() {
+        let cp2 = accent.secondary_cantillation_mark().unwrap().unicode_value;
+        format!(
+            "{}{}{}{}{}",
+            GENERIC_MARK_BASE, cp1, GENERIC_MARK_BASE, cp2, " "
+        )
+    } else {
+        format!("{}{}{}", GENERIC_MARK_BASE, cp1, " ")
+    }
 }

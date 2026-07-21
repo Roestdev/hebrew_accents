@@ -8,10 +8,6 @@ use crate::common::{
     PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR,
     TIPEHA, YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
-use crate::sentence::context::Context;
-use crate::sentence::find::{
-    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
-};
 use crate::sentence::regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_OUTER_COMMON_SHALSHELET,
@@ -19,7 +15,11 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
-use crate::sentence::sentence_context::SentenceContext;
+use crate::sentence_api::context::Context;
+use crate::sentence_api::find::{
+    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
+};
+use crate::sentence_api::sentence_context::SentenceContext;
 
 impl SentenceContext {
     /// Returns true if the accent is present in the sentence
@@ -194,8 +194,8 @@ impl SentenceContext {
 
 #[cfg(test)]
 mod tests {
-    use crate::sentence::context::Context;
-    use crate::sentence::sentence_context::SentenceContext;
+    use crate::sentence_api::context::Context;
+    use crate::sentence_api::sentence_context::SentenceContext;
     use crate::{PoetryAccent, ProseAccent, PseudoAccent};
     #[test]
     fn test_contains_prose_poetry_silluq() {

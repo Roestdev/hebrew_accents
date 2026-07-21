@@ -7,7 +7,6 @@
 //! This is done to keep all code in line from the perspective
 //! of the Hebrew Accents according the BHS
 
-
 // UTF-8 codepoints as '&str'
 pub(crate) const ETNAHTA: &str = "\u{0591}";
 pub(crate) const SEGOL: &str = "\u{0592}";
@@ -87,4 +86,3 @@ pub(crate) const TIPHCHA: &str = TIPEHA;
 // UTF-8 codepoints as 'char'
 // pub(crate) const GENERIC_MARK_BASE_AS_CHAR: char = '\u{25CC}';
 pub(crate) const GENERIC_MARK_BASE: &str = "\u{25CC}";
-

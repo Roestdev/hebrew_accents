@@ -29,7 +29,11 @@ pub(crate) struct TraditionNames {
 
 impl TraditionNames {
     /// Create uniform names across all four traditions
-    pub(crate) const fn uniform(hebrew: &'static str, sbl: &'static str ,english: &'static str) -> Self {
+    pub(crate) const fn uniform(
+        hebrew: &'static str,
+        sbl: &'static str,
+        english: &'static str,
+    ) -> Self {
         Self {
             ashkenazi: Some(AccentName {
                 hebrew_name: hebrew,

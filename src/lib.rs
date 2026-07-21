@@ -128,18 +128,19 @@ pub mod accent_api;
 mod accent_data;
 mod codepoints;
 mod common;
+mod error;
 mod formatting;
 mod hierarchy;
 mod sentence;
+mod sentence_api;
 mod utils;
-mod error;
 
 // Re-export commonly used items at crate root for ergonomic imports
 pub use error::SentenceContextError;
 
-pub use sentence::context::Context;
-pub use sentence::detector::try_determine_context;
-pub use sentence::sentence_context::SentenceContext;
+pub use sentence_api::context::Context;
+// pub use sentence_api::detector::try_determine_context;
+pub use sentence_api::sentence_context::SentenceContext;
 pub use utils::matcher::Match;
 
 pub use crate::accent_api::Accent;
@@ -154,5 +155,3 @@ pub use crate::accent_api::AccentWordStress;
 pub use crate::accent_api::CantillationMark;
 pub use crate::accent_api::CantillationMarkPosition;
 pub use crate::accent_api::GroupLevel;
-
-

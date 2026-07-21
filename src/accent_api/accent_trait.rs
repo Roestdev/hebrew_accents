@@ -1,8 +1,8 @@
 use crate::accent::{resolve_disjunctive_group, AccentMetaData};
-use crate::codepoints::CODEPOINT_METEG;
 use crate::accent_data::{
     BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE,
 };
+use crate::codepoints::CODEPOINT_METEG;
 use crate::{
     AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel, HebrewAccent,
     PoetryAccent, ProseAccent, PseudoAccent,
@@ -17,7 +17,7 @@ pub trait Accent: Copy + Sized {
     /// English transliteration of the accent name
     fn english_name(self) -> &'static str;
     /// Accent kind (primary, secondary), if applicable
-    // TODO BLS academic name 
+    // TODO BLS academic name
     // fn bls_academic(self) -> Option<&'static str>;
     fn kind(self) -> Option<AccentKind>;
     /// Accent category (disjunctive, conjunctive), if applicable

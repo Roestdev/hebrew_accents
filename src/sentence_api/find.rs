@@ -10,7 +10,6 @@ use crate::common::{
 };
 use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
-use crate::sentence::context::Context;
 use crate::sentence::regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
@@ -19,7 +18,8 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
-use crate::sentence::sentence_context::SentenceContext;
+use crate::sentence_api::context::Context;
+use crate::sentence_api::sentence_context::SentenceContext;
 use crate::utils::matcher::Match;
 pub(crate) const ACCENT_LEN_UTF8: usize = 2;
 

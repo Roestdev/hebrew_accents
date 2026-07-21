@@ -83,7 +83,7 @@ OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MERKHA),
 */
 pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
-    TraditionNames::uniform("עֹלֶה וְיֹרֵד","TODO", "ascending and descending");
+    TraditionNames::uniform("עֹלֶה וְיֹרֵד", "TODO", "ascending and descending");
 
 /* REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
     sbl_academic: "TODO",
@@ -353,7 +353,7 @@ pub(crate) const TRADITION_NAMES_ZAQEF_QATAN: TraditionNames = TraditionNames {
 // ZAQEF GADOL (U+0595) - All identical
 // ============================================================================
 pub(crate) const TRADITION_NAMES_ZAQEF_GADOL: TraditionNames =
-    TraditionNames::uniform("זָקֵף גָּד֕וֹל","TODO", "zaqeph gadol");
+    TraditionNames::uniform("זָקֵף גָּד֕וֹל", "TODO", "zaqeph gadol");
 
 // ============================================================================
 // TIPEHA (U+0596)
@@ -400,12 +400,12 @@ pub(crate) const TRADITION_NAMES_REVIA: TraditionNames = TraditionNames {
 //     ashkenazi: Some(AccentName {
 //         hebrew_name: "זַרְקָא֘",
 //         sbl_academic: "TODO",
- //       english_name: "zarqa",
+//       english_name: "zarqa",
 //     }),
 //     sephardi: Some(AccentName {
 //         hebrew_name: "זַרְקָא֘",
 //         sbl_academic: "TODO",
- //       english_name: "zarqa",
+//       english_name: "zarqa",
 //     }),
 //     italian: Some(AccentName {
 //         hebrew_name: "זַרְקָא֘",
@@ -415,7 +415,7 @@ pub(crate) const TRADITION_NAMES_REVIA: TraditionNames = TraditionNames {
 //     yemenite: Some(AccentName {
 //         hebrew_name: "צִנּוֹר֘",
 //         sbl_academic: "TODO",
- //       english_name: "tsinnor",
+//       english_name: "tsinnor",
 //     }),
 // };
 
@@ -534,14 +534,14 @@ pub(crate) const TRADITION_NAMES_GERSHAYIM: TraditionNames = TraditionNames {
         sbl_academic: "TODO",
         english_name: "gershayim",
     }),
-    ..TraditionNames::uniform("שְׁנֵי גְרִישִׁ֞ין", "TODO","shene gerishin")
+    ..TraditionNames::uniform("שְׁנֵי גְרִישִׁ֞ין", "TODO", "shene gerishin")
 };
 
 // ============================================================================
 // QARNEY PARA (U+059F) - All identical
 // ============================================================================
 pub(crate) const TRADITION_NAMES_QARNEY_PARA: TraditionNames =
-    TraditionNames::uniform("קַרְנֵי פָרָ֟ה", "TODO","qarne pharah");
+    TraditionNames::uniform("קַרְנֵי פָרָ֟ה", "TODO", "qarne pharah");
 
 // ============================================================================
 // TELISHA GEDOLA (U+05A0)
@@ -692,7 +692,8 @@ pub(crate) const TRADITION_NAMES_MERKHA_KEFULA: TraditionNames = TraditionNames 
 // ============================================================================
 // DARGA (U+05A7) - All identical
 // ============================================================================
-pub(crate) const TRADITION_NAMES_DARGA: TraditionNames = TraditionNames::uniform("דַּרְגָּ֧א","TODO", "darga");
+pub(crate) const TRADITION_NAMES_DARGA: TraditionNames =
+    TraditionNames::uniform("דַּרְגָּ֧א", "TODO", "darga");
 
 // ============================================================================
 // QADMA (U+05A8) - Only 3 traditions
@@ -746,7 +747,7 @@ pub(crate) const TRADITION_NAMES_TELISHA_QETANA: TraditionNames = TraditionNames
 // YERAH BEN YOMO (U+05AA) - All identical
 // ============================================================================
 pub(crate) const TRADITION_NAMES_YERAH_BEN_YOMO: TraditionNames =
-    TraditionNames::uniform("יֵרֶח בֶּן יוֹמ֪וֹ","TODO", "yerach ben yomo");
+    TraditionNames::uniform("יֵרֶח בֶּן יוֹמ֪וֹ", "TODO", "yerach ben yomo");
 
 // ============================================================================
 // OLE (U+05AB) - All identical
@@ -756,29 +757,32 @@ pub(crate) const TRADITION_NAMES_YERAH_BEN_YOMO: TraditionNames =
 // ============================================================================
 // ILUY (U+05AC) - All identical
 // ============================================================================
-pub(crate) const TRADITION_NAMES_ILUY: TraditionNames = TraditionNames::uniform("עִלוּי","TODO", "iluy");
+pub(crate) const TRADITION_NAMES_ILUY: TraditionNames =
+    TraditionNames::uniform("עִלוּי", "TODO", "iluy");
 
 // ============================================================================
 // DEHI (U+05AD) - All identical
 // ============================================================================
-pub(crate) const TRADITION_NAMES_DEHI: TraditionNames = TraditionNames::uniform("דחי", "TODO","dechi");
+pub(crate) const TRADITION_NAMES_DEHI: TraditionNames =
+    TraditionNames::uniform("דחי", "TODO", "dechi");
 
 // ============================================================================
 // ZINOR (U+05AE) - All identical
 // ============================================================================
 pub(crate) const TRADITION_NAMES_ZINOR: TraditionNames =
-    TraditionNames::uniform("צנור", "TODO","tsinor (zarqa above left)");
+    TraditionNames::uniform("צנור", "TODO", "tsinor (zarqa above left)");
 
 // ============================================================================
 // SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics)
 // ============================================================================
 pub(crate) const TRADITION_NAMES_SILLUQ: TraditionNames =
-    TraditionNames::uniform("סוֹף פָּסֽוּק","TODO","sof pasuq");
+    TraditionNames::uniform("סוֹף פָּסֽוּק", "TODO", "sof pasuq");
 
 // ============================================================================
 // METEG (U+05BD) - All identical (shares codepoint with Silluq)
 // ============================================================================
-pub(crate) const TRADITION_NAMES_METEG: TraditionNames = TraditionNames::uniform("מֶתֶג", "TODO","meteg");
+pub(crate) const TRADITION_NAMES_METEG: TraditionNames =
+    TraditionNames::uniform("מֶתֶג", "TODO", "meteg");
 
 // ============================================================================
 // MAQAF (U+05BE) - No traditions
@@ -793,7 +797,8 @@ pub(crate) const TRADITION_NAMES_MAQAF: TraditionNames = TraditionNames {
 // ============================================================================
 // PASEQ (U+05C0) - All identical
 // ============================================================================
-pub(crate) const TRADITION_NAMES_PASEQ: TraditionNames = TraditionNames::uniform("פָּסֵק","TODO", "paseq");
+pub(crate) const TRADITION_NAMES_PASEQ: TraditionNames =
+    TraditionNames::uniform("פָּסֵק", "TODO", "paseq");
 
 // ============================================================================
 // SOPH PASUQ (U+05C3) - No traditions

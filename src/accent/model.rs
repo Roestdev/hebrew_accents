@@ -46,7 +46,7 @@ pub(crate) struct AccentMetaData {
 pub(crate) enum MaxWordSpan {
     OneWord,
     TwoWords,
-    None
+    None,
 }
 
 /// Optional alternate representations for an accent.
@@ -59,7 +59,7 @@ pub(crate) struct AlternateNames {
     pub(crate) hebrew_concept: &'static str,
     /// Transliterated English name of the accent
     pub(crate) english_name: &'static str,
-    /// Transliterated according `SLB academic`` 
+    /// Transliterated according `SLB academic``
     pub(crate) sbl_academic: &'static str,
 }
 

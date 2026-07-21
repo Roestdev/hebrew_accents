@@ -1,7 +1,7 @@
 use crate::error::SentenceContextError;
 use crate::sentence;
-use crate::sentence::context::Context;
 use crate::sentence::detector::detect_context_from_sentence;
+use crate::sentence_api::context::Context;
 use sentence::validator::validate_sentence;
 
 /// Sentence including the context
@@ -332,7 +332,7 @@ mod tests {
 #[cfg(test)]
 mod try_determine_context1 {
     use super::*;
-    use crate::sentence::context::Context;
+    use crate::sentence_api::context::Context;
     // Helper eto create a SentenceContext instance for testing
     // We mock the accents by setting them directly or relying on a constructor that accepts them
     // Since the snippet doesn't show the constructor for accents, we assume `contains_accent`
