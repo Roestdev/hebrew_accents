@@ -55,26 +55,26 @@ if let Some(match_) = sentence_context.find_accent(ProseAccent::Atnach.into()) {
 }
 ```
 
-# Why This Crate?
+## Why This Crate?
 
 Hebrew accents in Masoretic texts are not always exactly the same as UTF-8 code points. The system is complex and nuanced:
 
   - Two different accent systems (Prose vs. Poetry) with overlapping but distinct sets
-  - Compound accents consisting of one or two UTF-8 code points
+  - Compound accents consisting of two UTF-8 code points
   - Different accent names can share the same symbol depending on context
   - Not all accents appear in both systems
   - Scholarly disagreement on classifications
 
 If you only need raw Unicode code points, see my other companion crate [`hebrew_unicode_script`](https://crates.io/crates/hebrew_unicode_script).
 
-# When to Use This Crate
+## When to Use This Crate
 
   - Explore detailed properties of each Masoretic accent (names, meanings, strengths, hierarchies)
   - Programmatically inspect Biblical texts for research or tooling
 
-# Core Concepts
+## Core Concepts
 
-## Accent Types
+### Accent Types
 
 ``` rust
 use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent};
@@ -89,7 +89,7 @@ let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
 let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
 ```
 
-## Context
+### Context
 
 Sentences have either Prosaic or Poetic context, which affects accent interpretation:
 ``` rust
@@ -99,7 +99,7 @@ let prose_context = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
 let poetry_context = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
 ```
 
-## Accent Metadata
+### Accent Metadata
 
 Each accent implements the Accent trait:
 ``` rust
@@ -114,9 +114,9 @@ println!("Is compound: {}", accent.is_compound());
 println!("Relative strength: {}", accent.relative_strength());
 ```
 
-# API Overview
+## API Overview
 
-## Detection
+### Detection
 
 ```rust
 // Check if an accent exists in a sentence
@@ -124,7 +124,7 @@ if sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Silluq)) {
     println!("Found Silluq!");
 }
 ```
-## Finding Positions
+### Finding Positions
 
 ```rust
 // Get byte offset of an accent
@@ -133,7 +133,7 @@ if let Some(m) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::A
 }
 ```
 
-## Context Detection
+### Context Detection
 
 ``` rust
 Automatically determine whether a sentence follows prose or poetry patterns:
@@ -144,7 +144,7 @@ match result {
     Err(e) => println!("Ambiguous or no distinctive accents: {}", e),
 }
 ```
-# Goals
+## Goals
 
 The main goal is to write a library that can be used to learn more about the Masoretic Hebrew accents as used in the Tanach
 
@@ -155,17 +155,17 @@ Sub-goals:
 - Gather simple statistics (counts, distribution, etc.)
 - Provide "accurate" metadata for scholarly research
 
-# Non-Goals
+## Non-Goals
   
   - Detect errors in accentuation rules
   - Determine accent type based solely on identified accents
   - Achieve absolute accuracy (scholarly disputes exist)
 
-# Known Limitations
+## Known Limitations
 
 Because some Hebrew accents appear in both prosaic and poetic systems, accurate classification depends on finding at least one uniquely identifying accent. If the sentence contains only shared accents or a mixture from both registers, definitive determination is not possible.
 
-# Project Status
+## Project Status
 
 <span style="color: #F39C12;">⚠️ Warning: This project is currently in design/development mode</span>
 
@@ -176,7 +176,7 @@ Expect breaking changes regularly until version 1.0.
 <span style="color: #2ECC71;">✅ Success: All tests passed</span>
 
 
-# UPCOMING! (Examples Directory)
+#### UPCOMING! (Examples Directory)
 
 See the examples/ directory for complete usage scenarios:
 
@@ -187,7 +187,7 @@ See the examples/ directory for complete usage scenarios:
 Run examples with:
 cargo run --example basic_detection
 
-# Contributing
+## Contributing
 
 Contributions welcome! Please read the Design and Background documents before submitting PRs.
 
@@ -215,29 +215,6 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
     Background & References
     Design Documents
 
-# Acknowledgments
+## Acknowledgments
 
 Special thanks to scholars of the Masoretic tradition whose work makes this library possible. Research methodology draws heavily from the Futato classification system and BHS (Biblia Hebraica Stuttgartensia) standards.
-
-# END OF NEW README
-# START OF OLD README
-
-
-### What is this crate?
-
-`hebrew_accents` provides a **Rust library for working with the Masoretic Hebrew cantillation CantillationSymbol** (the “accents” that appear in the Tanach). This crate abstracts the complexities of the Masoretic Hebrew cantillation CantillationSymbol (see the file [BACKGROUND](BACKGROUND) for more insight in the complexities) 
-
-### Why this crate?
- 
-The reason this library was created is because the Hebrew accents used in Masoretic texts **not** always exactly the same as UTF-8 code points. The system of accents employed is complex and nuanced, several factors contribute to the complexity of Hebrew accents in the Masoretic texts, including the following:
-
-- There are **two** different accent systems
-- Accents may consists of one or two UTF-8 code points
-- Different Hebrew accent names can use the same symbol
-- Not all accents are part of both accent systems
-- Disagreement among scholars
- 
-If you only need raw Unicode code points, see my other companion crate [`hebrew_unicode_script`](https://crates.io/crates/hebrew_unicode_script).
-
-
-# END OF README
