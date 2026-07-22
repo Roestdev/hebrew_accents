@@ -752,7 +752,7 @@ pub(crate) const TRADITION_NAMES_YERAH_BEN_YOMO: TraditionNames =
 // ============================================================================
 // OLE (U+05AB) - All identical
 // ============================================================================
-///pub(crate) const TRADITION_NAMES_OLE: TraditionNames = TraditionNames::uniform("עוֹלֶה","TODO", "oleh");
+// ///pub(crate) const TRADITION_NAMES_OLE: TraditionNames = TraditionNames::uniform("עוֹלֶה","TODO", "oleh");
 
 // ============================================================================
 // ILUY (U+05AC) - All identical

@@ -118,7 +118,8 @@
 
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
-#[cfg_attr(doctest, doc = include_str!("../README.md"))]
+#![cfg_attr(doctest, doc = include_str!("../README.md"))]
+#![doc = include_str!("../README.md")]
 
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod accent;
