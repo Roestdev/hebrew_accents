@@ -1,29 +1,21 @@
 
-<p align="center">
-  Hebrew accents
-</p>
+# Hebrew accents
 
-<p align="center">
-  <a href="https://docs.rs/hebrew_accents">
-    📚 Documentation
-  </a> |
-  <a href="https://github.com/Roestdev/hebrew_accents/">
-    🌐 Repository
-  </a> |
-  <a href="https://github.com/Roestdev/hebrew_accents/blob/main/BACKGROUND.md">
-    📖 Background & References
-  </a> |
-  <a href="https://github.com/Roestdev/hebrew_accents/blob/main/DESIGN.md">
-    🛠️ Design
-  </a>
-</p>
+A Rust library for working with Masoretic Hebrew cantillation marks (טעמים‎ / ta'amim) — the "accents" that appear in the Tanach (Biblical Hebrew texts). This crate abstracts the complexities of the Masoretic Hebrew accent system, providing tools to detect, identify, and analyze Hebrew accents programmatically.
 
 
-# hebrew_accents
+[📚 Documentation](https://docs.rs/hebrew_accents) |
+[🌐 Repository](https://github.com/Roestdev/hebrew_accents/) |
+[📖 Background & References](https://github.com/Roestdev/hebrew_accents/blob/main/BACKGROUND.md) |
+[🛠️ Design](https://github.com/Roestdev/hebrew_accents/blob/main/DESIGN.md)
 
-A Rust library for working with Masoretic Hebrew cantillation marks (טעמים‎ / ta'amim) — the "accents" that appear in the Tanach (Biblical Hebrew texts).
 
-This crate abstracts the complexities of the Masoretic Hebrew accent system, providing tools to detect, identify, and analyze Hebrew accents programmatically.
+[![Status](https://img.shields.io/badge/status-development-orange)]()
+[![License](https://img.shields.io/badge/license-Apache%202%20%7C%20MIT-blue)]
+[![Crates.io](https://img.shields.io/crates/v/hebrew_accents)](https://crates.io/crates/hebrew_accents)
+[![Docs.rs](https://docs.rs/hebrew_accents/badge.svg)](https://docs.rs/hebrew_accents)
+[![License](https://img.shields.io/crates/l/hebrew_accents)](LICENSE)
+[![Docs.rs](https://docs.rs/hebrew_accents/badge.svg)](https://docs.rs/hebrew_accents)
 
 ## Quick Start
 
@@ -40,7 +32,7 @@ hebrew_accents = "0.0.3"   # or a newer version
 use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent};
 
 // Create a sentence with context
-let sentence_context = SentenceContext::new(
+let sentence_context: Result<SentenceContext, SentenceContextError> = SentenceContext::new(
     "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
     Context::Prosaic
 )?;
@@ -49,6 +41,7 @@ let sentence_context = SentenceContext::new(
 assert!(sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 
 // Find accent positions
+// Note: you can also use .into() due to the implementation of the From trait.
 if let Some(match_) = sentence_context.find_accent(ProseAccent::Atnach.into()) {
     println!("Atnach found at bytes {}: {}", match_.start(), match_.end());
     println!("Text: {}", match_.as_str());
@@ -76,7 +69,7 @@ If you only need raw Unicode code points, see my other companion crate [`hebrew_
 
 ### Accent Types
 
-``` rust
+```rust
 use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent};
 
 // Prose accents (used in narrative texts like Genesis, Exodus)
@@ -92,17 +85,17 @@ let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
 ### Context
 
 Sentences have either Prosaic or Poetic context, which affects accent interpretation:
-``` rust
+```rust
 use hebrew_accents::{SentenceContext, Context};
 
-let prose_context = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
-let poetry_context = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
+let prose_context: Result<SentenceContext, SentenceContextError> = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
+let poetry_context:Result<SentenceContext, SentenceContextError>  = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
 ```
 
 ### Accent Metadata
 
 Each accent implements the Accent trait:
-``` rust
+```rust
 use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
 
 let accent = HebrewAccent::Prose(ProseAccent::Silluq);
@@ -135,8 +128,8 @@ if let Some(m) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::A
 
 ### Context Detection
 
-``` rust
-Automatically determine whether a sentence follows prose or poetry patterns:
+```rust
+// Automatically determine whether a sentence follows prose or poetry patterns:
 let result = sentence_context.try_determine_context();
 match result {
     Ok(Context::Poetic) => println!("Poetry detected!"),
@@ -167,25 +160,11 @@ Because some Hebrew accents appear in both prosaic and poetic systems, accurate 
 
 ## Project Status
 
-<span style="color: #F39C12;">⚠️ Warning: This project is currently in design/development mode</span>
-
-<span style="color: #E74C3C;">❌ DO NOT USE in production!</span>
-
-Expect breaking changes regularly until version 1.0.
-
-<span style="color: #2ECC71;">✅ Success: All tests passed</span>
-
-
-#### UPCOMING! (Examples Directory)
-
-See the examples/ directory for complete usage scenarios:
-
-    basic_detection.rs — Basic accent presence testing
-    position_finding.rs — Locating accent positions in text
-    context_analysis.rs — Prose vs. poetry detection
-
-Run examples with:
-cargo run --example basic_detection
+> ⚠️ **Warning:** This project is currently in design/development mode.
+>
+> ❌ **DO NOT USE in production!** Expect breaking changes until v1.0.
+>
+> ✅ **Tests passing.** CI integration coming soon.
 
 ## Contributing
 
@@ -208,13 +187,10 @@ at your option.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this crate by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any accent_meta_data terms or conditions.
 
-## Resources
-
-    Full Documentation
-    Repository
-    Background & References
-    Design Documents
-
 ## Acknowledgments
 
 Special thanks to scholars of the Masoretic tradition whose work makes this library possible. Research methodology draws heavily from the Futato classification system and BHS (Biblia Hebraica Stuttgartensia) standards.
+
+## Examples (Coming Soon)
+
+An `examples/` directory with runnable demos is planned but not yet available. Watch the [repository]() for updates.

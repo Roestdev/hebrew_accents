@@ -1,5 +1,4 @@
-/// The `Accent` trait and its implementations for all accent types
-pub mod accent_trait;
+
 
 /// Poetry accent enum definition
 pub mod poetry;
@@ -16,7 +15,6 @@ pub mod public_model;
 /// The `HebrewAccent` wrapper enum and its conversions
 pub mod wrapper;
 
-pub use accent_trait::Accent;
 pub use poetry::PoetryAccent;
 pub use prose::ProseAccent;
 pub use pseudo::PseudoAccent;

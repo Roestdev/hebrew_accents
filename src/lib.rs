@@ -121,11 +121,9 @@
 #![cfg_attr(doctest, doc = include_str!("../README.md"))]
 #![doc = include_str!("../README.md")]
 
-/// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod accent;
-/// TODO
+/// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 pub mod accent_api;
-/// TODO
 mod accent_data;
 mod codepoints;
 mod common;
@@ -133,18 +131,19 @@ mod error;
 mod formatting;
 mod hierarchy;
 mod sentence;
-mod sentence_api;
-mod utils;
+/// Public API for working with Hebrew sentences 
+pub mod sentence_api;
+/// Public API for the `Accent` trait
+pub mod trait_api;
 
 // Re-export commonly used items at crate root for ergonomic imports
 pub use error::SentenceContextError;
-
 pub use sentence_api::context::Context;
 // pub use sentence_api::detector::try_determine_context;
 pub use sentence_api::sentence_context::SentenceContext;
-pub use utils::matcher::Match;
+pub use crate::sentence_api::matcher::Match;
 
-pub use crate::accent_api::Accent;
+pub use crate::trait_api::Accent;
 pub use crate::accent_api::HebrewAccent;
 pub use crate::accent_api::PoetryAccent;
 pub use crate::accent_api::ProseAccent;
