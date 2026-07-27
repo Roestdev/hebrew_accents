@@ -1,5 +1,3 @@
-
-
 /// Poetry accent enum definition
 pub mod poetry;
 

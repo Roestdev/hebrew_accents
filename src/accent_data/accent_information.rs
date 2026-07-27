@@ -28,7 +28,7 @@ use crate::codepoints::{
     TRADITION_NAMES_ZAQEF_QATAN, TRADITION_NAMES_ZINOR,
 };
 pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Silluq",
+    sbl_simplified_name: "Silluq",
     hebrew_name: "סִלּוּק",
     hebrew_concept: "close,cessation",
     sbl_academic: "sillûq",
@@ -49,7 +49,7 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Atnach",
+    sbl_simplified_name: "Atnach",
     hebrew_name: "אַתְנַח",
     hebrew_concept: "a causing to rest",
     sbl_academic: "ʾatnaḥ",
@@ -67,7 +67,7 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Segolta",
+    sbl_simplified_name: "Segolta",
     hebrew_name: "סְגֹולְתָּא",
     hebrew_concept: "a little grape-bunch",
     sbl_academic: "səgôlətāʾ",
@@ -85,7 +85,7 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Shalshelet",
+    sbl_simplified_name: "Shalshelet",
     hebrew_name: "שַׁלְשֶׁלֶת",
     hebrew_concept: "chain or link",
     sbl_academic: "šalšelet",
@@ -103,7 +103,7 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Zaqeph Qaton",
+    sbl_simplified_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
     hebrew_concept: "small upright or small standing one",
     sbl_academic: "zāqēp qāṭôn",
@@ -112,7 +112,7 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Zaqeph Qatan",
+        sbl_simplified_name: "Zaqeph Qatan",
         hebrew_name: "זָקֵף קָטָן",
         hebrew_concept: "small upright or small standing one",
         sbl_academic: "zāqēp qāṭān",
@@ -126,7 +126,7 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Zaqeph Gadol",
+    sbl_simplified_name: "Zaqeph Gadol",
     hebrew_name: "זָקֵף גָּדוֹל",
     hebrew_concept: "large upright",
     sbl_academic: "zāqēp gādôl",
@@ -144,7 +144,7 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Revia",
+    sbl_simplified_name: "Revia",
     hebrew_name: "רְבִיעַ",
     hebrew_concept: "fourth [in a sequence]",
     sbl_academic: "rəbîaʿ",
@@ -162,7 +162,7 @@ pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tiphcha", // ADD TARCHA
+    sbl_simplified_name: "Tiphcha", // ADD TARCHA
     hebrew_name: "טִפְחָא",
     hebrew_concept: "handbreadth or diagonal",
     sbl_academic: "ṭipḥāʾ",
@@ -180,7 +180,7 @@ pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Zarqa",
+    sbl_simplified_name: "Zarqa",
     hebrew_name: "זַרְקָא",
     hebrew_concept: "to sprinklescatter",
     sbl_academic: "zarqāʾ",
@@ -198,7 +198,7 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Pashta",
+    sbl_simplified_name: "Pashta",
     hebrew_name: "פַּשְׁטָא",
     hebrew_concept: "extendingstretching out in length",
     sbl_academic: "pašṭāʾ",
@@ -216,7 +216,7 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Yetiv",
+    sbl_simplified_name: "Yetiv",
     hebrew_name: "יְתִיב",
     hebrew_concept: "resting or sitting",
     sbl_academic: "yətîb",
@@ -234,7 +234,7 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tevir",
+    sbl_simplified_name: "Tevir",
     hebrew_name: "תְּבִיר",
     hebrew_concept: "brokendownward tumble",
     sbl_academic: "təbîr",
@@ -252,7 +252,7 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Geresh",
+    sbl_simplified_name: "Geresh",
     hebrew_name: "גֵּרֵישׁ",
     hebrew_concept: "expulsiondriving outdivorce",
     sbl_academic: "gērêš",
@@ -261,7 +261,7 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Teres",
+        sbl_simplified_name: "Teres",
         hebrew_name: "טֶרֶס",
         hebrew_concept: "TODO",
         sbl_academic: "ṭeres",
@@ -275,7 +275,7 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Gershayim",
+    sbl_simplified_name: "Gershayim",
     hebrew_name: "גֵּרְשַׁיִם",
     hebrew_concept: "double of expulsiondriving outdivorce",
     sbl_academic: "gērəšayīm",
@@ -293,7 +293,7 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Pazer",
+    sbl_simplified_name: "Pazer",
     hebrew_name: "פָּזֶר",
     hebrew_concept: "lavish or scatter",
     sbl_academic: "pāzer",
@@ -302,7 +302,7 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Pazer Qatan",
+        sbl_simplified_name: "Pazer Qatan",
         hebrew_name: "פָּזֵר קָטָן",
         hebrew_concept: "small lavish or scatter",
         sbl_academic: "pāzēr qāṭān",
@@ -316,7 +316,7 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Pazer Gadol",
+    sbl_simplified_name: "Pazer Gadol",
     hebrew_name: "פָּזֶר גּדוֹל",
     hebrew_concept: "large lavish or scatter",
     sbl_academic: "pāzer gdôl",
@@ -325,7 +325,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Qarne Pharah",
+        sbl_simplified_name: "Qarne Pharah",
         hebrew_name: "קַרְנֵי פָרָה",
         hebrew_concept: "horns of a cow",
         sbl_academic: "qarnê pārâ",
@@ -339,7 +339,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Telisha Gedolah",
+    sbl_simplified_name: "Telisha Gedolah",
     hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
     hebrew_concept: "great (long) detached",
     sbl_academic: "təlîšāʾ gədôlâ",
@@ -357,7 +357,7 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Legarmeh",
+    sbl_simplified_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
     hebrew_concept: "for or by itselfindependent",
     sbl_academic: "ləgarmeh",
@@ -366,7 +366,7 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Munach Legarmeh",
+        sbl_simplified_name: "Munach Legarmeh",
         hebrew_name: "מוּנַח לְגַרְמֵ֣הּ",
         hebrew_concept: "TODO",
         sbl_academic: "mûnaḥ ləgarmēh",
@@ -380,7 +380,7 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
 };
 // Conjunctives
 pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Munach",
+    sbl_simplified_name: "Munach",
     hebrew_name: "מוּנַ֣ח",
     hebrew_concept: "resting or placed",
     sbl_academic: "mûnaḥ",
@@ -398,7 +398,7 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Mahpakh",
+    sbl_simplified_name: "Mahpakh",
     hebrew_name: "מַהְפַּךְ",
     hebrew_concept: "turning round",
     sbl_academic: "mahpak",
@@ -407,7 +407,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Mehuppakh",
+        sbl_simplified_name: "Mehuppakh",
         hebrew_name: "מְהֻפָּ֤ךְ",
         hebrew_concept: "reversed",
         sbl_academic: "məhuppāk",
@@ -421,7 +421,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Merkha",
+    sbl_simplified_name: "Merkha",
     hebrew_name: "מֵרְכָא",
     hebrew_concept: "lengthenerprolonging",
     sbl_academic: "mērəkāʾ",
@@ -439,7 +439,7 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Merkha Kephulah",
+    sbl_simplified_name: "Merkha Kephulah",
     hebrew_name: "מֵרְכָא כְּפוּלָה",
     hebrew_concept: "double lengthener",
     sbl_academic: "mērəkāʾ kəpûlâ",
@@ -457,7 +457,7 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Darga",
+    sbl_simplified_name: "Darga",
     hebrew_name: "דַּרְגָּא",
     hebrew_concept: "stairstep",
     sbl_academic: "dargāʾ",
@@ -475,7 +475,7 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Azla",
+    sbl_simplified_name: "Azla",
     hebrew_name: "אַזְלָא",
     hebrew_concept: "going on (not pausing)depart",
     sbl_academic: "ʾazlāʾ",
@@ -484,7 +484,7 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Qadma",
+        sbl_simplified_name: "Qadma",
         hebrew_name: "קַדְמָ֨א",
         hebrew_concept: "antiquity or a former state",
         sbl_academic: "qadmāʾ",
@@ -498,7 +498,7 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Telisha Qetannah",
+    sbl_simplified_name: "Telisha Qetannah",
     hebrew_name: "תְּלִישָא קְטַנָּה",
     hebrew_concept: "small (short) detached",
     sbl_academic: "təlîšāʾ qəṭannâ",
@@ -516,7 +516,7 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Galgal",
+    sbl_simplified_name: "Galgal",
     hebrew_name: "גַּלְגַּל",
     hebrew_concept: "wheelcircle",
     sbl_academic: "galgal",
@@ -525,7 +525,7 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Jerach Ben Jomo",
+        sbl_simplified_name: "Jerach Ben Jomo",
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         hebrew_concept: "moon one day old",
         sbl_academic: "yēreḥ ben yômô",
@@ -539,7 +539,7 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Meayla",
+    sbl_simplified_name: "Meayla",
     hebrew_name: "מְאַיְלָא",
     hebrew_concept: "upper, above, highe",
     sbl_academic: "məʾaylāʾ",
@@ -548,7 +548,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Mayla",
+        sbl_simplified_name: "Mayla",
         hebrew_name: "מַיְלָא",
         hebrew_concept: "that which is above or elevated position",
         sbl_academic: "maylāʾ",
@@ -567,7 +567,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     traditions: TRADITION_NAMES_TIPEHA,
 };
 pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Meteg",
+    sbl_simplified_name: "Meteg",
     hebrew_name: "מֶתֶג",
     hebrew_concept: "to bridle, check, control",
     sbl_academic: "meteg",
@@ -576,7 +576,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Gayah",
+        sbl_simplified_name: "Gayah",
         hebrew_name: "גַּעְיָה",
         hebrew_concept: "a lowing",
         sbl_academic: "gaʿyâ",
@@ -598,10 +598,10 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
 
 /*
 pub(crate) const SHENE_PASHTIN_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Legarmeh",
+    sbl_simplified_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
     hebrew_concept: "for or by itselfindependent",
-    sbl_academic: "TODO",
+        sbl_academic: "TODO",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_PASHTA,
         secondary_mark: Some(&CODEPOINT_QADMA),
@@ -632,19 +632,19 @@ Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
 
 // TODO compound accent Oleh Weyored
 pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Oleh Weyored",
+    sbl_simplified_name: "Oleh Weyored",
     hebrew_name: "עֹלֶה וְיֹרֵד",
     hebrew_concept: "ascending and descending",
-    sbl_academic: "ʿōleh wəyōrēd",
+        sbl_academic: "ʿōleh wəyōrēd",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_OLE,
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Oleh",
+        sbl_simplified_name: "Oleh",
         hebrew_name: "עֹלֶה",
         hebrew_concept: "that which goes up or that which is brought up",
-        sbl_academic: "ʿōleh",
+            sbl_academic: "ʿōleh",
     }),
  max_word_span: Some(MaxWordSpan::TwoWords),
     notes: Some("The primary_mark CodePoint is Mehuppakhbut located above the consonant. It is then called OLE."),
@@ -657,7 +657,7 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
 // ATNACH see PROSE section above
 
 pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Revia Gadol",
+    sbl_simplified_name: "Revia Gadol",
     hebrew_name: "רְבִיעַ גָּדוֹל",
     hebrew_concept: "big fourth",
     sbl_academic: "rəbîaʿ gādôl",
@@ -675,7 +675,7 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Revia Mugrash",
+    sbl_simplified_name: "Revia Mugrash",
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
     hebrew_concept: "exiled fourth",
     sbl_academic: "rəbîaʿ mugrāš",
@@ -694,7 +694,7 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
 
 // TODO compound accent Revia Shalshelet Gadol
 pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Shalshelet Gadol",
+    sbl_simplified_name: "Shalshelet Gadol",
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
     hebrew_concept: "large chain or link",
     sbl_academic: "šalšelet gādôl",
@@ -712,7 +712,7 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tsinnor",
+    sbl_simplified_name: "Tsinnor",
     hebrew_name: "צִנּוֹר",
     hebrew_concept: "pipe or tube",
     sbl_academic: "ṣinnôr",
@@ -721,7 +721,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Zarqa",
+        sbl_simplified_name: "Zarqa",
         hebrew_name: "זַרְקָא",
         hebrew_concept: "to sprinklescatter",
         sbl_academic: "zarqāʾ",
@@ -735,7 +735,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Revia Qaton",
+    sbl_simplified_name: "Revia Qaton",
     hebrew_name: "רְבִיעַ קָטוֹן",
     hebrew_concept: "small fourth",
     sbl_academic: "rəbîaʿ qāṭôn",
@@ -753,7 +753,7 @@ pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Dechi",
+    sbl_simplified_name: "Dechi",
     hebrew_name: "דֶּחִי",
     hebrew_concept: "to push or drive away",
     sbl_academic: "deḥî",
@@ -762,7 +762,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Tiphcha",
+        sbl_simplified_name: "Tiphcha",
         hebrew_name: "טִפְחָא",
         hebrew_concept: "handbreadth or diagonal",
         sbl_academic: "ṭipḥāʾ",
@@ -779,7 +779,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
 
 // TODO compouns accent Mehuppakh Legarmeh
 pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Mehuppakh Legarmeh",
+    sbl_simplified_name: "Mehuppakh Legarmeh",
     hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
     hebrew_concept: "reversed to its own",
     sbl_academic: "məhuppāk ləgarmēh",
@@ -806,7 +806,7 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
 
 // TODO compound accent Azla Legarmeh
 pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Azla Legarmeh",
+    sbl_simplified_name: "Azla Legarmeh",
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
     hebrew_concept: "goes to its own",
     sbl_academic: "ʾazlāʾ ləgarmēh",
@@ -828,7 +828,7 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
 // MERCHA see PROSE section above
 
 pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Illuy",
+    sbl_simplified_name: "Illuy",
     hebrew_name: "עִלּוּי",
     hebrew_concept: "elevation or raising",
     sbl_academic: "ʿillûy",
@@ -846,7 +846,7 @@ pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tarcha",
+    sbl_simplified_name: "Tarcha",
     hebrew_name: "טַרְחָא",
     hebrew_concept: "troubledifficultyhardshiptoil",
     sbl_academic: "ṭarḥāʾ",
@@ -866,7 +866,7 @@ pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
 // GALGAL see PROSE section above
 
 pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Mehuppakh",
+    sbl_simplified_name: "Mehuppakh",
     hebrew_name: "מְהֻפָּ֤ךְ",
     hebrew_concept: "reversed",
     sbl_academic: "məhuppāk",
@@ -875,7 +875,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(AlternateNames {
-        english_name: "Mahpakh",
+        sbl_simplified_name: "Mahpakh",
         hebrew_name: "מַהְפַּךְ",
         hebrew_concept: "turning round",
         sbl_academic: "mahpak",
@@ -891,7 +891,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
 // AZLA see PROSE section above
 
 pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Shalshelet Qetannah",
+    sbl_simplified_name: "Shalshelet Qetannah",
     hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
     hebrew_concept: "small chain",
     sbl_academic: "šalšelet qəṭannâ",
@@ -910,7 +910,7 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
 
 // TODO compound accent Tsinnorit Merkha
 pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tsinnorit Merkha",
+    sbl_simplified_name: "Tsinnorit Merkha",
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
     hebrew_concept: "pipe of continuation",
     sbl_academic: "ṣinnôrīt mērəkāʾ",
@@ -930,7 +930,7 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
 // TODO compound accent Tsinnorit Mahpakh
 
 pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tsinnorit Mahpakh",
+    sbl_simplified_name: "Tsinnorit Mahpakh",
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
     hebrew_concept: "pipe of reversal",
     sbl_academic: "ṣinnôrīt mahpak",
@@ -951,7 +951,7 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
  *                      PSEUDO ACCENT
  *******************************************************/
 pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Soph Pasuq",
+    sbl_simplified_name: "Soph Pasuq",
     hebrew_name: "סוֹף פָּסוּק",
     hebrew_concept: "end of verse",
     sbl_academic: "sôp pāsûq",
@@ -971,10 +971,10 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const MAQQEPH_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Maqqeph",
+    sbl_simplified_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
     hebrew_concept:"binder",
-    sbl_academic: "maqqēp",
+        sbl_academic: "maqqēp",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_MAQAF,
         secondary_mark: None,
@@ -989,7 +989,7 @@ pub(crate) const MAQQEPH_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Paseq",
+    sbl_simplified_name: "Paseq",
     hebrew_name: "פָּסֵק",
     hebrew_concept: "to pause,to stop or to interrupt",
     sbl_academic: "pāsēq",

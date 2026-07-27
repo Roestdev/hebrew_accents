@@ -417,3 +417,189 @@ pub(crate) const CODEPOINT_SOPH_PASUQ: Utf8CodePoint = utf8_cp_constructor(
     "׃",
     CodePointPosition::InBetween,
 );
+
+#[cfg(test)]
+mod tests {
+
+    // ── AccentName Construction ───────────────────────────────────────
+
+    use crate::codepoints::traditions::AccentName;
+
+    #[test]
+    fn accent_name_constructed_with_all_fields() {
+        let name = AccentName {
+            hebrew_name: "טַעֲמָא",
+            sbl_academic: "ṭaʿămā",
+            sbl_simplified_name: "Taama",
+        };
+
+        assert_eq!(name.hebrew_name, "טַעֲמָא");
+        assert_eq!(name.sbl_academic, "ṭaʿămā");
+        assert_eq!(name.sbl_simplified_name, "Taama");
+    }
+
+    #[test]
+    fn accent_name_fields_are_static_str() {
+        let name = AccentName {
+            hebrew_name: "דְּגֵשָׁה",
+            sbl_academic: "dᵊgēšāh",
+            sbl_simplified_name: "Dagesh",
+        };
+
+        // Ensure &'static str fields can be used in const contexts
+        assert_eq!(name.hebrew_name, "דְּגֵשָׁה");
+    }
+
+    // ── AccentName Trait Tests ───────────────────────────────────────
+
+    #[test]
+    fn accent_name_eq_reflexive() {
+        let name = AccentName {
+            hebrew_name: "פִּסִּיק",
+            sbl_academic: "pissiq",
+            sbl_simplified_name: "Paseq",
+        };
+        assert_eq!(name, name);
+    }
+
+    #[test]
+    fn accent_name_eq_symmetric() {
+        let a = AccentName {
+            hebrew_name: "מַקֵּף",
+            sbl_academic: "maqqep̄",
+            sbl_simplified_name: "Maqqeph",
+        };
+        let b = a.clone();
+        assert_eq!(a, b);
+        assert_eq!(b, a);
+    }
+
+    #[test]
+    fn accent_name_eq_when_all_fields_match() {
+        let a = AccentName {
+            hebrew_name: "סוֹף פָּסוּק",
+            sbl_academic: "sop̄ pāsûq",
+            sbl_simplified_name: "Soph Pasuq",
+        };
+        let b = AccentName {
+            hebrew_name: "סוֹף פָּסוּק",
+            sbl_academic: "sop̄ pāsûq",
+            sbl_simplified_name: "Soph Pasuq",
+        };
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn accent_name_ne_when_hebrew_differs() {
+        let a = AccentName {
+            hebrew_name: "אֶתְנַחְתָּא",
+            sbl_academic: "ʾetnaḥtā",
+            sbl_simplified_name: "Atnach",
+        };
+        let b = AccentName {
+            hebrew_name: "זָקֵף",
+            sbl_academic: "ʾetnaḥtā",
+            sbl_simplified_name: "Atnach",
+        };
+        assert_ne!(a, b);
+    }
+
+    #[test]
+    fn accent_name_ne_when_sbl_differs() {
+        let a = AccentName {
+            hebrew_name: "טֶרֶשׁ",
+            sbl_academic: "ṭereš",
+            sbl_simplified_name: "Teres",
+        };
+        let b = AccentName {
+            hebrew_name: "טֶרֶשׁ",
+            sbl_academic: "ṭeres",
+            sbl_simplified_name: "Teres",
+        };
+        assert_ne!(a, b);
+    }
+
+    #[test]
+    fn accent_name_ne_when_english_differs() {
+        let a = AccentName {
+            hebrew_name: "טֶרֶשׁ",
+            sbl_academic: "ṭereš",
+            sbl_simplified_name: "Teres",
+        };
+        let b = AccentName {
+            hebrew_name: "טֶרֶשׁ",
+            sbl_academic: "ṭereš",
+            sbl_simplified_name: "Teres Variant",
+        };
+        assert_ne!(a, b);
+    }
+
+    #[test]
+    fn accent_name_copy_preserves_original() {
+        let original = AccentName {
+            hebrew_name: "שַׁלְשֶׁלֶת",
+            sbl_academic: "šalšelet",
+            sbl_simplified_name: "Shalshelet",
+        };
+        let copied = original;
+
+        assert_eq!(original.hebrew_name, "שַׁלְשֶׁלֶת");
+        assert_eq!(copied.hebrew_name, "שַׁלְשֶׁלֶת");
+        assert_eq!(original, copied);
+    }
+
+    #[test]
+    fn accent_name_clone_produces_equal() {
+        let original = AccentName {
+            hebrew_name: "מֻנַּח",
+            sbl_academic: "munnaḥ",
+            sbl_simplified_name: "Munach",
+        };
+        let cloned = original.clone();
+
+        assert_eq!(cloned, original);
+    }
+
+    #[test]
+    fn accent_name_debug_output_contains_fields() {
+        let name = AccentName {
+            hebrew_name: "זִקְרָא",
+            sbl_academic: "ziqrā",
+            sbl_simplified_name: "Zikra",
+        };
+
+        let debug = format!("{:?}", name);
+        assert!(debug.contains("זִקְרָא"));
+        assert!(debug.contains("ziqrā"));
+        assert!(debug.contains("Zikra"));
+        assert!(debug.contains("AccentName"));
+    }
+
+    #[test]
+    fn accent_name_hashable() {
+        use std::collections::HashSet;
+
+        let name1 = AccentName {
+            hebrew_name: "רְבִיעַ",
+            sbl_academic: "rᵊbîaʿ",
+            sbl_simplified_name: "Revia",
+        };
+        let name2 = AccentName {
+            hebrew_name: "רְבִיעַ",
+            sbl_academic: "rᵊbîaʿ",
+            sbl_simplified_name: "Revia",
+        };
+        let name3 = AccentName {
+            hebrew_name: "פָּסְתָּא",
+            sbl_academic: "pāstā",
+            sbl_simplified_name: "Pashta",
+        };
+
+        let mut set = HashSet::new();
+        set.insert(name1);
+        set.insert(name2);
+        set.insert(name3);
+
+        assert_eq!(set.len(), 2, "Equal names should deduplicate")
+    }
+}

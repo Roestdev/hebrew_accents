@@ -19,8 +19,8 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::Context;
-use crate::SentenceContext;
 use crate::Match;
+use crate::SentenceContext;
 pub(crate) const ACCENT_LEN_UTF8: usize = 2;
 
 impl<'a> SentenceContext {

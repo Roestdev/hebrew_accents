@@ -92,7 +92,7 @@
 //!
 //!  - hebrew_name          (the Hebrew name)
 //!  - meaning              (the meaning of the Hebrew name)
-//!  - english_name         (the English name, a transliteration of the Hebrew)
+//!  - sbl_simplified_name         (the English name, a transliteration of the Hebrew)
 //!  - Number of UTF-8 code_points    (1 or 2)
 //!  - relative_strength    (lowest number has relative more weight)
 //!  - count                (the number of all accents in a specific category)
@@ -131,7 +131,7 @@ mod error;
 mod formatting;
 mod hierarchy;
 mod sentence;
-/// Public API for working with Hebrew sentences 
+/// Public API for working with Hebrew sentences
 pub mod sentence_api;
 /// Public API for the `Accent` trait
 pub mod trait_api;
@@ -140,10 +140,11 @@ pub mod trait_api;
 pub use error::SentenceContextError;
 pub use sentence_api::context::Context;
 // pub use sentence_api::detector::try_determine_context;
-pub use sentence_api::sentence_context::SentenceContext;
 pub use crate::sentence_api::matcher::Match;
+pub use sentence_api::sentence_context::SentenceContext;
 
 pub use crate::trait_api::Accent;
+
 pub use crate::accent_api::HebrewAccent;
 pub use crate::accent_api::PoetryAccent;
 pub use crate::accent_api::ProseAccent;

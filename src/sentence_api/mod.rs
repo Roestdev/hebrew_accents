@@ -1,5 +1,5 @@
-/// The `Accent` trait and its implementations for all accent types 
-/// 
+/// The `Accent` trait and its implementations for all accent types
+///
 pub mod contains;
 /// todo
 pub mod context;
