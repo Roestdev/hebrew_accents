@@ -15,14 +15,12 @@ pub trait Accent: Copy + Sized {
     fn hebrew_name(self) -> &'static str;
     /// Semantic meaning of the Hebrew name
     fn hebrew_concept(self) -> &'static str;
-    /// BLS Simplified name: Beginners, casual learners
-    ///  (see: https://hebrewtransliteration.app/)
     /// English transliteration of the accent name
-    fn sbl_simplified_name(self) -> &'static str;
+    fn english_name(self) -> &'static str;
     /// BLS Academic name
     /// University settings, linguists
     /// Detailed distinction between sounds, marks dagesh
-    ///  (see: https://hebrewtransliteration.app/)
+    /// (source: <https://hebrewtransliteration.app/>)
     fn sbl_academic_name(self) -> &'static str;
     /// Accent kind (primary, secondary), if applicable
     fn kind(self) -> Option<AccentKind>;
@@ -64,11 +62,11 @@ impl Accent for HebrewAccent {
         }
     }
 
-    fn sbl_simplified_name(self) -> &'static str {
+    fn english_name(self) -> &'static str {
         match self {
-            HebrewAccent::Prose(p) => p.sbl_simplified_name(),
-            HebrewAccent::Poetry(p) => p.sbl_simplified_name(),
-            HebrewAccent::Pseudo(p) => p.sbl_simplified_name(),
+            HebrewAccent::Prose(p) => p.english_name(),
+            HebrewAccent::Poetry(p) => p.english_name(),
+            HebrewAccent::Pseudo(p) => p.english_name(),
         }
     }
 
@@ -167,10 +165,10 @@ impl Accent for ProseAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn sbl_simplified_name(self) -> &'static str {
+    fn english_name(self) -> &'static str {
         PROSE_ACCENT_TABLE
             .get(self as usize)
-            .map_or("UNKNOWN", |x| x.sbl_simplified_name)
+            .map_or("UNKNOWN", |x| x.english_name)
     }
     #[inline]
     fn sbl_academic_name(self) -> &'static str {
@@ -241,11 +239,7 @@ impl Accent for ProseAccent {
     #[inline]
     fn relative_strength(self) -> Option<u8> {
         let val = BHS_PROSE_RANK_MAP[self as usize];
-        if val == 255 {
-            None
-        } else {
-            Some(val)
-        }
+        Some(val)
     }
     #[inline]
     fn group_level(self) -> Option<GroupLevel> {
@@ -267,10 +261,10 @@ impl Accent for PoetryAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn sbl_simplified_name(self) -> &'static str {
+    fn english_name(self) -> &'static str {
         POETRY_ACCENT_TABLE
             .get(self as usize)
-            .map_or("UNKNOWN", |x| x.sbl_simplified_name)
+            .map_or("UNKNOWN", |x| x.english_name)
     }
     #[inline]
     fn sbl_academic_name(self) -> &'static str {
@@ -342,11 +336,7 @@ impl Accent for PoetryAccent {
     #[inline]
     fn relative_strength(self) -> Option<u8> {
         let val = BHS_POETRY_RANK_MAP[self as usize];
-        if val == 255 {
-            None
-        } else {
-            Some(val)
-        }
+        Some(val)
     }
     #[inline]
     fn group_level(self) -> Option<GroupLevel> {
@@ -368,10 +358,10 @@ impl Accent for PseudoAccent {
             .map_or("UNKNOWN", |x| x.hebrew_concept)
     }
     #[inline]
-    fn sbl_simplified_name(self) -> &'static str {
+    fn english_name(self) -> &'static str {
         PSEUDO_ACCENT_TABLE
             .get(self as usize)
-            .map_or("UNKNOWN", |x| x.sbl_simplified_name)
+            .map_or("UNKNOWN", |x| x.english_name)
     }
     #[inline]
     fn sbl_academic_name(self) -> &'static str {
@@ -459,7 +449,7 @@ mod tests {
 
     macro_rules! assert_valid_names {
         ($accent:expr, $name:expr) => {
-            let english = $accent.sbl_simplified_name();
+            let english = $accent.english_name();
             let hebrew = $accent.hebrew_name();
             let concept = $accent.hebrew_concept();
 
@@ -499,10 +489,10 @@ mod tests {
     }
 
     #[test]
-    fn prose_sbl_simplified_names_are_distinct() {
-        let silluq = ProseAccent::Silluq.sbl_simplified_name();
-        let munach = ProseAccent::Munach.sbl_simplified_name();
-        let atnach = ProseAccent::Atnach.sbl_simplified_name();
+    fn prose_english_names_are_distinct() {
+        let silluq = ProseAccent::Silluq.english_name();
+        let munach = ProseAccent::Munach.english_name();
+        let atnach = ProseAccent::Atnach.english_name();
 
         assert_ne!(silluq, munach);
         assert_ne!(munach, atnach);
@@ -661,10 +651,10 @@ mod tests {
     }
 
     #[test]
-    fn poetry_sbl_simplified_names_are_distinct() {
-        let silluq = PoetryAccent::Silluq.sbl_simplified_name();
-        let atnach = PoetryAccent::Atnach.sbl_simplified_name();
-        let munach = PoetryAccent::Munach.sbl_simplified_name();
+    fn poetry_english_names_are_distinct() {
+        let silluq = PoetryAccent::Silluq.english_name();
+        let atnach = PoetryAccent::Atnach.english_name();
+        let munach = PoetryAccent::Munach.english_name();
 
         assert_ne!(silluq, atnach);
         assert_ne!(atnach, munach);
@@ -793,10 +783,10 @@ mod tests {
     }
 
     #[test]
-    fn pseudo_sbl_simplified_names_are_distinct() {
-        let soph = PseudoAccent::SophPasuq.sbl_simplified_name();
-        let maqqeph = PseudoAccent::Maqqeph.sbl_simplified_name();
-        let paseq = PseudoAccent::Paseq.sbl_simplified_name();
+    fn pseudo_english_names_are_distinct() {
+        let soph = PseudoAccent::SophPasuq.english_name();
+        let maqqeph = PseudoAccent::Maqqeph.english_name();
+        let paseq = PseudoAccent::Paseq.english_name();
 
         assert_ne!(soph, maqqeph);
         assert_ne!(maqqeph, paseq);
@@ -905,7 +895,7 @@ mod tests {
         let prose = ProseAccent::Silluq;
         let accent = HebrewAccent::Prose(prose);
 
-        assert_eq!(accent.sbl_simplified_name(), prose.sbl_simplified_name());
+        assert_eq!(accent.english_name(), prose.english_name());
         assert_eq!(accent.hebrew_name(), prose.hebrew_name());
         assert_eq!(accent.hebrew_concept(), prose.hebrew_concept());
     }
@@ -915,7 +905,7 @@ mod tests {
         let poetry = PoetryAccent::Atnach;
         let accent = HebrewAccent::Poetry(poetry);
 
-        assert_eq!(accent.sbl_simplified_name(), poetry.sbl_simplified_name());
+        assert_eq!(accent.english_name(), poetry.english_name());
         assert_eq!(accent.hebrew_name(), poetry.hebrew_name());
         assert_eq!(accent.hebrew_concept(), poetry.hebrew_concept());
     }
@@ -925,7 +915,7 @@ mod tests {
         let pseudo = PseudoAccent::SophPasuq;
         let accent = HebrewAccent::Pseudo(pseudo);
 
-        assert_eq!(accent.sbl_simplified_name(), pseudo.sbl_simplified_name());
+        assert_eq!(accent.english_name(), pseudo.english_name());
         assert_eq!(accent.hebrew_name(), pseudo.hebrew_name());
         assert_eq!(accent.hebrew_concept(), pseudo.hebrew_concept());
     }
@@ -1102,7 +1092,7 @@ mod tests {
         // Verify no panics across all Prose variants
         for v in 0..ProseAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-            let _ = accent.sbl_simplified_name();
+            let _ = accent.english_name();
             let _ = accent.hebrew_name();
             let _ = accent.hebrew_concept();
             let _ = accent.kind();
@@ -1121,7 +1111,7 @@ mod tests {
     fn accent_methods_dont_panic_on_poetry_variants() {
         for v in 0..PoetryAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let _ = accent.sbl_simplified_name();
+            let _ = accent.english_name();
             let _ = accent.hebrew_name();
             let _ = accent.hebrew_concept();
             let _ = accent.kind();
@@ -1140,7 +1130,7 @@ mod tests {
     fn accent_methods_dont_panic_on_pseudo_variants() {
         for v in 0..PseudoAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, PseudoAccent>(v) };
-            let _ = accent.sbl_simplified_name();
+            let _ = accent.english_name();
             let _ = accent.hebrew_name();
             let _ = accent.hebrew_concept();
             let _ = accent.kind();
@@ -1171,21 +1161,21 @@ mod tests {
     fn prose_accent_converts_to_hebrew_accent_via_into() {
         let prose = ProseAccent::Silluq;
         let hebrew: HebrewAccent = prose.into();
-        assert_eq!(hebrew.sbl_simplified_name(), prose.sbl_simplified_name());
+        assert_eq!(hebrew.english_name(), prose.english_name());
     }
 
     #[test]
     fn poetry_accent_converts_to_hebrew_accent_via_into() {
         let poetry = PoetryAccent::Atnach;
         let hebrew: HebrewAccent = poetry.into();
-        assert_eq!(hebrew.sbl_simplified_name(), poetry.sbl_simplified_name());
+        assert_eq!(hebrew.english_name(), poetry.english_name());
     }
 
     #[test]
     fn pseudo_accent_converts_to_hebrew_accent_via_into() {
         let pseudo = PseudoAccent::SophPasuq;
         let hebrew: HebrewAccent = pseudo.into();
-        assert_eq!(hebrew.sbl_simplified_name(), pseudo.sbl_simplified_name());
+        assert_eq!(hebrew.english_name(), pseudo.english_name());
     }
 
     // ── Compound accent tests (accents with secondary marks) ───────
@@ -1383,19 +1373,10 @@ mod tests {
         let poetry = HebrewAccent::Poetry(PoetryAccent::Munach);
         let pseudo = HebrewAccent::Pseudo(PseudoAccent::Paseq);
 
-        // sbl_simplified_name
-        assert_eq!(
-            prose.sbl_simplified_name(),
-            ProseAccent::Atnach.sbl_simplified_name()
-        );
-        assert_eq!(
-            poetry.sbl_simplified_name(),
-            PoetryAccent::Munach.sbl_simplified_name()
-        );
-        assert_eq!(
-            pseudo.sbl_simplified_name(),
-            PseudoAccent::Paseq.sbl_simplified_name()
-        );
+        // english_name
+        assert_eq!(prose.english_name(), ProseAccent::Atnach.english_name());
+        assert_eq!(poetry.english_name(), PoetryAccent::Munach.english_name());
+        assert_eq!(pseudo.english_name(), PseudoAccent::Paseq.english_name());
 
         // hebrew_name
         assert_eq!(prose.hebrew_name(), ProseAccent::Atnach.hebrew_name());
@@ -1497,8 +1478,8 @@ mod tests {
 
         // Same English name is expected (both are "Silluq")
         assert_eq!(
-            ProseAccent::Silluq.sbl_simplified_name(),
-            PoetryAccent::Silluq.sbl_simplified_name(),
+            ProseAccent::Silluq.english_name(),
+            PoetryAccent::Silluq.english_name(),
             "Shared accents should have same English name"
         );
 
@@ -1520,8 +1501,8 @@ mod tests {
         ];
 
         for (name, prose, poetry) in shared.iter() {
-            assert_eq!(prose.sbl_simplified_name(), *name);
-            assert_eq!(poetry.sbl_simplified_name(), *name);
+            assert_eq!(prose.english_name(), *name);
+            assert_eq!(poetry.english_name(), *name);
         }
     }
 
@@ -1602,13 +1583,13 @@ mod tests {
     // ── Exhaustive trait method coverage for all variants ───────────
 
     #[test]
-    fn prose_all_variants_sbl_simplified_name_not_unknown() {
+    fn prose_all_variants_english_name_not_unknown() {
         for v in 0..ProseAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
             assert_ne!(
-                accent.sbl_simplified_name(),
+                accent.english_name(),
                 "UNKNOWN",
-                "ProseAccent variant {} has UNKNOWN sbl_simplified_name",
+                "ProseAccent variant {} has UNKNOWN english_name",
                 v
             );
             assert_ne!(
@@ -1627,13 +1608,13 @@ mod tests {
     }
 
     #[test]
-    fn poetry_all_variants_sbl_simplified_name_not_unknown() {
+    fn poetry_all_variants_english_name_not_unknown() {
         for v in 0..PoetryAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
             assert_ne!(
-                accent.sbl_simplified_name(),
+                accent.english_name(),
                 "UNKNOWN",
-                "PoetryAccent variant {} has UNKNOWN sbl_simplified_name",
+                "PoetryAccent variant {} has UNKNOWN english_name",
                 v
             );
             assert_ne!(
@@ -1652,13 +1633,13 @@ mod tests {
     }
 
     #[test]
-    fn pseudo_all_variants_sbl_simplified_name_not_unknown() {
+    fn pseudo_all_variants_english_name_not_unknown() {
         for v in 0..PseudoAccent::LEN as u8 {
             let accent = unsafe { std::mem::transmute::<u8, PseudoAccent>(v) };
             assert_ne!(
-                accent.sbl_simplified_name(),
+                accent.english_name(),
                 "UNKNOWN",
-                "PseudoAccent variant {} has UNKNOWN sbl_simplified_name",
+                "PseudoAccent variant {} has UNKNOWN english_name",
                 v
             );
             assert_ne!(
@@ -1740,11 +1721,11 @@ mod tests {
     }
 
     #[test]
-    fn prose_all_variants_distinct_sbl_simplified_names() {
+    fn prose_all_variants_distinct_english_names() {
         let names: Vec<&str> = (0..ProseAccent::LEN as u8)
             .map(|v| {
                 let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-                accent.sbl_simplified_name()
+                accent.english_name()
             })
             .collect();
         let unique: std::collections::HashSet<&str> = names.iter().copied().collect();
@@ -1756,11 +1737,11 @@ mod tests {
     }
 
     #[test]
-    fn poetry_all_variants_distinct_sbl_simplified_names() {
+    fn poetry_all_variants_distinct_english_names() {
         let names: Vec<&str> = (0..PoetryAccent::LEN as u8)
             .map(|v| {
                 let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-                accent.sbl_simplified_name()
+                accent.english_name()
             })
             .collect();
         let unique: std::collections::HashSet<&str> = names.iter().copied().collect();
@@ -1772,11 +1753,11 @@ mod tests {
     }
 
     #[test]
-    fn pseudo_all_variants_distinct_sbl_simplified_names() {
+    fn pseudo_all_variants_distinct_english_names() {
         let names: Vec<&str> = (0..PseudoAccent::LEN as u8)
             .map(|v| {
                 let accent = unsafe { std::mem::transmute::<u8, PseudoAccent>(v) };
-                accent.sbl_simplified_name()
+                accent.english_name()
             })
             .collect();
         let unique: std::collections::HashSet<&str> = names.iter().copied().collect();
@@ -1794,7 +1775,7 @@ mod tests {
         for v in 0..ProseAccent::LEN as u8 {
             let prose = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
             let wrapped = HebrewAccent::Prose(prose);
-            assert_eq!(wrapped.sbl_simplified_name(), prose.sbl_simplified_name());
+            assert_eq!(wrapped.english_name(), prose.english_name());
             assert_eq!(wrapped.hebrew_name(), prose.hebrew_name());
             assert_eq!(wrapped.hebrew_concept(), prose.hebrew_concept());
             assert_eq!(wrapped.kind(), prose.kind());
@@ -1817,7 +1798,7 @@ mod tests {
         for v in 0..PoetryAccent::LEN as u8 {
             let poetry = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
             let wrapped = HebrewAccent::Poetry(poetry);
-            assert_eq!(wrapped.sbl_simplified_name(), poetry.sbl_simplified_name());
+            assert_eq!(wrapped.english_name(), poetry.english_name());
             assert_eq!(wrapped.hebrew_name(), poetry.hebrew_name());
             assert_eq!(wrapped.hebrew_concept(), poetry.hebrew_concept());
             assert_eq!(wrapped.kind(), poetry.kind());
@@ -1840,7 +1821,7 @@ mod tests {
         for v in 0..PseudoAccent::LEN as u8 {
             let pseudo = unsafe { std::mem::transmute::<u8, PseudoAccent>(v) };
             let wrapped = HebrewAccent::Pseudo(pseudo);
-            assert_eq!(wrapped.sbl_simplified_name(), pseudo.sbl_simplified_name());
+            assert_eq!(wrapped.english_name(), pseudo.english_name());
             assert_eq!(wrapped.hebrew_name(), pseudo.hebrew_name());
             assert_eq!(wrapped.hebrew_concept(), pseudo.hebrew_concept());
             assert_eq!(wrapped.kind(), pseudo.kind());

@@ -1,7 +1,7 @@
 use crate::Accent;
 use crate::{codepoints::CodePointPosition, HebrewAccent};
 
-/// Hebrew Accent kind — (absence is expressed via Option<T>)
+/// Hebrew Accent kind — (absence is expressed via `Option<T>`)
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum AccentKind {
     #[default]
@@ -11,7 +11,7 @@ pub enum AccentKind {
     Secondary,
 }
 
-/// Hebrew Accent category — (absence is expressed via Option<T>)
+/// Hebrew Accent category — (absence is expressed via `Option<T>`)
 ///
 /// # Examples
 ///

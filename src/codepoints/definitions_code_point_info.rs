@@ -430,12 +430,12 @@ mod tests {
         let name = AccentName {
             hebrew_name: "טַעֲמָא",
             sbl_academic: "ṭaʿămā",
-            sbl_simplified_name: "Taama",
+            english_name: "Taama",
         };
 
         assert_eq!(name.hebrew_name, "טַעֲמָא");
         assert_eq!(name.sbl_academic, "ṭaʿămā");
-        assert_eq!(name.sbl_simplified_name, "Taama");
+        assert_eq!(name.english_name, "Taama");
     }
 
     #[test]
@@ -443,7 +443,7 @@ mod tests {
         let name = AccentName {
             hebrew_name: "דְּגֵשָׁה",
             sbl_academic: "dᵊgēšāh",
-            sbl_simplified_name: "Dagesh",
+            english_name: "Dagesh",
         };
 
         // Ensure &'static str fields can be used in const contexts
@@ -457,7 +457,7 @@ mod tests {
         let name = AccentName {
             hebrew_name: "פִּסִּיק",
             sbl_academic: "pissiq",
-            sbl_simplified_name: "Paseq",
+            english_name: "Paseq",
         };
         assert_eq!(name, name);
     }
@@ -467,7 +467,7 @@ mod tests {
         let a = AccentName {
             hebrew_name: "מַקֵּף",
             sbl_academic: "maqqep̄",
-            sbl_simplified_name: "Maqqeph",
+            english_name: "Maqqeph",
         };
         let b = a.clone();
         assert_eq!(a, b);
@@ -479,12 +479,12 @@ mod tests {
         let a = AccentName {
             hebrew_name: "סוֹף פָּסוּק",
             sbl_academic: "sop̄ pāsûq",
-            sbl_simplified_name: "Soph Pasuq",
+            english_name: "Soph Pasuq",
         };
         let b = AccentName {
             hebrew_name: "סוֹף פָּסוּק",
             sbl_academic: "sop̄ pāsûq",
-            sbl_simplified_name: "Soph Pasuq",
+            english_name: "Soph Pasuq",
         };
         assert_eq!(a, b);
     }
@@ -494,12 +494,12 @@ mod tests {
         let a = AccentName {
             hebrew_name: "אֶתְנַחְתָּא",
             sbl_academic: "ʾetnaḥtā",
-            sbl_simplified_name: "Atnach",
+            english_name: "Atnach",
         };
         let b = AccentName {
             hebrew_name: "זָקֵף",
             sbl_academic: "ʾetnaḥtā",
-            sbl_simplified_name: "Atnach",
+            english_name: "Atnach",
         };
         assert_ne!(a, b);
     }
@@ -509,12 +509,12 @@ mod tests {
         let a = AccentName {
             hebrew_name: "טֶרֶשׁ",
             sbl_academic: "ṭereš",
-            sbl_simplified_name: "Teres",
+            english_name: "Teres",
         };
         let b = AccentName {
             hebrew_name: "טֶרֶשׁ",
             sbl_academic: "ṭeres",
-            sbl_simplified_name: "Teres",
+            english_name: "Teres",
         };
         assert_ne!(a, b);
     }
@@ -524,12 +524,12 @@ mod tests {
         let a = AccentName {
             hebrew_name: "טֶרֶשׁ",
             sbl_academic: "ṭereš",
-            sbl_simplified_name: "Teres",
+            english_name: "Teres",
         };
         let b = AccentName {
             hebrew_name: "טֶרֶשׁ",
             sbl_academic: "ṭereš",
-            sbl_simplified_name: "Teres Variant",
+            english_name: "Teres Variant",
         };
         assert_ne!(a, b);
     }
@@ -539,7 +539,7 @@ mod tests {
         let original = AccentName {
             hebrew_name: "שַׁלְשֶׁלֶת",
             sbl_academic: "šalšelet",
-            sbl_simplified_name: "Shalshelet",
+            english_name: "Shalshelet",
         };
         let copied = original;
 
@@ -553,7 +553,7 @@ mod tests {
         let original = AccentName {
             hebrew_name: "מֻנַּח",
             sbl_academic: "munnaḥ",
-            sbl_simplified_name: "Munach",
+            english_name: "Munach",
         };
         let cloned = original.clone();
 
@@ -565,7 +565,7 @@ mod tests {
         let name = AccentName {
             hebrew_name: "זִקְרָא",
             sbl_academic: "ziqrā",
-            sbl_simplified_name: "Zikra",
+            english_name: "Zikra",
         };
 
         let debug = format!("{:?}", name);
@@ -582,17 +582,17 @@ mod tests {
         let name1 = AccentName {
             hebrew_name: "רְבִיעַ",
             sbl_academic: "rᵊbîaʿ",
-            sbl_simplified_name: "Revia",
+            english_name: "Revia",
         };
         let name2 = AccentName {
             hebrew_name: "רְבִיעַ",
             sbl_academic: "rᵊbîaʿ",
-            sbl_simplified_name: "Revia",
+            english_name: "Revia",
         };
         let name3 = AccentName {
             hebrew_name: "פָּסְתָּא",
             sbl_academic: "pāstā",
-            sbl_simplified_name: "Pashta",
+            english_name: "Pashta",
         };
 
         let mut set = HashSet::new();

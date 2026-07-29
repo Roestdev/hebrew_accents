@@ -92,7 +92,7 @@
 //!
 //!  - hebrew_name          (the Hebrew name)
 //!  - meaning              (the meaning of the Hebrew name)
-//!  - sbl_simplified_name         (the English name, a transliteration of the Hebrew)
+//!  - english_name         (the English name, a transliteration of the Hebrew)
 //!  - Number of UTF-8 code_points    (1 or 2)
 //!  - relative_strength    (lowest number has relative more weight)
 //!  - count                (the number of all accents in a specific category)

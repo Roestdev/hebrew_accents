@@ -41,7 +41,7 @@ impl HebrewAccent {
     /// let accent = HebrewAccent::Prose(ProseAccent::Segolta);
     ///
     /// // First usage
-    /// let name1 = accent.as_prose().unwrap().sbl_simplified_name();
+    /// let name1 = accent.as_prose().unwrap().english_name();
     ///
     /// // Second usage - original still available
     /// let name2 = accent.as_prose().unwrap().hebrew_concept();
@@ -86,7 +86,7 @@ impl HebrewAccent {
     ///
     /// // Can access properties through the reference
     /// if let Some(poetry) = accent.as_poetry() {
-    ///     println!("English name: {}", poetry.sbl_simplified_name());
+    ///     println!("English name: {}", poetry.english_name());
     ///     println!("Relative strength: {}", poetry.relative_strength());
     /// }
     ///
@@ -134,7 +134,7 @@ impl HebrewAccent {
     ///
     /// // Check the accent accenttype exists before accessing its data
     /// if let Some(pseudo) = accent.as_pseudo() {
-    ///     println!("English name: {}", pseudo.sbl_simplified_name());      // "Maqqeph"
+    ///     println!("English name: {}", pseudo.english_name());      // "Maqqeph"
     ///     println!("Concept: {}", pseudo.hebrew_concept());         // "binder"
     /// }
     ///
@@ -146,6 +146,16 @@ impl HebrewAccent {
             Self::Pseudo(p) => Some(p),
             _ => None,
         }
+    }
+
+    /// todo
+    pub fn iter() -> impl Iterator<Item = HebrewAccent> {
+        use strum::IntoEnumIterator;
+
+        ProseAccent::iter()
+            .map(HebrewAccent::from)
+            .chain(PoetryAccent::iter().map(HebrewAccent::from))
+            .chain(PseudoAccent::iter().map(HebrewAccent::from))
     }
 }
 

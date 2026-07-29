@@ -1,13 +1,34 @@
 use thiserror::Error;
 
-/// Define the error accenttype for validation failures
+/// Defines the error type for validation if returned
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SentenceContextError {
     /// Character outside the allowed set was encountered
+    ///
+    /// The invalid character and its position in the senctence will be showed
+    ///
+    ///
+    /// ## Valid characters are:
+    /// - Hebrew Unicode Codeblock *(U+0590 .. U+05FF)*, **except** the ones labelled as 'NOT USED'
+    /// - Meteg layout characters (CGJ, ZWNJ and ZWJ):
+    ///   - CGJ: COMBINING GRAPHEME JOINER *(U+034F)*
+    ///   - ZWNJ: ZERO WIDTH NON-JOINER *(U+200C)*
+    ///   - ZWJ: ZERO WIDTH JOINER *(U+200D)*
+    /// 
+    ///   (see <https://www.unicode.org/versions/Unicode15.0.0/> section 9.1 for more information)
+    /// - Vertical bar *(U+007C)*, some times used as an alternative Paseq in computer text.
+    /// - The follwoing "space" characters:
+    ///   - SPACE *(U+0020)*
+    ///   - NO-BREAK SPACE *(U+00A0)* 
+    ///   - LRM: ZERO WIDTH JOINER *(U+200E)* 
+    ///   - RLM: RIGHT-TO-LEFT *(U+200F)* 
+    ///   - THIN SPACE *(U+2009)* 
+    ///   - MEDIUM MATHEMATICAL SPACE *(U+205F)* 
+    ///   - IDEOGRAPHIC SPACE *(U+3000)* 
     #[error("Invalid character '{}' at index {}: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
     InvalidCharacter(char, usize),
 
-    /// Input string was empty or contains only whitespace
+    /// The sentence was empty or contained only whitespace(s)
     #[error("Sentence cannot be empty or contain only whitespace characters")]
     EmptySentence,
 
@@ -15,15 +36,15 @@ pub enum SentenceContextError {
     #[error("Sentence must be a single line")]
     MultipleLines,
 
-    /// First character is not a valid Hebrew consonant (e.g., niqqud, punctuation)
+    /// The first character is not a valid Hebrew consonant
     #[error("Sentence must start with a Hebrew consonant, found '{}'", .0)]
     StartsWithNonConsonant(char),
 
-    /// First character is a final-form letter (ך, ם, ן, ף, ץ)
+    /// The first character is a final-form letter (ך, ם, ן, ף, ץ)
     #[error("Final-form letter '{}' cannot appear at sentence start", .0)]
     StartsWithFinalForm(char),
 
-    /// Ambiguous or insufficient accent CantillationSymbol for context determination
+    /// Ambiguous or insufficient Cantillation Symbol(s) found for context determination
     #[error("Derivation failed: {0}")]
     DerivationFailed(&'static str),
 }
@@ -79,7 +100,7 @@ mod tests {
 
         assert_eq!(
             err.to_string(),
-            "Sentence must start with a Hebrew consonant, found '\u{05B0}'"
+            "Sentence must start with a Hebrew consonant, found 'U+05B0}'"
         );
         assert_eq!(err, SentenceContextError::StartsWithNonConsonant('ְ'));
 

@@ -1,11 +1,13 @@
 use crate::Accent;
+//use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// Syntactic markers associated with biblical Hebrew cantillation but distinct from true accents.
 ///
 /// `PseudoAccent` values represent structural symbols that influence accent placement without
 /// carrying independent melodic contour. They govern phrase boundaries, word grouping, and
 /// punctuation within the Masoretic text tradition.
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
+#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[non_exhaustive]
 pub enum PseudoAccent {
     #[default]
@@ -37,7 +39,7 @@ impl std::fmt::Display for PseudoAccent {
         write!(
             f,
             "{} ({}), meaning: {}",
-            self.sbl_simplified_name(),
+            self.english_name(),
             self.hebrew_name(),
             self.hebrew_concept()
         )
@@ -137,7 +139,7 @@ mod tests {
     }
 
     // ── Display ────────────────────────────────────────────────────
-    // Display delegates to sbl_simplified_name(), hebrew_name(), hebrew_concept().
+    // Display delegates to english_name(), hebrew_name(), hebrew_concept().
     // These methods aren't defined in this file, but if they compile we can
     // smoke-test the format-string structure.
 

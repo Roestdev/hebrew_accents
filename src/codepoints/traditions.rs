@@ -15,7 +15,7 @@
 pub(crate) struct AccentName {
     pub(crate) hebrew_name: &'static str,
     pub(crate) sbl_academic: &'static str,
-    pub(crate) sbl_simplified_name: &'static str,
+    pub(crate) english_name: &'static str,
 }
 
 /// Names for an accent across all four Hebrew traditions
@@ -38,22 +38,22 @@ impl TraditionNames {
             ashkenazi: Some(AccentName {
                 hebrew_name: hebrew,
                 sbl_academic: sbl,
-                sbl_simplified_name: english,
+                english_name: english,
             }),
             sephardi: Some(AccentName {
                 hebrew_name: hebrew,
                 sbl_academic: sbl,
-                sbl_simplified_name: english,
+                english_name: english,
             }),
             italian: Some(AccentName {
                 hebrew_name: hebrew,
                 sbl_academic: sbl,
-                sbl_simplified_name: english,
+                english_name: english,
             }),
             yemenite: Some(AccentName {
                 hebrew_name: hebrew,
                 sbl_academic: sbl,
-                sbl_simplified_name: english,
+                english_name: english,
             }),
         }
     }
@@ -80,7 +80,7 @@ mod tests {
         let expected = AccentName {
             hebrew_name: "דְּכִי",
             sbl_academic: "deḥî",
-            sbl_simplified_name: "Dehi",
+            english_name: "Dehi",
         };
 
         assert_eq!(names.ashkenazi, Some(expected));
@@ -103,7 +103,7 @@ mod tests {
             let name = tradition.expect("tradition should be Some");
             assert_eq!(name.hebrew_name, "זָקֵף");
             assert_eq!(name.sbl_academic, "zāqēp̄");
-            assert_eq!(name.sbl_simplified_name, "Zaquph");
+            assert_eq!(name.english_name, "Zaquph");
         }
     }
 
@@ -115,7 +115,7 @@ mod tests {
         let expected = AccentName {
             hebrew_name: "",
             sbl_academic: "",
-            sbl_simplified_name: "",
+            english_name: "",
         };
 
         assert_eq!(names.ashkenazi, Some(expected));
@@ -139,17 +139,17 @@ mod tests {
         let a = AccentName {
             hebrew_name: "מֶרְכָּא",
             sbl_academic: "merka",
-            sbl_simplified_name: "Merka",
+            english_name: "Merka",
         };
         let b = AccentName {
             hebrew_name: "מֶרְכָּא",
             sbl_academic: "merka",
-            sbl_simplified_name: "Merka",
+            english_name: "Merka",
         };
         let c = AccentName {
             hebrew_name: "מָהִיר",
             sbl_academic: "mahir",
-            sbl_simplified_name: "Mahir",
+            english_name: "Mahir",
         };
 
         assert_eq!(a, b);
@@ -177,7 +177,7 @@ mod tests {
         let original = AccentName {
             hebrew_name: "גַּעְיָא",
             sbl_academic: "gaʿya",
-            sbl_simplified_name: "Gaaya",
+            english_name: "Gaaya",
         };
 
         // Copy semantics: assigning should clone, not move
@@ -195,7 +195,7 @@ mod tests {
         let name = AccentName {
             hebrew_name: "שׁוֹפָר",
             sbl_academic: "šop̄ar",
-            sbl_simplified_name: "Shofar",
+            english_name: "Shofar",
         };
 
         let mut map: HashMap<AccentName, u8> = HashMap::new();
@@ -205,7 +205,7 @@ mod tests {
         let key = AccentName {
             hebrew_name: "שׁוֹפָר",
             sbl_academic: "šop̄ar",
-            sbl_simplified_name: "Shofar",
+            english_name: "Shofar",
         };
 
         assert_eq!(map.get(&key), Some(&1));

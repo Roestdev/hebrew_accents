@@ -10,11 +10,9 @@ A Rust library for working with Masoretic Hebrew cantillation marks (טעמים�
 [🛠️ Design](https://github.com/Roestdev/hebrew_accents/blob/main/DESIGN.md)
 
 
-[![Status](https://img.shields.io/badge/status-development-orange)]()
-[![License](https://img.shields.io/badge/license-Apache%202%20%7C%20MIT-blue)]
-[![Crates.io](https://img.shields.io/crates/v/hebrew_accents)](https://crates.io/crates/hebrew_accents)
-[![Docs.rs](https://docs.rs/hebrew_accents/badge.svg)](https://docs.rs/hebrew_accents)
 [![License](https://img.shields.io/crates/l/hebrew_accents)](LICENSE)
+[![Status](https://img.shields.io/badge/status-development-orange)]()
+[![Crates.io](https://img.shields.io/crates/v/hebrew_accents)](https://crates.io/crates/hebrew_accents)
 [![Docs.rs](https://docs.rs/hebrew_accents/badge.svg)](https://docs.rs/hebrew_accents)
 
 ## Quick Start
@@ -23,7 +21,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-hebrew_accents = "0.0.3"   # or a newer version
+hebrew_accents = "0.0.3"   # Latest: check https://crates.io/crates/hebrew_accents
 ```
 
 **Basic example:**
@@ -31,20 +29,23 @@ hebrew_accents = "0.0.3"   # or a newer version
 ```rust
 use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent};
 
-// Create a sentence with context
-let sentence_context: Result<SentenceContext, SentenceContextError> = SentenceContext::new(
-    "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
-    Context::Prosaic
-)?;
+fn main() -> Result<(), hebrew_accents::SentenceContextError> {
+    let sentence_context = SentenceContext::new(
+        "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
+        Context::Prosaic,
+    )?;
 
-// Check if an accent exists
-assert!(sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
+    // Check if an accent exists
+    assert!(sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 
-// Find accent positions
-// Note: you can also use .into() due to the implementation of the From trait.
-if let Some(match_) = sentence_context.find_accent(ProseAccent::Atnach.into()) {
-    println!("Atnach found at bytes {}: {}", match_.start(), match_.end());
-    println!("Text: {}", match_.as_str());
+    // Find accent positions
+    // Note: you can also use `.into()` due to the `From` trait implementation.
+    if let Some(match_) = sentence_context.find_accent(ProseAccent::Atnach.into()) {
+        println!("Atnach found at bytes {}: {}", match_.start(), match_.end());
+        println!("Text: {}", match_.as_str());
+    }
+
+    Ok(())
 }
 ```
 
@@ -70,16 +71,19 @@ If you only need raw Unicode code points, see my other companion crate [`hebrew_
 ### Accent Types
 
 ```rust
-use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent};
+use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent, Accent};
 
 // Prose accents (used in narrative texts like Genesis, Exodus)
 let prose = HebrewAccent::Prose(ProseAccent::Silluq);
+println!("Prose accent: {}", prose.english_name());
 
 // Poetry accents (used in Psalms, Job, Proverbs)
 let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
+println!("Poetry accent: {}", poetry.is_compound());
 
-// Pseudo-accents (accent related markers)
+// Pseudo-accents (accent-related markers)
 let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
+println!("Is compound: {}", pseudo.english_name());
 ```
 
 ### Context
@@ -88,8 +92,15 @@ Sentences have either Prosaic or Poetic context, which affects accent interpreta
 ```rust
 use hebrew_accents::{SentenceContext, Context};
 
-let prose_context: Result<SentenceContext, SentenceContextError> = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
-let poetry_context:Result<SentenceContext, SentenceContextError>  = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
+fn main() -> Result<(), hebrew_accents::SentenceContextError> {
+    let prose_context = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
+    let poetry_context = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
+
+    println!("Prose context created");
+    println!("Poetry context created");
+
+    Ok(())
+}
 ```
 
 ### Accent Metadata
@@ -98,13 +109,15 @@ Each accent implements the Accent trait:
 ```rust
 use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
 
-let accent = HebrewAccent::Prose(ProseAccent::Silluq);
+fn main() {
+    let accent = HebrewAccent::Prose(ProseAccent::Silluq);
 
-println!("Hebrew name: {}", accent.hebrew_name());
-println!("English name: {}", accent.english_name());
-println!("Concept: {}", accent.hebrew_concept());
-println!("Is compound: {}", accent.is_compound());
-println!("Relative strength: {}", accent.relative_strength());
+    println!("Hebrew name: {}", accent.hebrew_name());
+    println!("English name: {}", accent.english_name());
+    println!("Concept: {}", accent.hebrew_concept());
+    println!("Is compound: {}", accent.is_compound());
+    println!("Relative strength: {}", accent.relative_strength());
+}
 ```
 
 ## API Overview
@@ -192,5 +205,3 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 Special thanks to scholars of the Masoretic tradition whose work makes this library possible. Research methodology draws heavily from the Futato classification system and BHS (Biblia Hebraica Stuttgartensia) standards.
 
 ## Examples (Coming Soon)
-
-An `examples/` directory with runnable demos is planned but not yet available. Watch the [repository]() for updates.

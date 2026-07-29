@@ -1,9 +1,11 @@
 use crate::Accent;
+//use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// All variants of the Hebrew Poetry Accents
 /// 12 Disjunctives and 11 Conjunctives.
 #[repr(u8)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
+#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[non_exhaustive]
 pub enum PoetryAccent {
     #[default]
@@ -65,7 +67,7 @@ impl std::fmt::Display for PoetryAccent {
         write!(
             f,
             "{} ({}), meaning: {}",
-            self.sbl_simplified_name(),
+            self.english_name(),
             self.hebrew_name(),
             self.hebrew_concept()
         )
@@ -203,7 +205,7 @@ mod tests {
     }
 
     // ── Display ────────────────────────────────────────────────────
-    // Display delegates to sbl_simplified_name(), hebrew_name(), hebrew_concept().
+    // Display delegates to english_name(), hebrew_name(), hebrew_concept().
     // These methods aren't in this file, but if they compile we can smoke-test
     // the format-string structure.
 

@@ -104,9 +104,9 @@ mod tests {
     #[test]
     fn new_preserves_haystack_reference() {
         let haystack = "בְּרֵאשִׁ֖ית";
-        let match_result = Match::new(haystack, 0, 3);
+        let match_result = Match::new(haystack, 0, 4);
 
-        assert_eq!(match_result.as_str(), "בְּרֵאשִׁ֖");
+        assert_eq!(match_result.as_str(), "בְ");
         // Verify the reference points to the correct slice
         assert!(haystack.contains(match_result.as_str()));
     }
@@ -173,7 +173,7 @@ mod tests {
     #[test]
     fn as_str_returns_substring_slice() {
         let haystack = "Hebrew accent detection";
-        let match_result = Match::new(haystack, 7, 14);
+        let match_result = Match::new(haystack, 7, 13);
 
         assert_eq!(match_result.as_str(), "accent");
         // Verify it's the same length as len()
@@ -233,7 +233,7 @@ mod tests {
         let haystack = "וַיְהִ֣י בְיָמֵ֗י";
         let match_result = Match::new(haystack, 0, 12);
 
-        assert_eq!(match_result.as_str(), "וַיְהִ֣י");
+        assert_eq!(match_result.as_str(), "וַיְהִ");
         assert!(match_result.len() > 6); // Multi-byte characters
     }
 
@@ -328,7 +328,7 @@ mod tests {
         let m4 = Match::new(h1, 2, 4);
 
         assert_eq!(m1, m2); // Same haystack, same offsets
-        assert_eq!(m1, m3); // Different haystacks, same offsets (Eq only checks fields)
+        assert_ne!(m1, m3); // Different haystacks, same offsets (Eq only checks fields)
         assert_ne!(m1, m4); // Same haystack, different offsets
     }
 

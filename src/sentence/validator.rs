@@ -90,7 +90,7 @@ fn is_paseq_alternative_char(c: char) -> bool {
 }
 
 // Check for specific METEG Layout Control Characters
-// see https://www.unicode.org/versions/Unicode15.0.0/ section 9.1 for more information
+// see <https://www.unicode.org/versions/Unicode15.0.0/> section 9.1 for more information
 fn is_meteg_layout_char(c: char) -> bool {
     matches!(
         c,

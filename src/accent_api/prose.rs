@@ -1,9 +1,11 @@
 use crate::Accent;
+//use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// All variants of the Hebrew Prose Accents
 /// 18 Disjunctives and 10 Conjunctives.
 #[repr(u8)]
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
+#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[non_exhaustive]
 pub enum ProseAccent {
     #[default]
@@ -75,7 +77,7 @@ impl std::fmt::Display for ProseAccent {
         write!(
             f,
             "{} ({}), meaning: {}",
-            self.sbl_simplified_name(),
+            self.english_name(),
             self.hebrew_name(),
             self.hebrew_concept()
         )
@@ -85,7 +87,26 @@ impl std::fmt::Display for ProseAccent {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use strum::IntoEnumIterator;
 
+    #[test]
+    fn test_enum_iter_count() {
+        // Verify that Iter yields exactly LEN items
+        assert_eq!(ProseAccent::iter().count(), ProseAccent::LEN);
+        assert_eq!(ProseAccent::iter().count(), 28);
+    }
+
+    #[test]
+    fn test_enum_iter_all_variants_present() {
+        // Ensure every defined variant appears in iteration
+        let mut found = std::collections::HashSet::new();
+
+        for accent in ProseAccent::iter() {
+            // Insert returns false if already present (duplicate detection)
+            assert!(found.insert(accent), "Duplicate");
+        }
+        assert_eq!(found.len(), ProseAccent::LEN);
+    }
     // ── Variant count ──────────────────────────────────────────────
 
     #[test]
@@ -202,7 +223,7 @@ mod tests {
     }
 
     // ── Display ────────────────────────────────────────────────────
-    // Display delegates to sbl_simplified_name(), hebrew_name(), hebrew_concept().
+    // Display delegates to english_name(), hebrew_name(), hebrew_concept().
     // These methods aren't in this file, but if they compile we can smoke-test
     // the format string structure.
 

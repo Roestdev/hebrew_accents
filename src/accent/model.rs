@@ -19,12 +19,12 @@ pub(crate) struct AccentMetaData {
     /// Semantic meaning of the Hebrew term
     pub(crate) hebrew_concept: &'static str,
     /// Transliterated according `SLB Simplified`
-    pub(crate) sbl_simplified_name: &'static str,
+    pub(crate) english_name: &'static str,
     /// Transliterated according `SLB academic`
     pub(crate) sbl_academic: &'static str,
     /// Associated Cantillation Symbol
     pub(crate) cantillation_symbol: CantillationSymbol,
-    /// Optional alternate identifiers for hebrew_name, hebrew_concept, sbl_simplified_name
+    /// Optional alternate identifiers for hebrew_name, hebrew_concept, english_name
     pub(crate) alternate_names: Option<AlternateNames>,
     /// Indicates the accent accenttype (Primary, Secondary),
     pub(crate) kind: Kind,
@@ -58,7 +58,7 @@ pub(crate) struct AlternateNames {
     /// Meaning of the Hebrew name
     pub(crate) hebrew_concept: &'static str,
     /// Transliterated according `SLB Simplified``
-    pub(crate) sbl_simplified_name: &'static str,
+    pub(crate) english_name: &'static str,
     /// Transliterated according `SLB Academic``
     pub(crate) sbl_academic: &'static str,
 }
@@ -595,11 +595,11 @@ mod tests {
         let alt = AlternateNames {
             hebrew_name: "שילוש",
             hebrew_concept: "threefold chain",
-            sbl_simplified_name: "Shalshelet",
+            english_name: "Shalshelet",
             sbl_academic: "Shalshelet",
         };
         assert_eq!(alt.hebrew_name, "שילוש");
-        assert_eq!(alt.sbl_simplified_name, "Shalshelet");
+        assert_eq!(alt.english_name, "Shalshelet");
     }
 
     #[test]
@@ -607,7 +607,7 @@ mod tests {
         let alt1 = AlternateNames {
             hebrew_name: "Test",
             hebrew_concept: "Concept",
-            sbl_simplified_name: "English",
+            english_name: "English",
             sbl_academic: "SBL",
         };
         let alt2 = alt1; // Copy
@@ -726,7 +726,7 @@ mod tests {
         let meta = AccentMetaData {
             hebrew_name: "אתנחתא",
             hebrew_concept: "rest",
-            sbl_simplified_name: "Atnach",
+            english_name: "Atnach",
             sbl_academic: "Athnah",
             cantillation_symbol: sym,
             alternate_names: None,
@@ -737,7 +737,7 @@ mod tests {
             notes: None,
             max_word_span: None,
         };
-        assert_eq!(meta.sbl_simplified_name, "Atnach");
+        assert_eq!(meta.english_name, "Atnach");
     }
 
     #[test]
@@ -756,13 +756,13 @@ mod tests {
         let alt = AlternateNames {
             hebrew_name: "Alternative Hebrew",
             hebrew_concept: "Alt Concept",
-            sbl_simplified_name: "Alternative English",
+            english_name: "Alternative English",
             sbl_academic: "SBL Alt",
         };
         let meta = AccentMetaData {
             hebrew_name: "אתנחתא",
             hebrew_concept: "rest",
-            sbl_simplified_name: "Atnach",
+            english_name: "Atnach",
             sbl_academic: "Athnah",
             cantillation_symbol: sym,
             alternate_names: Some(alt),
@@ -794,7 +794,7 @@ mod tests {
         let meta1 = AccentMetaData {
             hebrew_name: "Test",
             hebrew_concept: "Concept",
-            sbl_simplified_name: "English",
+            english_name: "English",
             sbl_academic: "SBL",
             cantillation_symbol: sym,
             alternate_names: None,
