@@ -122,37 +122,35 @@
 #![doc = include_str!("../README.md")]
 
 mod accent;
-/// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
-pub mod accent_api;
 mod accent_data;
+/// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
+mod api;
 mod codepoints;
 mod common;
-mod error;
 mod formatting;
 mod hierarchy;
 mod sentence;
-/// Public API for working with Hebrew sentences
-pub mod sentence_api;
-/// Public API for the `Accent` trait
-pub mod trait_api;
+mod error;
 
-// Re-export commonly used items at crate root for ergonomic imports
-pub use error::SentenceContextError;
-pub use sentence_api::context::Context;
-// pub use sentence_api::detector::try_determine_context;
-pub use crate::sentence_api::matcher::Match;
-pub use sentence_api::sentence_context::SentenceContext;
 
-pub use crate::trait_api::Accent;
+// Re-exports 
+pub use crate::api::Context;
+pub use crate::api::Match;
+pub use crate::api::SentenceContext;
+pub use crate::api::Accent;
+pub use crate::api::HebrewAccent;
+pub use crate::api::PoetryAccent;
+pub use crate::api::ProseAccent;
+pub use crate::api::PseudoAccent;
+pub use crate::api::AccentCategory;
+pub use crate::api::AccentKind;
+pub use crate::api::AccentWordStress;
+pub use crate::api::CantillationMark;
+pub use crate::api::CantillationMarkPosition;
+pub use crate::api::GroupLevel;
 
-pub use crate::accent_api::HebrewAccent;
-pub use crate::accent_api::PoetryAccent;
-pub use crate::accent_api::ProseAccent;
-pub use crate::accent_api::PseudoAccent;
+// public functions
+pub use crate::api::try_determine_context;
 
-pub use crate::accent_api::AccentCategory;
-pub use crate::accent_api::AccentKind;
-pub use crate::accent_api::AccentWordStress;
-pub use crate::accent_api::CantillationMark;
-pub use crate::accent_api::CantillationMarkPosition;
-pub use crate::accent_api::GroupLevel;
+// used for errorhandling
+pub use crate::error::SentenceContextError;

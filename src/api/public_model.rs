@@ -175,11 +175,11 @@ impl std::fmt::Display for GroupLevel {
     }
 }
 
-pub(crate) use crate::common::GENERIC_MARK_BASE;
 
 /// Returns the cantilation symbol
 /// May consist of two cantillation marks
 pub fn cantillation_symbol(accent: HebrewAccent) -> String {
+    const GENERIC_MARK_BASE: &str = "\u{25CC}";
     // get first cantillation_mark
     // if exist get second cantillation_mark
     // stel output samen
@@ -203,7 +203,8 @@ mod tests {
     use super::*;
     use crate::codepoints::CodePointPosition;
     use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
-
+    const GENERIC_MARK_BASE: &str = "\u{25CC}";
+    
     // ── AccentKind ─────────────────────────────────────────────────
 
     #[test]

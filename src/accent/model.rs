@@ -8,7 +8,7 @@ use crate::AccentKind;
 use crate::AccentWordStress;
 use crate::GroupLevel;
 use crate::HebrewAccent;
-use crate::PoetryAccent;
+use crate::api::PoetryAccent;
 use crate::ProseAccent;
 
 /// Contains (non)technical details of a Hebrew Accent
@@ -236,7 +236,7 @@ pub(crate) fn resolve_disjunctive_group(accent: HebrewAccent) -> Option<Disjunct
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{HebrewAccent, PoetryAccent, ProseAccent};
+    use crate::api::{HebrewAccent, PoetryAccent, ProseAccent};
 
     // ── Category::to_public() exhaustive tests ──────────────────────
 

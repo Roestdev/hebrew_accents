@@ -82,7 +82,3 @@ pub(crate) const SEGOLTA: &str = SEGOL;
 pub(crate) const PAZER_GADOL: &str = QARNEY_PARA;
 /// alias for TIPEHA
 pub(crate) const TIPHCHA: &str = TIPEHA;
-
-// UTF-8 codepoints as 'char'
-// pub(crate) const GENERIC_MARK_BASE_AS_CHAR: char = '\u{25CC}';
-pub(crate) const GENERIC_MARK_BASE: &str = "\u{25CC}";

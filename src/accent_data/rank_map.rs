@@ -1,4 +1,4 @@
-use crate::{PoetryAccent, ProseAccent};
+use crate::api::{PoetryAccent, ProseAccent};
 
 /// Mapping from the enum discriminant (as `usize`) to the logical relative_strength.
 ///

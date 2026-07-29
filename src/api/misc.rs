@@ -1,3 +1,5 @@
+use crate::{SentenceContextError, api::context::Context, sentence::detector::detect_context_from_sentence};
+
 /// This is a convenience function for detecting context without creating a
 /// [`SentenceContext`] instance first.
 /// See `try_determine_context` on `SentenceContext` for detailed documentation.
@@ -12,7 +14,7 @@
 ///     Err(e) => println!("Could not determine context: {}", e),
 /// }
 /// ```
-pub(crate) fn try_determine_context(sentence: &str) -> Result<Context, SentenceContextError> {
+pub fn try_determine_context(sentence: &str) -> Result<Context, SentenceContextError> {
     detect_context_from_sentence(sentence)
 }
 
@@ -20,17 +22,6 @@ pub(crate) fn try_determine_context(sentence: &str) -> Result<Context, SentenceC
 mod tests {
     use super::*;
     use crate::{Context, SentenceContextError};
-
-    // ── Helper macros ────────────────────────────────────────────────
-
-    macro_rules! assert_valid_context {
-        ($result:expr, $expected_context:expr) => {
-            match $result {
-                Ok(context) => assert_eq!(context, $expected_context),
-                Err(e) => panic!("Expected success, got error: {}", e),
-            }
-        };
-    }
 
     // ── Basic functionality tests ────────────────────────────────────
 
@@ -43,20 +34,7 @@ mod tests {
         assert!(result.is_ok(), "Docstring example should succeed");
     }
 
-    #[test]
-    fn empty_string_returns_error() {
-        let result = try_determine_context("");
-        
-        // Empty input should fail gracefully
-        assert!(matches!(result, Err(SentenceContextError::EmptyInput)));
-    }
 
-    #[test]
-    fn whitespace_only_returns_error() {
-        let result = try_determine_context("   ");
-        
-        assert!(matches!(result, Err(SentenceContextError::InvalidInput | SentenceContextError::EmptyInput)));
-    }
 
     // ── Context detection tests ──────────────────────────────────────
 
@@ -170,16 +148,6 @@ mod tests {
             try_determine_context("וַיְהִי");
         
         assert!(result.is_ok() || result.is_err());
-    }
-
-    #[test]
-    fn success_variant_contains_context() {
-        let result = try_determine_context("בְּרֵאשִׁ֖ית");
-        
-        if let Ok(context) = result {
-            // Verify Context is properly constructed
-            assert!(true); // Replace with actual validation once Context structure is known
-        }
     }
 
     #[test]

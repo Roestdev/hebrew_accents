@@ -1,7 +1,7 @@
 //! Implementation of contains_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
-use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,Context,SentenceContext};
 
 use crate::common::{
     DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MERKHA, MERKHA_KEFULA, MUNAH,
@@ -15,11 +15,9 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
-use crate::sentence_api::context::Context;
-use crate::sentence_api::find::{
+use crate::api::find::{
     find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
 };
-use crate::sentence_api::sentence_context::SentenceContext;
 
 impl SentenceContext {
     /// Returns true if the accent is present in the sentence
@@ -194,9 +192,9 @@ impl SentenceContext {
 
 #[cfg(test)]
 mod tests {
-    use crate::sentence_api::context::Context;
-    use crate::sentence_api::sentence_context::SentenceContext;
-    use crate::{PoetryAccent, ProseAccent, PseudoAccent};
+    use crate::api::context::Context;
+    use crate::api::sentence_context::SentenceContext;
+    use crate::api::{PoetryAccent, ProseAccent, PseudoAccent};
     #[test]
     fn test_contains_prose_poetry_silluq() {
         //let sc = SentenceContext::new("test", Context::Prosaic);

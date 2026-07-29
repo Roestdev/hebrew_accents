@@ -1,6 +1,6 @@
 use crate::sentence::validator::validate_sentence;
-use crate::sentence_api::context::Context;
-use crate::sentence_api::sentence_context::SentenceContext;
+use crate::Context;
+use crate::SentenceContext;
 use crate::SentenceContextError;
 use crate::{PoetryAccent, ProseAccent};
 

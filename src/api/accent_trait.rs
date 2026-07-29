@@ -4,9 +4,8 @@ use crate::accent_data::{
     PSEUDO_ACCENT_TABLE,
 };
 use crate::codepoints::CODEPOINT_METEG;
-use crate::{
-    AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel, HebrewAccent,
-    PoetryAccent, ProseAccent, PseudoAccent,
+use crate::api::{
+    AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, cantillation_symbol,
 };
 
 /// Used for retrieving information
@@ -41,8 +40,8 @@ pub trait Accent: Copy + Sized {
     fn relative_strength(self) -> Option<u8>;
     /// Hierarchical disjunctive group level (Futato classification)
     fn group_level(self) -> Option<GroupLevel>;
-    // TODO Cantilation symbol
-    // fn cantillation_symbol(self) -> Option<&'static str>;
+    /// Cantilation symbol
+    fn cantillation_symbol(self) -> String;
 }
 
 impl Accent for HebrewAccent {
@@ -145,9 +144,17 @@ impl Accent for HebrewAccent {
         }
     }
 
-    // #[inline]
+    #[inline]
     fn group_level(self) -> Option<GroupLevel> {
         resolve_disjunctive_group(self).and_then(|g| g.into_public_level())
+    }
+    #[inline]
+    fn cantillation_symbol(self) -> String {
+            match self {
+            HebrewAccent::Prose(p) => p.cantillation_symbol(),
+            HebrewAccent::Poetry(p) => p.cantillation_symbol(),
+            HebrewAccent::Pseudo(p) => p.cantillation_symbol(),
+        }
     }
 }
 
@@ -244,6 +251,10 @@ impl Accent for ProseAccent {
     #[inline]
     fn group_level(self) -> Option<GroupLevel> {
         resolve_disjunctive_group(self.into()).and_then(|g| g.into_public_level())
+    }
+    #[inline]
+    fn cantillation_symbol(self) -> String {
+        cantillation_symbol(self.into())
     }
 }
 
@@ -342,6 +353,10 @@ impl Accent for PoetryAccent {
     fn group_level(self) -> Option<GroupLevel> {
         resolve_disjunctive_group(self.into()).and_then(|g| g.into_public_level())
     }
+    #[inline]
+    fn cantillation_symbol(self) -> String {
+        cantillation_symbol(self.into())
+    }
 }
 
 impl Accent for PseudoAccent {
@@ -438,12 +453,16 @@ impl Accent for PseudoAccent {
     fn group_level(self) -> Option<GroupLevel> {
         None
     }
+    #[inline]
+    fn cantillation_symbol(self) -> String {
+        cantillation_symbol(self.into())
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+    use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
     // ── Common helper macros ────────────────────────────────────────
 
