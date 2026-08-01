@@ -1,74 +1,356 @@
+//! # Hebrew Prose Accents
+//!
+//! Enumerates all cantillation marks (ta'amim) used in the **prose books** of the
+//! Hebrew Bible: the Torah (Five Books of Moses), the Former Prophets, the Latter
+//! Prophets, and most of the Writings.
+//!
+//! ## System Overview
+//!
+//! The prose accent system is the primary cantillation system of the Tanakh,
+//! covering approximately 80% of the biblical text. It employs a rich hierarchy
+//! of disjunctive and conjunctive accents that govern both musical chanting
+//! and syntactic phrasing.
+//!
+//! ## Composition
+//!
+//! | Category | Count | Role |
+//! |----------|-------|------|
+//! | Disjunctive | 18 | Mark phrase boundaries and pauses |
+//! | Conjunctive | 10 | Connect words within a phrase |
+//! | **Total** | **28** | |
+//!
+//! ## Hierarchy
+//!
+//! The disjunctive hierarchy in the prose system follows this structure:
+//!
+//! ```text
+//! Verse (Silluq)
+//!  └─ Half-verse (Atnach)
+//!     └─ Major phrase (Segolta, Shalshelet, Zaqeph Qatan/Gadol, Revia, ...)
+//!        └─ Minor phrase (Tiphcha, Zarqa, Pashta, Yetiv, Tevir, ...)
+//!           └─ Sub-phrase (Geresh, Gershayim, Pazer, PazerGadol, ...)
+//!              └─ Micro-phrase (Telisha Gedolah, Legarmeh)
+//! ```
+//!
+//! ## Usage
+//!
+//! ```ignore
+//! use crate::api::ProseAccent;
+//! use crate::Accent;
+//!
+//! let accent = ProseAccent::Atnach;
+//! println!("{}", accent); // "Atnach (אַתְנָח), meaning: rest"
+//! println!("Strength: {:?}", accent.relative_strength());
+//! ```
+
 use crate::Accent;
-//use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
-/// All variants of the Hebrew Prose Accents
-/// 18 Disjunctives and 10 Conjunctives.
+/// Represents a single Hebrew prose cantillation mark.
+///
+/// Each variant corresponds to one accent in the **prose books** system (Torah,
+/// Prophets, most Writings). Variants are ordered by their position in the
+/// disjunctive hierarchy: disjunctive accents first (indices 0–17), followed
+/// by conjunctive accents (indices 18–27).
+///
+/// # Layout
+///
+/// | Index Range | Category | Count |
+/// |-------------|----------|-------|
+/// | 0–17 | Disjunctive | 18 |
+/// | 18–27 | Conjunctive | 10 |
+///
+/// # Representation
+///
+/// - `#[repr(u8)]` — Each variant is stored as a single byte for efficient
+///   table lookups and FFI compatibility.
+/// - `#[non_exhaustive]` — New accent variants may be added in future versions.
+/// - `EnumIter` — Enables iteration over all variants via `ProseAccent::iter()`.
+///
+/// # Relative Strength
+///
+/// The discriminant value plus one equals the relative strength (where 1 is
+/// the strongest). This means `Silluq` (index 0) has strength 1, and `Meteg`
+/// (index 27) has strength 28.
+///
+/// # Example
+///
+/// ```ignore
+/// use crate::api::ProseAccent;
+/// use crate::Accent;
+///
+/// // Check the strength of Atnach
+/// let atnach = ProseAccent::Atnach;
+/// println!("{} strength: {:?}", atnach.english_name(), atnach.relative_strength());
+/// ```
 #[repr(u8)]
 #[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[non_exhaustive]
 pub enum ProseAccent {
+    /// **Silluq** (סִלּוּק) — "cessation, ending"
+    ///
+    /// The strongest disjunctive accent. Marks the end of a complete verse.
+    /// Every verse in the prose books concludes with Silluq.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Verse
+    /// - **Strength**: 1 (strongest)
     #[default]
-    /// Primary disjunctive prose accent Silluq
     Silluq,
-    /// Primary disjunctive prose accent accent Atnach
+
+    /// **Atnach** (אַתְנָח) — "rest, pause"
+    ///
+    /// The second-strongest disjunctive. Divides the verse into two halves
+    /// (atarah/imtarah). Acts as the primary midpoint marker.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Half-verse
+    /// - **Strength**: 2
     Atnach,
-    /// Primary disjunctive prose accent Segolta
+
+    /// **Segolta** (סְגוֹלְתָּא) — "bunch, cluster (of grapes)"
+    ///
+    /// A prose-exclusive disjunctive that appears near the beginning of a verse,
+    /// marking a major phrase boundary. Its presence confirms prose context.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Major phrase
+    /// - **Exclusivity**: Prose only
     Segolta,
-    /// Primary disjunctive prose accent Shalshelet
+
+    /// **Shalshelet** (שַׁלְשֶׁלֶת) — "chain, link"
+    ///
+    /// A rare disjunctive accent occurring at key narrative moments. Appears
+    /// only a handful of times in the Torah.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Major phrase
     Shalshelet,
-    /// Primary disjunctive prose accent Zaqeph Qaton
+
+    /// **Zaqeph Qatan** (זָקֵף קָטֹן) — "small raiser"
+    ///
+    /// A prose-exclusive disjunctive marking a phrase boundary. The "Qatan"
+    /// (small) form occurs when the accented word is followed by additional
+    /// words before the next disjunctive.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Major phrase
+    /// - **Exclusivity**: Prose only
     ZaqephQatan,
-    /// Primary disjunctive prose accent Zaqeph Gadol
+
+    /// **Zaqeph Gadol** (זָקֵף גָּדוֹל) — "great raiser"
+    ///
+    /// A prose-exclusive disjunctive marking a phrase boundary. The "Gadol"
+    /// (great) form occurs when the accented word immediately precedes the
+    /// next disjunctive accent.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Major phrase
+    /// - **Exclusivity**: Prose only
     ZaqephGadol,
-    /// Primary disjunctive prose accent Revia
+
+    /// **Revia** (רְבִיעַ) — "quarter, fourth"
+    ///
+    /// A disjunctive accent marking a minor phrase boundary. Divides segments
+    /// created by higher-level disjunctives.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Minor phrase
     Revia,
-    /// Primary disjunctive prose accent Tiphcha,
+
+    /// **Tiphcha** (טִפְחָא) — "handbreadth, palm"
+    ///
+    /// A disjunctive accent marking a sub-phrase boundary. Often appears near
+    /// the end of a verse before Silluq.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Sub-phrase
     Tiphcha,
-    /// Primary disjunctive prose accent Zarqa
+
+    /// **Zarqa** (זַרְקָא) — "throwing, scattering"
+    ///
+    /// A prose-exclusive disjunctive that marks a sub-phrase boundary. Appears
+    /// as a prepositive mark.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Sub-phrase
     Zarqa,
-    /// Primary disjunctive prose accent Pashta
+
+    /// **Pashta** (פַּשְׁטָא) — "extension, stretching out"
+    ///
+    /// A prose-exclusive disjunctive marking a sub-phrase division. Appears
+    /// as a postpositive mark on the final consonant.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Sub-phrase
+    /// - **Exclusivity**: Prose only
     Pashta,
-    /// Primary disjunctive prose accent Yetiv
+
+    /// **Yetiv** (יְתִיב) — "sitting, resting"
+    ///
+    /// A prose-exclusive disjunctive marking a sub-phrase boundary. Appears as
+    /// a prepositive mark on the initial consonant.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Sub-phrase
+    /// - **Exclusivity**: Prose only
     Yetiv,
-    /// Primary disjunctive prose accent Tevir
+
+    /// **Tevir** (תְּבִיר) — "break, fracture"
+    ///
+    /// A prose-exclusive disjunctive that marks a sub-phrase boundary, often
+    /// indicating a break in the melodic line.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Sub-phrase
+    /// - **Exclusivity**: Prose only
     Tevir,
-    /// Primary disjunctive prose accent Geresh
+
+    /// **Geresh** (גֵּרֶשׁ) — "expulsion, driving out"
+    ///
+    /// A disjunctive accent marking a micro-phrase boundary. Appears as a
+    /// postpositive mark.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
     Geresh,
-    /// Primary disjunctive prose accent Gershayim
+
+    /// **Gershayim** (גֵּרְשַׁיִם) — "double expulsion"
+    ///
+    /// A prose-exclusive disjunctive accent, the doubled form of Geresh.
+    /// Marks a micro-phrase boundary with a stronger pause.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
+    /// - **Exclusivity**: Prose only
     Gershayim,
-    /// Primary disjunctive prose accent Pazer
+
+    /// **Pazer** (פָּזֵר) — "scatter, disperse"
+    ///
+    /// A disjunctive accent marking a micro-phrase boundary. Indicates a
+    /// light pause within a sub-phrase.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
     Pazer,
-    /// Primary disjunctive prose accent Pazer Gadol
+
+    /// **Pazer Gadol** (פָּזֵר גָּדוֹל) — "great scatter"
+    ///
+    /// A prose-exclusive disjunctive, the strengthened form of Pazer. Marks a
+    /// micro-phrase boundary with longer melismatic elaboration.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
+    /// - **Exclusivity**: Prose only
     PazerGadol,
-    /// Primary disjunctive prose accent Telisha Gedolah
+
+    /// **Telisha Gedolah** (טְלִישָׁה גְּדוֹלָה) — "great magnification"
+    ///
+    /// A prose-exclusive disjunctive marking a micro-phrase boundary. Appears
+    /// as a prepositive mark.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
+    /// - **Exclusivity**: Prose only
     TelishaGedolah,
-    /// Primary disjunctive prose accent Legarmeh
+
+    /// **Legarmeh** (לְגַרְמֵהּ) — "by itself, independently"
+    ///
+    /// A disjunctive accent that stands alone as an independent phrase marker.
+    /// Often appears as a suffix indicating self-standing status.
+    ///
+    /// - **Category**: Disjunctive (primary)
+    /// - **Hierarchy Level**: Micro-phrase
     Legarmeh,
-    /// Primary conjunctive prose accent Munach
+
+    /// **Munach** (מֻנָּח) — "resting, placed"
+    ///
+    /// The most common conjunctive accent. Connects a word to the following
+    /// disjunctive, carrying the melody forward without a pause.
+    ///
+    /// - **Category**: Conjunctive (primary)
     Munach,
-    /// Primary conjunctive prose accent Mahpakh
+
+    /// **Mahpakh** (מַהְפָּךְ) — "overturning, transformation"
+    ///
+    /// A conjunctive accent linking words within a phrase. The mark is the
+    /// inverted form of its disjunctive counterpart.
+    ///
+    /// - **Category**: Conjunctive (primary)
     Mahpakh,
-    /// Primary conjunctive prose accent Merkha
+
+    /// **Merkha** (מֵרכָּא) — "lengthener, drawn out"
+    ///
+    /// A conjunctive accent with a forward-leaning melodic motion, connecting
+    /// a word to the next accented word.
+    ///
+    /// - **Category**: Conjunctive (primary)
     Merkha,
-    /// Primary conjunctive prose accent Merkha Kephulah
+
+    /// **Merkha Kephulah** (מֵרכָּא כְּפוּלָּה) — "doubled Merkha"
+    ///
+    /// A prose-exclusive conjunctive accent — the doubled form of Merkha.
+    /// Its presence is a strong indicator of prose context.
+    ///
+    /// - **Category**: Conjunctive (primary)
+    /// - **Exclusivity**: Prose only
     MerkhaKephulah,
-    /// Primary conjunctive prose accent Darga
+
+    /// **Darga** (דַּרְגָּא) — "step, grade, stair"
+    ///
+    /// A prose-exclusive conjunctive accent marking a stepping melodic motion.
+    /// Its presence is a strong indicator of prose context.
+    ///
+    /// - **Category**: Conjunctive (primary)
+    /// - **Exclusivity**: Prose only
     Darga,
-    /// Primary conjunctive prose accent Azla
+
+    /// **Azla** (אַזְלָא) — "going forth, departure"
+    ///
+    /// A conjunctive accent connecting a word to the following disjunctive.
+    /// Also known as Qadma in some scholarly traditions.
+    ///
+    /// - **Category**: Conjunctive (primary)
     Azla,
-    /// Primary conjunctive prose accent Telisha Qetannah
+
+    /// **Telisha Qetannah** (טְלִישָׁה קְטַנָּה) — "small magnification"
+    ///
+    /// A conjunctive counterpart to Telisha Gedolah, connecting words rather
+    /// than dividing phrases. Appears as a postpositive mark.
+    ///
+    /// - **Category**: Conjunctive (primary)
     TelishaQetannah,
-    /// Primary conjunctive prose accent Galgal
+
+    /// **Galgal** (גַּלְגַּל) — "wheel, rolling"
+    ///
+    /// A conjunctive accent with a rolling melodic motion. Appears in both
+    /// poetic and prose systems.
+    ///
+    /// - **Category**: Conjunctive (primary)
     Galgal,
-    /// Secondary conjunctive prose accent Meayla
+
+    /// **Meayla** (מֵעֲיָא) — "from a heap, abundance"
+    ///
+    /// A secondary conjunctive accent with a supportive melodic function.
+    /// Less frequent than primary conjunctives.
+    ///
+    /// - **Category**: Conjunctive (secondary)
     Meayla,
-    /// Secondary conjunctive prose accent Meteg
+
+    /// **Meteg** (מֶתֶג) — "bridle, restraint"
+    ///
+    /// A secondary conjunctive mark that clarifies vowel length and prevents
+    /// ambiguous sheva readings. Does not carry independent melodic function
+    /// in the primary cantillation hierarchy.
+    ///
+    /// - **Category**: Conjunctive (secondary)
     Meteg,
 }
 
 impl ProseAccent {
-    /// The total number of prose accents
+    /// The total number of prose accent variants.
+    ///
+    /// Composed of 18 disjunctive + 10 conjunctive accents.
     pub const LEN: usize = 28;
 }
 
@@ -91,33 +373,26 @@ mod tests {
 
     #[test]
     fn test_enum_iter_count() {
-        // Verify that Iter yields exactly LEN items
         assert_eq!(ProseAccent::iter().count(), ProseAccent::LEN);
         assert_eq!(ProseAccent::iter().count(), 28);
     }
 
     #[test]
     fn test_enum_iter_all_variants_present() {
-        // Ensure every defined variant appears in iteration
         let mut found = std::collections::HashSet::new();
-
         for accent in ProseAccent::iter() {
-            // Insert returns false if already present (duplicate detection)
             assert!(found.insert(accent), "Duplicate");
         }
         assert_eq!(found.len(), ProseAccent::LEN);
     }
-    // ── Variant count ──────────────────────────────────────────────
 
     #[test]
     fn len_constant_matches_variant_count() {
-        // 18 disjunctives + 10 conjunctives = 28
         assert_eq!(ProseAccent::LEN, 28);
     }
 
     #[test]
     fn discriminant_values_are_sequential() {
-        // Because of #[repr(u8)] the discriminants start at 0 and increment.
         assert_eq!(ProseAccent::Silluq as u8, 0);
         assert_eq!(ProseAccent::Atnach as u8, 1);
         assert_eq!(ProseAccent::Legarmeh as u8, 17);
@@ -125,15 +400,11 @@ mod tests {
         assert_eq!(ProseAccent::Meteg as u8, 27);
     }
 
-    // ── Default ────────────────────────────────────────────────────
-
     #[test]
     fn default_is_silluq() {
         let default = ProseAccent::default();
         assert_eq!(default, ProseAccent::Silluq);
     }
-
-    // ── relative_strength ──────────────────────────────────────────
 
     #[test]
     fn relative_strength_starts_at_one_for_first_variant() {
@@ -170,13 +441,8 @@ mod tests {
 
     #[test]
     fn silluq_is_strongest_disjunctive() {
-        // Silluq (variant 0) has strength 1 — the weakest by this scheme.
-        // The doc comment says "The strongest accent has a relative strength of 1".
-        // So lower == stronger. Confirm that Silluq indeed gets strength 1.
         assert_eq!(ProseAccent::Silluq.relative_strength(), Some(1));
     }
-
-    // ── Trait derivations ──────────────────────────────────────────
 
     #[test]
     fn clone_produces_equal_value() {
@@ -187,8 +453,8 @@ mod tests {
     #[test]
     fn copy_works_without_clone_explicit() {
         let original = ProseAccent::Pashta;
-        let copied = original; // relies on Copy
-        assert_eq!(original, copied); // original still usable
+        let copied = original;
+        assert_eq!(original, copied);
     }
 
     #[test]
@@ -213,8 +479,6 @@ mod tests {
         assert_ne!(h1.finish(), h3.finish());
     }
 
-    // ── Debug trait ────────────────────────────────────────────────
-
     #[test]
     fn debug_output_is_non_empty() {
         let dbg = format!("{:?}", ProseAccent::Tevir);
@@ -222,15 +486,8 @@ mod tests {
         assert!(dbg.contains("Tevir"));
     }
 
-    // ── Display ────────────────────────────────────────────────────
-    // Display delegates to english_name(), hebrew_name(), hebrew_concept().
-    // These methods aren't in this file, but if they compile we can smoke-test
-    // the format string structure.
-
     #[test]
     fn display_contains_parentheses_pattern() {
-        // The format is "{english} ({hebrew}), meaning: {concept}"
-        // At minimum the string should be non-empty and contain "meaning:".
         let s = ProseAccent::Silluq.to_string();
         assert!(!s.is_empty(), "Display output was empty");
         assert!(
@@ -249,10 +506,8 @@ mod tests {
     fn display_differs_across_variants() {
         let a = ProseAccent::Atnach.to_string();
         let b = ProseAccent::Segolta.to_string();
-        assert_ne!(a, b, "Two different variants produced identical Display");
+        assert_ne!(a, b);
     }
-
-    // ── Exhaustive checks over all variants ───────────────────────
 
     #[test]
     fn all_variants_have_distinct_relative_strength() {

@@ -2,13 +2,13 @@
 
 use crate::codepoints::TraditionNames;
 // Crate‑internal (local modules)
+use crate::api::PoetryAccent;
 use crate::codepoints::CodePointPosition;
 use crate::AccentCategory;
 use crate::AccentKind;
 use crate::AccentWordStress;
 use crate::GroupLevel;
 use crate::HebrewAccent;
-use crate::api::PoetryAccent;
 use crate::ProseAccent;
 
 /// Contains (non)technical details of a Hebrew Accent

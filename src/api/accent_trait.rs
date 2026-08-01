@@ -3,44 +3,260 @@ use crate::accent_data::{
     BHS_POETRY_RANK_MAP, BHS_PROSE_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE,
     PSEUDO_ACCENT_TABLE,
 };
-use crate::codepoints::CODEPOINT_METEG;
 use crate::api::{
-    AccentCategory, AccentKind, AccentWordStress, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, cantillation_symbol,
+    cantillation_symbol, AccentCategory, AccentKind, AccentWordStress, CantillationMark,
+    GroupLevel, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
 };
+use crate::codepoints::CODEPOINT_METEG;
 
-/// Used for retrieving information
+/// The `Accent` trait provides a unified interface for working with Hebrew
+/// cantillation marks (also known as ta'amim or trope).
+///
+/// ## Overview
+///
+/// Hebrew accents serve multiple purposes in biblical texts:
+/// - **Musical notation**: Indicating chant melodies for Torah reading
+/// - **Syntactic function**: Marking disjunctive (pauses) and conjunctive (connectors) relationships
+/// - **Word stress**: Indicating which syllable receives emphasis
+///
+/// This trait abstracts over three distinct accent systems:
+/// - [`ProseAccent`] - Used in most biblical books (prosaic texts)
+/// - [`PoetryAccent`] - Used in poetic books (Psalms, Proverbs, Job)
+/// - [`PseudoAccent`] - Non-cantillation marks treated similarly (e.g., Maqqeph, Paseq)
+///
+/// All three systems are wrapped by [`HebrewAccent`], which delegates to the
+/// appropriate implementation.
+///
+/// ## Implementation Details
+///
+/// The trait is automatically implemented for:
+/// - `HebrewAccent` - Delegates to inner variant (Prose/Poetry/Pseudo)
+/// - `ProseAccent` - Looked up via `PROSE_ACCENT_TABLE`
+/// - `PoetryAccent` - Looked up via `POETRY_ACCENT_TABLE`  
+/// - `PseudoAccent` - Looked up via `PSEUDO_ACCENT_TABLE`
+///
+/// All implementations are marked with `#[inline]` for zero-cost abstraction.
+///
+/// ## Safety
+///
+/// This trait is `Copy + Sized`, allowing accents to be passed by value without
+/// heap allocation. All methods return `'static` references where applicable,
+/// ensuring no lifetime issues.
+///
+/// ## Example
+///
+/// ```ignore
+/// use crate::api::{HebrewAccent, ProseAccent};
+/// use crate::accent::Accent;
+///
+/// // Create a prose accent
+/// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
+///
+/// // Query accent properties
+/// println!("Name: {}", silluq.english_name());  // "Silluq"
+/// println!("Symbol: {}", silluq.cantillation_symbol());  // "֫"
+/// println!("Primary mark: {:?}", silluq.primary_cantillation_mark());
+///
+/// // Check if accent has hierarchical grouping
+/// if let Some(level) = silluq.group_level() {
+///     println!("Group level: {:?}", level);
+/// }
+/// ```
 pub trait Accent: Copy + Sized {
-    /// Hebrew name of the accent
+    /// Returns the Hebrew name of the accent.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
+    /// assert_eq!(silluq.hebrew_name(), "סֻלּוּק");
+    /// ```
     fn hebrew_name(self) -> &'static str;
-    /// Semantic meaning of the Hebrew name
+
+    /// Returns the semantic meaning/concept of the Hebrew name.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let atnach = ProseAccent::Atnach;
+    /// // אַתְנָח literally means "rest" or "pause"
+    /// assert_eq!(atonach.hebrew_concept(), "rest");
+    /// ```
     fn hebrew_concept(self) -> &'static str;
-    /// English transliteration of the accent name
+
+    /// Returns the English transliteration of the accent name.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let revia = PoetryAccent::Revia;
+    /// assert_eq!(revia.english_name(), "Revia");
+    /// ```
     fn english_name(self) -> &'static str;
-    /// BLS Academic name
-    /// University settings, linguists
-    /// Detailed distinction between sounds, marks dagesh
-    /// (source: <https://hebrewtransliteration.app/>)
+
+    /// Returns the SBL (Society of Biblical Literature) academic transliteration.
+    ///
+    /// Note: This provides detailed distinctions between sounds and marks,
+    /// accounting for dagesh and other diacritical elements.
+    ///
+    /// # Reference
+    /// Source: <https://hebrewtransliteration.app/>
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// // May differ from english_name for phonetic precision
+    /// println!("SBL: {}", silluq.sbl_academic_name());
+    /// ```
     fn sbl_academic_name(self) -> &'static str;
-    /// Accent kind (primary, secondary), if applicable
+
+    /// Returns the accent kind (primary or secondary), if applicable.
+    ///
+    /// Primary accents typically carry more weight in the phrasing hierarchy.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// // Silluq is a primary accent (marks end of verse)
+    /// assert!(silluq.kind().is_some());
+    /// ```
     fn kind(self) -> Option<AccentKind>;
-    /// Accent category (disjunctive, conjunctive), if applicable
+
+    /// Returns the accent category (disjunctive or conjunctive), if applicable.
+    ///
+    /// - **Disjunctive**: Marks pauses/breaks in the text
+    /// - **Conjunctive**: Connects words together
+    ///
+    /// # Example
+    /// ```ignore
+    /// use crate::api::AccentCategory;
+    ///
+    /// let silluq = ProseAccent::Silluq;   // Disjunctive
+    /// let munach = ProseAccent::Munach;   // Conjunctive
+    ///
+    /// assert_ne!(silluq.category(), munach.category());
+    /// ```
     fn category(self) -> Option<AccentCategory>;
-    /// Word stress position relative to the consonant, if applicable
+
+    /// Returns word stress position relative to the consonant, if applicable.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// if let Some(stress) = silluq.word_stress() {
+    ///     match stress {
+    ///         AccentWordStress::Milra => println!("Stress on last syllable"),
+    ///         AccentWordStress::Milel => println!("Stress on penultimate syllable"),
+    ///     }
+    /// }
+    /// ```
     fn word_stress(self) -> Option<AccentWordStress>;
-    /// Whether this accent consists of multiple codepoints
+
+    /// Returns whether this accent consists of multiple Unicode codepoints.
+    ///
+    /// Compound accents have both a primary AND secondary cantillation mark.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// let mahpakh_munach = ProseAccent::Mahpakh;  // Often compound
+    ///
+    /// assert_eq!(silluq.is_compound(), false);
+    /// // Compound accents vary by implementation
+    /// ```
     fn is_compound(self) -> bool;
-    /// The primary cantillation mark (always present)
+
+    /// Returns the primary cantillation mark (always present).
+    ///
+    /// Every accent must have exactly one primary mark.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// let primary = silluq.primary_cantillation_mark();
+    ///
+    /// assert!(!primary.symbol.is_empty());
+    /// assert!(!primary.hex_bytes.is_empty());  // e.g., "05AB"
+    /// println!("Unicode: {} ({})", primary.unicode_value, primary.canonical_name);
+    /// ```
     fn primary_cantillation_mark(self) -> CantillationMark;
-    /// The secondary cantillation mark (only for compound accents)
+
+    /// Returns the secondary cantillation mark (only for compound accents).
+    ///
+    /// # Example
+    /// ```ignore
+    /// let accent = ProseAccent::SomeCompoundAccent;
+    ///
+    /// if let Some(secondary) = accent.secondary_cantillation_mark() {
+    ///     println!("Secondary mark: {}", secondary.symbol);
+    /// } else {
+    ///     println!("This accent is not compound");
+    /// }
+    /// ```
     fn secondary_cantillation_mark(self) -> Option<CantillationMark>;
-    /// Scholarly notes or context about this accent, if available
+
+    /// Returns scholarly notes or context about this accent, if available.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    ///
+    /// if let Some(notes) = silluq.notes() {
+    ///     println!("Scholarly notes: {}", notes);
+    /// } else {
+    ///     println!("No additional notes available");
+    /// }
+    /// ```
     fn notes(self) -> Option<&'static str>;
-    /// Indicates the relative strength for disjunctive accents
-    /// Where 1 represents the strongest accent
+
+    /// Indicates the relative strength for disjunctive accents.
+    ///
+    /// Where `1` represents the strongest/most dominant accent.
+    /// Higher numbers indicate weaker/subordinate accents.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// if let Some(strength) = silluq.relative_strength() {
+    ///     println!("Relative strength: {}", strength);
+    ///     if strength == 1 {
+    ///         println!("This is a primary disjunctive accent!");
+    ///     }
+    /// }
+    /// ```
     fn relative_strength(self) -> Option<u8>;
-    /// Hierarchical disjunctive group level (Futato classification)
+
+    /// Returns the hierarchical disjunctive group level (Futato classification).
+    ///
+    /// This indicates the accent's position in the syntactic hierarchy
+    /// of the verse phrase structure.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    ///
+    /// if let Some(level) = silluq.group_level() {
+    ///     match level {
+    ///         GroupLevel::Verse => println!("Ends a verse"),
+    ///         GroupLevel::HalfVerse => println!("Ends a half-verse"),
+    ///         GroupLevel::Phrase => println!("Marks a phrase boundary"),
+    ///         // ... other levels
+    ///     }
+    /// } else {
+    ///     // Conjunctive accents have no group level
+    ///     println!("Not a disjunctive accent");
+    /// }
+    /// ```
     fn group_level(self) -> Option<GroupLevel>;
-    /// Cantilation symbol
+
+    /// Returns the cantillation symbol as a Unicode string.
+    ///
+    /// This is the rendered representation of the accent mark(s).
+    ///
+    /// # Example
+    /// ```ignore
+    /// let silluq = ProseAccent::Silluq;
+    /// let symbol = silluq.cantillation_symbol();
+    ///
+    /// println!("Display: {}", symbol);  // "֫"
+    /// ```
     fn cantillation_symbol(self) -> String;
 }
 
@@ -150,7 +366,7 @@ impl Accent for HebrewAccent {
     }
     #[inline]
     fn cantillation_symbol(self) -> String {
-            match self {
+        match self {
             HebrewAccent::Prose(p) => p.cantillation_symbol(),
             HebrewAccent::Poetry(p) => p.cantillation_symbol(),
             HebrewAccent::Pseudo(p) => p.cantillation_symbol(),

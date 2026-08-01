@@ -11,29 +11,23 @@ mod pseudo;
 mod public_model;
 mod sentence_context;
 
-
-
-
+pub use hebrew_accent::HebrewAccent;
 pub use poetry::PoetryAccent;
 pub use prose::ProseAccent;
 pub use pseudo::PseudoAccent;
-pub use hebrew_accent::HebrewAccent;
 
+pub use public_model::cantillation_symbol;
 pub use public_model::AccentCategory;
 pub use public_model::AccentKind;
 pub use public_model::AccentWordStress;
 pub use public_model::CantillationMark;
 pub use public_model::CantillationMarkPosition;
 pub use public_model::GroupLevel;
-pub use public_model::cantillation_symbol;
 
 pub use context::Context;
 pub use matcher::Match;
 pub use sentence_context::SentenceContext;
- 
+
 pub use misc::try_determine_context;
 
-
 pub use accent_trait::Accent;
-
-

@@ -127,27 +127,26 @@ mod accent_data;
 mod api;
 mod codepoints;
 mod common;
+mod error;
 mod formatting;
 mod hierarchy;
 mod sentence;
-mod error;
 
-
-// Re-exports 
-pub use crate::api::Context;
-pub use crate::api::Match;
-pub use crate::api::SentenceContext;
+// Re-exports
 pub use crate::api::Accent;
-pub use crate::api::HebrewAccent;
-pub use crate::api::PoetryAccent;
-pub use crate::api::ProseAccent;
-pub use crate::api::PseudoAccent;
 pub use crate::api::AccentCategory;
 pub use crate::api::AccentKind;
 pub use crate::api::AccentWordStress;
 pub use crate::api::CantillationMark;
 pub use crate::api::CantillationMarkPosition;
+pub use crate::api::Context;
 pub use crate::api::GroupLevel;
+pub use crate::api::HebrewAccent;
+pub use crate::api::Match;
+pub use crate::api::PoetryAccent;
+pub use crate::api::ProseAccent;
+pub use crate::api::PseudoAccent;
+pub use crate::api::SentenceContext;
 
 // public functions
 pub use crate::api::try_determine_context;

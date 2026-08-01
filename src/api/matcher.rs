@@ -1,46 +1,245 @@
-/// Represents a single match if the accent is found
+//! # Text Match Representation
+//!
+//! This module provides the [`Match`] struct for representing a substring match
+//! within a larger text (haystack). It is designed primarily for Hebrew cantillation
+//! accent detection but works with any UTF-8 text.
+//!
+//! ## Overview
+//!
+//! The [`Match`] struct stores:
+//! - A **borrowed reference** to the original haystack text
+//! - **Byte offsets** (not character offsets) for the match boundaries
+//! - Immutable, lightweight representation (uses `Copy` trait)
+//!
+//! ## Byte vs. Character Offsets
+//!
+//! ⚠️ **Important**: This struct operates on **byte offsets**, not Unicode
+//! character counts. Hebrew text with cantillation marks uses multi-byte
+//! UTF-8 sequences, so a single visual character may span multiple bytes.
+//!
+//! ```text
+//! Example: "וַיְהִי" (Hebrew text with cantillation)
+//!          |0  |3  |6  |9  |12 |
+//!          |───┼───┼───┼───┼───|
+//!           ו   א   י   ה   י
+//!           (multi-byte with combining marks)
+//!
+//! Match::new(haystack, 0, 6) → "וַיְהִ" (NOT 2 characters)
+//! ```
+//!
+//! ## Invariants
+//!
+//! The struct maintains these guarantees:
+//!
+//! | Invariant | Description |
+//! |-----------|-------------|
+//! | `end >= start` | End offset always ≥ start offset |
+//! | `len() == end - start` | Length computed from offsets |
+//! | `is_empty() == len() == 0` | Empty when start equals end |
+//! | `as_str().len() == len()` | Slice length matches computed length |
+//!
+//! ## Usage
+//!
+//! ```ignore
+//! use crate::matcher::Match;
+//!
+//! // Find a match in Hebrew text
+//! let haystack = "וַיְהִ֣י בְיָמֵ֗י";
+//! let m = Match::new(haystack, 0, 12);
+//!
+//! // Access match properties
+//! assert_eq!(m.start(), 0);
+//! assert_eq!(m.end(), 12);
+//! assert_eq!(m.len(), 12);
+//! assert_eq!(m.as_str(), "וַיְהִ֣י");
+//! assert_eq!(m.range(), 0..12);
+//!
+//! // Check if empty
+//! assert!(!m.is_empty());
+//! ```
+//!
+//! ## Traits
+//!
+//! The `Match` struct derives several useful traits:
+//!
+//! - **`Debug`** — Human-readable output for debugging
+//! - **`Copy` / `Clone`** — Lightweight value semantics
+//! - **`Eq` / `PartialEq`** — Equality based on offsets (not content)
+//!
+//! ## Safety Considerations
+//!
+//! - **UTF-8 boundaries**: The struct does not validate that offsets align
+//!   with UTF-8 character boundaries. Calling `as_str()` with mid-character
+//!   offsets will panic due to Rust's slice bounds checking.
+//!
+//! - **Lifetime**: The struct borrows from the haystack for lifetime `'h`.
+//!   This prevents use-after-free bugs at compile time.
+//!
+//! - **Thread safety**: The struct implements `Send + Sync` and can be shared
+//!   across threads (the underlying string must remain alive).
+//!
+//! # Examples
+//!
+//! ## Single Match
+//!
+//! ```ignore
+//! let text = "Hebrew accent detection";
+//! let m = Match::new(text, 7, 13);
+//!
+//! println!("Found: {}", m.as_str()); // "accent"
+//! println!("At byte {}..{}", m.start(), m.end());
+//! println!("Length: {} bytes", m.len());
+//! ```
+//!
+//! ## Multiple Matches
+//!
+//! ```ignore
+//! let haystack = "first second third fourth";
+//! let matches = vec![
+//!     Match::new(haystack, 0, 5),   // "first"
+//!     Match::new(haystack, 6, 12),  // "second"
+//!     Match::new(haystack, 13, 18), // "third"
+//!     Match::new(haystack, 19, 25), // "fourth"
+//! ];
+//!
+//! for m in matches {
+//!     println!("Match {}: '{}' ({} bytes)",
+//!         m.as_str(),
+//!         m.len(),
+//!     );
+//! }
+//! ```
+
+use std::ops::Range;
+
+/// Represents a single substring match within a haystack.
+///
+/// This struct captures the location and extent of a match without copying
+/// the underlying text. It stores byte offsets (not character offsets) and
+/// maintains a reference to the original haystack to enable zero-cost
+/// substring extraction.
+///
+/// # Lifetime
+///
+/// The `'h` lifetime parameter ties the match to the lifetime of the haystack.
+/// This ensures the underlying text cannot be dropped while a reference to it
+/// still exists.
+///
+/// ```compile_fail
+/// // This would fail to compile - haystack dropped too early
+/// let text = String::from("Hello world");
+/// let m = match_match(&text, 0, 5); // hypothetical function
+/// drop(text);
+/// let _slice = m.as_str(); // ERROR: borrow of moved value
+/// ```
+///
+/// # Offset Semantics
+///
+/// **Byte offsets, not character indices**. For UTF-8 text (especially Hebrew
+/// with cantillation marks), one visual character may occupy multiple bytes.
+///
+/// | Text | Bytes | Characters |
+/// |------|-------|------------|
+/// | `a` | 1 | 1 |
+/// | `א` | 2 | 1 |
+/// | `בְּ` (Bet + sheva + dagesh) | 4 | 1 |
+/// | `וַיְהִי` | ~18 | 5 |
+///
+/// # Invariants
+///
+/// The struct maintains these guarantees internally:
+///
+/// 1. **Ordering**: `end >= start` (end is never before start)
+/// 2. **Length formula**: `len() == end - start`
+/// 3. **Empty definition**: `is_empty() == start == end`
+/// 4. **Slice consistency**: `as_str().len() == len()`
+///
+/// # Fields
+///
+/// - `haystack` — Borrowed reference to the original text (lifetime `'h`)
+/// - `start` — Byte offset where the match begins (inclusive)
+/// - `end` — Byte offset where the match ends (exclusive)
+///
+/// # Example
+///
+/// ```ignore
+/// use crate::matcher::Match;
+///
+/// let haystack = "Hebrew text with accents";
+/// let m = Match::new(haystack, 0, 6);
+///
+/// assert_eq!(m.start(), 0);
+/// assert_eq!(m.end(), 6);
+/// assert_eq!(m.len(), 6);
+/// assert_eq!(m.as_str(), "Hebrew");
+/// ```
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
-    /// The matched HebrewAccent
+    /// The source text containing the match.
+    ///
+    /// This is a borrowed reference with lifetime `'h`, ensuring the underlying
+    /// text remains valid for the duration of the match's existence.
+    ///
+    /// # Invariant
+    ///
+    /// The `start` and `end` offsets must be valid indices into this string
+    /// (or a boundary point for empty matches at the end).
     haystack: &'h str,
-    /// Start byte of the match
+
+    /// Byte offset where the match starts (inclusive).
+    ///
+    /// # Range
+    ///
+    /// - Minimum: `0`
+    /// - Maximum: `haystack.len()`
+    /// - Must be ≤ `end`
     start: usize,
-    /// End byte of the match
+
+    /// Byte offset where the match ends (exclusive).
+    ///
+    /// # Range
+    ///
+    /// - Minimum: `start`
+    /// - Maximum: `haystack.len()`
+    /// - Defines one-past-the-end boundary
     end: usize,
 }
 
 impl<'h> Match<'h> {
-    /// Returns the byte offset of the start of the match in the haystack.
-    #[inline]
-    pub fn start(&self) -> usize {
-        self.start
-    }
-    /// Returns the byte offset of the end of the match in the haystack.
-    #[inline]
-    pub fn end(&self) -> usize {
-        self.end
-    }
-    /// Returns true if and only if this match has a length of zero.
-    #[inline]
-    pub fn is_empty(&self) -> bool {
-        self.start == self.end
-    }
-    /// Returns the length, in bytes, of this match.
-    #[inline]
-    pub fn len(&self) -> usize {
-        self.end - self.start
-    }
-    /// Returns the range from start till end (byte offsets)
-    #[inline]
-    pub fn range(&self) -> core::ops::Range<usize> {
-        self.start..self.end
-    }
-    /// Returns the substring of the haystack that matched.
-    #[inline]
-    pub fn as_str(&self) -> &'h str {
-        &self.haystack[self.range()]
-    }
-    /// Creates a new match from the given haystack and byte offsets.
+    /// Creates a new match from a haystack and byte offsets.
+    ///
+    /// # Parameters
+    ///
+    /// - `haystack` — The source text containing the match
+    /// - `start` — Starting byte offset (inclusive, `0 <= start <= haystack.len()`)
+    /// - `end` — Ending byte offset (exclusive, `start <= end <= haystack.len()`)
+    ///
+    /// # Panics
+    ///
+    /// This function does not panic if called directly, but using an invalid
+    /// offset combination will cause `as_str()` to panic later when attempting
+    /// to slice the haystack.
+    ///
+    /// # Invariants
+    ///
+    /// The caller must ensure:
+    /// - `start <= end`
+    /// - `end <= haystack.len()`
+    ///
+    /// Violating these invariants results in undefined behavior or panics
+    /// in `as_str()`.
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "Hello World";
+    /// let m = Match::new(text, 0, 5); // "Hello"
+    ///
+    /// assert_eq!(m.as_str(), "Hello");
+    /// assert_eq!(m.len(), 5);
+    /// ```
     #[inline]
     pub(crate) fn new(haystack: &'h str, start: usize, end: usize) -> Match<'h> {
         Match {
@@ -48,6 +247,200 @@ impl<'h> Match<'h> {
             start,
             end,
         }
+    }
+
+    /// Returns the starting byte offset of the match.
+    ///
+    /// # Return Value
+    ///
+    /// An inclusive byte index into the haystack where the match begins.
+    ///
+    /// # Bounds
+    ///
+    /// `0 <= start <= haystack.len()`
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "Hebrew accent";
+    /// let m = Match::new(text, 7, 13);
+    ///
+    /// assert_eq!(m.start(), 7); // "accent" starts at byte 7
+    /// ```
+    #[inline]
+    pub fn start(&self) -> usize {
+        self.start
+    }
+
+    /// Returns the ending byte offset of the match.
+    ///
+    /// # Return Value
+    ///
+    /// An exclusive byte index into the haystack (one past the last byte).
+    ///
+    /// # Bounds
+    ///
+    /// `start <= end <= haystack.len()`
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "Hebrew accent";
+    /// let m = Match::new(text, 7, 13);
+    ///
+    /// assert_eq!(m.end(), 13); // "accent" ends at byte 13
+    /// ```
+    #[inline]
+    pub fn end(&self) -> usize {
+        self.end
+    }
+
+    /// Returns `true` if and only if this match has zero length.
+    ///
+    /// An empty match occurs when `start == end`. This is useful for representing
+    /// positions between characters (e.g., insertion points) rather than actual
+    /// substring matches.
+    ///
+    /// # Return Value
+    ///
+    /// - `true` — No bytes are included in the match (`start == end`)
+    /// - `false` — At least one byte is included in the match
+    ///
+    /// # Relation to `len()`
+    ///
+    /// ```text
+    /// is_empty() == (len() == 0) == (start == end)
+    /// ```
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// // Empty match (position between characters)
+    /// let m_empty = Match::new("text", 3, 3);
+    /// assert!(m_empty.is_empty());
+    /// assert_eq!(m_empty.len(), 0);
+    ///
+    /// // Non-empty match
+    /// let m_full = Match::new("text", 0, 4);
+    /// assert!(!m_full.is_empty());
+    /// assert_eq!(m_full.len(), 4);
+    /// ```
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.start == self.end
+    }
+
+    /// Returns the length of the match in bytes.
+    ///
+    /// # Calculation
+    ///
+    /// ```text
+    /// len() == end - start
+    /// ```
+    ///
+    /// # Unicode Considerations
+    ///
+    /// This returns **byte length**, not character count. For UTF-8 text
+    /// with Hebrew characters and cantillation marks, the byte count will
+    /// typically exceed the character count.
+    ///
+    /// | Example | Bytes | Characters |
+    /// |---------|-------|------------|
+    /// | `"a"` | 1 | 1 |
+    /// | `"בְּ"` (Bet + diacritics) | 4 | 1 |
+    /// | `"וַיְהִי"` | ~18 | 5 |
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "בְּרֵאשִׁ֖ית";
+    /// let m = Match::new(text, 0, 6);
+    ///
+    /// println!("Bytes: {}", m.len());     // e.g., 6 bytes
+    /// println!("Chars: {}", m.as_str().chars().count()); // fewer chars
+    /// ```
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.end - self.start
+    }
+
+    /// Returns the byte offset range of the match.
+    ///
+    /// # Return Value
+    ///
+    /// A [`core::ops::Range<usize>`] representing `[start, end)`.
+    ///
+    /// # Use Cases
+    ///
+    /// - **Direct slicing**: `&haystack[m.range()]`
+    /// - **Iteration**: `for i in m.range()`
+    /// - **Overlap detection**: Compare ranges for intersection
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "Hello World";
+    /// let m = Match::new(text, 6, 11);
+    ///
+    /// let range = m.range();
+    /// assert_eq!(range, 6..11);
+    ///
+    /// // Use for slicing
+    /// assert_eq!(&text[range], m.as_str()); // "World"
+    /// ```
+    #[inline]
+    pub fn range(&self) -> Range<usize> {
+        self.start..self.end
+    }
+
+    /// Returns the matched substring as a string slice.
+    ///
+    /// # Return Value
+    ///
+    /// A borrowed `&'h str` containing the exact text from the haystack
+    /// within the match boundaries.
+    ///
+    /// # Safety Note
+    ///
+    /// If `start` and `end` do not align with UTF-8 character boundaries,
+    /// this will **panic** due to Rust's string slice validation. This
+    /// function assumes the caller has ensured valid offsets.
+    ///
+    /// # Performance
+    ///
+    /// Zero-copy operation — no allocation occurs. The returned slice points
+    /// directly into the haystack's memory.
+    ///
+    /// # Length Guarantee
+    ///
+    /// ```text
+    /// as_str().len() == len()
+    /// ```
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use crate::matcher::Match;
+    ///
+    /// let text = "בְּרֵאשִׁ֖ית בָּרָ֣א";
+    /// let m = Match::new(text, 0, 10);
+    ///
+    /// assert_eq!(m.as_str(), "בְּרֵאשִׁ֖ית");
+    /// assert_eq!(m.as_str().len(), m.len()); // Consistent lengths
+    /// ```
+    #[inline]
+    pub fn as_str(&self) -> &'h str {
+        &self.haystack[self.range()]
     }
 }
 

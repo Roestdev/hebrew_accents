@@ -1,31 +1,150 @@
+//! # Sentence Context Management
+//!
+//! This module provides the `SentenceContext` type for representing Hebrew
+//! biblical sentences with their associated liturgical context (Prose vs Poetry).
+//!
+//! ## Background
+//!
+//! In the Hebrew Bible (Tanakh), cantillation marks (ta'amim/accents) serve two
+//! distinct functions depending on the textual register:
+//!
+//! - **Prosaic Text** (Torah, Prophets, most Writings): Uses one system of
+//!   disjunctive/conjunctive accents for Torah reading chant
+//! - **Poetic Text** (Psalms, Proverbs, Job): Uses a modified accent system
+//!   with different melodic conventions
+//!
+//! Some accents appear exclusively in one register, while others are shared.
+//! This distinction enables automatic context detection, though ambiguity is
+//! possible when sentences contain only shared accents.
+//!
+//! ## Core Concepts
+//!
+//! | Concept | Description |
+//! |---------|-------------|
+//! | `SentenceContext` | Holds sentence text + context metadata |
+//! | `Context::Prosaic` | Standard prose accent system |
+//! | `Context::Poetic` | Poetic accent system |
+//! | `try_determine_context()` | Auto-detect context from accent patterns |
+//!
+//! ## Usage Pattern
+//!
+//! ```ignore
+//! use hebrew_accents::{SentenceContext, Context};
+//!
+//! // Create a sentence with explicit context
+//! let sentence = SentenceContext::new(text, Context::Prosaic)?;
+//!
+//! // Or use the built-in default
+//! let default = SentenceContext::with_valid_default()?;
+//!
+//! // Attempt to auto-detect context
+//! let detected = sentence.try_determine_context()?;
+//! ```
+
+use crate::api::context::Context;
 use crate::error::SentenceContextError;
 use crate::sentence;
 use crate::sentence::detector::detect_context_from_sentence;
-use crate::api::context::Context;
 use sentence::validator::validate_sentence;
 
-/// Sentence including the context
+/// Represents a Hebrew biblical sentence with its associated liturgical context.
+///
+/// # Design Rationale
+///
+/// This struct encapsulates both the raw sentence text and its contextual
+/// classification. The separation allows:
+///
+/// 1. **Validation**: Ensures sentence meets minimum requirements (non-empty,
+///    properly formed)
+/// 2. **Context Tracking**: Maintains whether the sentence follows prose or
+///    poetic accent conventions
+/// 3. **Auto-Detection**: Enables inference of context from accent patterns
+///
+/// # Thread Safety
+///
+/// The struct is thread-safe (`Send + Sync`) as it contains only owned `String`
+/// and a `Copy` enum variant.
+///
+/// # Ordering
+///
+/// Implements `Ord` for lexicographic comparison by sentence content. When
+/// sentences are equal, context breaks ties (`Poetic < Prosaic`).
+///
+/// # Examples
+///
+/// ```ignore
+/// use hebrew_accents::{SentenceContext, Context};
+///
+/// // Constructor with validation
+/// let ctx = SentenceContext::new(
+///     "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים",
+///     Context::Prosaic
+/// )?;
+///
+/// // Accessors
+/// assert_eq!(ctx.as_str(), "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים");
+/// assert_eq!(ctx.context(), Context::Prosaic);
+///
+/// // Cloning creates independent copies
+/// let copy = ctx.clone();
+/// assert_eq!(ctx, copy);
+/// ```
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub struct SentenceContext {
-    /// The sentence content (owned)
+    /// The actual Hebrew sentence text with cantillation marks.
+    ///
+    /// This is validated upon construction to ensure it's non-empty and
+    /// contains valid UTF-8 characters suitable for Hebrew text processing.
     pub sentence: String,
-    /// The context of the sentence
+
+    /// The liturgical context determining which accent system applies.
+    ///
+    /// - `Context::Prosaic` - Standard prose cantillation
+    /// - `Context::Poetic` - Poetic book cantillation
     pub ctx: Context,
 }
 
 impl SentenceContext {
-    /// Creates a new object: SentenceContext
+    /// Creates a validated `SentenceContext` instance.
+    ///
+    /// # Parameters
+    ///
+    /// - `sentence`: Any value convertible to `String` containing Hebrew text
+    /// - `ctx`: The expected context (Prosaic or Poetic)
+    ///
+    /// # Validation
+    ///
+    /// The sentence is validated via [`validate_sentence`](crate::sentence::validator::validate_sentence)
+    /// before acceptance. Validation ensures:
+    ///
+    /// - Non-empty string
+    /// - Valid UTF-8 encoding
+    /// - Contains recognized Hebrew characters (may vary by implementation)
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SentenceContextError`] if:
+    /// - The sentence fails validation
+    /// - The sentence is empty
+    /// - Contains invalid characters
     ///
     /// # Example
-    /// ```
-    /// use hebrew_accents::Context;
-    /// use hebrew_accents::SentenceContext;
     ///
-    /// let sentence_context = SentenceContext::new( "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃  ׃ פ", Context::Prosaic);
-    /// let binding = sentence_context.unwrap();
-    /// assert_eq!(binding.ctx,Context::Prosaic);
-    /// assert_eq!(binding.sentence,"וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃  ׃ פ");
+    /// ```rust
+    /// use hebrew_accents::{SentenceContext, Context};
+    ///
+    /// // Successful creation
+    /// let ctx = SentenceContext::new(
+    ///     "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃",
+    ///     Context::Prosaic
+    /// );
+    /// assert!(ctx.is_ok());
+    ///
+    /// // Failure with empty string
+    /// let empty = SentenceContext::new("", Context::Prosaic);
+    /// assert!(empty.is_err());
     /// ```
+
     pub fn new(sentence: impl Into<String>, ctx: Context) -> Result<Self, SentenceContextError> {
         let sentence_str = sentence.into();
 
@@ -38,116 +157,186 @@ impl SentenceContext {
         })
     }
 
-    /// Returns a default `SentenceContext` with a valid non-empty string.
+    /// Creates a `SentenceContext` with Genesis 1:1 as the default sentence.
     ///
-    /// Since an empty string will fail validation".
+    /// # Why Genesis 1:1?
     ///
-    /// ## Note
-    /// Genesis 1:1 is used as the default sentence
-    /// This method assumes always passes `validate_sentence`.
+    /// This verse is chosen because:
+    /// 1. It's universally recognized (first verse of the Torah)
+    /// 2. Contains clear disjunctive/prosaic accents
+    /// 3. Well-formed with standard cantillation
+    /// 4. Always passes validation
+    ///
+    /// # Context Default
+    ///
+    /// Returns `Context::Prosaic` since Genesis belongs to the Torah (prose).
     ///
     /// # Example
-    /// ```
+    ///
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context};
     ///
-    /// let sentence_context = SentenceContext::with_valid_default();
-    /// let binding = sentence_context.unwrap();
-    /// assert_eq!(binding.ctx,Context::Prosaic);
-    /// assert_eq!(binding.sentence,"בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃");
+    /// let ctx = SentenceContext::with_valid_default()?;
+    ///
+    /// // Verify Genesis 1:1 content
+    /// assert_eq!(ctx.context(), Context::Prosaic);
+    /// assert_eq!(
+    ///     ctx.as_str(),
+    ///     "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃"
+    /// );
     /// ```
+    ///
+    /// # Note
+    ///
+    /// Unlike `new()`, this method never requires specifying the sentence text
+    /// manually. Use it for testing, prototyping, or when a known-good sample
+    /// is sufficient.
     pub fn with_valid_default() -> Result<Self, SentenceContextError> {
         let genesis_1_verse_1 = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
         Self::new(genesis_1_verse_1, Context::default())
     }
 
-    /// Returns a reference to the sentence content.
+    /// Returns a string slice view of the sentence content.
+    ///
+    /// # Ownership
+    ///
+    /// This returns a borrowed `&str` — no allocation occurs.
     ///
     /// # Example
-    /// ```
+    ///
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context};
     ///
-    /// let ctx = SentenceContext::new("שָׁלוֹם עַל יִשְׂרָאֵל", Context::Prosaic).unwrap();
+    /// let ctx = SentenceContext::new("שָׁלוֹם", Context::Prosaic)?;
     ///
-    /// // Access the underlying string slice
-    /// assert_eq!(ctx.as_str(), "שָׁלוֹם עַל יִשְׂרָאֵל");
-    /// assert_eq!(ctx.as_str().len(), 22); // Length in bytes
+    /// // Get string slice
+    /// let text: &str = ctx.as_str();
+    /// assert_eq!(text, "שָׁלוֹם");
+    ///
+    /// // Can be used with standard string operations
+    /// println!("Length: {} chars", text.chars().count());
+    /// println!("Length: {} bytes", text.len());
     /// ```
     pub fn as_str(&self) -> &str {
         &self.sentence
     }
 
-    /// Returns the context of the sentence (Poetic or Prosaic).
+    /// Returns the context classification of this sentence.
+    ///
+    /// # Context Types
+    ///
+    /// | Variant | Meaning | Accent System |
+    /// |---------|---------|---------------|
+    /// | `Context::Prosaic` | Standard prose | Torah reading tropes |
+    /// | `Context::Poetic` | Poetic books | Modified poetic tropes |
     ///
     /// # Example
-    /// ```
+    ///
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context};
     ///
-    /// // Create a poetic context
-    /// let poetry = SentenceContext::new("זְמִירוֹת", Context::Poetic).unwrap();
-    /// assert_eq!(poetry.context(), Context::Poetic);
+    /// let poetry = SentenceContext::new("אָז יָשִׁיר", Context::Poetic)?;
+    /// let prose = SentenceContext::new("וַיֹּאמֶר", Context::Prosaic)?;
     ///
-    /// // Create a prosaic context
-    /// let prose = SentenceContext::new("וַיְדַבֵּר", Context::Prosaic).unwrap();
+    /// assert_eq!(poetry.context(), Context::Poetic);
     /// assert_eq!(prose.context(), Context::Prosaic);
     ///
-    /// // Verify equality with the enum variant
-    /// if poetry.context() == Context::Poetic {
-    ///     println!("This is poetry!");
+    /// // Pattern matching for context-aware processing
+    /// match poetry.context() {
+    ///     Context::Poetic => println!("Using poetic accent rules"),
+    ///     Context::Prosaic => println!("Using prose accent rules"),
     /// }
     /// ```
     pub fn context(&self) -> Context {
         self.ctx
     }
 
-    /// Try to determine the context of the given sentence
+    /// Attempts to determine the sentence context from its accent pattern.
     ///
-    /// This function tries to classify a Hebrew sentence as either poetic or prose by analyzing its accentuation pattern (ta'amim).
-    /// However, accurate classification is not always guaranteed due to the existence of two distinct accent systems.
-    /// While certain accents are exclusive to one register, others appear in both, creating ambiguity that can prevent
-    /// definitive context determination.
+    /// # How It Works
     ///
-    /// The function works by checking for the presence of accent CantillationSymbol that are exclusive to
-    /// each context:
+    /// The algorithm scans the sentence for **exclusive** accent markers:
     ///
-    /// **Prose-exclusive accents** (Segolta, Zaqeph Qatan/Gadol, Pashta, Tevir, Yetiv,
-    /// Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga):
-    ///   → Indicate the sentence is likely Prosaic
+    /// ## Prose-Exclusive Accents
+    /// When found → Context is likely `Prosaic`:
+    /// - Segolta
+    /// - Zaqeph Qatan / Zaqeph Gadol
+    /// - Pashta
+    /// - Tevir
+    /// - Yetiv
+    /// - Gershayim
+    /// - Pazer Gadol
+    /// - Telisha Gedolah / Telisha Qetannah
+    /// - Merkha Kephulah
+    /// - Darga
     ///
-    /// **Poetry-exclusive accents** (Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh):
-    ///   → Indicate the sentence is likely Poetic
-    ///
-    /// # Returns
-    ///
-    /// * `Ok(Context::Prosaic)` - Only prose-exclusive accents were detected
-    /// * `Ok(Context::Poetic)` - Only poetry-exclusive accents were detected
-    /// * `Err(SentenceContextError::DerivationFailed("..."))` - One of the following:
-    ///   * `"Unique prose and poetry accent markers identified."` — Ambiguous input containing
-    ///     characteristics of both contexts
-    ///   * `"No distinguishable prose and/or poetry accents have been found"` — Input lacks
-    ///     any context-specific accent markers
+    /// ## Poetry-Exclusive Accents
+    /// When found → Context is likely `Poetic`:
+    /// - Oleh WeYored
+    /// - Dechi
+    /// - Illuy
+    /// - Tsinnorit Merkha / Tsinnorit Mahpakh
     ///
     /// # Limitations
     ///
-    /// Because some Hebrew accents appear in both prosaic and poetic systems, accurate
-    /// classification depends on finding at least one uniquely identifying accent. If the
-    /// sentence contains only shared accents or a mixture from both registers, definitive
-    /// determination is not possible.
+    /// | Scenario | Outcome | Reason |
+    /// |----------|---------|--------|
+    /// | Only prose-exclusive accents found | ✅ Prosaic | Unambiguous |
+    /// | Only poetry-exclusive accents found | ✅ Poetic | Unambiguous |
+    /// | Both exclusive types found | ❌ Error | Contradictory evidence |
+    /// | No exclusive accents found | ❌ Error | Insufficient evidence |
+    /// | Mixed shared+exclusive accents | ✅ Exclusive wins | Sufficient signal |
+    ///
+    /// # Shared Accents (Non-Determinative)
+    ///
+    /// These accents appear in **both** systems and cannot determine context:
+    /// - Munach
+    /// - Mahpakh
+    /// - Atnach (in both forms)
+    /// - Silluq
+    /// - Most conjunctive accents
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SentenceContextError::DerivationFailed`] when:
+    /// - **Ambiguity**: `"Unique prose and poetry accent markers identified"`
+    /// - **Insufficient data**: `"No distinguishable prose and/or poetry accents have been found"`
     ///
     /// # Example
     ///
-    /// ``` rust
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context};
     ///
-    /// let result = try_determine_context("וַיְהִ֣י בְיָמֵ֗י אֲחַשְׁוֵרֹ֡שׁ");
-    /// match result {
-    ///     Ok(context) => println!("Context: {:?}", context),
-    ///     Err(e) => println!("Could not determine context: {}", e),
-    /// }
-    /// ```
-    /// Try to determine the context of the given sentence
+    /// // Clear prose text (Genesis 1:1)
+    /// let prose = SentenceContext::new(
+    ///     "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים",
+    ///     Context::default()
+    /// )?;
     ///
-    /// For a standalone version that doesn't require an existing `SentenceContext`,
-    /// see [`try_determine_context`](crate::try_determine_context).
+    /// let detected = prose.try_determine_context()?;
+    /// assert_eq!(detected, Context::Prosaic);
+    ///
+    /// // Poetry text (Psalm 1:1)
+    /// let poetry = SentenceContext::new(
+    ///     "אַשְׁרֵ֣י הָאִ֭ישׁ אֲשֶׁ֣ר לֹ֣א הָלַ֑ךְ",
+    ///     Context::default()
+    /// )?;
+    ///
+    /// let detected = poetry.try_determine_context()?;
+    /// assert_eq!(detected, Context::Poetic);
+    /// ```
+    ///
+    /// # Comparison with Standalone Function
+    ///
+    /// For detecting context without a `SentenceContext` instance:
+    ///
+    /// ```rust,ignore
+    /// // Instance method
+    /// let ctx = sentence.try_determine_context()?;
+    ///
+    /// // Standalone helper
+    /// let ctx = crate::try_determine_context(sentence_text)?;
+    /// ```
     pub fn try_determine_context(&self) -> Result<Context, SentenceContextError> {
         // Delegate to the shared helper for consistency
         detect_context_from_sentence(&self.sentence)

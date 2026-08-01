@@ -1,6 +1,7 @@
 //! Implementation of find_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
+use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::common::{
     ATNACH, AZLA, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH,
     MAQQEPH_AS_CHAR, MEAYLA, MERKHA, MERKHA_KEFULA, METEG, MUNACH, MUNAH, OLEH_AS_CHAR, PASEQ,
@@ -8,7 +9,6 @@ use crate::common::{
     TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR,
     YETIV, YORED_AS_CHAR, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
-use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
 use crate::sentence::regex::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
@@ -18,7 +18,7 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
-use crate::{Context,Match,SentenceContext};
+use crate::{Context, Match, SentenceContext};
 const ACCENT_LEN_UTF8: usize = 2;
 
 impl<'a> SentenceContext {

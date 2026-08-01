@@ -14,17 +14,17 @@ pub enum SentenceContextError {
     ///   - CGJ: COMBINING GRAPHEME JOINER *(U+034F)*
     ///   - ZWNJ: ZERO WIDTH NON-JOINER *(U+200C)*
     ///   - ZWJ: ZERO WIDTH JOINER *(U+200D)*
-    /// 
+    ///
     ///   (see <https://www.unicode.org/versions/Unicode15.0.0/> section 9.1 for more information)
     /// - Vertical bar *(U+007C)*, some times used as an alternative Paseq in computer text.
     /// - The follwoing "space" characters:
     ///   - SPACE *(U+0020)*
-    ///   - NO-BREAK SPACE *(U+00A0)* 
-    ///   - LRM: ZERO WIDTH JOINER *(U+200E)* 
-    ///   - RLM: RIGHT-TO-LEFT *(U+200F)* 
-    ///   - THIN SPACE *(U+2009)* 
-    ///   - MEDIUM MATHEMATICAL SPACE *(U+205F)* 
-    ///   - IDEOGRAPHIC SPACE *(U+3000)* 
+    ///   - NO-BREAK SPACE *(U+00A0)*
+    ///   - LRM: ZERO WIDTH JOINER *(U+200E)*
+    ///   - RLM: RIGHT-TO-LEFT *(U+200F)*
+    ///   - THIN SPACE *(U+2009)*
+    ///   - MEDIUM MATHEMATICAL SPACE *(U+205F)*
+    ///   - IDEOGRAPHIC SPACE *(U+3000)*
     #[error("Invalid character '{}' at index {}: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
     InvalidCharacter(char, usize),
 

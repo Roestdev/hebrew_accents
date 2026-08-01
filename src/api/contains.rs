@@ -1,8 +1,11 @@
 //! Implementation of contains_accent() for 'SentenceContext'
 
 // Local modules / crate‑internal
-use crate::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,Context,SentenceContext};
+use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, SentenceContext};
 
+use crate::api::find::{
+    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
+};
 use crate::common::{
     DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MERKHA, MERKHA_KEFULA, MUNAH,
     PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR,
@@ -14,9 +17,6 @@ use crate::sentence::regex::{
     RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
-};
-use crate::api::find::{
-    find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
 };
 
 impl SentenceContext {

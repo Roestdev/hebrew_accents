@@ -1,36 +1,149 @@
+//! # Hebrew Pseudo-Accents
+//!
+//! Enumerates syntactic markers associated with biblical Hebrew cantillation that
+//! are **distinct from true cantillation accents** (ta'amim).
+//!
+//! ## Purpose
+//!
+//! Pseudo-accents represent structural symbols that influence accent placement,
+//! word grouping, and verse boundaries within the Masoretic text tradition.
+//! Unlike true accents, they do not carry independent melodic contours.
+//!
+//! ## Variants
+//!
+//! | Variant | Hebrew | Function |
+//! |---------|--------|----------|
+//! | [`SophPasuq`] | סוֹף פָּסוּק | Marks verse end |
+//! | [`Maqqeph`] | מַקָּף | Joins words (hyphen) |
+//! | [`Paseq`] | פָּשְׁק | Separates adjacent accents |
+//!
+//! ## Usage
+//!
+//! ```ignore
+//! use crate::api::PseudoAccent;
+//! use crate::Accent;
+//!
+//! let mark = PseudoAccent::Maqqeph;
+//! println!("{}", mark); // "Maqqeph (מַקָּף), meaning: hyphen"
+//! ```
+
 use crate::Accent;
-//use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
-/// Syntactic markers associated with biblical Hebrew cantillation but distinct from true accents.
+/// Represents a syntactic marker associated with Hebrew cantillation.
 ///
-/// `PseudoAccent` values represent structural symbols that influence accent placement without
-/// carrying independent melodic contour. They govern phrase boundaries, word grouping, and
-/// punctuation within the Masoretic text tradition.
+/// `PseudoAccent` values are structural symbols that influence accent placement
+/// and word grouping without carrying independent melodic contour. They govern
+/// phrase boundaries, word joining, and disambiguation within the Masoretic
+/// text tradition.
+///
+/// # Distinction from True Accents
+///
+/// | Property | True Accents ([`ProseAccent`](crate::ProseAccent)/[`PoetryAccent`](crate::PoetryAccent)) | Pseudo-Accents |
+/// |----------|--------------------------------------------------------------------------------------------------|----------------|
+/// | Melodic contour | Yes — each has a unique chant melody | No — structural only |
+/// | Disjunctive/conjunctive role | Yes — phrases are built around them | No — modifies accent behavior |
+/// | `relative_strength()` | Returns `Some(u8)` | Always returns `None` |
+/// | `group_level()` | Returns `Some` for disjunctives | Always returns `None` |
+///
+/// # Representation
+///
+/// - `#[non_exhaustive]` — Additional pseudo-accents may be identified in future versions.
+/// - `EnumIter` — Enables iteration over all variants via `PseudoAccent::iter()`.
+///
+/// # Example
+///
+/// ```ignore
+/// use crate::api::PseudoAccent;
+/// use crate::Accent;
+///
+/// let mark = PseudoAccent::SophPasuq;
+/// assert_eq!(mark.relative_strength(), None);
+/// assert_eq!(mark.group_level(), None);
+/// println!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: end of verse"
+/// ```
 #[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[non_exhaustive]
 pub enum PseudoAccent {
-    #[default]
-    /// Marks the end of a verse or sentence (Hebrew: סוֹף פָּסוּק).
-    /// Equivalent to a terminal period; signals final pause despite lacking its own melody.
+    /// **Soph Pasuq** (סוֹף פָּסוּק) — "end of a verse/sentence"
     ///
-    /// **Note:** Contrary to intuition, `Silluq` and not `SophPasuq` designates official verse endings
-    /// in standard BHS texts. `SophPasuq` may be absent even at valid verse boundaries in some rare cases.
+    /// A terminal punctuation mark resembling a large colon (׃) that marks the
+    /// end of a biblical verse. It functions as the structural boundary marker
+    /// for verse divisions.
+    ///
+    /// # Relationship to Silluq
+    ///
+    /// While `SophPasuq` visually marks verse endings, it is the cantillation
+    /// accent **Silluq** (not `SophPasuq`) that officially designates verse
+    /// endings in standard BHS (Biblia Hebraica Stuttgartensia) texts.
+    /// `SophPasuq` may be absent even at valid verse boundaries in rare cases.
+    ///
+    /// # Usage Notes
+    ///
+    /// - Always appears at the very end of a verse string
+    /// - Does not carry an independent melody
+    /// - Affects accent parsing: the word before `SophPasuq` typically
+    ///   receives the Silluq accent
+    ///
+    /// # Example
+    ///
+    /// ```text
+    /// ... וְאֵ֥ת הָאָֽרֶץ׃  ׃ פ
+    ///                   ↑ SophPasuq (׃)
+    /// ```
+    #[default]
     SophPasuq,
 
-    /// Joins multiple words into a single phonological unit (Hebrew: מַקָּף).
-    /// Functions as a hyphen: suppresses independent accents on joined words, causing
-    /// accent shifts to the rightmost constituent.
+    /// **Maqqeph** (מַקָּף) — "hyphen, joiner"
+    ///
+    /// A connecting line (־) that joins multiple Hebrew words into a single
+    /// phonological unit. Functions analogously to a hyphen in English.
+    ///
+    /// # Accent Behavior
+    ///
+    /// When words are joined by Maqqeph:
+    ///
+    /// 1. Independent accents on joined words are suppressed
+    /// 2. The combined unit receives a single accent (typically on the rightmost
+    ///    constituent)
+    /// 3. Stress shifts to the final word of the joined group
+    ///
+    /// # Example
+    ///
+    /// ```text
+    /// בְּרֵאשִׁ֖ית  →  בְּרֵאשִׁ֖ית־בָּרָ֣א
+    /// (two accented words)  (one accented unit via Maqqeph)
+    /// ```
     Maqqeph,
 
-    /// Separates adjacent cantillation marks (Hebrew: פָּשְׁק).
-    /// Prevents conflation of neighboring accents where disambiguation is required;
-    /// never appears as an standalone accent.
+    /// **Paseq** (פָּשְׁק) — "separator, divider"
+    ///
+    /// A vertical line (׀) inserted between adjacent cantillation marks to
+    /// prevent conflation of neighboring accents where disambiguation is required.
+    ///
+    /// # When It Appears
+    ///
+    /// Paseq is used when two accents that could be confused appear adjacently.
+    /// It functions purely as a visual separator and never carries melodic
+    /// content.
+    ///
+    /// # Example
+    ///
+    /// ```text
+    /// וַיֹּ֙אמֶר֙ ׀ יְהוָ֔ה
+    ///              ↑ Paseq (׀) separates adjacent accents
+    /// ```
+    ///
+    /// # Note
+    ///
+    /// Paseq does not function as a standalone accent. It only appears
+    /// between other cantillation marks and does not affect the melodic
+    /// chanting of the verse.
     Paseq,
 }
 
 impl PseudoAccent {
-    /// Total count of all pseudo accents
+    /// The total number of pseudo-accent variants.
     pub const LEN: usize = 3;
 }
 
@@ -50,21 +163,15 @@ impl std::fmt::Display for PseudoAccent {
 mod tests {
     use super::*;
 
-    // ── Variant count ──────────────────────────────────────────────
-
     #[test]
     fn len_constant_matches_variant_count() {
         assert_eq!(PseudoAccent::LEN, 3);
     }
 
-    // ── Default ────────────────────────────────────────────────────
-
     #[test]
     fn default_is_soph_pasuq() {
         assert_eq!(PseudoAccent::default(), PseudoAccent::SophPasuq);
     }
-
-    // ── relative_strength ───────────────────────────────────────────
 
     #[test]
     fn relative_strength_is_one_for_soph_pasuq() {
@@ -80,8 +187,6 @@ mod tests {
     fn relative_strength_is_three_for_paseq() {
         assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
     }
-
-    // ── Derived traits ──────────────────────────────────────────────
 
     #[test]
     fn copy_preserves_value() {
@@ -119,8 +224,6 @@ mod tests {
         assert_ne!(h1.finish(), h3.finish());
     }
 
-    // ── Debug trait ────────────────────────────────────────────────
-
     #[test]
     fn debug_output_contains_variant_name() {
         assert!(format!("{:?}", PseudoAccent::SophPasuq).contains("SophPasuq"));
@@ -137,11 +240,6 @@ mod tests {
         assert_ne!(b, c);
         assert_ne!(a, c);
     }
-
-    // ── Display ────────────────────────────────────────────────────
-    // Display delegates to english_name(), hebrew_name(), hebrew_concept().
-    // These methods aren't defined in this file, but if they compile we can
-    // smoke-test the format-string structure.
 
     #[test]
     fn display_contains_meaning_keyword() {
