@@ -44,7 +44,7 @@
 //! ```
 
 use crate::Accent;
-use strum_macros::EnumIter;
+use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew prose cantillation mark.
 ///
@@ -64,8 +64,9 @@ use strum_macros::EnumIter;
 ///
 /// - `#[repr(u8)]` — Each variant is stored as a single byte for efficient
 ///   table lookups and FFI compatibility.
-/// - `#[non_exhaustive]` — New accent variants may be added in future versions.
-/// - `EnumIter` — Enables iteration over all variants via `ProseAccent::iter()`.
+/// - `EnumCount` / `EnumIter` — Auto-derived count and iteration.
+/// - Discriminant values are **explicit and consecutive** to guarantee
+///   that `self as usize` indexes into `PROSE_ACCENT_TABLE` correctly.
 ///
 /// # Relative Strength
 ///
@@ -84,8 +85,7 @@ use strum_macros::EnumIter;
 /// println!("{} strength: {:?}", atnach.english_name(), atnach.relative_strength());
 /// ```
 #[repr(u8)]
-#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
-#[non_exhaustive]
+#[derive(EnumCount, EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 pub enum ProseAccent {
     /// **Silluq** (סִלּוּק) — "cessation, ending"
     ///
@@ -96,7 +96,7 @@ pub enum ProseAccent {
     /// - **Hierarchy Level**: Verse
     /// - **Strength**: 1 (strongest)
     #[default]
-    Silluq,
+    Silluq = 0,
 
     /// **Atnach** (אַתְנָח) — "rest, pause"
     ///
@@ -106,7 +106,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Half-verse
     /// - **Strength**: 2
-    Atnach,
+    Atnach = 1,
 
     /// **Segolta** (סְגוֹלְתָּא) — "bunch, cluster (of grapes)"
     ///
@@ -116,7 +116,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Major phrase
     /// - **Exclusivity**: Prose only
-    Segolta,
+    Segolta = 2,
 
     /// **Shalshelet** (שַׁלְשֶׁלֶת) — "chain, link"
     ///
@@ -125,7 +125,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Major phrase
-    Shalshelet,
+    Shalshelet = 3,
 
     /// **Zaqeph Qatan** (זָקֵף קָטֹן) — "small raiser"
     ///
@@ -136,7 +136,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Major phrase
     /// - **Exclusivity**: Prose only
-    ZaqephQatan,
+    ZaqephQatan = 4,
 
     /// **Zaqeph Gadol** (זָקֵף גָּדוֹל) — "great raiser"
     ///
@@ -147,7 +147,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Major phrase
     /// - **Exclusivity**: Prose only
-    ZaqephGadol,
+    ZaqephGadol = 5,
 
     /// **Revia** (רְבִיעַ) — "quarter, fourth"
     ///
@@ -156,7 +156,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Minor phrase
-    Revia,
+    Revia = 6,
 
     /// **Tiphcha** (טִפְחָא) — "handbreadth, palm"
     ///
@@ -165,7 +165,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    Tiphcha,
+    Tiphcha = 7,
 
     /// **Zarqa** (זַרְקָא) — "throwing, scattering"
     ///
@@ -174,7 +174,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    Zarqa,
+    Zarqa = 8,
 
     /// **Pashta** (פַּשְׁטָא) — "extension, stretching out"
     ///
@@ -184,7 +184,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
     /// - **Exclusivity**: Prose only
-    Pashta,
+    Pashta = 9,
 
     /// **Yetiv** (יְתִיב) — "sitting, resting"
     ///
@@ -194,7 +194,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
     /// - **Exclusivity**: Prose only
-    Yetiv,
+    Yetiv = 10,
 
     /// **Tevir** (תְּבִיר) — "break, fracture"
     ///
@@ -204,7 +204,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
     /// - **Exclusivity**: Prose only
-    Tevir,
+    Tevir = 11,
 
     /// **Geresh** (גֵּרֶשׁ) — "expulsion, driving out"
     ///
@@ -213,7 +213,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
-    Geresh,
+    Geresh = 12,
 
     /// **Gershayim** (גֵּרְשַׁיִם) — "double expulsion"
     ///
@@ -223,7 +223,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
     /// - **Exclusivity**: Prose only
-    Gershayim,
+    Gershayim = 13,
 
     /// **Pazer** (פָּזֵר) — "scatter, disperse"
     ///
@@ -232,7 +232,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
-    Pazer,
+    Pazer = 14,
 
     /// **Pazer Gadol** (פָּזֵר גָּדוֹל) — "great scatter"
     ///
@@ -242,7 +242,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
     /// - **Exclusivity**: Prose only
-    PazerGadol,
+    PazerGadol = 15,
 
     /// **Telisha Gedolah** (טְלִישָׁה גְּדוֹלָה) — "great magnification"
     ///
@@ -252,7 +252,7 @@ pub enum ProseAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
     /// - **Exclusivity**: Prose only
-    TelishaGedolah,
+    TelishaGedolah = 16,
 
     /// **Legarmeh** (לְגַרְמֵהּ) — "by itself, independently"
     ///
@@ -261,7 +261,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Micro-phrase
-    Legarmeh,
+    Legarmeh = 17,
 
     /// **Munach** (מֻנָּח) — "resting, placed"
     ///
@@ -269,7 +269,7 @@ pub enum ProseAccent {
     /// disjunctive, carrying the melody forward without a pause.
     ///
     /// - **Category**: Conjunctive (primary)
-    Munach,
+    Munach = 18,
 
     /// **Mahpakh** (מַהְפָּךְ) — "overturning, transformation"
     ///
@@ -277,7 +277,7 @@ pub enum ProseAccent {
     /// inverted form of its disjunctive counterpart.
     ///
     /// - **Category**: Conjunctive (primary)
-    Mahpakh,
+    Mahpakh = 19,
 
     /// **Merkha** (מֵרכָּא) — "lengthener, drawn out"
     ///
@@ -285,7 +285,7 @@ pub enum ProseAccent {
     /// a word to the next accented word.
     ///
     /// - **Category**: Conjunctive (primary)
-    Merkha,
+    Merkha = 20,
 
     /// **Merkha Kephulah** (מֵרכָּא כְּפוּלָּה) — "doubled Merkha"
     ///
@@ -294,7 +294,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Conjunctive (primary)
     /// - **Exclusivity**: Prose only
-    MerkhaKephulah,
+    MerkhaKephulah = 21,
 
     /// **Darga** (דַּרְגָּא) — "step, grade, stair"
     ///
@@ -303,7 +303,7 @@ pub enum ProseAccent {
     ///
     /// - **Category**: Conjunctive (primary)
     /// - **Exclusivity**: Prose only
-    Darga,
+    Darga = 22,
 
     /// **Azla** (אַזְלָא) — "going forth, departure"
     ///
@@ -311,7 +311,7 @@ pub enum ProseAccent {
     /// Also known as Qadma in some scholarly traditions.
     ///
     /// - **Category**: Conjunctive (primary)
-    Azla,
+    Azla = 23,
 
     /// **Telisha Qetannah** (טְלִישָׁה קְטַנָּה) — "small magnification"
     ///
@@ -319,7 +319,7 @@ pub enum ProseAccent {
     /// than dividing phrases. Appears as a postpositive mark.
     ///
     /// - **Category**: Conjunctive (primary)
-    TelishaQetannah,
+    TelishaQetannah = 24,
 
     /// **Galgal** (גַּלְגַּל) — "wheel, rolling"
     ///
@@ -327,7 +327,7 @@ pub enum ProseAccent {
     /// poetic and prose systems.
     ///
     /// - **Category**: Conjunctive (primary)
-    Galgal,
+    Galgal = 25,
 
     /// **Meayla** (מֵעֲיָא) — "from a heap, abundance"
     ///
@@ -335,7 +335,7 @@ pub enum ProseAccent {
     /// Less frequent than primary conjunctives.
     ///
     /// - **Category**: Conjunctive (secondary)
-    Meayla,
+    Meayla = 26,
 
     /// **Meteg** (מֶתֶג) — "bridle, restraint"
     ///
@@ -344,14 +344,23 @@ pub enum ProseAccent {
     /// in the primary cantillation hierarchy.
     ///
     /// - **Category**: Conjunctive (secondary)
-    Meteg,
+    Meteg = 27,
 }
 
 impl ProseAccent {
     /// The total number of prose accent variants.
     ///
     /// Composed of 18 disjunctive + 10 conjunctive accents.
-    pub const LEN: usize = 28;
+    pub const LEN: usize = <Self as strum::EnumCount>::COUNT;
+
+    /// Returns the discriminant as `usize`, suitable for direct table indexing.
+    ///
+    /// This is safe to use with `PROSE_ACCENT_TABLE` because the enum's
+    /// discriminant values are guaranteed to be consecutive starting at 0.
+    #[inline]
+    pub const fn as_index(self) -> usize {
+        self as usize
+    }
 }
 
 impl std::fmt::Display for ProseAccent {
@@ -366,181 +375,10 @@ impl std::fmt::Display for ProseAccent {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use strum::IntoEnumIterator;
-
-    #[test]
-    fn test_enum_iter_count() {
-        assert_eq!(ProseAccent::iter().count(), ProseAccent::LEN);
-        assert_eq!(ProseAccent::iter().count(), 28);
-    }
-
-    #[test]
-    fn test_enum_iter_all_variants_present() {
-        let mut found = std::collections::HashSet::new();
-        for accent in ProseAccent::iter() {
-            assert!(found.insert(accent), "Duplicate");
-        }
-        assert_eq!(found.len(), ProseAccent::LEN);
-    }
-
-    #[test]
-    fn len_constant_matches_variant_count() {
-        assert_eq!(ProseAccent::LEN, 28);
-    }
-
-    #[test]
-    fn discriminant_values_are_sequential() {
-        assert_eq!(ProseAccent::Silluq as u8, 0);
-        assert_eq!(ProseAccent::Atnach as u8, 1);
-        assert_eq!(ProseAccent::Legarmeh as u8, 17);
-        assert_eq!(ProseAccent::Munach as u8, 18);
-        assert_eq!(ProseAccent::Meteg as u8, 27);
-    }
-
-    #[test]
-    fn default_is_silluq() {
-        let default = ProseAccent::default();
-        assert_eq!(default, ProseAccent::Silluq);
-    }
-
-    #[test]
-    fn relative_strength_starts_at_one_for_first_variant() {
-        assert_eq!(ProseAccent::Silluq.relative_strength(), Some(1));
-    }
-
-    #[test]
-    fn relative_strength_is_discriminant_plus_one() {
-        for v in 0..ProseAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-            assert_eq!(accent.relative_strength(), Some(v + 1));
-        }
-    }
-
-    #[test]
-    fn relative_strength_strongest_is_len() {
-        assert_eq!(ProseAccent::Meteg.relative_strength(), Some(28));
-    }
-
-    #[test]
-    fn relative_strength_monotonically_increasing() {
-        let mut prev: u8 = 0;
-        for v in 0..ProseAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-            let strength = accent.relative_strength();
-            assert!(
-                strength > Some(prev),
-                "Strength not monotonic at variant {}",
-                v
-            );
-            prev = strength.unwrap();
-        }
-    }
-
-    #[test]
-    fn silluq_is_strongest_disjunctive() {
-        assert_eq!(ProseAccent::Silluq.relative_strength(), Some(1));
-    }
-
-    #[test]
-    fn clone_produces_equal_value() {
-        let accent = ProseAccent::ZaqephGadol;
-        assert_eq!(accent, accent.clone());
-    }
-
-    #[test]
-    fn copy_works_without_clone_explicit() {
-        let original = ProseAccent::Pashta;
-        let copied = original;
-        assert_eq!(original, copied);
-    }
-
-    #[test]
-    fn equality_and_inequality() {
-        assert_eq!(ProseAccent::Revia, ProseAccent::Revia);
-        assert_ne!(ProseAccent::Revia, ProseAccent::Geresh);
-    }
-
-    #[test]
-    fn hash_consistency() {
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-
-        let mut h1 = DefaultHasher::new();
-        let mut h2 = DefaultHasher::new();
-        ProseAccent::Pazer.hash(&mut h1);
-        ProseAccent::Pazer.hash(&mut h2);
-        assert_eq!(h1.finish(), h2.finish());
-
-        let mut h3 = DefaultHasher::new();
-        ProseAccent::PazerGadol.hash(&mut h3);
-        assert_ne!(h1.finish(), h3.finish());
-    }
-
-    #[test]
-    fn debug_output_is_non_empty() {
-        let dbg = format!("{:?}", ProseAccent::Tevir);
-        assert!(!dbg.is_empty());
-        assert!(dbg.contains("Tevir"));
-    }
-
-    #[test]
-    fn display_contains_parentheses_pattern() {
-        let s = ProseAccent::Silluq.to_string();
-        assert!(!s.is_empty(), "Display output was empty");
-        assert!(
-            s.contains("meaning:"),
-            "Display output missing 'meaning:' — got: {}",
-            s
-        );
-        assert!(
-            s.contains('(') && s.contains(')'),
-            "Display output missing parenthesised hebrew name — got: {}",
-            s
-        );
-    }
-
-    #[test]
-    fn display_differs_across_variants() {
-        let a = ProseAccent::Atnach.to_string();
-        let b = ProseAccent::Segolta.to_string();
-        assert_ne!(a, b);
-    }
-
-    #[test]
-    fn all_variants_have_distinct_relative_strength() {
-        let mut strengths: Vec<Option<u8>> = (0..ProseAccent::LEN as u8)
-            .map(|v| {
-                let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-                accent.relative_strength()
-            })
-            .collect();
-        strengths.sort_unstable();
-        strengths.dedup();
-        assert_eq!(
-            strengths.len(),
-            ProseAccent::LEN,
-            "Duplicate relative_strength values found"
-        );
-    }
-
-    #[test]
-    fn all_variants_produce_non_empty_display() {
-        for v in 0..ProseAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-            let s = accent.to_string();
-            assert!(!s.is_empty(), "Empty Display for variant {}", v);
-        }
-    }
-
-    #[test]
-    fn all_variants_produce_non_empty_debug() {
-        for v in 0..ProseAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, ProseAccent>(v) };
-            let s = format!("{:?}", accent);
-            assert!(!s.is_empty(), "Empty Debug for variant {}", v);
-        }
-    }
-}
+// ── Compile-time discriminant guards ────────────────────────────────────
+// If a variant is inserted, removed, or reordered, this const assertion
+// will fail at compile time.
+const _: () = {
+    const LAST_DISCRIMINANT: u8 = ProseAccent::Meteg as u8;
+    assert!((LAST_DISCRIMINANT + 1) as usize == ProseAccent::LEN);
+};

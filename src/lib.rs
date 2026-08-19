@@ -101,7 +101,7 @@
 //!
 //!  - accent type          (Primary, Secondary)
 //!  - category             (Disjunctive, Conjunctive)
-//!  - word_stress          (ImPositive, PostPositive, PrePositive)
+//!  - stress_position          (Impositive, Postpositive, Prepositive)
 //!
 //!  For debugging purposes:
 //!
@@ -123,26 +123,26 @@
 
 mod accent;
 mod accent_data;
+mod accent_mark;
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod api;
-mod codepoints;
 mod common;
 mod error;
 mod formatting;
-mod hierarchy;
 mod sentence;
 
 // Re-exports
 pub use crate::api::Accent;
 pub use crate::api::AccentCategory;
 pub use crate::api::AccentKind;
-pub use crate::api::AccentWordStress;
 pub use crate::api::CantillationMark;
-pub use crate::api::CantillationMarkPosition;
+pub use crate::api::CantillationMarkPlacement;
+pub use crate::api::CantillationMarkStressPosition;
 pub use crate::api::Context;
 pub use crate::api::GroupLevel;
 pub use crate::api::HebrewAccent;
 pub use crate::api::Match;
+pub use crate::api::MaxWordSpan;
 pub use crate::api::PoetryAccent;
 pub use crate::api::ProseAccent;
 pub use crate::api::PseudoAccent;

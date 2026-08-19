@@ -221,4 +221,4 @@ Accepted input must strictly adhere to the following criteria:
 
    - **Layout Controls for Meteg**: CGJ, ZWNJ and  ZWJ. See [Section 9.1 of the Unicode Standard, Version 15.0.0](https://www.unicode.org/versions/Unicode15.0.0/ch09.pdf) for more information.
      
-   - **Whitespace**: Space characters as defined by the Rust standard library (char::is_whitespace) **Status**: Under consideration for final implementation.
+   - **Whitespace**: Space characters as defined by the Rust standard library (char::is_whitespace) **Status**: Below consideration for final implementation.

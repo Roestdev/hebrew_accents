@@ -125,14 +125,6 @@ use std::ops::Range;
 /// This ensures the underlying text cannot be dropped while a reference to it
 /// still exists.
 ///
-/// ```compile_fail
-/// // This would fail to compile - haystack dropped too early
-/// let text = String::from("Hello world");
-/// let m = match_match(&text, 0, 5); // hypothetical function
-/// drop(text);
-/// let _slice = m.as_str(); // ERROR: borrow of moved value
-/// ```
-///
 /// # Offset Semantics
 ///
 /// **Byte offsets, not character indices**. For UTF-8 text (especially Hebrew

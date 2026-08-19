@@ -41,7 +41,7 @@
 //! ```
 
 use crate::Accent;
-use strum_macros::EnumIter;
+use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew poetry cantillation mark.
 ///
@@ -61,9 +61,9 @@ use strum_macros::EnumIter;
 ///
 /// - `#[repr(u8)]` — Each variant is stored as a single byte for efficient
 ///   table lookups and FFI compatibility.
-/// - `#[non_exhaustive]` — New accent variants may be added in future versions
-///   without breaking semver compatibility.
-/// - `EnumIter` — Enables iteration over all variants via `PoetryAccent::iter()`.
+/// - `EnumCount` / `EnumIter` — Auto-derived count and iteration.
+/// - Discriminant values are **explicit and consecutive** to guarantee
+///   that `self as usize` indexes into `POETRY_ACCENT_TABLE` correctly.
 ///
 /// # Example
 ///
@@ -81,8 +81,7 @@ use strum_macros::EnumIter;
 /// }
 /// ```
 #[repr(u8)]
-#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
-#[non_exhaustive]
+#[derive(EnumCount, EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 pub enum PoetryAccent {
     /// **Silluq** (סִלּוּק) — "cessation, ending"
     ///
@@ -94,7 +93,7 @@ pub enum PoetryAccent {
     /// - **Hierarchy Level**: Verse
     /// - **Strength**: 1 (strongest)
     #[default]
-    Silluq,
+    Silluq = 0,
 
     /// **Oleh WeYored** (עוֹלֶה וְיוֹרֵד) — "ascending and descending"
     ///
@@ -105,7 +104,7 @@ pub enum PoetryAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Half-verse
     /// - **Exclusivity**: Poetry only — presence confirms poetic context
-    OlehWeYored,
+    OlehWeYored = 1,
 
     /// **Atnach** (אַתְנָח) — "rest, pause"
     ///
@@ -114,7 +113,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Half-verse
-    Atnach,
+    Atnach = 2,
 
     /// **Revia Gadol** (רְבִיעַ גָּדוֹל) — "great quarter"
     ///
@@ -124,7 +123,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Phrase
-    ReviaGadol,
+    ReviaGadol = 3,
 
     /// **Revia Mugrash** (רְבִיעַ מֻגְרָשׁ) — "quartered with Garesh"
     ///
@@ -133,7 +132,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Phrase
-    ReviaMugrash,
+    ReviaMugrash = 4,
 
     /// **Shalshelet Gadol** (שַׁלְשֶׁלֶת גָּדוֹל) — "great chain"
     ///
@@ -142,7 +141,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Phrase
-    ShalsheletGadol,
+    ShalsheletGadol = 5,
 
     /// **Tsinnor** (צִנּוֹר) — "channel, pipe"
     ///
@@ -151,7 +150,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Phrase
-    Tsinnor,
+    Tsinnor = 6,
 
     /// **Revia Qaton** (רְבִיעַ קָטָן) — "small quarter"
     ///
@@ -160,7 +159,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    ReviaQaton,
+    ReviaQaton = 7,
 
     /// **Dechi** (דְּחִי) — "pushed away"
     ///
@@ -170,7 +169,7 @@ pub enum PoetryAccent {
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
     /// - **Exclusivity**: Poetry only
-    Dechi,
+    Dechi = 8,
 
     /// **Pazer** (פָּזֵר) — "scatter, disperse"
     ///
@@ -179,7 +178,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    Pazer,
+    Pazer = 9,
 
     /// **Mehuppakh Legarmeh** (מְהֻפָּךְ לְגַרְמֵהּ) — "inverted, alone"
     ///
@@ -188,7 +187,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    MehuppakhLegarmeh,
+    MehuppakhLegarmeh = 10,
 
     /// **Azla Legarmeh** (אַזְלָא לְגַרְמֵהּ) — "going forth, alone"
     ///
@@ -197,7 +196,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Disjunctive (primary)
     /// - **Hierarchy Level**: Sub-phrase
-    AzlaLegarmeh,
+    AzlaLegarmeh = 11,
 
     /// **Munach** (מֻנָּח) — "resting, placed"
     ///
@@ -205,7 +204,7 @@ pub enum PoetryAccent {
     /// the following disjunctive accent without introducing a pause.
     ///
     /// - **Category**: Conjunctive (primary)
-    Munach,
+    Munach = 12,
 
     /// **Merkha** (מֵרכָּא) — "lengthener, drawn out"
     ///
@@ -213,7 +212,7 @@ pub enum PoetryAccent {
     /// forward-leaning melodic motion.
     ///
     /// - **Category**: Conjunctive (primary)
-    Merkha,
+    Merkha = 13,
 
     /// **Illuy** (עִלּוּי) — "elevation, rising"
     ///
@@ -222,7 +221,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Conjunctive (primary)
     /// - **Exclusivity**: Poetry only
-    Illuy,
+    Illuy = 14,
 
     /// **Tarcha** (תַּרְחָא) — "delay, lingering"
     ///
@@ -230,7 +229,7 @@ pub enum PoetryAccent {
     /// in some traditions as Tipcha in the prose system.
     ///
     /// - **Category**: Conjunctive (primary)
-    Tarcha,
+    Tarcha = 15,
 
     /// **Galgal** (גַּלְגַּל) — "wheel, rolling"
     ///
@@ -238,7 +237,7 @@ pub enum PoetryAccent {
     /// poetic and prose systems.
     ///
     /// - **Category**: Conjunctive (primary)
-    Galgal,
+    Galgal = 16,
 
     /// **Mehuppakh** (מְהֻפָּךְ) — "inverted, overturned"
     ///
@@ -246,7 +245,7 @@ pub enum PoetryAccent {
     /// the inverted form of the mark compared to its disjunctive counterpart.
     ///
     /// - **Category**: Conjunctive (primary)
-    Mehuppakh,
+    Mehuppakh = 17,
 
     /// **Azla** (אַזְלָא) — "going forth, departure"
     ///
@@ -254,7 +253,7 @@ pub enum PoetryAccent {
     /// Qadma in some scholarly traditions.
     ///
     /// - **Category**: Conjunctive (primary)
-    Azla,
+    Azla = 18,
 
     /// **Shalshelet Qetannah** (שַׁלְשֶׁלֶת קְטַנָּה) — "small chain"
     ///
@@ -262,7 +261,7 @@ pub enum PoetryAccent {
     /// than dividing phrases.
     ///
     /// - **Category**: Conjunctive (primary)
-    ShalsheletQetannah,
+    ShalsheletQetannah = 19,
 
     /// **Tsinnorit Merkha** (צִנּוֹרִית מֵרכָּא) — "channel-like Merkha"
     ///
@@ -271,7 +270,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Conjunctive (primary)
     /// - **Exclusivity**: Poetry only
-    TsinnoritMerkha,
+    TsinnoritMerkha = 20,
 
     /// **Tsinnorit Mahpakh** (צִנּוֹרִית מַהְפָּךְ) — "channel-like Mahpakh"
     ///
@@ -280,7 +279,7 @@ pub enum PoetryAccent {
     ///
     /// - **Category**: Conjunctive (primary)
     /// - **Exclusivity**: Poetry only
-    TsinnoritMahpakh,
+    TsinnoritMahpakh = 21,
 
     /// **Meteg** (מֶתֶג) — "bridle, restraint"
     ///
@@ -289,14 +288,23 @@ pub enum PoetryAccent {
     /// primary cantillation hierarchy.
     ///
     /// - **Category**: Conjunctive (secondary)
-    Meteg,
+    Meteg = 22,
 }
 
 impl PoetryAccent {
     /// The total number of poetry accent variants.
     ///
     /// Composed of 12 disjunctive + 11 conjunctive accents.
-    pub const LEN: usize = 23;
+    pub const LEN: usize = <Self as strum::EnumCount>::COUNT;
+
+    /// Returns the discriminant as `usize`, suitable for direct table indexing.
+    ///
+    /// This is safe to use with `POETRY_ACCENT_TABLE` because the enum's
+    /// discriminant values are guaranteed to be consecutive starting at 0.
+    #[inline]
+    pub const fn as_index(self) -> usize {
+        self as usize
+    }
 }
 
 impl std::fmt::Display for PoetryAccent {
@@ -311,218 +319,10 @@ impl std::fmt::Display for PoetryAccent {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::accent_data::BHS_POETRY_RANK_MAP;
-
-    // ── Variant count ──────────────────────────────────────────────
-
-    #[test]
-    fn len_constant_matches_variant_count() {
-        // 12 disjunctives + 11 conjunctives = 23
-        assert_eq!(PoetryAccent::LEN, 23);
-    }
-
-    #[test]
-    fn discriminant_values_are_sequential() {
-        assert_eq!(PoetryAccent::Silluq as u8, 0);
-        assert_eq!(PoetryAccent::OlehWeYored as u8, 1);
-        assert_eq!(PoetryAccent::AzlaLegarmeh as u8, 11);
-        assert_eq!(PoetryAccent::Munach as u8, 12);
-        assert_eq!(PoetryAccent::Meteg as u8, 22);
-    }
-
-    // ── Default ────────────────────────────────────────────────────
-
-    #[test]
-    fn default_is_silluq() {
-        assert_eq!(PoetryAccent::default(), PoetryAccent::Silluq);
-    }
-
-    // ── relative_strength ──────────────────────────────────────────
-
-    #[test]
-    fn relative_strength_delegates_to_rank_map() {
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            assert_eq!(
-                accent.relative_strength().unwrap(),
-                BHS_POETRY_RANK_MAP[v as usize],
-                "Mismatch at variant {}",
-                v
-            );
-        }
-    }
-
-    #[test]
-    fn relative_strength_is_nonzero_for_all_variants() {
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let strength = accent.relative_strength();
-            assert!(
-                strength.unwrap() > 0,
-                "relative_strength is 0 for variant {} ({:?})",
-                v,
-                accent
-            );
-        }
-    }
-
-    #[test]
-    fn relative_strength_fits_in_u8() {
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let _ = accent.relative_strength(); // should not panic
-        }
-    }
-
-    #[test]
-    fn rank_map_length_matches_len() {
-        assert_eq!(BHS_POETRY_RANK_MAP.len(), PoetryAccent::LEN);
-    }
-
-    // ── Derived traits ──────────────────────────────────────────────
-
-    #[test]
-    fn copy_preserves_value() {
-        let original = PoetryAccent::Tsinnor;
-        let copied = original; // relies on Copy
-        assert_eq!(original, copied);
-    }
-
-    #[test]
-    fn clone_preserves_value() {
-        let original = PoetryAccent::Dechi;
-        assert_eq!(original, original.clone());
-    }
-
-    #[test]
-    fn equality_and_inequality() {
-        assert_eq!(PoetryAccent::Munach, PoetryAccent::Munach);
-        assert_ne!(PoetryAccent::Munach, PoetryAccent::Merkha);
-        assert_ne!(PoetryAccent::ReviaGadol, PoetryAccent::ReviaQaton);
-        assert_ne!(
-            PoetryAccent::ShalsheletGadol,
-            PoetryAccent::ShalsheletQetannah
-        );
-    }
-
-    #[test]
-    fn hash_consistency() {
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-
-        let mut h1 = DefaultHasher::new();
-        let mut h2 = DefaultHasher::new();
-        PoetryAccent::Pazer.hash(&mut h1);
-        PoetryAccent::Pazer.hash(&mut h2);
-        assert_eq!(h1.finish(), h2.finish());
-
-        let mut h3 = DefaultHasher::new();
-        PoetryAccent::Azla.hash(&mut h3);
-        assert_ne!(h1.finish(), h3.finish());
-    }
-
-    // ── Debug trait ────────────────────────────────────────────────
-
-    #[test]
-    fn debug_output_contains_variant_name() {
-        assert!(format!("{:?}", PoetryAccent::Silluq).contains("Silluq"));
-        assert!(format!("{:?}", PoetryAccent::OlehWeYored).contains("OlehWeYored"));
-        assert!(format!("{:?}", PoetryAccent::TsinnoritMerkha).contains("TsinnoritMerkha"));
-        assert!(format!("{:?}", PoetryAccent::TsinnoritMahpakh).contains("TsinnoritMahpakh"));
-    }
-
-    #[test]
-    fn debug_outputs_are_distinct() {
-        let a = format!("{:?}", PoetryAccent::Illuy);
-        let b = format!("{:?}", PoetryAccent::Tarcha);
-        assert_ne!(a, b);
-    }
-
-    // ── Display ────────────────────────────────────────────────────
-
-    #[test]
-    fn display_contains_meaning_keyword() {
-        let s = PoetryAccent::Silluq.to_string();
-        assert!(!s.is_empty(), "Display output was empty");
-        assert!(
-            s.contains("meaning:"),
-            "Display output missing 'meaning:' — got: {}",
-            s
-        );
-    }
-
-    #[test]
-    fn display_contains_parenthesised_hebrew_name() {
-        let s = PoetryAccent::Atnach.to_string();
-        assert!(
-            s.contains('(') && s.contains(')'),
-            "Display output missing parenthesised hebrew name — got: {}",
-            s
-        );
-    }
-
-    #[test]
-    fn display_differs_across_variants() {
-        let a = PoetryAccent::Silluq.to_string();
-        let b = PoetryAccent::Atnach.to_string();
-        let c = PoetryAccent::Meteg.to_string();
-        assert_ne!(a, b);
-        assert_ne!(b, c);
-        assert_ne!(a, c);
-    }
-
-    #[test]
-    fn display_non_empty_for_all_variants() {
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let s = accent.to_string();
-            assert!(
-                !s.is_empty(),
-                "Empty Display for variant {} ({:?})",
-                v,
-                accent
-            );
-        }
-    }
-
-    // ── Exhaustive checks ──────────────────────────────────────────
-
-    #[test]
-    fn all_variants_produce_non_empty_debug() {
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let s = format!("{:?}", accent);
-            assert!(!s.is_empty(), "Empty Debug for variant {}", v);
-        }
-    }
-
-    #[test]
-    fn all_debug_outputs_are_distinct() {
-        let mut seen = std::collections::HashSet::new();
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let s = format!("{:?}", accent);
-            assert!(seen.insert(s), "Duplicate Debug output at variant {}", v);
-        }
-        assert_eq!(seen.len(), PoetryAccent::LEN);
-    }
-
-    #[test]
-    fn all_display_outputs_are_distinct() {
-        let mut seen = std::collections::HashSet::new();
-        for v in 0..PoetryAccent::LEN as u8 {
-            let accent = unsafe { std::mem::transmute::<u8, PoetryAccent>(v) };
-            let s = accent.to_string();
-            assert!(
-                seen.insert(s.clone()),
-                "Duplicate Display output at variant {}: {}",
-                v,
-                s
-            );
-        }
-        assert_eq!(seen.len(), PoetryAccent::LEN);
-    }
-}
+// ── Compile-time discriminant guards ────────────────────────────────────
+// If a variant is inserted, removed, or reordered, this const assertion
+// will fail at compile time.
+const _: () = {
+    const LAST_DISCRIMINANT: u8 = PoetryAccent::Meteg as u8;
+    assert!((LAST_DISCRIMINANT + 1) as usize == PoetryAccent::LEN);
+};

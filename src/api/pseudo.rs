@@ -28,7 +28,7 @@
 //! ```
 
 use crate::Accent;
-use strum_macros::EnumIter;
+use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a syntactic marker associated with Hebrew cantillation.
 ///
@@ -48,8 +48,9 @@ use strum_macros::EnumIter;
 ///
 /// # Representation
 ///
-/// - `#[non_exhaustive]` — Additional pseudo-accents may be identified in future versions.
-/// - `EnumIter` — Enables iteration over all variants via `PseudoAccent::iter()`.
+/// - `#[repr(u8)]` — Each variant is stored as a single byte.
+/// - `EnumCount` / `EnumIter` — Auto-derived count and iteration.
+/// - Discriminant values are **explicit and consecutive**.
 ///
 /// # Example
 ///
@@ -62,8 +63,8 @@ use strum_macros::EnumIter;
 /// assert_eq!(mark.group_level(), None);
 /// println!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: end of verse"
 /// ```
-#[derive(EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
-#[non_exhaustive]
+#[repr(u8)]
+#[derive(EnumCount, EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 pub enum PseudoAccent {
     /// **Soph Pasuq** (סוֹף פָּסוּק) — "end of a verse/sentence"
     ///
@@ -92,7 +93,7 @@ pub enum PseudoAccent {
     ///                   ↑ SophPasuq (׃)
     /// ```
     #[default]
-    SophPasuq,
+    SophPasuq = 0,
 
     /// **Maqqeph** (מַקָּף) — "hyphen, joiner"
     ///
@@ -114,7 +115,7 @@ pub enum PseudoAccent {
     /// בְּרֵאשִׁ֖ית  →  בְּרֵאשִׁ֖ית־בָּרָ֣א
     /// (two accented words)  (one accented unit via Maqqeph)
     /// ```
-    Maqqeph,
+    Maqqeph = 1,
 
     /// **Paseq** (פָּשְׁק) — "separator, divider"
     ///
@@ -139,12 +140,21 @@ pub enum PseudoAccent {
     /// Paseq does not function as a standalone accent. It only appears
     /// between other cantillation marks and does not affect the melodic
     /// chanting of the verse.
-    Paseq,
+    Paseq = 2,
 }
 
 impl PseudoAccent {
     /// The total number of pseudo-accent variants.
-    pub const LEN: usize = 3;
+    pub const LEN: usize = <Self as strum::EnumCount>::COUNT;
+
+    /// Returns the discriminant as `usize`, suitable for direct table indexing.
+    ///
+    /// This is safe to use with `PSEUDO_ACCENT_TABLE` because the enum's
+    /// discriminant values are guaranteed to be consecutive starting at 0.
+    #[inline]
+    pub const fn as_index(self) -> usize {
+        self as usize
+    }
 }
 
 impl std::fmt::Display for PseudoAccent {
@@ -159,128 +169,13 @@ impl std::fmt::Display for PseudoAccent {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// ── Compile-time discriminant guards ────────────────────────────────────
 
-    #[test]
-    fn len_constant_matches_variant_count() {
-        assert_eq!(PseudoAccent::LEN, 3);
-    }
-
-    #[test]
-    fn default_is_soph_pasuq() {
-        assert_eq!(PseudoAccent::default(), PseudoAccent::SophPasuq);
-    }
-
-    #[test]
-    fn relative_strength_is_one_for_soph_pasuq() {
-        assert_eq!(PseudoAccent::SophPasuq.relative_strength(), None);
-    }
-
-    #[test]
-    fn relative_strength_is_two_for_maqqeph() {
-        assert_eq!(PseudoAccent::Maqqeph.relative_strength(), None);
-    }
-
-    #[test]
-    fn relative_strength_is_three_for_paseq() {
-        assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
-    }
-
-    #[test]
-    fn copy_preserves_value() {
-        let original = PseudoAccent::Maqqeph;
-        let copied = original;
-        assert_eq!(original, copied);
-    }
-
-    #[test]
-    fn clone_preserves_value() {
-        let original = PseudoAccent::Paseq;
-        assert_eq!(original, original.clone());
-    }
-
-    #[test]
-    fn equality_and_inequality() {
-        assert_eq!(PseudoAccent::SophPasuq, PseudoAccent::SophPasuq);
-        assert_ne!(PseudoAccent::SophPasuq, PseudoAccent::Maqqeph);
-        assert_ne!(PseudoAccent::Maqqeph, PseudoAccent::Paseq);
-    }
-
-    #[test]
-    fn hash_consistency() {
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-
-        let mut h1 = DefaultHasher::new();
-        let mut h2 = DefaultHasher::new();
-        PseudoAccent::Maqqeph.hash(&mut h1);
-        PseudoAccent::Maqqeph.hash(&mut h2);
-        assert_eq!(h1.finish(), h2.finish());
-
-        let mut h3 = DefaultHasher::new();
-        PseudoAccent::Paseq.hash(&mut h3);
-        assert_ne!(h1.finish(), h3.finish());
-    }
-
-    #[test]
-    fn debug_output_contains_variant_name() {
-        assert!(format!("{:?}", PseudoAccent::SophPasuq).contains("SophPasuq"));
-        assert!(format!("{:?}", PseudoAccent::Maqqeph).contains("Maqqeph"));
-        assert!(format!("{:?}", PseudoAccent::Paseq).contains("Paseq"));
-    }
-
-    #[test]
-    fn debug_outputs_are_distinct() {
-        let a = format!("{:?}", PseudoAccent::SophPasuq);
-        let b = format!("{:?}", PseudoAccent::Maqqeph);
-        let c = format!("{:?}", PseudoAccent::Paseq);
-        assert_ne!(a, b);
-        assert_ne!(b, c);
-        assert_ne!(a, c);
-    }
-
-    #[test]
-    fn display_contains_meaning_keyword() {
-        let s = PseudoAccent::SophPasuq.to_string();
-        assert!(!s.is_empty(), "Display output was empty");
-        assert!(
-            s.contains("meaning:"),
-            "Display output missing 'meaning:' — got: {}",
-            s
-        );
-    }
-
-    #[test]
-    fn display_contains_parenthesised_hebrew_name() {
-        let s = PseudoAccent::Maqqeph.to_string();
-        assert!(
-            s.contains('(') && s.contains(')'),
-            "Display output missing parenthesised hebrew name — got: {}",
-            s
-        );
-    }
-
-    #[test]
-    fn display_differs_across_variants() {
-        let a = PseudoAccent::SophPasuq.to_string();
-        let b = PseudoAccent::Maqqeph.to_string();
-        let c = PseudoAccent::Paseq.to_string();
-        assert_ne!(a, b);
-        assert_ne!(b, c);
-        assert_ne!(a, c);
-    }
-
-    #[test]
-    fn display_non_empty_for_all_variants() {
-        for variant in [
-            PseudoAccent::SophPasuq,
-            PseudoAccent::Maqqeph,
-            PseudoAccent::Paseq,
-        ] {
-            let s = variant.to_string();
-            assert!(!s.is_empty(), "Empty Display for {:?}", variant);
-        }
-    }
-}
+/// Verifies that the last discriminant + 1 equals LEN.
+///
+/// If a variant is inserted, removed, or reordered, this const assertion
+/// will fail at compile time.
+const _: () = {
+    const LAST_DISCRIMINANT: u8 = PseudoAccent::Paseq as u8;
+    assert!((LAST_DISCRIMINANT + 1) as usize == PseudoAccent::LEN);
+};

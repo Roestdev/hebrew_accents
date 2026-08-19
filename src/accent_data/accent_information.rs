@@ -1,11 +1,11 @@
 //! This file contains all static data of the 'Hebrew Accents'
 
 // Crate‑internal (local modules)
-use crate::accent::MaxWordSpan;
-use crate::accent::{AccentMetaData, AlternateNames, CantillationSymbol, WordStress};
+use crate::accent::WordSpan;
+use crate::accent::{AccentMetaData, AlternateNames, CantillationSymbol};
 use crate::accent::{Category, Kind};
 
-use crate::codepoints::{
+use crate::accent_mark::{
     CODEPOINT_DARGA, CODEPOINT_DEHI, CODEPOINT_ETNAHTA, CODEPOINT_GERESH, CODEPOINT_GERSHAYIM,
     CODEPOINT_ILUY, CODEPOINT_MAHAPAKH, CODEPOINT_MAQAF, CODEPOINT_MERKHA, CODEPOINT_MERKHA_KEFULA,
     CODEPOINT_METEG, CODEPOINT_MUNAH, CODEPOINT_OLE, CODEPOINT_PASEQ, CODEPOINT_PASHTA,
@@ -37,14 +37,13 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::None),
+    word_span: WordSpan::NotApplicable,
     notes: Some(
         r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
    "#,
     ),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SILLUQ,
 };
 
@@ -58,11 +57,10 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ETNAHTA,
 };
 
@@ -76,11 +74,10 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Post,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SEGOL,
 };
 
@@ -94,11 +91,10 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
@@ -117,11 +113,10 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "small upright or small standing one",
         sbl_academic: "zāqēp qāṭān",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZAQEF_QATAN,
 };
 
@@ -135,11 +130,10 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZAQEF_GADOL,
 };
 
@@ -153,11 +147,10 @@ pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("probably due to its four-note tune."),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -171,11 +164,10 @@ pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("before Atnach and Silluq"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_TIPEHA,
 };
 
@@ -189,11 +181,10 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("before  Segolta"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Post,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZINOR,
 };
 
@@ -207,11 +198,10 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("if you sound almost last (2 pasta’s in one word)"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Post,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_PASHTA,
 };
 
@@ -225,11 +215,10 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("occasionally for a Pashta"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Pre,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_YETIV,
 };
 
@@ -243,11 +232,10 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_TEVIR,
 };
 
@@ -266,11 +254,10 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "TODO",
         sbl_academic: "ṭeres",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERESH,
 };
 
@@ -284,11 +271,10 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERSHAYIM,
 };
 
@@ -302,11 +288,10 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_PAZER,
 };
 
@@ -325,11 +310,10 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "horns of a cow",
         sbl_academic: "qarnê pārâ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_QARNEY_PARA,
 };
 
@@ -343,11 +327,10 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Pre,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_TELISHA_GEDOLA,
 };
 
@@ -361,11 +344,10 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("Munach with Passeq; Before Revia"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_LEGARMEH,
 };
 // Conjunctives
@@ -379,11 +361,10 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MUNAH,
 };
 
@@ -402,11 +383,10 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "reversed",
         sbl_academic: "məhuppāk",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MAHAPAKH,
 };
 
@@ -420,11 +400,10 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MERKHA,
 };
 
@@ -438,11 +417,10 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("Merkha duplex"),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MERKHA_KEFULA,
 };
 
@@ -456,11 +434,10 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_DARGA,
 };
 
@@ -479,11 +456,10 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "antiquity or a former state",
         sbl_academic: "qadmāʾ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("When Geresh: Qadma"),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_QADMA,
 };
 
@@ -497,11 +473,10 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Post,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TELISHA_QETANA,
 };
 
@@ -520,18 +495,17 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "moon one day old",
         sbl_academic: "yēreḥ ben yômô",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_YERAH_BEN_YOMO,
 };
 
 pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Meayla",
     hebrew_name: "מְאַיְלָא",
     hebrew_concept: "upper, above, highe",
+    english_name: "Meayla",
     sbl_academic: "məʾaylāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_TIPEHA,
@@ -543,7 +517,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "that which is above or elevated position",
         sbl_academic: "maylāʾ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(
         r#"Name given to a Tiphcha, when in the same word as Atnach or Silluq.
     This accent is historically the same glyph as Tipcha (U+0596) but functions as a secondary conjunctive 
@@ -551,9 +525,8 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     Different traditions use different names: 
         Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
     ),
-    accent_category: Category::Conjunctive,
+    category: Category::Conjunctive,
     kind: Kind::Secondary,
-    word_stress: WordStress::None,
     traditions: TRADITION_NAMES_TIPEHA,
 };
 pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
@@ -571,7 +544,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "a lowing",
         sbl_academic: "gaʿyâ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(
         r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
     an additional emphasis placed on a syllable beyond the primary word stress. 
@@ -580,9 +553,8 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
     that might otherwise be swallowed or de-emphasized.It "makes the syllable cry out," so to speak."#,
     ),
-    accent_category: Category::Conjunctive,
+    category: Category::Conjunctive,
     kind: Kind::Secondary,
-    word_stress: WordStress::None,
     traditions: TRADITION_NAMES_METEG,
 };
 
@@ -597,12 +569,11 @@ pub(crate) const SHENE_PASHTIN_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_QADMA),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("Munach with Passeq; Before Revia"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
-    traditions: TRADITION_NAMES_SHENE_PASHTIN,
+    category: Category::Disjunctive,
+        traditions: TRADITION_NAMES_SHENE_PASHTIN,
 };
 Shene Pashtin 	 ב֨ב   	U+0599U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
 Shene Pashtin 	תְּרֵ֨י קַדְמִין֙
@@ -631,12 +602,11 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
     alternate_names: None,
- max_word_span: Some(MaxWordSpan::TwoWords),
+ word_span: WordSpan::TwoWords,
     notes: Some("The primary_mark CodePoint is Mehuppakhbut located above the consonant. It is then called OLE."),
         kind: Kind::Primary,
-        accent_category:Category::Disjunctive,
-    word_stress: WordStress::Im,
-    traditions: TRADITION_NAMES_OLEH_WEYORED,
+        category: Category::Disjunctive,
+        traditions: TRADITION_NAMES_OLEH_WEYORED,
 };
 
 // ATNACH see PROSE section above
@@ -651,11 +621,10 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -669,11 +638,10 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_REVIA),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERESH,
 };
 
@@ -688,11 +656,10 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SHALSHELET_GADOL,
 };
 
@@ -711,11 +678,10 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "to sprinklescatter",
         sbl_academic: "zarqāʾ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Post,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZINOR,
 };
 
@@ -729,11 +695,10 @@ pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("After that occurs Oleh Weyored"),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -752,11 +717,10 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "handbreadth or diagonal",
         sbl_academic: "ṭipḥāʾ",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Pre,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_DEHI,
 };
 
@@ -773,7 +737,7 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(
         r#"While the search results suggest that Mahpach Legarmeh as a complete compound term 
         is most distinctly associated with the Ashkenazi tradition, 
@@ -784,8 +748,7 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         (e.g., Munach Legarmeh), while Sephardi and other traditions may use simpler designations."#,
     ),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_MEHUPPAKH_LEGARMEH,
 };
 
@@ -800,11 +763,10 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Disjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Disjunctive,
     traditions: TRADITION_NAMES_AZLA_LEGARMEH,
 };
 
@@ -822,11 +784,10 @@ pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("also called Munach superior"),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_ILUY,
 };
 
@@ -840,11 +801,10 @@ pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some("it refers to the effortstrainor inconvenience involved in doing something."),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TIPEHA,
 };
 
@@ -865,11 +825,10 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
         hebrew_concept: "turning round",
         sbl_academic: "mahpak",
     }),
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MAHAPAKH,
 };
 
@@ -885,11 +844,10 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
@@ -904,11 +862,10 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TSINNORIT_MERKHA,
 };
 
@@ -924,11 +881,10 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MAHAPAKH),
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::OneWord,
     notes: Some(r#"TODO"#),
     kind: Kind::Primary,
-    accent_category: Category::Conjunctive,
-    word_stress: WordStress::Im,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TSINNORIT_MAHPACH,
 };
 
@@ -945,13 +901,12 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::OneWord),
+    word_span: WordSpan::NotApplicable,
     notes: Some(
         "it doesn’t carry any theological or interpretive meaning beyond marking a boundary",
     ),
     kind: Kind::None,
-    accent_category: Category::None,
-    word_stress: WordStress::None,
+    category: Category::None,
     traditions: TRADITION_NAMES_SOPH_PASUQ,
 };
 
@@ -965,11 +920,10 @@ pub(crate) const MAQQEPH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
               alternate_names: None,
- max_word_span: Some(MaxWordSpan::None),
+    word_span: WordSpan::NotApplicable,
     notes: Some("Can link two (or more) short words togetherafter which they function as a single compound word bearing a single Hebrew accent."),
     kind: Kind::None,
-    accent_category: Category::None,
-    word_stress: WordStress::None,
+    category: Category::None,
     traditions: TRADITION_NAMES_MAQAF,
 };
 
@@ -983,12 +937,11 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: None,
-    max_word_span: Some(MaxWordSpan::None),
+    word_span: WordSpan::NotApplicable,
     notes: Some(
         "It’s indicating that someone or something is stopping temporarily or creating a pause.",
     ),
     kind: Kind::None,
-    accent_category: Category::None,
-    word_stress: WordStress::None,
+    category: Category::None,
     traditions: TRADITION_NAMES_PASEQ,
 };

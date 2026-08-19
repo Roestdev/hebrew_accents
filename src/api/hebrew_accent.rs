@@ -80,14 +80,14 @@ impl HebrewAccent {
     /// Accessing methods on the borrowed inner value without consuming the wrapper:
     ///
     /// ```
-    /// use hebrew_accents::{HebrewAccent, PoetryAccent};
+    /// use hebrew_accents::{Accent, HebrewAccent, PoetryAccent};
     ///
     /// let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
     ///
     /// // Can access properties through the reference
     /// if let Some(poetry) = accent.as_poetry() {
     ///     println!("English name: {}", poetry.english_name());
-    ///     println!("Relative strength: {}", poetry.relative_strength());
+    ///     println!("Relative strength: {:?}", poetry.relative_strength());
     /// }
     ///
     /// // Original accent remains usable after inspection
@@ -688,5 +688,17 @@ mod tests {
         let extracted = wrapped.as_pseudo();
 
         assert_eq!(extracted, Some(original));
+    }
+
+    #[test]
+    fn doctestcopy() {
+        use crate::{Accent, HebrewAccent, PoetryAccent};
+
+        let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
+        if let Some(poetry) = accent.as_poetry() {
+            println!("English name: {}", poetry.english_name());
+            println!("Relative strength: {:?}", poetry.relative_strength());
+        }
+        assert!(accent.as_poetry().is_some());
     }
 }

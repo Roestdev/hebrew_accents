@@ -16,13 +16,14 @@ pub use poetry::PoetryAccent;
 pub use prose::ProseAccent;
 pub use pseudo::PseudoAccent;
 
-pub use public_model::cantillation_symbol;
+//pub use public_model::cantillation_symbol;
 pub use public_model::AccentCategory;
 pub use public_model::AccentKind;
-pub use public_model::AccentWordStress;
 pub use public_model::CantillationMark;
-pub use public_model::CantillationMarkPosition;
+pub use public_model::CantillationMarkPlacement;
+pub use public_model::CantillationMarkStressPosition;
 pub use public_model::GroupLevel;
+pub use public_model::MaxWordSpan;
 
 pub use context::Context;
 pub use matcher::Match;

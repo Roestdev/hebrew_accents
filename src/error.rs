@@ -5,7 +5,7 @@ use thiserror::Error;
 pub enum SentenceContextError {
     /// Character outside the allowed set was encountered
     ///
-    /// The invalid character and its position in the senctence will be showed
+    /// The invalid character and its position in the sentence will be showed
     ///
     ///
     /// ## Valid characters are:
@@ -100,7 +100,7 @@ mod tests {
 
         assert_eq!(
             err.to_string(),
-            "Sentence must start with a Hebrew consonant, found 'U+05B0}'"
+            "Sentence must start with a Hebrew consonant, found '\u{05B0}'"
         );
         assert_eq!(err, SentenceContextError::StartsWithNonConsonant('ְ'));
 

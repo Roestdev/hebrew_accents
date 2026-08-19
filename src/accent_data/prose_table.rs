@@ -1,35 +1,10 @@
 use crate::accent::AccentMetaData;
 use crate::accent_data::accent_information::{
-    ATNACH_INFO,
-    AZLA_INFO,
-    DARGA_INFO,
-    GALGAL_INFO,
-    GERESH_INFO,
-    GERSHAYIM_INFO,
-    LEGARMEH_INFO,
-    MAHPAKH_INFO,
-    MEAYLA_INFO,
-    MERKHA_INFO,
-    MERKHA_KEPHULAH_INFO,
-    METEG_INFO,
-    // Conjunctives
-    MUNACH_INFO,
-    PASHTA_INFO,
-    PAZER_GADOL_INFO,
-    PAZER_INFO,
-    REVIA_INFO,
-    SEGOLTA_INFO,
-    SHALSHELET_INFO,
-    // Disjunctives
-    SILLUQ_INFO,
-    TELISHA_GEDOLAH_INFO,
-    TELISHA_QETANNAH_INFO,
-    TEVIR_INFO,
-    TIPHCHA_INFO,
-    YETIV_INFO,
-    ZAQEPH_GADOL_INFO,
-    ZAQEPH_QATON_INFO,
-    ZARQA_INFO,
+    ATNACH_INFO, AZLA_INFO, DARGA_INFO, GALGAL_INFO, GERESH_INFO, GERSHAYIM_INFO, LEGARMEH_INFO,
+    MAHPAKH_INFO, MEAYLA_INFO, MERKHA_INFO, MERKHA_KEPHULAH_INFO, METEG_INFO, MUNACH_INFO,
+    PASHTA_INFO, PAZER_GADOL_INFO, PAZER_INFO, REVIA_INFO, SEGOLTA_INFO, SHALSHELET_INFO,
+    SILLUQ_INFO, TELISHA_GEDOLAH_INFO, TELISHA_QETANNAH_INFO, TEVIR_INFO, TIPHCHA_INFO, YETIV_INFO,
+    ZAQEPH_GADOL_INFO, ZAQEPH_QATON_INFO, ZARQA_INFO,
 };
 use crate::ProseAccent;
 
@@ -89,6 +64,7 @@ pub(crate) static PROSE_ACCENT_TABLE: [AccentMetaData; ProseAccent::LEN] = [
 ];
 
 // Compile-time guard
+// Verifies that table length matches enum count.
 const _: () = assert!(
     PROSE_ACCENT_TABLE.len() == ProseAccent::LEN,
     "PROSE_ACCENT_TABLE length mismatch!"

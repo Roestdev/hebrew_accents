@@ -10,7 +10,7 @@ A Rust library for working with Masoretic Hebrew cantillation marks (טעמים�
 [🛠️ Design](https://github.com/Roestdev/hebrew_accents/blob/main/DESIGN.md)
 
 
-[![License](https://img.shields.io/crates/l/hebrew_accents)](LICENSE)
+[![License](https://img.shields.io/crates/l/hebrew_accents)](./LICENSE)
 [![Status](https://img.shields.io/badge/status-development-orange)]()
 [![Crates.io](https://img.shields.io/crates/v/hebrew_accents)](https://crates.io/crates/hebrew_accents)
 [![Docs.rs](https://docs.rs/hebrew_accents/badge.svg)](https://docs.rs/hebrew_accents)
@@ -27,15 +27,15 @@ hebrew_accents = "0.0.3"   # Latest: check https://crates.io/crates/hebrew_accen
 **Basic example:**
 
 ```rust
-use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent};
+use hebrew_accents::{SentenceContext, SentenceContextError, Context, HebrewAccent, ProseAccent};
 
-fn main() -> Result<(), hebrew_accents::SentenceContextError> {
+fn main() -> Result<(), SentenceContextError> {
     let sentence_context = SentenceContext::new(
         "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
         Context::Prosaic,
     )?;
 
-    // Check if an accent exists
+    // Check if an accent exists in a given sentence
     assert!(sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)));
 
     // Find accent positions
@@ -44,7 +44,7 @@ fn main() -> Result<(), hebrew_accents::SentenceContextError> {
         println!("Atnach found at bytes {}: {}", match_.start(), match_.end());
         println!("Text: {}", match_.as_str());
     }
-
+    
     Ok(())
 }
 ```
@@ -90,9 +90,9 @@ println!("Is compound: {}", pseudo.english_name());
 
 Sentences have either Prosaic or Poetic context, which affects accent interpretation:
 ```rust
-use hebrew_accents::{SentenceContext, Context};
+use hebrew_accents::{SentenceContext, Context, SentenceContextError};
 
-fn main() -> Result<(), hebrew_accents::SentenceContextError> {
+fn main() -> Result<(), SentenceContextError> {
     let prose_context = SentenceContext::new("וַיְהִי", Context::Prosaic)?;
     let poetry_context = SentenceContext::new("זְמִירוֹת", Context::Poetic)?;
 
@@ -107,16 +107,16 @@ fn main() -> Result<(), hebrew_accents::SentenceContextError> {
 
 Each accent implements the Accent trait:
 ```rust
-use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
+fn main(){
+    use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
 
-fn main() {
     let accent = HebrewAccent::Prose(ProseAccent::Silluq);
 
     println!("Hebrew name: {}", accent.hebrew_name());
     println!("English name: {}", accent.english_name());
     println!("Concept: {}", accent.hebrew_concept());
     println!("Is compound: {}", accent.is_compound());
-    println!("Relative strength: {}", accent.relative_strength());
+    println!("Relative strength: {:?}", accent.relative_strength());
 }
 ```
 
@@ -125,30 +125,49 @@ fn main() {
 ### Detection
 
 ```rust
+use hebrew_accents::{HebrewAccent, SentenceContext,ProseAccent,Context};
 // Check if an accent exists in a sentence
-if sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Silluq)) {
-    println!("Found Silluq!");
+if let Ok(sentence_context) = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",Context::Prosaic){
+    if sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Silluq)) {
+        println!("Found Silluq!");
+    }
 }
 ```
 ### Finding Positions
 
 ```rust
 // Get byte offset of an accent
-if let Some(m) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Atnach)) {
-    println!("At {}-{}: {}", m.start(), m.end(), m.as_str());
-}
+    use hebrew_accents::{HebrewAccent, ProseAccent, SentenceContext};
+
+    let sentence_context_result = SentenceContext::with_valid_default();
+    if let Ok(sentence_context) = sentence_context_result {
+        println!("SC: /n/t{:?}",sentence_context.as_str());
+        if let Some(m_atch) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Munach)) {
+            println!("At {}-{}: {}", m_atch.start(), m_atch.end(), m_atch.as_str());
+        }
+    }
 ```
 
 ### Context Detection
 
 ```rust
 // Automatically determine whether a sentence follows prose or poetry patterns:
-let result = sentence_context.try_determine_context();
-match result {
-    Ok(Context::Poetic) => println!("Poetry detected!"),
-    Ok(Context::Prosaic) => println!("Prose detected!"),
-    Err(e) => println!("Ambiguous or no distinctive accents: {}", e),
+use hebrew_accents::{SentenceContext, SentenceContextError, Context};
+
+fn main() {
+
+let result_sentence_context = SentenceContext::with_valid_default();
+    if let Ok(sentence_context) = result_sentence_context {
+        let context = sentence_context.try_determine_context();
+
+         match context {
+             Ok(Context::Poetic) => eprintln!("Poetry detected!"),
+             Ok(Context::Prosaic) => eprintln!("Prose detected!"),
+             Err(e) => eprintln!("Ambiguous or no distinctive accents: {}", e),
+         }
+    }
 }
+
 ```
 ## Goals
 

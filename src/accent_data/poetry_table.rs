@@ -9,7 +9,6 @@ use crate::accent_data::accent_information::{
     TSINNORIT_MAHPAKH_INFO, TSINNORIT_MERKHA_INFO, TSINNOR_INFO,
 };
 pub(crate) static POETRY_ACCENT_TABLE: [AccentMetaData; PoetryAccent::LEN] = [
-    // Disjunctives
     SILLUQ_INFO,
     OLEH_WEYORED_INFO,
     ATNACH_INFO,
@@ -22,7 +21,6 @@ pub(crate) static POETRY_ACCENT_TABLE: [AccentMetaData; PoetryAccent::LEN] = [
     PAZER_INFO,
     MEHUPPAKH_LEGARMEH_INFO,
     AZLA_LEGARMEH_INFO,
-    // Conjunctives
     MUNACH_INFO,
     MERKHA_INFO,
     ILLUY_INFO,
@@ -37,9 +35,10 @@ pub(crate) static POETRY_ACCENT_TABLE: [AccentMetaData; PoetryAccent::LEN] = [
 ];
 
 // Compile-time guard
+// Verifies that table length matches enum count.
 const _: () = assert!(
     POETRY_ACCENT_TABLE.len() == PoetryAccent::LEN,
-    "POETRY_ACCENT_TABLE length mismatch!"
+    "POETRY_ACCENT_TABLE length mismatch"
 );
 
 #[test]
