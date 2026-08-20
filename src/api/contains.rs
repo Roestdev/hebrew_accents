@@ -6,12 +6,12 @@ use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, Sent
 use crate::api::find::{
     find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
 };
-use crate::common::{
+use crate::sentence::{
     DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MERKHA, MERKHA_KEFULA, MUNAH,
     PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR,
     TIPEHA, YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
-use crate::sentence::regex::{
+use crate::sentence::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_OUTER_COMMON_SHALSHELET,
     RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
@@ -22,16 +22,21 @@ use crate::sentence::regex::{
 impl SentenceContext {
     /// Returns true if the accent is present in the sentence
     /// taking into account the context
-    ///  
-    /// # Example
-    /// ```
-    /// use hebrew_accents::{SentenceContext,Context,HebrewAccent,ProseAccent,PoetryAccent};
     ///
-    /// let sentence_context = SentenceContext::new("וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",Context::Prosaic,);
-    /// let binding = sentence_context.unwrap();
-    /// assert!(binding.contains_accent(ProseAccent::Silluq.into()));
-    /// assert!(!binding.contains_accent(ProseAccent::Segolta.into()));
-    /// assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+    /// # Examples
+    ///
+    /// ```rust
+    /// use hebrew_accents::{SentenceContext, Context, HebrewAccent, ProseAccent, PoetryAccent};
+    ///
+    /// // Create a sentence context with biblical text
+    /// let sentence_text = "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ";
+    /// let sentence_context = SentenceContext::new(sentence_text, Context::Prosaic)
+    ///     .expect("valid SentenceContext stucture");
+    ///
+    /// // Assert expected accents are present/absent
+    /// assert!(sentence_context.contains_accent(ProseAccent::Silluq.into()));
+    /// assert!(!sentence_context.contains_accent(ProseAccent::Segolta.into()));
+    /// assert!(!sentence_context.contains_accent(PoetryAccent::ReviaGadol.into()));
     /// ```
     pub fn contains_accent(&self, accent: HebrewAccent) -> bool {
         match accent {
@@ -191,7 +196,7 @@ impl SentenceContext {
 }
 
 #[cfg(test)]
-mod tests {
+mod prose_accents {
     use crate::api::context::Context;
     use crate::api::sentence_context::SentenceContext;
     use crate::api::{PoetryAccent, ProseAccent, PseudoAccent};
@@ -1068,3 +1073,9 @@ mod tests {
         assert!(binding.contains_accent(PseudoAccent::Maqqeph.into()));
     }
 }
+
+#[cfg(test)]
+mod poetry_accents {}
+
+#[cfg(test)]
+mod pseudo_accents {}

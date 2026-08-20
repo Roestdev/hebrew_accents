@@ -2,7 +2,7 @@
 
 // Local modules / crate‑internal
 use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
-use crate::common::{
+use crate::sentence::{
     ATNACH, AZLA, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH,
     MAQQEPH_AS_CHAR, MEAYLA, MERKHA, MERKHA_KEFULA, METEG, MUNACH, MUNAH, OLEH_AS_CHAR, PASEQ,
     PASEQ_AS_CHAR, PASHTA, PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA,
@@ -10,7 +10,7 @@ use crate::common::{
     YETIV, YORED_AS_CHAR, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
 
-use crate::sentence::regex::{
+use crate::sentence::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
     FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
     RE_INNER_POETRY_TSINNORIT_MAHPAKH, RE_INNER_POETRY_TSINNORIT_MERKHA, RE_INNER_PROSE_LEGARMEH,
@@ -1367,7 +1367,7 @@ mod unit_tests {
     }
     #[test]
     fn test_find_prose_azla() {
-        use crate::common::AZLA;
+        use crate::sentence::AZLA;
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֨ת השּׁמים ואת הארץ׃", Context::Prosaic);
         let expected = Match::new(AZLA, 39, 41);
         assert_eq!(
@@ -1930,7 +1930,7 @@ mod unit_tests {
 
     #[test]
     fn test_find_poetry_azla() {
-        use crate::common::AZLA;
+        use crate::sentence::AZLA;
 
         // contains Azla
         let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);

@@ -8,7 +8,7 @@ use fancy_regex::Regex as FancyRegex;
 use regex::Regex;
 
 // Crate‑internal (local modules)
-use crate::common::{
+use crate::sentence::{
     ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
     SOF_PASUQ, TSINNORIT, YORED,
 };

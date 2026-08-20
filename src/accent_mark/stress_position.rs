@@ -15,7 +15,7 @@ pub(crate) enum StressPosition {
     Prepositive,
     /// Mark is on a syllable following the stressed one
     Postpositive,
-    /// TODO
+    /// Used for PseudoAccents
     NotApplicable,
 }
 

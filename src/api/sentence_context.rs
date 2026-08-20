@@ -43,8 +43,8 @@
 
 use crate::api::context::Context;
 use crate::error::SentenceContextError;
-use crate::sentence::detector::detect_context_from_sentence;
-use crate::sentence::validator::validate_sentence;
+use crate::sentence::detect_context_from_sentence;
+use crate::sentence::validate_sentence;
 
 /// Represents a Hebrew biblical sentence with its associated liturgical context.
 ///

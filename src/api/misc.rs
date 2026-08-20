@@ -1,6 +1,4 @@
-use crate::{
-    api::context::Context, sentence::detector::detect_context_from_sentence, SentenceContextError,
-};
+use crate::{api::context::Context, sentence::detect_context_from_sentence, SentenceContextError};
 
 /// This is a convenience function for trying to detect the context without creating a
 /// [`crate::SentenceContext`] instance first.

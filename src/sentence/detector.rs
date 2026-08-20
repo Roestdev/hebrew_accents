@@ -231,15 +231,15 @@ mod tests {
     //     assert_eq!(result, Ok(Context::Poetic));
     // }
 
-    // #[test]
-    // fn detects_pure_poetry_with_revia_mugrash_returns_poetic() {
-    //     // Revia Mugrash (Revia U+0597) is poetry-only
-    //     let sentence = "\u{05D0}\u{0597}\u{05D1}"; // א֗ב
+    #[test]
+    fn detects_pure_poetry_with_revia_mugrash_returns_poetic() {
+        // Revia Mugrash (Revia U+0597) is poetry-only
+        let sentence = "\u{05D0}\u{0597}\u{05D1}"; // א֗ב
 
-    //     let result = detect_context_from_sentence(sentence);
+        let result = detect_context_from_sentence(sentence);
 
-    //     assert_eq!(result, Ok(Context::Poetic));
-    // }
+        assert_eq!(result, Ok(Context::Poetic));
+    }
 
     #[test]
     fn detects_pure_poetry_with_dechi_returns_poetic() {

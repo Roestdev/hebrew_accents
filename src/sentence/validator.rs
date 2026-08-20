@@ -2,9 +2,19 @@ use hebrew_unicode_script::{is_hbr_block, is_hbr_consonant_final, is_hbr_consona
 
 use crate::SentenceContextError;
 
+const MAX_SENTENCE_LENGTH: usize = 10_000;
+
 pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     if s.is_empty() {
         return Err(SentenceContextError::EmptySentence);
+    }
+
+    let char_count = s.chars().count();
+    if char_count > MAX_SENTENCE_LENGTH {
+        return Err(SentenceContextError::SentenceTooLong(
+            MAX_SENTENCE_LENGTH,
+            char_count,
+        ));
     }
 
     if s.contains("\n") {
@@ -31,6 +41,7 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
 
         // First char is neither a Hebrew letter nor a niqqud mark
         Some(c) if !is_valid_hebrew_char(c) => {
+            // Defensive: should not be reachable due to prior consonant check
             return Err(SentenceContextError::InvalidCharacter(c, 0));
         }
 
@@ -579,5 +590,11 @@ mod tests {
             validate_sentence("א#"),
             Err(SentenceContextError::InvalidCharacter('#', 1))
         );
+    }
+    #[test]
+    fn longest_tanakh_verse_esther_8_9_passes_validation() {
+        // Esther 8:9 - longest verse in Tanakh (~43 Hebrew words, ~367 chars)
+        let esther_8_9 = " וַיִּקָּרְאוּ סֹפְרֵי־הַמֶּלֶךְ בָּעֵת־הַהִיא בַּחֹדֶשׁ הַשְּׁלִישִׁי הוּא־חֹדֶשׁ סִיוָן בִּשְׁלוֹשָׁה וְעֶשְׂרִים בּוֹ וַיִּכָּתֵב כְּכָל־אֲשֶׁר־צִוָּה מָרְדֳּכַי אֶל־הַיְּהוּדִים וְאֶל הָאֲחַשְׁדַּרְפְּנִים־וְהַפַּחוֹת וְשָׂרֵי הַמְּדִינוֹת אֲשֶׁר מֵהֹדּוּ וְעַד־כּוּשׁ שֶׁבַע וְעֶשְׂרִים וּמֵאָה מְדִינָה מְדִינָה וּמְדִינָה כִּכְתָבָהּ וְעַם וָעָם כִּלְשֹׁנוֹ וְאֶל־הַיְּהוּדִים כִּכְתָבָם וְכִלְשׁוֹנָם׃";
+        assert_eq!(validate_sentence(esther_8_9), Ok(()));
     }
 }

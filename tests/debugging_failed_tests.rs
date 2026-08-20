@@ -1,10 +1,7 @@
-use hebrew_accents::{SentenceContext, SentenceContextError, Context, HebrewAccent, ProseAccent};
-
+use hebrew_accents::{Context, HebrewAccent, ProseAccent, SentenceContext, SentenceContextError};
 
 #[test]
-fn doctest()-> Result<(), SentenceContextError> {
-
-
+fn doctest() -> Result<(), SentenceContextError> {
     let sentence_context = SentenceContext::new(
         "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
         Context::Prosaic,
@@ -19,6 +16,6 @@ fn doctest()-> Result<(), SentenceContextError> {
         println!("Atnach found at bytes {}: {}", match_.start(), match_.end());
         println!("Text: {}", match_.as_str());
     }
-    
+
     Ok(())
 }

@@ -1,7 +1,7 @@
 
 # Hebrew accents
 
-A Rust library for working with Masoretic Hebrew cantillation marks (טעמים‎ / ta'amim) — the "accents" that appear in the Tanach (Biblical Hebrew texts). This crate abstracts the complexities of the Masoretic Hebrew accent system, providing tools to detect, identify, and analyze Hebrew accents programmatically.
+A Rust library for working with Masoretic Hebrew cantillation marks (טעמים / ta'amim) — the "accents" that appear in the Tanach (Biblical Hebrew texts). This crate abstracts the complexities of the Masoretic Hebrew accent system, providing tools to detect, identify, and analyze Hebrew accents programmatically.
 
 
 [📚 Documentation](https://docs.rs/hebrew_accents) |
