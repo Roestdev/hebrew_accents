@@ -224,9 +224,9 @@ pub enum SentenceContextError {
     /// let result = genesis.try_determine_context();
     /// assert!(matches!(result, Err(SentenceContextError::DerivationFailed(_))));
     ///
-    /// // Psalm 1:1 contains poetry-exclusive accents - detection succeeds
-    /// let psalm = SentenceContext::new("אַשְׁרֵי־הָאִישׁ...", Context::Prosaic).unwrap();
-    /// let context = psalm.try_determine_context().unwrap();
+    /// // Job 38:4 contains poetry-exclusive accents - detection succeeds
+    /// let job = SentenceContext::new("אֵיפֹ֣ה הָ֭יִיתָ בְּיָסְדִי־אָ֑רֶץ הַ֝גֵּ֗ד אִם־יָדַ֥עְתָּ בִינָֽה׃", Context::Prosaic).unwrap();
+    /// let context = job.try_determine_context().unwrap();
     /// assert_eq!(context, Context::Poetic);
     /// ```
     #[error("Derivation failed: {0}")]

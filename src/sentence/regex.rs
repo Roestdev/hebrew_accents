@@ -1,17 +1,14 @@
 //! Regex that are used for finding 'Hebrew Accents'
-
-// Standard library
-use once_cell::sync::Lazy;
-
-// External crates
 use fancy_regex::Regex as FancyRegex;
+use once_cell::sync::Lazy;
 use regex::Regex;
 
-// Crate‑internal (local modules)
 use crate::sentence::{
     ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
     SOF_PASUQ, TSINNORIT, YORED,
 };
+
+// Pattern builders, validators
 
 /// Any Hebrew character (Unicode property).
 const HEBREW: &str = r"\p{Hebrew}";
@@ -20,7 +17,7 @@ const HEBREW: &str = r"\p{Hebrew}";
 const OPTIONAL_SPACE: &str = r"\s?";
 
 // One or more spaces (greedy).
-//const ONE_OR_MORE_SPACES: &str = r"\s+";
+// const  ONE_OR_MORE_SPACES: &str = r"\s+";
 
 /// Any character that is **not** a space nor Maqqeph (U+05BE).
 const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
@@ -29,7 +26,8 @@ const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
 const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
 // Either a space **or** a Maqqeph.
-// const HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
+// 00stWest
+// 00stconst  HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
 
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
 const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
@@ -51,6 +49,227 @@ const ZERO_OR_ONE_SAMECH_OR_PEY: &str = r"[\u{05E4}\u{05E1}]?";
 /// Simple pipe character for building alternations inside `format!`.
 const OR: &str = "|";
 
+// All prose-specific regexes
+pub(crate) mod prose_patterns {
+    use super::*;
+    // All prose-specific regexes
+    // A 'Legarmeh' consists of the following two UTF-8 code-points:
+    //      - Munach (\u{05A3}) followed by
+    //      - Paseq (\u{05C0})
+    // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
+    // Regex::new(r"[^\s\u{05BE}]\p{Hebrew}*?\u{05A3}\p{Hebrew}*?\s*?[\u{05C0}\u{007C}]").unwrap()
+    pub(crate) static RE_OUTER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!(
+        "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}"
+    );
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_LEGARMEH: {}", pattern))
+    });
+
+    pub(crate) static RE_INNER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_PROSE_LEGARMEH: {}", pattern))
+    });
+    // A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
+    // Otherwise is called a 'Legarmeh'
+    //      - Munach (\u{05A3})
+    //      - Paseq (\u{05C0})
+    // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
+    // FancyRegex::new(r"\u{05A3}(?!\p{Hebrew}*?\s*?[\u{05C0}\u{007C}])").unwrap());
+    pub(crate) static FA_RE_OUTER_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
+        let pattern = format!("{MUNAH}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
+        FancyRegex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", pattern))
+    });
+
+    // A Meayla is a Tiphcha before Silluq or Atnach in the same word
+    // or words connected with a Maqqeph (\u{05BE})
+    // Tiphcha: U+0596
+    // Atnach:  U+0591
+    // Silluq:  U+05BD (Meteg in the last word)
+    //     Regex::new(r"(\u{0596}\p{Hebrew}+\u{0591}|\u{0596}\p{Hebrew}*?\u{05BD}\p{Hebrew}*?\s?[\u{05E4}\u{05E1}]?\s?$)").unwrap()
+    pub(crate) static RE_OUTER_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!(
+        "{MEAYLA}{HEBREW}+{ATNACH}{OR}{MEAYLA}{HEBREW}*?{SILLUQ}{HEBREW}?{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}"
+    );
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", pattern))
+    });
+}
+
+// All poetry-specific regexes
+pub(crate) mod poetry_patterns {
+    use super::*;
+    // An 'Ole We Yored' consists of the following two UTF-8 code-points
+    //      - Ole (\u{05AB}) followed by
+    //      - Yored (\u{05A5}) aka Merkha
+    // This accent can stretch over two words (a.k.a. word-unit)
+    // Regex::new(r"\u{05AB}\p{Hebrew}+\s?\p{Hebrew}*\u{05A5}").unwrap());
+    pub(crate) static RE_OUTER_POETRY_OLEH_WEYORED: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{}{}+{}{}*{}", OLEH, HEBREW, OPTIONAL_SPACE, HEBREW, YORED);
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WEYORED: {}", pattern))
+    });
+    // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
+    // - Geresh (\u{059C}) followed by
+    // - Revia (\u{0597})
+    // - Maqqeph (\u{05BE})
+    // - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
+    /*
+    Geresh (גֵּרֶשׁ)
+    -----------
+    Function – In the system of Biblical Hebrew cantillation (taʽamim) it is a disjunctive accent that CantillationSymbol a pause or syntactic break.
+    Form – The regular cantillation geresh is written above the accented letter (Unicode U+059C).
+    Placement – It sits directly over the letter it belongs to.
+
+    Geresh Muqdam (גֵּרֵשׁ מוּקְדָם)
+    -----------------------
+    Function – It is a variant of the cantillation geresh, also a disjunctive accent, but used in slightly different melodic‑syntactic contexts.
+    Form – Represented in Unicode as U+059D.
+    Placement – The mark appears above and a little before the first letter of the word (i.e., “pre‑positive” placement), which distinguishes it visually from the standard gereshgrokipedia.com.
+
+    This mark is characteristic of the three poetic books (Job, Proverbs, Psalms – the “Emet” books); there it often changes the usual function of nearby accents (e.g., turning a strong disjunctive into a weaker one).
+
+    In short, both are cantillation CantillationSymbol, but geresh muqdam is positioned slightly earlier (to the left) of the accented letter, whereas the ordinary geresh sits directly over the letter. This subtle shift signals a different nuance in the chanting and parsing of the biblical text.
+    -------------------------------------------------------------------
+    Yes, the Geresh Muqdam (גֵּרֵשׁ מוּקְדָם, literally "preceding geresh") does appear in the BHS.
+    Since the BHS reproduces the full Masoretic notation of the Leningrad Codex,
+    it includes all the cantillation marks of both accent systems — the prose system (21 books)
+    and the poetic system (3 books).The Geresh Muqdam belongs specifically to the
+    poetic accent system, which is used exclusively in the three Sifrei Emet —
+    Psalms, Proverbs, and Job.
+    These three books use a distinct set of te'amim that differs from the 21 prose books,
+    and the Geresh Muqdam is one of the distinctive marks unique to that system.
+    The name "Muqdam" ("preceding" or "moved forward") refers to its placement:
+    unlike a regular Geresh which sits on the accented syllable of its own word,
+    the Geresh Muqdam is attached to the end of the preceding word, effectively
+    "moved forward" from its logical position.
+    It functions as a disjunctive accent, creating a moderate pause in the verse structure,
+    and helps parse the parallelism characteristic of biblical poetry.
+    So if you're reading Psalms, Proverbs, or Job in the BHS, you'll encounter it.
+    */
+    // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
+    pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
+        //let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
+        let pattern = format!("{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", pattern))
+    });
+
+    // An 'Mehuppakh Legarmeh' consists of the following two UTF-8 code-points:
+    //      - Mehuppakh (\u{05A4}) followed by
+    //      - Paseq (\u{05C0})
+    // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
+    // Lazy::new(|| Regex::new(r"\u{05A4}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap());
+    pub(crate) static RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{MAHPAKH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
+        Regex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: {}",
+                pattern
+            )
+        })
+    });
+
+    // An 'Azla Legarmeh' consists of the following two UTF-8 code-points:
+    //      - Azla (\u{05A8}) followed by
+    //      - Paseq (\u{05C0})
+    // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
+    // Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{05A8}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap()
+    pub(crate) static RE_OUTER_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{AZLA}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_AZLA_LEGARMEH: {}", pattern))
+    });
+
+    // pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
+    //     FancyRegex::new(r"(\u{05A8}\p{Hebrew}*?\u{05BE})|(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))")
+    //         .unwrap()
+    // });
+
+    const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str =
+        r"(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))";
+    pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
+        let pattern =
+            format!("{AZLA}{HEBREW}*?{MAQAF}{OR}{AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
+        FancyRegex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_POETRY_AZLA: {}", pattern))
+    });
+
+    // A Shalshalet NOT followed by a Sof Passuq (or a vertical line)
+    //    Lazy::new(|| FancyRegex::new(r"\u{0593}(?!\p{Hebrew}*?\s?[\u{05C0}\u{007C}])").unwrap());
+    pub(crate) static FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: Lazy<FancyRegex> = Lazy::new(|| {
+        let pattern = format!("{SHALSHELET}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
+
+        FancyRegex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: {}",
+                pattern
+            )
+        })
+    });
+
+    // A Tsinnorit Merkha consists of the following two UTF-8 code-points
+    //      - Tsinnorit (\u{0598}) followed by
+    //      - Merkha (\u{05A5})
+    // This accent can occur in one or two words (a.k.a. word-unit)
+    //     Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{0598}\p{Hebrew}+[\s\u{05BE}]?\p{Hebrew}*\u{05A5}")
+    pub(crate) static RE_OUTER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!(
+            "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}"
+        );
+        Regex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex RE_OUTER_POETRY_TSINNORIT_MERKHA: {}",
+                pattern
+            )
+        })
+    });
+
+    pub(crate) static RE_INNER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}");
+        Regex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex RE_INNER_POETRY_TSINNORIT_MERKHA: {}",
+                pattern
+            )
+        })
+    });
+
+    // A Tsinnorit Mahpakh consists of the following two UTF-8 code-points
+    //      - Tsinnorit (\u{0598}) followed by
+    //      - Mahpakh (\u{05A4})
+    // This accent can occur in one or two words (a.k.a. word-unit)
+    // Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{0598}\p{Hebrew}+[\s\u{05BE}]?\p{Hebrew}*\u{05A4}")
+    pub(crate) static RE_OUTER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!(
+            "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}"
+        );
+        Regex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
+                pattern
+            )
+        })
+    });
+
+    pub(crate) static RE_INNER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}");
+        Regex::new(&pattern).unwrap_or_else(|_| {
+            panic!(
+                "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
+                pattern
+            )
+        })
+    });
+}
+
+// shared_patterns
+pub(crate) mod shared_patterns {
+        use super::*;
+
+// Common patterns (Silluq, Meteg, etc.)
 // A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
 // Most of the time a sentence ends with Sof Pasuq (\u{05C3})
 // Some times a sentence ends with "samech" (U+05E1) or an "pey" (U+05E4).
@@ -82,51 +301,6 @@ pub(crate) static RE_INNER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
         .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", pattern))
 });
 
-// A 'Legarmeh' consists of the following two UTF-8 code-points:
-//      - Munach (\u{05A3}) followed by
-//      - Paseq (\u{05C0})
-// For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
-// Regex::new(r"[^\s\u{05BE}]\p{Hebrew}*?\u{05A3}\p{Hebrew}*?\s*?[\u{05C0}\u{007C}]").unwrap()
-pub(crate) static RE_OUTER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}"
-    );
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_LEGARMEH: {}", pattern))
-});
-
-pub(crate) static RE_INNER_PROSE_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{MUNAH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_PROSE_LEGARMEH: {}", pattern))
-});
-
-// A 'Munach' is a 'Munach' if it is NOT FOLLOWED by a Paseq !
-// Otherwise is called a 'Legarmeh'
-//      - Munach (\u{05A3})
-//      - Paseq (\u{05C0})
-// For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
-// FancyRegex::new(r"\u{05A3}(?!\p{Hebrew}*?\s*?[\u{05C0}\u{007C}])").unwrap());
-pub(crate) static FA_RE_OUTER_PROSE_MUNACH: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern = format!("{MUNAH}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
-    FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", pattern))
-});
-
-// A Meayla is a Tiphcha before Silluq or Atnach in the same word
-// or words connected with a Maqqeph (\u{05BE})
-// Tiphcha: U+0596
-// Atnach:  U+0591
-// Silluq:  U+05BD (Meteg in the last word)
-//     Regex::new(r"(\u{0596}\p{Hebrew}+\u{0591}|\u{0596}\p{Hebrew}*?\u{05BD}\p{Hebrew}*?\s?[\u{05E4}\u{05E1}]?\s?$)").unwrap()
-pub(crate) static RE_OUTER_PROSE_MEAYLA: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "{MEAYLA}{HEBREW}+{ATNACH}{OR}{MEAYLA}{HEBREW}*?{SILLUQ}{HEBREW}?{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}"
-    );
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", pattern))
-});
-
 // A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
 // A Silluq is not a Meteg
 //  FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)")
@@ -146,173 +320,15 @@ pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
 //         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_METEG: {}", &pattern))
 // });
 
-// An 'Ole We Yored' consists of the following two UTF-8 code-points
-//      - Ole (\u{05AB}) followed by
-//      - Yored (\u{05A5}) aka Merkha
-// This accent can stretch over two words (a.k.a. word-unit)
-// Regex::new(r"\u{05AB}\p{Hebrew}+\s?\p{Hebrew}*\u{05A5}").unwrap());
-pub(crate) static RE_OUTER_POETRY_OLEH_WEYORED: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{}{}+{}{}*{}", OLEH, HEBREW, OPTIONAL_SPACE, HEBREW, YORED);
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WEYORED: {}", pattern))
-});
 
-// A 'Revia Mugrash' consists of the following two UTF-8 code-points:
-// - Geresh (\u{059C}) followed by
-// - Revia (\u{0597})
-// - Maqqeph (\u{05BE})
-// - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
-/*
-Geresh (גֵּרֶשׁ)
------------
-Function – In the system of Biblical Hebrew cantillation (taʽamim) it is a disjunctive accent that CantillationSymbol a pause or syntactic break.
-Form – The regular cantillation geresh is written above the accented letter (Unicode U+059C).
-Placement – It sits directly over the letter it belongs to.
+}
 
-Geresh Muqdam (גֵּרֵשׁ מוּקְדָם)
------------------------
-Function – It is a variant of the cantillation geresh, also a disjunctive accent, but used in slightly different melodic‑syntactic contexts.
-Form – Represented in Unicode as U+059D.
-Placement – The mark appears above and a little before the first letter of the word (i.e., “pre‑positive” placement), which distinguishes it visually from the standard gereshgrokipedia.com.
-
-This mark is characteristic of the three poetic books (Job, Proverbs, Psalms – the “Emet” books); there it often changes the usual function of nearby accents (e.g., turning a strong disjunctive into a weaker one).
-
-In short, both are cantillation CantillationSymbol, but geresh muqdam is positioned slightly earlier (to the left) of the accented letter, whereas the ordinary geresh sits directly over the letter. This subtle shift signals a different nuance in the chanting and parsing of the biblical text.
--------------------------------------------------------------------
-Yes, the Geresh Muqdam (גֵּרֵשׁ מוּקְדָם, literally "preceding geresh") does appear in the BHS.
-Since the BHS reproduces the full Masoretic notation of the Leningrad Codex,
-it includes all the cantillation marks of both accent systems — the prose system (21 books)
-and the poetic system (3 books).The Geresh Muqdam belongs specifically to the
-poetic accent system, which is used exclusively in the three Sifrei Emet —
-Psalms, Proverbs, and Job.
-These three books use a distinct set of te'amim that differs from the 21 prose books,
-and the Geresh Muqdam is one of the distinctive marks unique to that system.
-The name "Muqdam" ("preceding" or "moved forward") refers to its placement:
-unlike a regular Geresh which sits on the accented syllable of its own word,
-the Geresh Muqdam is attached to the end of the preceding word, effectively
-"moved forward" from its logical position.
-It functions as a disjunctive accent, creating a moderate pause in the verse structure,
-and helps parse the parallelism characteristic of biblical poetry.
-So if you're reading Psalms, Proverbs, or Job in the BHS, you'll encounter it.
-*/
-// Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
-pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
-    //let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
-    let pattern = format!("{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", pattern))
-});
-
-// An 'Mehuppakh Legarmeh' consists of the following two UTF-8 code-points:
-//      - Mehuppakh (\u{05A4}) followed by
-//      - Paseq (\u{05C0})
-// For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
-// Lazy::new(|| Regex::new(r"\u{05A4}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap());
-pub(crate) static RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{MAHPAKH}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH: {}",
-            pattern
-        )
-    })
-});
-
-// An 'Azla Legarmeh' consists of the following two UTF-8 code-points:
-//      - Azla (\u{05A8}) followed by
-//      - Paseq (\u{05C0})
-// For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
-// Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{05A8}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap()
-pub(crate) static RE_OUTER_POETRY_AZLA_LEGARMEH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{AZLA}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_AZLA_LEGARMEH: {}", pattern))
-});
-
-// pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
-//     FancyRegex::new(r"(\u{05A8}\p{Hebrew}*?\u{05BE})|(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))")
-//         .unwrap()
-// });
-
-const AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str =
-    r"(\u{05A8}(?!\p{Hebrew}\s*[\u{05C0}\u{007C}]))";
-pub(crate) static FA_RE_OUTER_POETRY_AZLA: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern =
-        format!("{AZLA}{HEBREW}*?{MAQAF}{OR}{AZLA_NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
-    FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_POETRY_AZLA: {}", pattern))
-});
-
-// A Shalshalet NOT followed by a Sof Passuq (or a vertical line)
-//    Lazy::new(|| FancyRegex::new(r"\u{0593}(?!\p{Hebrew}*?\s?[\u{05C0}\u{007C}])").unwrap());
-pub(crate) static FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern = format!("{SHALSHELET}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
-
-    FancyRegex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH: {}",
-            pattern
-        )
-    })
-});
-
-// A Tsinnorit Merkha consists of the following two UTF-8 code-points
-//      - Tsinnorit (\u{0598}) followed by
-//      - Merkha (\u{05A5})
-// This accent can occur in one or two words (a.k.a. word-unit)
-//     Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{0598}\p{Hebrew}+[\s\u{05BE}]?\p{Hebrew}*\u{05A5}")
-pub(crate) static RE_OUTER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}"
-    );
-    Regex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex RE_OUTER_POETRY_TSINNORIT_MERKHA: {}",
-            pattern
-        )
-    })
-});
-
-pub(crate) static RE_INNER_POETRY_TSINNORIT_MERKHA: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MERKHA}");
-    Regex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex RE_INNER_POETRY_TSINNORIT_MERKHA: {}",
-            pattern
-        )
-    })
-});
-
-// A Tsinnorit Mahpakh consists of the following two UTF-8 code-points
-//      - Tsinnorit (\u{0598}) followed by
-//      - Mahpakh (\u{05A4})
-// This accent can occur in one or two words (a.k.a. word-unit)
-// Regex::new(r"[\s\u{05BE}]?\p{Hebrew}*?\u{0598}\p{Hebrew}+[\s\u{05BE}]?\p{Hebrew}*\u{05A4}")
-pub(crate) static RE_OUTER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
-        "{SPACE_OR_MAQAF}?{HEBREW}*?{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}"
-    );
-    Regex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
-            pattern
-        )
-    })
-});
-
-pub(crate) static RE_INNER_POETRY_TSINNORIT_MAHPAKH: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{TSINNORIT}{HEBREW}+{SPACE_OR_MAQAF}?{HEBREW}*{MAHPAKH}");
-    Regex::new(&pattern).unwrap_or_else(|_| {
-        panic!(
-            "Invalid regex RE_OUTER_POETRY_TSINNORIT_MAHPAKH: {}",
-            pattern
-        )
-    })
-});
 
 #[cfg(test)]
 mod regex_initialization_tests {
-    use super::*;
+    use super::prose_patterns::*;
+    use super::poetry_patterns::*;
+    use super::shared_patterns::*;
 
     // Test FA_RE_OUTER_COMMON_SILLUQ
     #[test]

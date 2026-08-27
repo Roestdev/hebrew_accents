@@ -142,8 +142,8 @@ if let Ok(sentence_context) = SentenceContext::new("בְּרֵאשִׁ֖ית ב�
     let sentence_context_result = SentenceContext::with_valid_default();
     if let Ok(sentence_context) = sentence_context_result {
         println!("SC: /n/t{:?}",sentence_context.as_str());
-        if let Some(m_atch) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Munach)) {
-            println!("At {}-{}: {}", m_atch.start(), m_atch.end(), m_atch.as_str());
+        if let Some(match_val) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Munach)) {
+            println!("At {}-{}: {}", match_val.start(), match_val.end(), match_val.as_str());
         }
     }
 ```

@@ -19,7 +19,10 @@ use crate::sentence::{
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::{Context, Match, SentenceContext};
-const ACCENT_LEN_UTF8: usize = 2;
+
+// Use to create a Match struct artificially if the method find() is used
+// e.g. Match::new(ZAQEF_GADOL, index, index + SINGLE_ACCENT_LEN_UTF8)
+const SINGLE_ACCENT_LEN_UTF8: usize = 2;
 
 impl<'a> SentenceContext {
     /// Look for `accent` inside the sentence.
@@ -87,11 +90,11 @@ impl<'a> SentenceContext {
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self
                 .sentence
                 .find(ATNACH)
-                .map(|index| Match::new(ATNACH, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ATNACH, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Segolta) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(SEGOLTA)
-                .map(|index| Match::new(SEGOLTA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(SEGOLTA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     Some(m) => {
@@ -136,56 +139,56 @@ impl<'a> SentenceContext {
             HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZAQEF_QATAN)
-                .map(|index| Match::new(ZAQEF_QATAN, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ZAQEF_QATAN, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZAQEF_GADOL)
-                .map(|index| Match::new(ZAQEF_GADOL, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ZAQEF_GADOL, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Revia) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(REVIA)
-                .map(|index| Match::new(REVIA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(REVIA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Tiphcha) => self
                 .sentence
                 .find(TIPHCHA)
-                .map(|index| Match::new(TIPHCHA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(TIPHCHA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZARQA)
-                .map(|index| Match::new(ZARQA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ZARQA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(PASHTA)
-                .map(|index| Match::new(PASHTA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(PASHTA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(YETIV)
-                .map(|index| Match::new(YETIV, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(YETIV, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Tevir) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(TEVIR)
-                .map(|index| Match::new(TEVIR, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(TEVIR, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Geresh) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(GERESH)
-                .map(|index| Match::new(GERESH, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(GERESH, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Gershayim) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(GERSHAYIM)
-                .map(|index| Match::new(GERSHAYIM, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(GERSHAYIM, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
                 self.sentence
                     .find(PAZER)
-                    .map(|index| Match::new(PAZER, index, index + ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(PAZER, index, index + SINGLE_ACCENT_LEN_UTF8))
             }
             HebrewAccent::Prose(ProseAccent::PazerGadol) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(PAZER_GADOL)
-                .map(|index| Match::new(PAZER_GADOL, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(PAZER_GADOL, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::TelishaGedolah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(TELISHA_GEDOLAH)
-                    .map(|index| Match::new(TELISHA_GEDOLAH, index, index + ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(TELISHA_GEDOLAH, index, index + SINGLE_ACCENT_LEN_UTF8))
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
@@ -251,34 +254,34 @@ impl<'a> SentenceContext {
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(MAHPAKH)
-                .map(|index| Match::new(MAHPAKH, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(MAHPAKH, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Merkha) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(MERKHA)
-                .map(|index| Match::new(MERKHA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(MERKHA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(MERKHA_KEFULA)
-                    .map(|index| Match::new(MERKHA_KEFULA, index, index + ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(MERKHA_KEFULA, index, index + SINGLE_ACCENT_LEN_UTF8))
             }
             HebrewAccent::Prose(ProseAccent::Darga) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(DARGA)
-                .map(|index| Match::new(DARGA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(DARGA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Azla) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(QADMA)
-                .map(|index| Match::new(QADMA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(QADMA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::TelishaQetannah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(TELISHA_QETANA)
-                    .map(|index| Match::new(TELISHA_QETANA, index, index + ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(TELISHA_QETANA, index, index + SINGLE_ACCENT_LEN_UTF8))
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
             | HebrewAccent::Poetry(PoetryAccent::Galgal) => self
                 .sentence
                 .find(GALGAL)
-                .map(|index| Match::new(GALGAL, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(GALGAL, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Prose(ProseAccent::Meayla) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
                     Some(m) => {
@@ -414,14 +417,14 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(ZINOR)
-                .map(|index| Match::new(ZINOR, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ZINOR, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
                 find_poetry_revia_qaton(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(DECHI)
-                .map(|index| Match::new(DECHI, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(DECHI, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.ctx == Context::Poetic =>
             {
@@ -476,18 +479,18 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(MUNAH)
-                .map(|index| Match::new(MUNAH, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(MUNAH, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
                 find_poetry_merkha(&self.sentence)
             }
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(ILUY)
-                .map(|index| Match::new(ILUY, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(ILUY, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Poetry(PoetryAccent::Tarcha) => self
                 .sentence
                 .find(TARCHA)
-                .map(|index| Match::new(TARCHA, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(TARCHA, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.ctx == Context::Poetic => {
                 find_poetry_mehuppakh(&self.sentence)
             }
@@ -620,15 +623,15 @@ impl<'a> SentenceContext {
             HebrewAccent::Pseudo(PseudoAccent::SophPasuq) => self
                 .sentence
                 .find(SOF_PASUQ)
-                .map(|index| Match::new(SOF_PASUQ, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(SOF_PASUQ, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Pseudo(PseudoAccent::Maqqeph) => self
                 .sentence
                 .find(MAQQEPH)
-                .map(|index| Match::new(MAQQEPH, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(MAQQEPH, index, index + SINGLE_ACCENT_LEN_UTF8)),
             HebrewAccent::Pseudo(PseudoAccent::Paseq) => self
                 .sentence
                 .find(PASEQ)
-                .map(|index| Match::new(PASEQ, index, index + ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(PASEQ, index, index + SINGLE_ACCENT_LEN_UTF8)),
             _ => None,
         }
     }
@@ -665,7 +668,7 @@ pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<Match<'static>> {
             //     "Found at least one target char, not part of another aaccent:: BREAK the loop"
             // );
             let merkha = "\u{05A5}";
-            return Some(Match::new(merkha, index, index + ACCENT_LEN_UTF8));
+            return Some(Match::new(merkha, index, index + SINGLE_ACCENT_LEN_UTF8));
         }
     }
     None
@@ -709,7 +712,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<Match<'static>> {
             // );
             // println!("Found target char, not part of another accent. Returning TRUE");
             let mahpakh = "\u{05A4}";
-            return Some(Match::new(mahpakh, index, index + ACCENT_LEN_UTF8));
+            return Some(Match::new(mahpakh, index, index + SINGLE_ACCENT_LEN_UTF8));
         }
     }
     None
@@ -751,7 +754,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<Match<'static>> 
         // );
         if !two_code_points_behind && !followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, index, index + ACCENT_LEN_UTF8));
+            return Some(Match::new(revia, index, index + SINGLE_ACCENT_LEN_UTF8));
         }
     }
     None
@@ -797,7 +800,7 @@ pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<Match<'static>> 
         // );
         if !two_code_points_behind && followed_by_owy {
             let revia = "\u{0597}";
-            return Some(Match::new(revia, index, index + ACCENT_LEN_UTF8));
+            return Some(Match::new(revia, index, index + SINGLE_ACCENT_LEN_UTF8));
         }
     }
     None
@@ -2630,10 +2633,10 @@ mod accent_metadata_function_coverage_tests {
         assert!(result.is_some() || result.is_none());
     }
 
-    // Test ACCENT_LEN_UTF8 constant usage
+    // Test SINGLE_ACCENT_LEN_UTF8 constant usage
     #[test]
     fn test_accent_length_constant() {
-        assert_eq!(ACCENT_LEN_UTF8, 2);
+        assert_eq!(SINGLE_ACCENT_LEN_UTF8, 2);
     }
 
     // Test that all accent variants can be converted to HebrewAccent

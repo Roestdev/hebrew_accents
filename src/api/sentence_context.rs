@@ -341,14 +341,14 @@ mod tests {
     // Existing tests...
     #[test]
     fn get_match_parameters() {
-        let m_atch = Match::new("hooiberg", 2, 6);
-        assert_eq!(m_atch.start(), 2);
-        assert_eq!(m_atch.end(), 6);
-        assert_eq!(m_atch.len(), 4);
-        assert_eq!(m_atch.as_str(), "oibe");
-        let r_ange = m_atch.range();
-        assert_eq!(r_ange.start, 2);
-        assert_eq!(r_ange.end, 6);
+        let match_val = Match::new("hooiberg", 2, 6);
+        assert_eq!(match_val.start(), 2);
+        assert_eq!(match_val.end(), 6);
+        assert_eq!(match_val.len(), 4);
+        assert_eq!(match_val.as_str(), "oibe");
+        let range_result = match_val.range();
+        assert_eq!(range_result.start, 2);
+        assert_eq!(range_result.end, 6);
     }
     // --- NEW TEST: Ensure ALL Match methods are explicitly called ---
     // This guarantees 100% function coverage for the Match struct methods.

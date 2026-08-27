@@ -638,7 +638,7 @@ mod prose_accents {
     }
     #[test]
     fn test_contains_poetry_revia_mugrash() {
-        // Revia and Geresh
+        // Geresh Muqdam and Revia
         let sc = SentenceContext::new(
             " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
             Context::Poetic,

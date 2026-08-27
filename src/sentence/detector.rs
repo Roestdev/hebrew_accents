@@ -234,7 +234,9 @@ mod tests {
     #[test]
     fn detects_pure_poetry_with_revia_mugrash_returns_poetic() {
         // Revia Mugrash (Revia U+0597) is poetry-only
-        let sentence = "\u{05D0}\u{0597}\u{05D1}"; // א֗ב
+        // "HEBREW ACCENT REVIA", "U+0597"
+        // "HEBREW ACCENT GERESH", "U+059C"
+        let sentence = " אֵיפֹ֣ה הָ֭יִיתָ בְּיָסְדִי־אָ֑רֶץ הַ֝גֵּ֗ד אִם־יָדַ֥עְתָּ בִינָֽה׃"; // א֗ב
 
         let result = detect_context_from_sentence(sentence);
 
