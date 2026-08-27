@@ -41,7 +41,7 @@ pub(crate) struct AlternateNames {
     pub(crate) hebrew_name: &'static str,
     /// Meaning of the Hebrew name
     pub(crate) hebrew_concept: &'static str,
-    /// Transliterated according //TODO
+    /// Transliterated according the file `TRANSLITERATION.md`
     pub(crate) english_name: &'static str,
     /// Transliterated according `SLB Academic`
     pub(crate) sbl_academic: &'static str,
