@@ -27,10 +27,11 @@ use crate::accent_mark::{
     TRADITION_NAMES_YERAH_BEN_YOMO, TRADITION_NAMES_YETIV, TRADITION_NAMES_ZAQEF_GADOL,
     TRADITION_NAMES_ZAQEF_QATAN, TRADITION_NAMES_ZINOR,
 };
+
 pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
     english_name: "Silluq",
     hebrew_name: "סִלּוּק",
-    hebrew_concept: "close,cessation",
+    hebrew_concept: "close, cessation",
     sbl_academic: "sillûq",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_SILLUQ,
@@ -39,8 +40,7 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     word_span: WordSpan::NotApplicable,
     notes: Some(
-        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-   "#,
+        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse."#,
     ),
     kind: Kind::Primary,
     category: Category::Disjunctive,
@@ -58,7 +58,7 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"The major disjunctive accent dividing the verse in two halves."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ETNAHTA,
@@ -75,7 +75,7 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Appears frequently in prose, preceding Atnach or Silluq."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SEGOL,
@@ -83,7 +83,7 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     english_name: "Shalshelet",
-    hebrew_name: "שַׁלְשֶׁלֶת",
+    hebrew_name: "שַׁלְשֶׁלֶת",
     hebrew_concept: "chain or link",
     sbl_academic: "šalšelet",
     cantillation_symbol: CantillationSymbol {
@@ -92,7 +92,7 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Rare accent occurring only four times in the Torah."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SHALSHELET,
@@ -114,7 +114,7 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
         sbl_academic: "zāqēp qāṭān",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZAQEF_QATAN,
@@ -122,7 +122,7 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
     english_name: "Zaqeph Gadol",
-    hebrew_name: "זָקֵף גָּדוֹל",
+    hebrew_name: "זָקֵף גָּדוֹל",
     hebrew_concept: "large upright",
     sbl_academic: "zāqēp gādôl",
     cantillation_symbol: CantillationSymbol {
@@ -131,7 +131,7 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Less common than Zaqeph Qaton; appears after Qadma or Azla."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZAQEF_GADOL,
@@ -155,7 +155,7 @@ pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
 };
 
 pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Tiphcha", // ADD TARCHA
+    english_name: "Tiphcha",
     hebrew_name: "טִפְחָא",
     hebrew_concept: "handbreadth or diagonal",
     sbl_academic: "ṭipḥāʾ",
@@ -174,7 +174,7 @@ pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Zarqa",
     hebrew_name: "זַרְקָא",
-    hebrew_concept: "to sprinklescatter",
+    hebrew_concept: "to sprinkle, scatter",
     sbl_academic: "zarqāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_ZINOR,
@@ -182,7 +182,7 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some("before  Segolta"),
+    notes: Some("before Segolta"),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZINOR,
@@ -190,8 +190,8 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Pashta",
-    hebrew_name: "פַּשְׁטָא",
-    hebrew_concept: "extendingstretching out in length",
+    hebrew_name: "פַּשְׁטָא",
+    hebrew_concept: "extending, stretching out in length",
     sbl_academic: "pašṭāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_PASHTA,
@@ -199,7 +199,7 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some("if you sound almost last (2 pasta’s in one word)"),
+    notes: Some("appears on the last syllable of the word, extending rightward."),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_PASHTA,
@@ -216,7 +216,7 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some("occasionally for a Pashta"),
+    notes: Some("occasionally substitutes for a Pashta"),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_YETIV,
@@ -224,8 +224,8 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
     english_name: "Tevir",
-    hebrew_name: "תְּבִיר",
-    hebrew_concept: "brokendownward tumble",
+    hebrew_name: "תְּבִיר",
+    hebrew_concept: "broken, downward tumble",
     sbl_academic: "təbîr",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_TEVIR,
@@ -233,7 +233,7 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Often followed by Revia; indicates a melodic break."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_TEVIR,
@@ -241,8 +241,8 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Geresh",
-    hebrew_name: "גֵּרֵישׁ",
-    hebrew_concept: "expulsiondriving outdivorce",
+    hebrew_name: "גֵּרֵישׁ",
+    hebrew_concept: "expulsion, driving out, divorce",
     sbl_academic: "gērêš",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_GERESH,
@@ -251,11 +251,11 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: Some(AlternateNames {
         english_name: "Teres",
         hebrew_name: "טֶרֶס",
-        hebrew_concept: "TODO",
+        hebrew_concept: "a boundary or border",
         sbl_academic: "ṭeres",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Functions as Level 4 disjunctive; often preceded by Azla."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERESH,
@@ -263,8 +263,8 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
     english_name: "Gershayim",
-    hebrew_name: "גֵּרְשַׁיִם",
-    hebrew_concept: "double of expulsiondriving outdivorce",
+    hebrew_name: "גֵּרְשַׁיִם",
+    hebrew_concept: "double of expulsion, driving out, divorce",
     sbl_academic: "gērəšayīm",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_GERSHAYIM,
@@ -272,7 +272,7 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Double Geresh; rarer variant appearing in specific syntactic contexts."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERSHAYIM,
@@ -280,7 +280,7 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
     english_name: "Pazer",
-    hebrew_name: "פָּזֶר",
+    hebrew_name: "פָּזֶר",
     hebrew_concept: "lavish or scatter",
     sbl_academic: "pāzer",
     cantillation_symbol: CantillationSymbol {
@@ -289,7 +289,7 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_PAZER,
@@ -297,7 +297,7 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
     english_name: "Pazer Gadol",
-    hebrew_name: "פָּזֶר גּדוֹל",
+    hebrew_name: "פָּזֶר גּדוֹל",
     hebrew_concept: "large lavish or scatter",
     sbl_academic: "pāzer gdôl",
     cantillation_symbol: CantillationSymbol {
@@ -311,7 +311,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
         sbl_academic: "qarnê pārâ",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Also known as Qarne Pharah; rare variant resembling horns."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_QARNEY_PARA,
@@ -319,7 +319,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Telisha Gedolah",
-    hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
+    hebrew_name: "תְּלִישָׁא גְּדוֹלָה",
     hebrew_concept: "great (long) detached",
     sbl_academic: "təlîšāʾ gədôlâ",
     cantillation_symbol: CantillationSymbol {
@@ -328,7 +328,7 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Level 4 disjunctive; distinct from Telisha Qetannah."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_TELISHA_GEDOLA,
@@ -337,7 +337,7 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Legarmeh",
     hebrew_name: "לְגַרְמֶהּ",
-    hebrew_concept: "for or by itselfindependent",
+    hebrew_concept: "for or by itself, independent",
     sbl_academic: "ləgarmeh",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_MUNAH,
@@ -350,6 +350,7 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_LEGARMEH,
 };
+
 // Conjunctives
 pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Munach",
@@ -362,7 +363,7 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Most common conjunctive; precedes disjunctive accents."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MUNAH,
@@ -370,7 +371,7 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Mahpakh",
-    hebrew_name: "מַהְפַּךְ",
+    hebrew_name: "מַהְפַּךְ",
     hebrew_concept: "turning round",
     sbl_academic: "mahpak",
     cantillation_symbol: CantillationSymbol {
@@ -384,7 +385,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         sbl_academic: "məhuppāk",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Conjunctive accent; in poetry can function as Mehuppakh Legarmeh."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MAHAPAKH,
@@ -393,7 +394,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Merkha",
     hebrew_name: "מֵרְכָא",
-    hebrew_concept: "lengthenerprolonging",
+    hebrew_concept: "lengthener, prolonging",
     sbl_academic: "mērəkāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_MERKHA,
@@ -401,7 +402,7 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Lengthens the phrase; often precedes Revia or Telisha."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MERKHA,
@@ -409,7 +410,7 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Merkha Kephulah",
-    hebrew_name: "מֵרְכָא כְּפוּלָה",
+    hebrew_name: "מֵרְכָא כְּפוּלָה",
     hebrew_concept: "double lengthener",
     sbl_academic: "mērəkāʾ kəpûlâ",
     cantillation_symbol: CantillationSymbol {
@@ -426,8 +427,8 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Darga",
-    hebrew_name: "דַּרְגָּא",
-    hebrew_concept: "stairstep",
+    hebrew_name: "דַּרְגָּא",
+    hebrew_concept: "step, stair-step",
     sbl_academic: "dargāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_DARGA,
@@ -435,7 +436,7 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Conjunctive accent; synonymous with Qadma in some traditions."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_DARGA,
@@ -444,7 +445,7 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Azla",
     hebrew_name: "אַזְלָא",
-    hebrew_concept: "going on (not pausing)depart",
+    hebrew_concept: "going on (not pausing), depart",
     sbl_academic: "ʾazlāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_QADMA,
@@ -474,7 +475,7 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Short form of Telisha; conjunctive function."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TELISHA_QETANA,
@@ -482,8 +483,8 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
     english_name: "Galgal",
-    hebrew_name: "גַּלְגַּל",
-    hebrew_concept: "wheelcircle",
+    hebrew_name: "גַּלְגַּל",
+    hebrew_concept: "wheel, circle",
     sbl_academic: "galgal",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_YERAH_BEN_YOMO,
@@ -496,16 +497,16 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         sbl_academic: "yēreḥ ben yômô",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Conjunctive accent; also known as Yerach Ben Yomo."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_YERAH_BEN_YOMO,
 };
 
 pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
-    hebrew_name: "מְאַיְלָא",
-    hebrew_concept: "upper, above, highe",
     english_name: "Meayla",
+    hebrew_name: "מְאַיְלָא",
+    hebrew_concept: "upper, above, higher",
     sbl_academic: "məʾaylāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_TIPEHA,
@@ -525,10 +526,11 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     Different traditions use different names: 
         Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
     ),
-    category: Category::Conjunctive,
     kind: Kind::Secondary,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TIPEHA,
 };
+
 pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     english_name: "Meteg",
     hebrew_name: "מֶתֶג",
@@ -551,62 +553,37 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
     The metaphor is vivid: just as an ox lows or bellows to draw attention, 
     the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized.It "makes the syllable cry out," so to speak."#,
+    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak."#,
     ),
-    category: Category::Conjunctive,
     kind: Kind::Secondary,
+    category: Category::Conjunctive,
     traditions: TRADITION_NAMES_METEG,
 };
-
-/*
-pub(crate) const SHENE_PASHTIN_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Legarmeh",
-    hebrew_name: "לְגַרְמֶהּ",
-    hebrew_concept: "for or by itselfindependent",
-        sbl_academic: "TODO",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_PASHTA,
-        secondary_mark: Some(&CODEPOINT_QADMA),
-    },
-    alternate_names: None,
-    word_span: WordSpan::OneWord,
-    notes: Some("Munach with Passeq; Before Revia"),
-    kind: Kind::Primary,
-    category: Category::Disjunctive,
-        traditions: TRADITION_NAMES_SHENE_PASHTIN,
-};
-Shene Pashtin 	 ב֨ב   	U+0599U+05A8 	שְׁנֵ֨י פַּשְׁטִין֙
-Shene Pashtin 	תְּרֵ֨י קַדְמִין֙
-Tere qadmin 	(שְׁנֵי) פַּ֨שְׁטִין֙
-(Shene) pashtin
-
- example: Genesis 28:20
- וּשְׁמָרַ֨נִי֙
-*/
 
 /********************************************************
  *                          POETRY
  *******************************************************/
+
 // Disjunctives
 
 // SILLUQ see PROSE section above
 
-// TODO compound accent Oleh Weyored
+// Oleh Weyored compound accent
 pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
     english_name: "Oleh Weyored",
     hebrew_name: "עֹלֶה וְיֹרֵד",
     hebrew_concept: "ascending and descending",
-        sbl_academic: "ʿōleh wəyōrēd",
+    sbl_academic: "ʿōleh wəyōrēd",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_OLE,
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
     alternate_names: None,
- word_span: WordSpan::TwoWords,
-    notes: Some("The primary_mark CodePoint is Mehuppakhbut located above the consonant. It is then called OLE."),
-        kind: Kind::Primary,
-        category: Category::Disjunctive,
-        traditions: TRADITION_NAMES_OLEH_WEYORED,
+    word_span: WordSpan::TwoWords,
+    notes: Some("The primary_mark codepoint is Mehuppakh but located above the consonant. It is then called OLE."),
+    kind: Kind::Primary,
+    category: Category::Disjunctive,
+    traditions: TRADITION_NAMES_OLEH_WEYORED,
 };
 
 // ATNACH see PROSE section above
@@ -622,7 +599,7 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetry Level 2 disjunctive; equivalent to Revia in prose."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_REVIA,
@@ -639,16 +616,15 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Revia with Geresh secondary mark; indicates exiled position."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_GERESH,
 };
 
-// TODO compound accent Revia Shalshelet Gadol
 pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
     english_name: "Shalshelet Gadol",
-    hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
+    hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
     hebrew_concept: "large chain or link",
     sbl_academic: "šalšelet gādôl",
     cantillation_symbol: CantillationSymbol {
@@ -657,7 +633,7 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetic variant of Shalshelet; larger chain form."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_SHALSHELET_GADOL,
@@ -675,11 +651,11 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
     alternate_names: Some(AlternateNames {
         english_name: "Zarqa",
         hebrew_name: "זַרְקָא",
-        hebrew_concept: "to sprinklescatter",
+        hebrew_concept: "to sprinkle, scatter",
         sbl_academic: "zarqāʾ",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetry equivalent of Zarqa; appears in poetic books."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_ZINOR,
@@ -718,7 +694,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
         sbl_academic: "ṭipḥāʾ",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetry Level 2 disjunctive; related to Tiphcha."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_DEHI,
@@ -726,10 +702,10 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
 
 // PAZER see PROSE section above
 
-// TODO compouns accent Mehuppakh Legarmeh
+// Mehuppakh Legarmeh compound accent
 pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Mehuppakh Legarmeh",
-    hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
+    hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
     hebrew_concept: "reversed to its own",
     sbl_academic: "məhuppāk ləgarmēh",
     cantillation_symbol: CantillationSymbol {
@@ -752,7 +728,7 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     traditions: TRADITION_NAMES_MEHUPPAKH_LEGARMEH,
 };
 
-// TODO compound accent Azla Legarmeh
+// Azla Legarmeh compound accent
 pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Azla Legarmeh",
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
@@ -764,7 +740,7 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Compound disjunctive in poetry; Qadma with Paseq."#),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_AZLA_LEGARMEH,
@@ -772,7 +748,7 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
 
 // MUNACH see PROSE section above
 
-// MERCHA see PROSE section above
+// MERKHA see PROSE section above
 
 pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
     english_name: "Illuy",
@@ -794,7 +770,7 @@ pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Tarcha",
     hebrew_name: "טַרְחָא",
-    hebrew_concept: "troubledifficultyhardshiptoil",
+    hebrew_concept: "trouble, difficulty, hardship, toil",
     sbl_academic: "ṭarḥāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_TIPEHA,
@@ -802,7 +778,7 @@ pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some("it refers to the effortstrainor inconvenience involved in doing something."),
+    notes: Some("it refers to the effort, strain, or inconvenience involved in doing something."),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TIPEHA,
@@ -821,12 +797,12 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: Some(AlternateNames {
         english_name: "Mahpakh",
-        hebrew_name: "מַהְפַּךְ",
+        hebrew_name: "מַהְפַּךְ",
         hebrew_concept: "turning round",
         sbl_academic: "mahpak",
     }),
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetic conjunctive; variant spelling of Mahpakh."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_MAHAPAKH,
@@ -836,7 +812,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Shalshelet Qetannah",
-    hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
+    hebrew_name: "שַׁלְשֶׁלֶת קְטַנָּה",
     hebrew_concept: "small chain",
     sbl_academic: "šalšelet qəṭannâ",
     cantillation_symbol: CantillationSymbol {
@@ -845,13 +821,13 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Poetic conjunctive; smaller chain form."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
-// TODO compound accent Tsinnorit Merkha
+// Tsinnorit Merkha compound accent
 pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Tsinnorit Merkha",
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
@@ -863,17 +839,16 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Compound conjunctive in poetry; Tsinnor with Merkha secondary."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TSINNORIT_MERKHA,
 };
 
-// TODO compound accent Tsinnorit Mahpakh
-
+// Tsinnorit Mahpakh compound accent
 pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Tsinnorit Mahpakh",
-    hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
+    hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
     hebrew_concept: "pipe of reversal",
     sbl_academic: "ṣinnôrīt mahpak",
     cantillation_symbol: CantillationSymbol {
@@ -882,7 +857,7 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"TODO"#),
+    notes: Some(r#"Compound conjunctive in poetry; Tsinnor with Mahpakh secondary."#),
     kind: Kind::Primary,
     category: Category::Conjunctive,
     traditions: TRADITION_NAMES_TSINNORIT_MAHPACH,
@@ -891,9 +866,10 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
 /********************************************************
  *                      PSEUDO ACCENT
  *******************************************************/
+
 pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
     english_name: "Soph Pasuq",
-    hebrew_name: "סוֹף פָּסוּק",
+    hebrew_name: "סוֹף פָּסוּק",
     hebrew_concept: "end of verse",
     sbl_academic: "sôp pāsûq",
     cantillation_symbol: CantillationSymbol {
@@ -903,7 +879,7 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     word_span: WordSpan::NotApplicable,
     notes: Some(
-        "it doesn’t carry any theological or interpretive meaning beyond marking a boundary",
+        "it doesn't carry any theological or interpretive meaning beyond marking a boundary",
     ),
     kind: Kind::None,
     category: Category::None,
@@ -913,15 +889,15 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
 pub(crate) const MAQQEPH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Maqqeph",
     hebrew_name: "מַקֵּף",
-    hebrew_concept:"binder",
-        sbl_academic: "maqqēp",
+    hebrew_concept: "binder",
+    sbl_academic: "maqqēp",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_MAQAF,
         secondary_mark: None,
     },
-              alternate_names: None,
+    alternate_names: None,
     word_span: WordSpan::NotApplicable,
-    notes: Some("Can link two (or more) short words togetherafter which they function as a single compound word bearing a single Hebrew accent."),
+    notes: Some("Can link two (or more) short words together after which they function as a single compound word bearing a single Hebrew accent."),
     kind: Kind::None,
     category: Category::None,
     traditions: TRADITION_NAMES_MAQAF,
@@ -929,8 +905,8 @@ pub(crate) const MAQQEPH_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
     english_name: "Paseq",
-    hebrew_name: "פָּסֵק",
-    hebrew_concept: "to pause,to stop or to interrupt",
+    hebrew_name: "פָּסֵק",
+    hebrew_concept: "to pause, to stop or to interrupt",
     sbl_academic: "pāsēq",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_PASEQ,
@@ -939,7 +915,7 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     word_span: WordSpan::NotApplicable,
     notes: Some(
-        "It’s indicating that someone or something is stopping temporarily or creating a pause.",
+        "It's indicating that someone or something is stopping temporarily or creating a pause.",
     ),
     kind: Kind::None,
     category: Category::None,
