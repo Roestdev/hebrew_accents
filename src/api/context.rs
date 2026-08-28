@@ -113,7 +113,7 @@
 ///
 /// # See Also
 ///
-/// - [`try_determine_context`](crate::SentenceContext::try_determine_context) — Detect context from accent patterns
+/// - [`try_derive_context`](crate::SentenceContext::try_derive_context) — Detect context from accent patterns
 /// - [`SentenceContext`](crate::SentenceContext) — Container for text + context
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, PartialEq)]
 pub enum Context {

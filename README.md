@@ -158,7 +158,7 @@ fn main() {
 
 let result_sentence_context = SentenceContext::with_valid_default();
     if let Ok(sentence_context) = result_sentence_context {
-        let context = sentence_context.try_determine_context();
+        let context = sentence_context.try_derive_context();
 
          match context {
              Ok(Context::Poetic) => eprintln!("Poetry detected!"),

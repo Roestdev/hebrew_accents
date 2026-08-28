@@ -1,10 +1,10 @@
 use thiserror::Error;
 
-/// Error types for Hebrew sentence validation and context detection.
+/// Error types for Hebrew sentence validation and context derivation.
 ///
 /// This module defines all errors that can be returned by:
 /// - [`crate::validate_sentence()`](crate::validate_sentence) - Input validation
-/// - [`crate::SentenceContext::try_determine_context()`](crate::SentenceContext::try_determine_context) - Context detection
+/// - [`crate::SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context) - Context derivation
 ///
 /// # Example
 ///
@@ -22,7 +22,7 @@ use thiserror::Error;
 ///
 /// # Error Categories
 ///
-/// ## Validation Errors
+/// ## Input Validation Errors
 /// | Variant | Triggered When |
 /// |---------|----------------|
 /// | `EmptySentence` | Input is empty or contains only whitespace |
@@ -32,10 +32,18 @@ use thiserror::Error;
 /// | `StartsWithNonConsonant` | First non-whitespace char is not a Hebrew consonant |
 /// | `StartsWithFinalForm` | First char is a final-form letter (ך, ם, ן, ף, ץ) |
 ///
-/// ## Detection Errors
+/// ## Context Derivation Errors
 /// | Variant | Triggered When |
 /// |---------|----------------|
-/// | `DerivationFailed` | Insufficient or contradictory accent evidence for context detection |
+/// | `DerivationFailed` | Insufficient or contradictory accent evidence for context derivation |
+///
+/// The `DerivationFailed` error indicates that automatic context derivation could not
+/// determine whether a sentence follows prosaic or poetic accent conventions:
+///
+/// - **Ambiguous**: Both prose-exclusive and poetry-exclusive accents found
+/// - **Insufficient**: Only shared/common accents present (e.g., Atnach, Silluq)
+///
+/// (See [`crate::SentenceContext::try_derive_context()`] for implementation details.)
 ///
 /// # Allowed Characters
 ///
@@ -58,16 +66,6 @@ use thiserror::Error;
 /// - **Punctuation**:
 ///   - Vertical Bar *(U+007C)* - Alternative Paseq representation
 ///
-/// # Derivation Errors
-///
-/// The `DerivationFailed` error indicates that automatic context detection could not
-/// determine whether a sentence follows prosaic or poetic accent conventions:
-///
-/// - **Ambiguous**: Both prose-exclusive and poetry-exclusive accents found
-/// - **Insufficient**: Only shared/common accents present (e.g., Atnach, Silluq)
-///
-/// See [`crate::SentenceContext::try_determine_context()`] for detailed detection logic.
-
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SentenceContextError {
     /// Character outside the allowed set was encountered.
@@ -87,7 +85,7 @@ pub enum SentenceContextError {
     /// assert!(matches!(result, Err(SentenceContextError::InvalidCharacter(c, idx))
     ///                  if c == 'a' && idx == 4));
     /// ```
-    #[error("Invalid character '{}' at index {}: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
+    #[error("Invalid character '{}' at index {}: only Hebrew, Meteg Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
     InvalidCharacter(char, usize),
 
     /// The sentence was empty or contained only whitespace(s).
@@ -124,7 +122,7 @@ pub enum SentenceContextError {
     /// assert!(matches!(result, Err(SentenceContextError::SentenceTooLong(max, actual))
     ///                  if max < actual));
     /// ```
-    #[error("Sentence contains too many characters; allowed: '{}' , actual number: '{}'", .0, .1)]
+    #[error("Sentence contains too many characters; allowed: '{}', actual: '{}'", .0, .1)]
     SentenceTooLong(usize, usize),
 
     /// Input contained newline characters.
@@ -199,7 +197,7 @@ pub enum SentenceContextError {
 
     /// Ambiguous or insufficient Cantillation Symbol(s) found for context determination.
     ///
-    /// This error occurs when [`SentenceContext::try_determine_context()`](crate::SentenceContext::try_determine_context)
+    /// This error occurs when [`SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context)
     /// cannot distinguish between prosaic and poetic text due to:
     ///
     /// - **Insufficient Data**: Only shared/common accents found (e.g., Munach, Mahpakh)
@@ -219,17 +217,17 @@ pub enum SentenceContextError {
     /// ```
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
-    /// // Genesis 1:1 contains only shared accents - detection fails
+    /// // Genesis 1:1 contains only shared accents - derivation fails
     /// let genesis = SentenceContext::new("בְּרֵאשִׁית בָּרָא אֱלֹהִים", Context::Prosaic).unwrap();
-    /// let result = genesis.try_determine_context();
+    /// let result = genesis.try_derive_context();
     /// assert!(matches!(result, Err(SentenceContextError::DerivationFailed(_))));
     ///
-    /// // Job 38:4 contains poetry-exclusive accents - detection succeeds
+    /// // Job 38:4 contains poetry-exclusive accents - derivation succeeds
     /// let job = SentenceContext::new("אֵיפֹ֣ה הָ֭יִיתָ בְּיָסְדִי־אָ֑רֶץ הַ֝גֵּ֗ד אִם־יָדַ֥עְתָּ בִינָֽה׃", Context::Prosaic).unwrap();
-    /// let context = job.try_determine_context().unwrap();
+    /// let context = job.try_derive_context().unwrap();
     /// assert_eq!(context, Context::Poetic);
     /// ```
-    #[error("Derivation failed: {0}")]
+    #[error("Derivation failed: {}", .0)]
     DerivationFailed(&'static str),
 }
 
@@ -252,7 +250,7 @@ mod tests {
 
         assert_eq!(
             err.to_string(),
-            "Invalid character '@' at index 5: only Hebrew, METEG Layout Control Characters, Vertical Bar and whitespace allowed"
+            "Invalid character '@' at index 5: only Hebrew, Meteg Layout Control Characters, Vertical Bar and whitespace allowed"
         );
         assert_eq!(err, SentenceContextError::InvalidCharacter('@', 5));
 
@@ -305,7 +303,7 @@ mod tests {
     }
 
     #[test]
-    fn test_startswith_final_form_formatting() {
+    fn test_starts_with_final_form_formatting() {
         // Test all five final forms
         let finals = ['ך', 'ם', 'ן', 'ף', 'ץ'];
 
@@ -359,27 +357,40 @@ mod tests {
 
     #[test]
     fn test_hash_consistency() {
-        // Two identical errors must produce the same hash
+        // Identical errors MUST produce the same hash (Hash contract)
         let err1 = SentenceContextError::InvalidCharacter('!', 0);
         let err2 = SentenceContextError::InvalidCharacter('!', 0);
-
         assert_eq!(get_hash(&err1), get_hash(&err2));
 
-        // Different errors should produce different hashes (note: collisions are theoretically possible)
-        let err3 = SentenceContextError::InvalidCharacter('@', 0);
-        let h1 = get_hash(&SentenceContextError::EmptySentence);
-        let h2 = get_hash(&SentenceContextError::MultipleLines);
-        let h3 = get_hash(&err3);
+        // Distinct variants produce different hashes in practice
+        // Note: Hash collisions are theoretically possible but astronomically unlikely here
+        let h_empty = get_hash(&SentenceContextError::EmptySentence);
+        let h_multiline = get_hash(&SentenceContextError::MultipleLines);
+        let err_invalid = get_hash(&SentenceContextError::InvalidCharacter('@', 0));
 
-        // Verify distinct error types have different hashes
-        // Note: Hash collisions are extremely unlikely for this small error space
-        assert_ne!(h1, h2);
-        assert_ne!(h1, h3);
-        assert_ne!(h2, h3);
-
-        // Same character at different indices should have different hashes
+        // These assertions are pragmatic guards, not contract requirements.
+        // Hash only guarantees: a == b → hash(a) == hash(b)
+        // It does NOT guarantee: a != b → hash(a) != hash(b)
+        //
+        // With DefaultHasher on such a small, well-separated error space,
+        // we expect no collisions, so these are reasonable regression checks.
         assert_ne!(
-            get_hash(&err1),
+            h_empty, h_multiline,
+            "distinct variants should hash differently"
+        );
+        assert_ne!(
+            h_empty, err_invalid,
+            "distinct variants should hash differently"
+        );
+        assert_ne!(
+            h_multiline, err_invalid,
+            "distinct variants should hash differently"
+        );
+
+        // Same character at different indices must produce different hashes
+        // (the tuple (char, usize) differs, so Hash impl should reflect that)
+        assert_ne!(
+            get_hash(&SentenceContextError::InvalidCharacter('@', 0)),
             get_hash(&SentenceContextError::InvalidCharacter('@', 1))
         );
     }
@@ -444,8 +455,7 @@ mod tests {
     #[test]
     fn test_sentence_too_long_formatting() {
         let err = SentenceContextError::SentenceTooLong(1000, 1500);
-        let expected =
-            "Sentence contains too many characters; allowed: '1000' , actual number: '1500'";
+        let expected = "Sentence contains too many characters; allowed: '1000', actual: '1500'";
 
         assert_eq!(err.to_string(), expected);
         assert_eq!(err, SentenceContextError::SentenceTooLong(1000, 1500));

@@ -24,7 +24,7 @@
 //! | `SentenceContext` | Holds sentence text + context metadata |
 //! | `Context::Prosaic` | Standard prose accent system |
 //! | `Context::Poetic` | Poetic accent system |
-//! | `try_determine_context()` | Auto-detect context from accent patterns |
+//! | `try_derive_context()` | Auto-detect context from accent patterns |
 //!
 //! ## Usage Pattern
 //!
@@ -38,7 +38,7 @@
 //! let default = SentenceContext::with_valid_default().unwrap();
 //!
 //! // Attempt to auto-detect context
-//! let detected = sentence.try_determine_context().unwrap();
+//! let detected = sentence.try_derive_context().unwrap();
 //! ```
 
 use crate::api::context::Context;
@@ -301,7 +301,7 @@ impl SentenceContext {
     ///
     /// // Prose text (Genesis 1:1)
     /// if let Ok(prose) = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים", Context::default()){
-    ///    if let Err(err) = prose.try_determine_context() {
+    ///    if let Err(err) = prose.try_derive_context() {
     ///        assert_eq!(err.to_string(),"Derivation failed: No unique prose or poetry accent markers identified");
     ///    }
     /// }
@@ -309,7 +309,7 @@ impl SentenceContext {
     /// // Poetry text (Psalm 1:1)
     /// // Created as prose, derived context is poetry
     /// if let Ok(poetry) = SentenceContext::new(" מִזְמ֥וֹר לְדָוִ֑ד יְהוָ֥ה רֹ֝עִ֗י לֹ֣א אֶחְסָֽר׃", Context::Prosaic){
-    ///    if let Ok(context) = poetry.try_determine_context() {
+    ///    if let Ok(context) = poetry.try_derive_context() {
     ///        assert_eq!(context, Context::Poetic);
     ///     }
     /// }
@@ -321,12 +321,12 @@ impl SentenceContext {
     ///
     /// ```rust,ignore
     /// // Instance method
-    /// let ctx = sentence.try_determine_context().unwrap();
+    /// let ctx = sentence.try_derive_context().unwrap();
     ///
     /// // Standalone helper
-    /// let ctx = crate::try_determine_context(sentence_text).unwrap();
+    /// let ctx = crate::try_derive_context(sentence_text).unwrap();
     /// ```
-    pub fn try_determine_context(&self) -> Result<Context, SentenceContextError> {
+    pub fn try_derive_context(&self) -> Result<Context, SentenceContextError> {
         // Delegate to the shared helper for consistency
         detect_context_from_sentence(&self.sentence)
     }
@@ -496,7 +496,7 @@ mod tests {
 }
 
 #[cfg(test)]
-mod try_determine_context1 {
+mod try_derive_context1 {
     use super::*;
     use crate::api::context::Context;
     // Helper to create a SentenceContext instance for testing
@@ -540,7 +540,7 @@ mod try_determine_context1 {
     // fn test_detect_prose_only() {
     //     let sentence_ctx = SentenceContext::new(TEXT_PROSE_ONLY, Context::Prosaic).unwrap();
     //     println!("test_detect_prose_only: {:?}", sentence_ctx);
-    //     let result = sentence_ctx.try_determine_context();
+    //     let result = sentence_ctx.try_derive_context();
     //     println!("test_detect_prose_only: {:?}", result);
     //     assert!(result.is_ok());
     //     assert_eq!(result.unwrap(), Context::Prosaic);
@@ -550,7 +550,7 @@ mod try_determine_context1 {
     fn test_detect_poetry_only() {
         let ctx = SentenceContext::new(TEXT_POETRY_ONLY, Context::Prosaic).unwrap();
 
-        let result = ctx.try_determine_context();
+        let result = ctx.try_derive_context();
 
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), Context::Poetic);
@@ -560,7 +560,7 @@ mod try_determine_context1 {
     // fn test_detect_ambiguity_both_found() {
     //     let ctx = SentenceContext::new(TEXT_AMBIGUOUS, Context::Prosaic).unwrap();
 
-    //     let result = ctx.try_determine_context();
+    //     let result = ctx.try_derive_context();
 
     //     assert!(result.is_err());
     //     match result {
@@ -575,7 +575,7 @@ mod try_determine_context1 {
     // fn test_detect_neither_found() {
     //     let sentence_ctx = SentenceContext::new(TEXT_NEITHER, Context::Prosaic).unwrap();
 
-    //     let result = sentence_ctx.try_determine_context();
+    //     let result = sentence_ctx.try_derive_context();
 
     //     assert!(result.is_err());
     //     match result {
@@ -590,7 +590,7 @@ mod try_determine_context1 {
     // fn test_empty_sentence_no_accents() {
     //     let ctx = SentenceContext::new("", Context::Prosaic).unwrap();
 
-    //     let result = ctx.try_determine_context();
+    //     let result = ctx.try_derive_context();
 
     //     // Empty string should trigger "No distinguishable..."
     //     assert!(result.is_err());

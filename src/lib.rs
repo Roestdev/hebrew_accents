@@ -148,7 +148,7 @@ pub use crate::api::PseudoAccent;
 pub use crate::api::SentenceContext;
 
 // public functions
-pub use crate::api::try_determine_context;
+pub use crate::api::try_derive_context;
 
 // used for errorhandling
 pub use crate::error::SentenceContextError;

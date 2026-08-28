@@ -267,67 +267,64 @@ pub(crate) mod poetry_patterns {
 
 // shared_patterns
 pub(crate) mod shared_patterns {
-        use super::*;
+    use super::*;
 
-// Common patterns (Silluq, Meteg, etc.)
-// A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
-// Most of the time a sentence ends with Sof Pasuq (\u{05C3})
-// Some times a sentence ends with "samech" (U+05E1) or an "pey" (U+05E4).
-// Some times last words are connected by a Maqqeph (\u{05BE})
-//    FancyRegex::new(r"\u{05BD}(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s$? regex")
-pub(crate) static FA_RE_OUTER_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern = format!(
+    // Common patterns (Silluq, Meteg, etc.)
+    // A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
+    // Most of the time a sentence ends with Sof Pasuq (\u{05C3})
+    // Some times a sentence ends with "samech" (U+05E1) or an "pey" (U+05E4).
+    // Some times last words are connected by a Maqqeph (\u{05BE})
+    //    FancyRegex::new(r"\u{05BD}(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s$? regex")
+    pub(crate) static FA_RE_OUTER_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
+        let pattern = format!(
         "{SILLUQ}{NOT_FOLLOWED_BY_MAQAF}{HEBREW}*{OPTIONAL_SPACE}{SOF_PASUQ}{OPTIONAL_SPACE}{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}$"
     );
-    FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", pattern))
-});
+        FancyRegex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", pattern))
+    });
 
-// A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
-//      - Shalshelet (\u{0593}) followed by
-//      - Paseq (\u{05C0})
-// For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
-// Regex::new(r"[^\s\u{05BE}]\p{Hebrew}*?\u{0593}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap()
-pub(crate) static RE_OUTER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!(
+    // A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
+    //      - Shalshelet (\u{0593}) followed by
+    //      - Paseq (\u{05C0})
+    // For readability a 'vertical line' (U+007C) is sometimes used instead of a Paseq
+    // Regex::new(r"[^\s\u{05BE}]\p{Hebrew}*?\u{0593}\p{Hebrew}*?\s?[\u{05C0}\u{007C}]").unwrap()
+    pub(crate) static RE_OUTER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!(
         "{NOT_A_SPACE_OR_MAQAF}{HEBREW}*?{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_SHALSHELET: {}", pattern))
-});
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_SHALSHELET: {}", pattern))
+    });
 
-pub(crate) static RE_INNER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
-    let pattern = format!("{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
-    Regex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", pattern))
-});
+    pub(crate) static RE_INNER_COMMON_SHALSHELET: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{SHALSHELET}{HEBREW}*?{OPTIONAL_SPACE}{PASEQ_OR_VERTICAL_LINE}");
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_INNER_COMMON_SHALSHELET: {}", pattern))
+    });
 
-// A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
-// A Silluq is not a Meteg
-//  FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)")
-const METEG_CONSTRAINS: &str =
-    r"(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)";
-pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
-    let pattern = format!("{}{}", METEG, METEG_CONSTRAINS,);
-    FancyRegex::new(&pattern)
-        .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", pattern))
-});
+    // A meteg is considered a meteg only when it is found in a word that is not the final word of a sentence.
+    // A Silluq is not a Meteg
+    //  FancyRegex::new(r"\u{05BD}(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)")
+    const METEG_CONSTRAINS: &str =
+        r"(?!(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s?$)";
+    pub(crate) static FA_RE_OUTER_COMMON_METEG: Lazy<FancyRegex> = Lazy::new(|| {
+        let pattern = format!("{}{}", METEG, METEG_CONSTRAINS,);
+        FancyRegex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_METEG: {}", pattern))
+    });
 
-// Two UCP's: u{05BD} -> at least the first one is a Meteg
-// \u{05BD}[\p{Hebrew}\s]*?\u{05BD}
-//pub(crate) static RE_OUTER_COMMON_METEG: Lazy<Regex> = Lazy::new(|| {
-//    let pattern = format!("{}{}*?{}", METEG, HEBREW_OR_SPACE, METEG);
-//     Regex::new(&pattern)
-//         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_METEG: {}", &pattern))
-// });
-
-
+    // Two UCP's: u{05BD} -> at least the first one is a Meteg
+    // \u{05BD}[\p{Hebrew}\s]*?\u{05BD}
+    //pub(crate) static RE_OUTER_COMMON_METEG: Lazy<Regex> = Lazy::new(|| {
+    //    let pattern = format!("{}{}*?{}", METEG, HEBREW_OR_SPACE, METEG);
+    //     Regex::new(&pattern)
+    //         .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_COMMON_METEG: {}", &pattern))
+    // });
 }
-
 
 #[cfg(test)]
 mod regex_initialization_tests {
-    use super::prose_patterns::*;
     use super::poetry_patterns::*;
+    use super::prose_patterns::*;
     use super::shared_patterns::*;
 
     // Test FA_RE_OUTER_COMMON_SILLUQ

@@ -289,7 +289,9 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     word_span: WordSpan::OneWord,
-    notes: Some(r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#),
+    notes: Some(
+        r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#,
+    ),
     kind: Kind::Primary,
     category: Category::Disjunctive,
     traditions: TRADITION_NAMES_PAZER,

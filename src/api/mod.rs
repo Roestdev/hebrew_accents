@@ -29,6 +29,6 @@ pub use context::Context;
 pub use matcher::Match;
 pub use sentence_context::SentenceContext;
 
-pub use misc::try_determine_context;
+pub use misc::try_derive_context;
 
 pub use accent_trait::Accent;
