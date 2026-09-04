@@ -34,9 +34,8 @@
 //!
 //! ## Usage
 //!
-//! ```ignore
-//! use crate::api::ProseAccent;
-//! use crate::Accent;
+//! ```rust
+//! use hebrew_accents::{ProseAccent,Accent};
 //!
 //! let accent = ProseAccent::Atnach;
 //! println!("{}", accent); // "Atnach (אַתְנָח), meaning: rest"
@@ -76,9 +75,8 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// # Example
 ///
-/// ```ignore
-/// use crate::api::ProseAccent;
-/// use crate::Accent;
+/// ```rust
+/// use hebrew_accents::{ProseAccent,Accent};
 ///
 /// // Check the strength of Atnach
 /// let atnach = ProseAccent::Atnach;

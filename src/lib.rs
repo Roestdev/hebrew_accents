@@ -119,8 +119,7 @@
 #![deny(missing_docs, unused_imports)]
 // import doc tests from README.md
 #![cfg_attr(doctest, doc = include_str!("../README.md"))]
-#![doc = include_str!("../README.md")]
-
+/// #![doc = include_str!("../README.md")]
 mod accent;
 mod accent_data;
 mod accent_mark;

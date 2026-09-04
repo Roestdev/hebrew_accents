@@ -1,28 +1,27 @@
-use hebrew_accents::{Context, HebrewAccent, ProseAccent, SentenceContext};
 
 #[test]
 fn doctest() {
     println!("=== Running doctest as integration test ===");
 
-    let sentence_context_result = SentenceContext::new(
-        "וַיּ֣רָא עשׂ֔ו כּ֥י רע֖ות בּנ֣ות כּ֖נ֑ען בּעינ֖י יצח֥ק א֖בֽיו׃",
-        Context::Prosaic,
-    );
-    if let Ok(sentence_context) = sentence_context_result {
-        // Check if an accent exists in a given sentence
-        if sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Tiphcha)) {
-            println!("Tiphcha found");
-        }
-        if let Some(match_) = sentence_context.find_accent(ProseAccent::Atnach.into()) {
-            println!(
-                "Atnach found at bytes {} untill {}",
-                match_.start(),
-                match_.end()
-            );
-            println!("Text: {}", match_.as_str());
+    use hebrew_accents::{Context, ProseAccent, SentenceContext};
+
+    // Find a match in Hebrew text
+    let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    //let sent_ctx_res = SentenceContext::new(sentence,Context::Prosaic);
+    if let Ok(sent_ctx) = SentenceContext::new(sentence, Context::Prosaic) {
+        let matched = sent_ctx.find_accent(ProseAccent::Atnach.into());
+        match matched {
+            Some(match_res) => {
+                // Access match properties
+                assert_eq!(match_res.start(), 76);
+                assert_eq!(match_res.end(), 78);
+                assert_eq!(match_res.len(), 2);
+                assert_eq!(match_res.as_str(), "\u{591}");
+                assert_eq!(match_res.range(), 76..78);
+                // Check if empty
+                assert!(!match_res.is_empty());
+            }
+            None => {}
         }
     }
-
-    // Find accent positions
-    // Note: you can also use `.into()` due to the `From` trait implementation.
 }

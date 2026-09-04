@@ -19,9 +19,8 @@
 //!
 //! ## Usage
 //!
-//! ```ignore
-//! use crate::api::PseudoAccent;
-//! use crate::Accent;
+//! ```rust
+//! use hebrew_accents::{PseudoAccent, Accent};
 //!
 //! let mark = PseudoAccent::Maqqeph;
 //! println!("{}", mark); // "Maqqeph (מַקָּף), meaning: hyphen"
@@ -54,9 +53,8 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// # Example
 ///
-/// ```ignore
-/// use crate::api::PseudoAccent;
-/// use crate::Accent;
+/// ```rust
+/// use hebrew_accents::{PseudoAccent,Accent};
 ///
 /// let mark = PseudoAccent::SophPasuq;
 /// assert_eq!(mark.relative_strength(), None);

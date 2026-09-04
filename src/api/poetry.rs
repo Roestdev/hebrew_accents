@@ -31,9 +31,8 @@
 //!
 //! ## Usage
 //!
-//! ```ignore
-//! use crate::api::PoetryAccent;
-//! use crate::Accent;
+//! ```rust
+//! use hebrew_accents::{PoetryAccent,Accent};
 //!
 //! let accent = PoetryAccent::OlehWeYored;
 //! println!("{}", accent); // "Oleh WeYored (עולה ויורד), meaning: ascending and descending"
@@ -67,9 +66,9 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// # Example
 ///
-/// ```ignore
-/// use crate::api::PoetryAccent;
-/// use crate::Accent;
+/// ```rust
+/// use hebrew_accents::{PoetryAccent,Accent};
+/// use strum::IntoEnumIterator;
 ///
 /// // Iterate over all poetry accents
 /// for accent in PoetryAccent::iter() {

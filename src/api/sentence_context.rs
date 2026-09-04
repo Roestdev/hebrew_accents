@@ -28,8 +28,10 @@
 //!
 //! ## Usage Pattern
 //!
-//! ```ignore
+//! ```rust,ignore
 //! use hebrew_accents::{SentenceContext, Context};
+//!
+//! let text = "וְנִשְׁמַרְתֶּם מְאֹד לְנַפְשֹׁתֵיכֶם לְאַהֲבָה אֶת־יְהוָה אֱלֹהֵיכֶם׃";
 //!
 //! // Create a sentence with explicit context
 //! let sentence = SentenceContext::new(text, Context::Prosaic).unwrap();
@@ -37,7 +39,7 @@
 //! // Or use the built-in default
 //! let default = SentenceContext::with_valid_default().unwrap();
 //!
-//! // Attempt to auto-detect context
+//! // Attempt to auto-detect the context directly from the text
 //! let detected = sentence.try_derive_context().unwrap();
 //! ```
 
@@ -66,7 +68,7 @@ use crate::sentence::validate_sentence;
 ///
 /// # Examples
 ///
-/// ```ignore
+/// ```rust
 /// use hebrew_accents::{SentenceContext, Context};
 ///
 /// // Constructor with validation
@@ -319,12 +321,12 @@ impl SentenceContext {
     ///
     /// For detecting context without a `SentenceContext` instance:
     ///
-    /// ```rust,ignore
+    /// ```rust
+    /// use hebrew_accents::try_derive_context;
     /// // Instance method
-    /// let ctx = sentence.try_derive_context().unwrap();
     ///
-    /// // Standalone helper
-    /// let ctx = crate::try_derive_context(sentence_text).unwrap();
+    /// let sentence = " וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    ///  let _ctx_res = try_derive_context(sentence);
     /// ```
     pub fn try_derive_context(&self) -> Result<Context, SentenceContextError> {
         // Delegate to the shared helper for consistency
