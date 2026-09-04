@@ -83,7 +83,7 @@ pub enum SentenceContextError {
     ///
     /// let result = SentenceContext::new("שלוםabc", Context::Prosaic);
     /// assert!(matches!(result, Err(SentenceContextError::InvalidCharacter(c, idx))
-    ///                  if c == 'a' && idx == 4));
+    ///                  if c == 'a' && idx == 8));
     /// ```
     #[error("Invalid character '{}' at index {}: only Hebrew, Meteg Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
     InvalidCharacter(char, usize),

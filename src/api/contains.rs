@@ -201,7 +201,7 @@ mod prose_accents {
     use crate::api::sentence_context::SentenceContext;
     use crate::api::{PoetryAccent, ProseAccent, PseudoAccent};
     #[test]
-    fn test_contains_prose_poetry_silluq() {
+    fn test_contains_shared_silluq() {
         //let sc = SentenceContext::new("test", Context::Prosaic);
         // We can't easily create an unknown variant, but we can test that
         // all known variants are handled and the default returns None
@@ -246,7 +246,7 @@ mod prose_accents {
         assert!(!binding.contains_accent(PoetryAccent::Silluq.into()));
     }
     #[test]
-    fn test_contains_prose_poetry_atnach() {
+    fn test_contains_shared_atnach() {
         // Atnach present
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
         let binding = sc.unwrap();
@@ -447,7 +447,7 @@ mod prose_accents {
     }
     // Conjunctives
     #[test]
-    fn test_contains_prose_munnach() {
+    fn test_contains_prose_munach() {
         // Single Munach
         let sc = SentenceContext::new("בּראשׁית בּרא א֣להים את השּׁמים ואת הארץ׃", Context::Prosaic);
         let binding = sc.unwrap();
@@ -557,11 +557,11 @@ mod prose_accents {
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Prosaic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(ProseAccent::Meteg.into()));
-        // Meteg and Siluq, separated by a Maqqeph
+        // Meteg and Silluq, separated by a Maqqeph
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Prosaic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(ProseAccent::Meteg.into()));
-        // Meteg and Siluq in separate words
+        // Meteg and Silluq in separate words
         let sc = SentenceContext::new(
             "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
             Context::Prosaic,
@@ -783,7 +783,7 @@ mod prose_accents {
         assert!(!binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
     }
     #[test]
-    fn test_contains_poetry_munnach() {
+    fn test_contains_poetry_munach() {
         let sc = SentenceContext::new("את־אבר֣הם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Munach.into()));
@@ -1042,11 +1042,11 @@ mod prose_accents {
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Meteg.into()));
-        // Meteg and Siluq, separated by a Maqqeph
+        // Meteg and Silluq, separated by a Maqqeph
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Meteg.into()));
-        // Meteg and Siluq in separate words
+        // Meteg and Silluq in separate words
         let sc = SentenceContext::new(
             "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
             Context::Poetic,

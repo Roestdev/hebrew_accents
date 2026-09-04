@@ -6,6 +6,8 @@
 //!
 //! This is done to keep all code in line from the perspective
 //! of the Hebrew Accents according the BHS
+//!
+//!
 
 // UTF-8 codepoints as '&str'
 pub(crate) const ETNAHTA: &str = "\u{0591}";
@@ -74,8 +76,8 @@ pub(crate) const MAQQEPH: &str = MAQAF;
 pub(crate) const MAQQEPH_AS_CHAR: char = MAQAF_AS_CHAR;
 /// alias for YERAH_BEN_YOMO
 pub(crate) const GALGAL: &str = YERAH_BEN_YOMO;
-/// alias for MUNAH
-pub(crate) const MUNACH: &str = MUNAH;
+// alias for MUNAH
+//pub(crate) const MUNACH: &str = MUNAH;
 /// alias for SEGOL
 pub(crate) const SEGOLTA: &str = SEGOL;
 /// alias for QARNEY_PARA

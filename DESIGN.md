@@ -88,7 +88,7 @@ Hebrew accents as they occur in the Tanach are mostly, but not always exact the 
     This covers most of the cases. Examples:
 
     - ProseAccent::Segolta -> Unicode code-point: **U+0592**
-    - PoetryAccent::Munnach -> Unicode code-point: **U+05A3**
+    - PoetryAccent::Munach -> Unicode code-point: **U+05A3**
 
 2. **One Hebrew Accent -> two code-points**
 

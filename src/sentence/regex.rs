@@ -26,8 +26,7 @@ const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
 const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
 // Either a space **or** a Maqqeph.
-// 00stWest
-// 00stconst  HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
+// const HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
 
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
 const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
