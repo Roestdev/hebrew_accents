@@ -2,7 +2,7 @@
 
 use crate::accent::Category;
 use crate::accent::Kind;
-use crate::accent::WordSpan;
+use crate::accent::PrivateWordSpan;
 use crate::accent_mark::TraditionNames;
 use crate::accent_mark::Utf8CodePoint;
 
@@ -30,7 +30,7 @@ pub(crate) struct AccentMetaData {
     /// Contextual notes or scholarly commentary
     pub(crate) notes: Option<&'static str>,
     /// Maximum word span of the accent
-    pub(crate) word_span: WordSpan,
+    pub(crate) word_span: PrivateWordSpan,
 }
 
 /// Optional alternate representations for an accent.

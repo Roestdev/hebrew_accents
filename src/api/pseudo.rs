@@ -14,7 +14,7 @@
 //! | Variant | Hebrew | Function |
 //! |---------|--------|----------|
 //! | [`SophPasuq`] | סוֹף פָּסוּק | Marks verse end |
-//! | [`Maqqeph`] | מַקָּף | Joins words (hyphen) |
+//! | [`Maqqaph`] | מַקָּף | Joins words (hyphen) |
 //! | [`Paseq`] | פָּשְׁק | Separates adjacent accents |
 //!
 //! ## Usage
@@ -22,8 +22,8 @@
 //! ```rust
 //! use hebrew_accents::{PseudoAccent, Accent};
 //!
-//! let mark = PseudoAccent::Maqqeph;
-//! println!("{}", mark); // "Maqqeph (מַקָּף), meaning: hyphen"
+//! let mark = PseudoAccent::Maqqaph;
+//! println!("{}", mark); // "Maqqaph (מַקָּף), meaning: hyphen"
 //! ```
 
 use crate::Accent;
@@ -93,14 +93,14 @@ pub enum PseudoAccent {
     #[default]
     SophPasuq = 0,
 
-    /// **Maqqeph** (מַקָּף) — "hyphen, joiner"
+    /// **Maqqaph** (מַקָּף) — "hyphen, joiner"
     ///
     /// A connecting line (־) that joins multiple Hebrew words into a single
     /// phonological unit. Functions analogously to a hyphen in English.
     ///
     /// # Accent Behavior
     ///
-    /// When words are joined by Maqqeph:
+    /// When words are joined by Maqqaph:
     ///
     /// 1. Independent accents on joined words are suppressed
     /// 2. The combined unit receives a single accent (typically on the rightmost
@@ -111,9 +111,9 @@ pub enum PseudoAccent {
     ///
     /// ```text
     /// בְּרֵאשִׁ֖ית  →  בְּרֵאשִׁ֖ית־בָּרָ֣א
-    /// (two accented words)  (one accented unit via Maqqeph)
+    /// (two accented words)  (one accented unit via Maqqaph)
     /// ```
-    Maqqeph = 1,
+    Maqqaph = 1,
 
     /// **Paseq** (פָּשְׁק) — "separator, divider"
     ///

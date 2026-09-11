@@ -52,7 +52,7 @@ These pseudo accents require distinct handling. The following CantillationSymbol
       Function: Primarily denotes the end of a verse or sentence, analogous to a period. However, its application is not absolute; certain scholarly traditions equate its disjunctive weight to that of Silluq.
       CantillationSymbol the end of a sentence (like the period), but not always. Some sholars treat them as as equal as the Silluq (a disjuntive).
 
-   - `Maqqeph`
+   - `Maqqaph`
 
       Function: Serves as a hyphenation or binding agent that connects words into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
       it does have the function of binding words together, just like the conjunctives.

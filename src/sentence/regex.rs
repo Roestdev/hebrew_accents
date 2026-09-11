@@ -5,7 +5,7 @@ use regex::Regex;
 
 use crate::sentence::{
     ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
-    SOF_PASUQ, TSINNORIT, YORED,
+    TSINNORIT, YORED,
 };
 
 // Pattern builders, validators
@@ -19,13 +19,13 @@ const OPTIONAL_SPACE: &str = r"\s?";
 // One or more spaces (greedy).
 // const  ONE_OR_MORE_SPACES: &str = r"\s+";
 
-/// Any character that is **not** a space nor Maqqeph (U+05BE).
+/// Any character that is **not** a space nor Maqqaph (U+05BE).
 const NOT_A_SPACE_OR_MAQAF: &str = r"[^\s\u{05BE}]";
 
-/// Either a space **or** a Maqqeph.
+/// Either a space **or** a Maqqaph.
 const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
-// Either a space **or** a Maqqeph.
+// Either a space **or** a Maqqaph.
 // const HEBREW_OR_SPACE: &str = r"[\p{Hebrew}\s]";
 
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
@@ -37,10 +37,6 @@ const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
 /// Negative LookAhead: *not* followed by Hebrew chars, optional spaces,
 /// and then a paseq or vertical line.
 const NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE: &str = r"(?!\p{Hebrew}+?\s*[\u{05C0}\u{007C}])";
-
-/// Negative LookAhead: *not* followed by a Hebrew chars, a maqaf, and another
-/// Hebrew run.  This is used to exclude “maqqaf‑connected” sequences.
-const NOT_FOLLOWED_BY_MAQAF: &str = r"(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)";
 
 /// Zero or one of the Samech OR Pey characters (U+05E4, U+05E1).
 const ZERO_OR_ONE_SAMECH_OR_PEY: &str = r"[\u{05E4}\u{05E1}]?";
@@ -83,7 +79,7 @@ pub(crate) mod prose_patterns {
     });
 
     // A Meayla is a Tiphcha before Silluq or Atnach in the same word
-    // or words connected with a Maqqeph (\u{05BE})
+    // or words connected with a Maqqaph (\u{05BE})
     // Tiphcha: U+0596
     // Atnach:  U+0591
     // Silluq:  U+05BD (Meteg in the last word)
@@ -113,7 +109,7 @@ pub(crate) mod poetry_patterns {
     // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
     // - Geresh (\u{059C}) followed by
     // - Revia (\u{0597})
-    // - Maqqeph (\u{05BE})
+    // - Maqqaph (\u{05BE})
     // - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
     /*
     Geresh (גֵּרֶשׁ)
@@ -268,20 +264,6 @@ pub(crate) mod poetry_patterns {
 pub(crate) mod shared_patterns {
     use super::*;
 
-    // Common patterns (Silluq, Meteg, etc.)
-    // A Meteg in the last word of a sentence is called SILLUQ (\u{05BD})
-    // Most of the time a sentence ends with Sof Pasuq (\u{05C3})
-    // Some times a sentence ends with "samech" (U+05E1) or an "pey" (U+05E4).
-    // Some times last words are connected by a Maqqeph (\u{05BE})
-    //    FancyRegex::new(r"\u{05BD}(?!\p{Hebrew}*\u{05BE}\p{Hebrew}*)\p{Hebrew}*\s?\u{05C3}?\s?[\u{05E4}\u{05E1}]?\s$? regex")
-    pub(crate) static FA_RE_OUTER_COMMON_SILLUQ: Lazy<FancyRegex> = Lazy::new(|| {
-        let pattern = format!(
-        "{SILLUQ}{NOT_FOLLOWED_BY_MAQAF}{HEBREW}*{OPTIONAL_SPACE}{SOF_PASUQ}{OPTIONAL_SPACE}{ZERO_OR_ONE_SAMECH_OR_PEY}{OPTIONAL_SPACE}$"
-    );
-        FancyRegex::new(&pattern)
-            .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_COMMON_SILLUQ: {}", pattern))
-    });
-
     // A Shalshelet consists of the following two UTF-8 code-points (p.e. Gen19:16)
     //      - Shalshelet (\u{0593}) followed by
     //      - Paseq (\u{05C0})
@@ -325,16 +307,6 @@ mod regex_initialization_tests {
     use super::poetry_patterns::*;
     use super::prose_patterns::*;
     use super::shared_patterns::*;
-
-    // Test FA_RE_OUTER_COMMON_SILLUQ
-    #[test]
-    fn test_fa_re_outer_common_silluq_init() {
-        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
-        // Verify it matches a valid Silluq pattern
-        let valid = "אֽוֹר׃"; // Simplified example
-                            // Note: The actual pattern is complex, so we just ensure it doesn't panic
-        let _ = regex.is_match(valid);
-    }
 
     // Test RE_OUTER_COMMON_SHALSHELET
     #[test]
@@ -477,7 +449,6 @@ mod regex_initialization_tests {
     #[test]
     fn test_all_regexes_compile() {
         // Just accessing them ensures Lazy::new ran without panic
-        let _ = &FA_RE_OUTER_COMMON_SILLUQ;
         let _ = &RE_OUTER_COMMON_SHALSHELET;
         let _ = &RE_INNER_COMMON_SHALSHELET;
         let _ = &RE_OUTER_PROSE_LEGARMEH;
@@ -495,15 +466,6 @@ mod regex_initialization_tests {
         let _ = &RE_INNER_POETRY_TSINNORIT_MERKHA;
         let _ = &RE_OUTER_POETRY_TSINNORIT_MAHPAKH;
         let _ = &RE_INNER_POETRY_TSINNORIT_MAHPAKH;
-    }
-
-    // Test specific regex patterns with negative cases
-    #[test]
-    fn test_silluq_negative_case() {
-        let regex = &FA_RE_OUTER_COMMON_SILLUQ;
-        // Should not match if followed by Maqqeph
-        let invalid = "אֽוֹר־ב";
-        let _ = regex.is_match(invalid);
     }
 
     #[test]

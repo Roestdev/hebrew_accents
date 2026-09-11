@@ -23,7 +23,7 @@ pub use public_model::CantillationMark;
 pub use public_model::CantillationMarkPlacement;
 pub use public_model::CantillationMarkStressPosition;
 pub use public_model::GroupLevel;
-pub use public_model::MaxWordSpan;
+pub use public_model::WordSpan;
 
 pub use context::Context;
 pub use matcher::Match;

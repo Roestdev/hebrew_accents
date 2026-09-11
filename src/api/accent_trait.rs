@@ -4,8 +4,8 @@ use crate::accent_data::{
     PSEUDO_ACCENT_TABLE,
 };
 use crate::{
-    AccentCategory, AccentKind, CantillationMark, GroupLevel, HebrewAccent, MaxWordSpan,
-    PoetryAccent, ProseAccent, PseudoAccent,
+    AccentCategory, AccentKind, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent,
+    ProseAccent, PseudoAccent, WordSpan,
 };
 
 /// The `Accent` trait provides a unified interface for working with Hebrew
@@ -21,7 +21,7 @@ use crate::{
 /// This trait abstracts over three distinct accent systems:
 /// - [`ProseAccent`] - Used in most biblical books (prosaic texts)
 /// - [`PoetryAccent`] - Used in poetic books (Psalms, Proverbs, Job)
-/// - [`PseudoAccent`] - Non-cantillation marks treated similarly (e.g., Maqqeph, Paseq)
+/// - [`PseudoAccent`] - Non-cantillation marks treated similarly (e.g., Maqqaph, Paseq)
 ///
 /// All three systems are wrapped by [`HebrewAccent`], which delegates to the
 /// appropriate implementation.
@@ -229,7 +229,7 @@ pub trait Accent: Copy + Sized {
     /// let silluq = ProseAccent::Silluq;
     ///
     /// if let Some(level) = silluq.group_level() {
-    ///      assert_eq!(GroupLevel::Level1, level);
+    ///      assert_eq!(GroupLevel::Tier1, level);
     ///   }
     /// ```
     fn group_level(self) -> Option<GroupLevel>;
@@ -256,20 +256,20 @@ pub trait Accent: Copy + Sized {
     /// Most accents span a single word; some compound or special
     /// accents may span multiple words.
     ///
-    /// - **Typical**: `MaxWordSpan::OneWord`
-    /// - **Special cases**: `MaxWordSpan::TwoWords` or `NotApplicable`
+    /// - **Typical**: `WordSpan::OneWord`
+    /// - **Special cases**: `WordSpan::OneOrTwoWords` or `NotApplicable`
     /// - **Pseudo accents**: Always `None`
     ///
     /// # Example
     /// ```rust
-    /// use hebrew_accents::{Accent, HebrewAccent, PoetryAccent, MaxWordSpan};
+    /// use hebrew_accents::{Accent, HebrewAccent, PoetryAccent, WordSpan};
     ///
     /// let oleh_weyored = PoetryAccent::OlehWeYored;
-    /// if let Some(span) = oleh_weyored.max_word_span() {
-    ///      assert_eq!(span, MaxWordSpan::TwoWords);
+    /// if let Some(span) = oleh_weyored.word_span() {
+    ///      assert_eq!(span, WordSpan::OneOrTwoWords);
     /// }
     /// ```
-    fn max_word_span(self) -> Option<MaxWordSpan>;
+    fn word_span(self) -> Option<WordSpan>;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -391,11 +391,11 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn max_word_span(self) -> Option<MaxWordSpan> {
+    fn word_span(self) -> Option<WordSpan> {
         match self {
-            HebrewAccent::Prose(p) => p.max_word_span(),
-            HebrewAccent::Poetry(p) => p.max_word_span(),
-            HebrewAccent::Pseudo(p) => p.max_word_span(),
+            HebrewAccent::Prose(p) => p.word_span(),
+            HebrewAccent::Poetry(p) => p.word_span(),
+            HebrewAccent::Pseudo(p) => p.word_span(),
         }
     }
 }
@@ -489,7 +489,7 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn max_word_span(self) -> Option<MaxWordSpan> {
+    fn word_span(self) -> Option<WordSpan> {
         PROSE_ACCENT_TABLE[self.as_index()].word_span.to_public()
     }
 }
@@ -583,7 +583,7 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn max_word_span(self) -> Option<MaxWordSpan> {
+    fn word_span(self) -> Option<WordSpan> {
         POETRY_ACCENT_TABLE[self.as_index()].word_span.to_public()
     }
 }
@@ -677,14 +677,14 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn max_word_span(self) -> Option<MaxWordSpan> {
+    fn word_span(self) -> Option<WordSpan> {
         None
     }
 }
 
 #[cfg(test)]
 mod tests1 {
-    use crate::MaxWordSpan;
+    use crate::WordSpan;
     #[test]
     fn level() {
         use crate::{Accent, GroupLevel, ProseAccent};
@@ -692,7 +692,7 @@ mod tests1 {
         let silluq = ProseAccent::Silluq;
 
         if let Some(level) = silluq.group_level() {
-            assert_eq!(GroupLevel::Level1, level);
+            assert_eq!(GroupLevel::Tier1, level);
         } else {
             panic!("BUG::wrong grouplevel");
         }
@@ -702,8 +702,8 @@ mod tests1 {
         use crate::{Accent, PoetryAccent};
 
         let oleh_weyored = PoetryAccent::OlehWeYored;
-        if let Some(span) = oleh_weyored.max_word_span() {
-            assert_eq!(span, MaxWordSpan::TwoWords);
+        if let Some(span) = oleh_weyored.word_span() {
+            assert_eq!(span, WordSpan::OneOrTwoWords);
         }
     }
 

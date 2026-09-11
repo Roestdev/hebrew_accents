@@ -130,16 +130,16 @@ impl HebrewAccent {
     /// ```
     /// use hebrew_accents::{Accent,HebrewAccent, PseudoAccent};
     ///
-    /// let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
+    /// let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
     ///
     /// // Check the accent accenttype exists before accessing its data
     /// if let Some(pseudo) = accent.as_pseudo() {
-    ///     println!("English name: {}", pseudo.english_name());      // "Maqqeph"
+    ///     println!("English name: {}", pseudo.english_name());      // "Maqqaph"
     ///     println!("Concept: {}", pseudo.hebrew_concept());         // "binder"
     /// }
     ///
     /// // The original accent remains usable after inspection
-    /// assert!(matches!(accent.as_pseudo(), Some(PseudoAccent::Maqqeph)));
+    /// assert!(matches!(accent.as_pseudo(), Some(PseudoAccent::Maqqaph)));
     /// ```
     pub fn as_pseudo(self) -> Option<PseudoAccent> {
         match self {
@@ -282,9 +282,9 @@ impl From<PoetryAccent> for HebrewAccent {
 /// ```
 /// use hebrew_accents::{HebrewAccent, PseudoAccent};
 ///
-/// let accent = HebrewAccent::from(PseudoAccent::Maqqeph);
+/// let accent = HebrewAccent::from(PseudoAccent::Maqqaph);
 ///
-/// assert!(matches!(accent, HebrewAccent::Pseudo(PseudoAccent::Maqqeph)));
+/// assert!(matches!(accent, HebrewAccent::Pseudo(PseudoAccent::Maqqaph)));
 /// ```
 ///
 /// Automatic accenttype coercion in function arguments:
@@ -332,11 +332,11 @@ mod tests {
 
     #[test]
     fn pseudo_variant_wraps_correctly() {
-        let pseudo = PseudoAccent::Maqqeph;
+        let pseudo = PseudoAccent::Maqqaph;
         let accent = HebrewAccent::Pseudo(pseudo);
         assert!(matches!(
             accent,
-            HebrewAccent::Pseudo(PseudoAccent::Maqqeph)
+            HebrewAccent::Pseudo(PseudoAccent::Maqqaph)
         ));
     }
 
@@ -425,7 +425,7 @@ mod tests {
 
     #[test]
     fn as_pseudo_does_not_consume_wrapper() {
-        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
 
         let first = accent.as_pseudo().unwrap();
         let second = accent.as_pseudo().unwrap();
@@ -512,11 +512,11 @@ mod tests {
 
     #[test]
     fn display_formats_pseudo_with_prefix() {
-        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
         let display = format!("{}", accent);
 
         assert!(display.starts_with("Pseudo: "));
-        assert!(display.contains("Maqqeph"));
+        assert!(display.contains("Maqqaph"));
     }
 
     #[test]
@@ -683,7 +683,7 @@ mod tests {
 
     #[test]
     fn pseudo_roundtrip_through_wrapper() {
-        let original = PseudoAccent::Maqqeph;
+        let original = PseudoAccent::Maqqaph;
         let wrapped: HebrewAccent = original.into();
         let extracted = wrapped.as_pseudo();
 

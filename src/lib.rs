@@ -140,11 +140,11 @@ pub use crate::api::Context;
 pub use crate::api::GroupLevel;
 pub use crate::api::HebrewAccent;
 pub use crate::api::Match;
-pub use crate::api::MaxWordSpan;
 pub use crate::api::PoetryAccent;
 pub use crate::api::ProseAccent;
 pub use crate::api::PseudoAccent;
 pub use crate::api::SentenceContext;
+pub use crate::api::WordSpan;
 
 // public functions
 pub use crate::api::try_derive_context;

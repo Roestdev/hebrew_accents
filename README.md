@@ -82,7 +82,7 @@ let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
 println!("Poetry accent: {}", poetry.is_compound());
 
 // Pseudo-accents (accent-related markers)
-let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqeph);
+let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
 println!("Is compound: {}", pseudo.english_name());
 ```
 

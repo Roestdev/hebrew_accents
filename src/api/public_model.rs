@@ -35,18 +35,21 @@ pub enum AccentCategory {
     Conjunctive,
 }
 
-/// Disjunctive accent hierarchy level following Futato's classification system.
+/// Disjunctive accent hierarchy group level following Futato's classification system.
 ///
-/// Ranges from 1 (strongest pause/break) to higher numbers (weaker pauses).
+/// Ranges from Tier1 (strongest pause/break) to higher numbers (weaker pauses).
 /// Conjunctive accents and pseudo-accent markers return `None` as they lack
 /// hierarchical disjunctive function.
+///
+/// In Prose accents, there are 4 group levels.
+/// Poetry has 3 levels.
 ///
 /// # Example
 /// ```
 /// use hebrew_accents::{Accent, HebrewAccent, ProseAccent, GroupLevel};
 ///
 /// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
-/// assert_eq!(silluq.group_level(), Some(GroupLevel::Level1));
+/// assert_eq!(silluq.group_level(), Some(GroupLevel::Tier1));
 ///
 /// let conjunctive = HebrewAccent::Prose(ProseAccent::Munach);
 /// assert_eq!(conjunctive.group_level(), None);
@@ -55,33 +58,28 @@ pub enum AccentCategory {
 #[repr(u8)]
 pub enum GroupLevel {
     /// Primary disjunctive tier — creates major clause/phrasal breaks
-    Level1 = 1, // value represents group number for extension in future
+    Tier1 = 1, // value represents group number for extension in future
     /// Secondary disjunctive tier — subordinate phrase boundaries
-    Level2,
+    Tier2,
     /// Tertiary disjunctive tier — minor phrasal divisions
-    Level3,
+    Tier3,
     /// Quaternary disjunctive tier — fine-grained subdivisions
-    Level4,
+    Tier4,
 }
 
 impl GroupLevel {
     /// Raw numeric strength value (1 = strongest disjunctive)
     pub const fn value(self) -> u8 {
-        match self {
-            Self::Level1 => 1,
-            Self::Level2 => 2,
-            Self::Level3 => 3,
-            Self::Level4 => 4,
-        }
+        self as u8
     }
 
     /// Human-readable description of hierarchy tier
     pub const fn description(self) -> &'static str {
         match self {
-            Self::Level1 => "Primary disjunctive (major clause break)",
-            Self::Level2 => "Secondary disjunctive (phrase boundary)",
-            Self::Level3 => "Tertiary disjunctive (minor division)",
-            Self::Level4 => "Quaternary disjunctive (fine subdivision)",
+            Self::Tier1 => "Primary disjunctive (major clause break)",
+            Self::Tier2 => "Secondary disjunctive (phrase boundary)",
+            Self::Tier3 => "Tertiary disjunctive (minor division)",
+            Self::Tier4 => "Quaternary disjunctive (fine subdivision)",
         }
     }
 }
@@ -89,23 +87,76 @@ impl GroupLevel {
 impl std::fmt::Display for GroupLevel {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Level1 => write!(f, "Tier 1 (Primary disjunctive)"),
-            Self::Level2 => write!(f, "Tier 2 (Secondary disjunctive)"),
-            Self::Level3 => write!(f, "Tier 3 (Tertiary disjunctive)"),
-            Self::Level4 => write!(f, "Tier 4 (Quaternary disjunctive)"),
+            Self::Tier1 => write!(f, "Tier 1 (Primary disjunctive)"),
+            Self::Tier2 => write!(f, "Tier 2 (Secondary disjunctive)"),
+            Self::Tier3 => write!(f, "Tier 3 (Tertiary disjunctive)"),
+            Self::Tier4 => write!(f, "Tier 4 (Quaternary disjunctive)"),
         }
     }
 }
 
-/// TODO
+impl TryFrom<u8> for GroupLevel {
+    type Error = u8;
+    fn try_from(v: u8) -> Result<Self, Self::Error> {
+        match v {
+            1 => Ok(Self::Tier1),
+            2 => Ok(Self::Tier2),
+            3 => Ok(Self::Tier3),
+            4 => Ok(Self::Tier4),
+            _ => Err(v),
+        }
+    }
+}
+
+// TODO better text: add all 2 wordspan accents /accenten met paseq
+
+/// How many consecutive words a single accent sign can cover.
+///
+/// Almost every ta'am of Scripture is confined to the word it belongs to.
+/// Exactly three accents — ʿoleh we-yored, tsinnorit, and maḥpaḥ — are
+/// also able to stretch across the interword space and tie two adjacent
+/// words together. This enum records that ability: whether the accent is
+/// always single-word, or one of the exceptions that may span two.
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum MaxWordSpan {
-    /// TODO
+pub enum WordSpan {
+    /// The accent sign is always confined to a single word.
+    ///
+    /// Every taʿam falls into this category except
+    /// ʿoleh we-yored, tsinnorit, and maḥpaḥ.
     #[default]
     OneWord,
-    /// TODO
-    TwoWords,
+    /// The accent sign covers either one word or two consecutive words.
+    ///
+    /// Only three accents have this capability:
+    ///
+    /// - **ʿOleh we-yored** (עולה ויורד) — when the two strokes occur
+    ///   together, one rises at the end of the first word and the other
+    ///   descends onto the beginning of the next.
+    /// - **Tsinnorit** (צינורית) — a horizontal line stretched over the
+    ///   interword space, like a channel connecting the two words.
+    /// - **Maḥpaḥ** (מחפך) — its clasp-shaped sign can reach from the
+    ///   first word over to the second.
+    OneOrTwoWords,
 }
+
+impl WordSpan {
+    /// Whether the accent sign can ever cross a word boundary.
+    /// Only ʿoleh we-yored, tsinnorit, and maḥpaḥ
+    /// ([`WordSpan::OneOrTwoWords`]) can.
+    pub const fn can_span_word_boundary(self) -> bool {
+        matches!(self, WordSpan::OneOrTwoWords)
+    }
+
+    /// The number of words the sign covers, in either the minimum or
+    /// maximum case.
+    pub const fn word_count_bounds(self) -> (usize, usize) {
+        match self {
+            WordSpan::OneWord => (1, 1),
+            WordSpan::OneOrTwoWords => (1, 2),
+        }
+    }
+}
+
 /// Hebrew Accent wordstress — (absence is expressed via `Option<T>`)
 ///
 /// 'StressPosition', indicating the location of the accent mark relative to
@@ -230,6 +281,8 @@ pub struct CantillationMark {
 ///
 /// Distinguishes from [`CantillationMarkStressPosition`] which describes
 /// linguistic relationship to the stressed syllable.
+///
+/// Note: Not one accent is placed 'BelowLeft'
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 pub enum CantillationMarkPlacement {
     /// todo
@@ -294,3 +347,16 @@ impl From<CodePointPosition> for CantillationMarkPlacement {
 //         format!("{}{}{}", GENERIC_MARK_BASE, cp1, " ")
 //     }
 // }
+
+#[cfg(test)]
+mod group_level_tests {
+    use super::*;
+    #[test]
+    fn round_trips_and_epithets() {
+        for v in 1..=4u8 {
+            let t = GroupLevel::try_from(v).unwrap();
+            assert_eq!(t.value(), v);
+        }
+        assert_eq!(GroupLevel::try_from(5), Err(5));
+    }
+}

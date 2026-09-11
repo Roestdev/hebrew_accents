@@ -72,8 +72,8 @@ pub(crate) const TARCHA: &str = TIPEHA;
 /// alias for ETNAHTA
 pub(crate) const ATNACH: &str = ETNAHTA;
 /// alias for MAQAF
-pub(crate) const MAQQEPH: &str = MAQAF;
-pub(crate) const MAQQEPH_AS_CHAR: char = MAQAF_AS_CHAR;
+pub(crate) const MAQQAPH: &str = MAQAF;
+pub(crate) const MAQQAPH_AS_CHAR: char = MAQAF_AS_CHAR;
 /// alias for YERAH_BEN_YOMO
 pub(crate) const GALGAL: &str = YERAH_BEN_YOMO;
 // alias for MUNAH

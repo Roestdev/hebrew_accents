@@ -10,4 +10,4 @@ pub(crate) use kind::Kind;
 pub(crate) use meta_data::AccentMetaData;
 pub(crate) use meta_data::AlternateNames;
 pub(crate) use meta_data::CantillationSymbol;
-pub(crate) use word_span::WordSpan;
+pub(crate) use word_span::PrivateWordSpan;

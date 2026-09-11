@@ -3,26 +3,22 @@
 // Local modules / crate‑internal
 use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::sentence::{
-    ATNACH, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH,
-    MAQQEPH_AS_CHAR, MERKHA, MERKHA_KEFULA, MUNAH, OLEH_AS_CHAR, PASEQ, PASEQ_AS_CHAR, PASHTA,
-    PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA, SOF_PASUQ, TARCHA, TELISHA_GEDOLAH, TELISHA_QETANA,
-    TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YETIV, YORED_AS_CHAR, ZAQEF_GADOL,
-    ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
+    ATNACH, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH,
+    MAQQAPH_AS_CHAR, MERKHA, MERKHA_KEFULA, MUNAH, OLEH_AS_CHAR, PASEQ, PASEQ_AS_CHAR, PASHTA,
+    PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA, TELISHA_GEDOLAH,
+    TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YETIV, YORED_AS_CHAR,
+    ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
 
 use crate::sentence::{
-    FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_COMMON_SILLUQ, FA_RE_OUTER_POETRY_AZLA,
-    FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH, FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET,
-    RE_INNER_POETRY_TSINNORIT_MAHPAKH, RE_INNER_POETRY_TSINNORIT_MERKHA, RE_INNER_PROSE_LEGARMEH,
-    RE_OUTER_COMMON_SHALSHELET, RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
+    FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_POETRY_AZLA, FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH,
+    FA_RE_OUTER_PROSE_MUNACH, RE_INNER_COMMON_SHALSHELET, RE_INNER_POETRY_TSINNORIT_MAHPAKH,
+    RE_INNER_POETRY_TSINNORIT_MERKHA, RE_INNER_PROSE_LEGARMEH, RE_OUTER_COMMON_SHALSHELET,
+    RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
 };
 use crate::{Context, Match, SentenceContext};
-
-// Use to create a Match struct artificially if the method find() is used
-// e.g. Match::new(ZAQEF_GADOL, index, index + SINGLE_ACCENT_LEN_UTF8)
-const SINGLE_ACCENT_LEN_UTF8: usize = 2;
 
 impl<'a> SentenceContext {
     /// Look for `accent` inside the sentence.
@@ -68,37 +64,22 @@ impl<'a> SentenceContext {
             // Disjunctives
             HebrewAccent::Prose(ProseAccent::Silluq)
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
-                let outer_match = match FA_RE_OUTER_COMMON_SILLUQ.find(&self.sentence).unwrap() {
-                    Some(m) => {
-                        println!("\n==> FA_RE_OUTER_COMMON_SILLUQ: FOUND!");
-                        print!(
-                            "\touter match :: start:{} ; end:{} ; str:{}",
-                            m.start(),
-                            m.end(),
-                            m.as_str()
-                        );
-                        m
-                    }
-                    None => {
-                        println!("\n==> COMMON::Silluq is not found (outer match).");
-                        return None;
-                    }
-                };
-                Some(Match::new(
-                    &self.sentence,
-                    outer_match.start(),
-                    outer_match.end(),
-                ))
+                let res = find_silluq(&self.sentence);
+                if let Some(start) = res {
+                    Some(Match::new(&self.sentence, start, start + SILLUQ.len()))
+                } else {
+                    None
+                }
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self
                 .sentence
                 .find(ATNACH)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ATNACH.len())),
             HebrewAccent::Prose(ProseAccent::Segolta) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(SEGOLTA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + SEGOLTA.len())),
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     Some(m) => {
@@ -143,56 +124,56 @@ impl<'a> SentenceContext {
             HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZAQEF_QATAN)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ZAQEF_QATAN.len())),
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZAQEF_GADOL)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ZAQEF_GADOL.len())),
             HebrewAccent::Prose(ProseAccent::Revia) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(REVIA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + REVIA.len())),
             HebrewAccent::Prose(ProseAccent::Tiphcha) => self
                 .sentence
                 .find(TIPHCHA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + TIPHCHA.len())),
             HebrewAccent::Prose(ProseAccent::Zarqa) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZARQA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ZARQA.len())),
             HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(PASHTA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + PASHTA.len())),
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(YETIV)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + YETIV.len())),
             HebrewAccent::Prose(ProseAccent::Tevir) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(TEVIR)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + TEVIR.len())),
             HebrewAccent::Prose(ProseAccent::Geresh) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(GERESH)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + GERESH.len())),
             HebrewAccent::Prose(ProseAccent::Gershayim) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(GERSHAYIM)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + GERSHAYIM.len())),
             HebrewAccent::Prose(ProseAccent::Pazer) | HebrewAccent::Poetry(PoetryAccent::Pazer) => {
                 self.sentence
                     .find(PAZER)
-                    .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(&self.sentence, index, index + PAZER.len()))
             }
             HebrewAccent::Prose(ProseAccent::PazerGadol) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(PAZER_GADOL)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + PAZER_GADOL.len())),
             HebrewAccent::Prose(ProseAccent::TelishaGedolah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(TELISHA_GEDOLAH)
-                    .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(&self.sentence, index, index + TELISHA_GEDOLAH.len()))
             }
             HebrewAccent::Prose(ProseAccent::Legarmeh) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_PROSE_LEGARMEH.find(&self.sentence) {
@@ -262,34 +243,34 @@ impl<'a> SentenceContext {
             HebrewAccent::Prose(ProseAccent::Mahpakh) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(MAHPAKH)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + MAHPAKH.len())),
             HebrewAccent::Prose(ProseAccent::Merkha) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(MERKHA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + MERKHA.len())),
             HebrewAccent::Prose(ProseAccent::MerkhaKephulah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(MERKHA_KEFULA)
-                    .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(&self.sentence, index, index + MERKHA_KEFULA.len()))
             }
             HebrewAccent::Prose(ProseAccent::Darga) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(DARGA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + DARGA.len())),
             HebrewAccent::Prose(ProseAccent::Azla) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(QADMA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + QADMA.len())),
             HebrewAccent::Prose(ProseAccent::TelishaQetannah) if self.ctx == Context::Prosaic => {
                 self.sentence
                     .find(TELISHA_QETANA)
-                    .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8))
+                    .map(|index| Match::new(&self.sentence, index, index + TELISHA_QETANA.len()))
             }
             HebrewAccent::Prose(ProseAccent::Galgal)
             | HebrewAccent::Poetry(PoetryAccent::Galgal) => self
                 .sentence
                 .find(GALGAL)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + GALGAL.len())),
             HebrewAccent::Prose(ProseAccent::Meayla) if self.ctx == Context::Prosaic => {
                 let outer_match = match RE_OUTER_PROSE_MEAYLA.find(&self.sentence) {
                     Some(m) => {
@@ -441,7 +422,7 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Tsinnor) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(ZINOR)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ZINOR.len())),
             HebrewAccent::Poetry(PoetryAccent::ReviaQaton) if self.ctx == Context::Poetic => {
                 if let Some((start, end)) = find_poetry_revia_qaton(&self.sentence) {
                     Some(Match::new(&self.sentence, start, end))
@@ -452,7 +433,7 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Dechi) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(DECHI)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + DECHI.len())),
             HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh)
                 if self.ctx == Context::Poetic =>
             {
@@ -507,7 +488,7 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Munach) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(MUNAH)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + MUNAH.len())),
 
             HebrewAccent::Poetry(PoetryAccent::Merkha) if self.ctx == Context::Poetic => {
                 if let Some((start, end)) = find_poetry_merkha(&self.sentence) {
@@ -520,11 +501,11 @@ impl<'a> SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::Illuy) if self.ctx == Context::Poetic => self
                 .sentence
                 .find(ILUY)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + ILUY.len())),
             HebrewAccent::Poetry(PoetryAccent::Tarcha) => self
                 .sentence
                 .find(TARCHA)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + TARCHA.len())),
             HebrewAccent::Poetry(PoetryAccent::Mehuppakh) if self.ctx == Context::Poetic => {
                 if let Some((start, end)) = find_poetry_mehuppakh(&self.sentence) {
                     Some(Match::new(&self.sentence, start, end))
@@ -665,15 +646,15 @@ impl<'a> SentenceContext {
             HebrewAccent::Pseudo(PseudoAccent::SophPasuq) => self
                 .sentence
                 .find(SOF_PASUQ)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
-            HebrewAccent::Pseudo(PseudoAccent::Maqqeph) => self
+                .map(|index| Match::new(&self.sentence, index, index + SOF_PASUQ.len())),
+            HebrewAccent::Pseudo(PseudoAccent::Maqqaph) => self
                 .sentence
-                .find(MAQQEPH)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .find(MAQQAPH)
+                .map(|index| Match::new(&self.sentence, index, index + MAQQAPH.len())),
             HebrewAccent::Pseudo(PseudoAccent::Paseq) => self
                 .sentence
                 .find(PASEQ)
-                .map(|index| Match::new(&self.sentence, index, index + SINGLE_ACCENT_LEN_UTF8)),
+                .map(|index| Match::new(&self.sentence, index, index + PASEQ.len())),
             _ => None,
         }
     }
@@ -709,7 +690,7 @@ pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<(usize, usize)> {
             // println!(
             //     "Found at least one target char, not part of another aaccent:: BREAK the loop"
             // );
-            return Some((index, index + SINGLE_ACCENT_LEN_UTF8));
+            return Some((index, index + MERKHA.len()));
         }
     }
     None
@@ -752,7 +733,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<(usize, usize)> {
             //     "\nResult for index {index}:\n\ttwo_code_points_behind: {two_code_points_behind}\n\tis_part_of_mahpakh_legarmeh: {is_part_of_mahpakh_legarmeh}"
             // );
             // println!("Found target char, not part of another accent. Returning TRUE");
-            return Some((index, index + SINGLE_ACCENT_LEN_UTF8));
+            return Some((index, index + MAHPAKH.len()));
         }
     }
     None
@@ -793,7 +774,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<(usize, usize)> 
         //     "two_code_points_behind: {two_code_points_behind} - followed_by_owy: {followed_by_owy}"
         // );
         if !two_code_points_behind && !followed_by_owy {
-            return Some((index, index + SINGLE_ACCENT_LEN_UTF8));
+            return Some((index, index + REVIA.len()));
         }
     }
     None
@@ -838,7 +819,7 @@ pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<(usize, usize)> 
         //     "two_code_points_behind:{two_code_points_behind} - followed_by_owy{followed_by_owy}"
         // );
         if !two_code_points_behind && followed_by_owy {
-            return Some((index, index + SINGLE_ACCENT_LEN_UTF8));
+            return Some((index, index + REVIA.len()));
         }
     }
     None
@@ -882,7 +863,7 @@ fn is_part_of_two_code_point_accent_look_behind(
     target_char: &str,
     idx_target: usize,
     lookbehind_combos: &[char],
-    max_word_span: usize,
+    word_span: usize,
 ) -> bool {
     // 1️⃣  Convert the incoming `&str` to a single `char`.
     // --------------------------------------------------------------
@@ -913,11 +894,11 @@ fn is_part_of_two_code_point_accent_look_behind(
     for i in (0..idx_target).rev() {
         let c = sentence[i];
 
-        // Treat space and the special separator `MAQQEPH` as word boundaries.
-        if c == ' ' || c == MAQQEPH_AS_CHAR {
+        // Treat space and the special separator `MAQQAPH` as word boundaries.
+        if c == ' ' || c == MAQQAPH_AS_CHAR {
             word_breaks += 1;
             // If we have crossed the allowed number of word spans, stop.
-            if word_breaks >= max_word_span {
+            if word_breaks >= word_span {
                 return false;
             }
             continue;
@@ -979,7 +960,7 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
     }
 
     // Word‑boundary counter: a boundary is either a regular space or the
-    // special separator `MAQQEPH`.
+    // special separator `MAQQAPH`.
     let mut word_boundary_cnt = 0usize;
     let mut oleh_seen = false;
 
@@ -992,7 +973,7 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
 
         match c {
             // Word boundaries increment the counter.
-            ' ' | MAQQEPH_AS_CHAR => word_boundary_cnt += 1,
+            ' ' | MAQQAPH_AS_CHAR => word_boundary_cnt += 1,
 
             // The first word after the target may contain `OLEH`.
             OLEH_AS_CHAR if word_boundary_cnt == 1 => oleh_seen = true,
@@ -1013,50 +994,115 @@ fn is_followed_by_oleh_we_yored(target_idx: usize, sentence: &[char]) -> bool {
     false
 }
 
+pub(crate) fn find_silluq(verse: &str) -> Option<usize> {
+    use regex::Regex;
+    const SILLUQ: char = '\u{05BD}';
+    println!("\n==> find_silluq");
+    let verse = verse.trim_end();
+    //println!("trim_end: {}", verse);
+    let verse = drop_optional_samech_pe(verse);
+    //println!("drop_optional_samech_pe: {}", verse);
+    let verse = drop_optional_sof_pasuq(verse);
+    //println!("drop_optional_sof_pasuq: {}", verse);
+    // try to extract last word
+    let re_last_word = Regex::new(r"(?:^|\s)(\p{Hebrew}+)$").unwrap();
+    let last_word_match = re_last_word.find(&verse);
+    if let Some(match_res) = last_word_match {
+        let offset_last_word = match_res.start();
+
+        let find_in_last_member_res = find_in_last_member(match_res.as_str(), SILLUQ);
+        if let Some(offset_inside_last_word) = find_in_last_member_res {
+            println!("{:?}", offset_inside_last_word);
+            println!("{:?}", offset_inside_last_word + match_res.start());
+            return Some(offset_last_word + offset_inside_last_word);
+        } else {
+            return None;
+        }
+    } else {
+        println!("ERROR no last word");
+        return None;
+    }
+}
+
+/// Byte index of `needle` (e.g. Aleph, 'א') within the ORIGINAL text,
+/// searched inside the last maqqaph-separated member only.
+/// Separators are included in the count.
+pub fn find_in_last_member(text: &str, needle: char) -> Option<usize> {
+    // Last member = whatever follows the LAST maqqaph
+    if let Some((head, tail)) = text.rsplit_once(MAQQAPH_AS_CHAR) {
+        let local = tail.rfind(needle)?;
+        Some(head.len() + MAQQAPH_AS_CHAR.len_utf8() + local)
+    } else {
+        // No maqqaph at all: the whole text is the single (last) member
+        text.rfind(needle)
+    }
+}
+
+fn drop_optional_samech_pe(s: &str) -> &str {
+    const PE: char = '\u{05E4}';
+    const SAMEKH: char = '\u{05E1}';
+    if let Some(rest) = s.strip_suffix(SAMEKH).or_else(|| s.strip_suffix(PE)) {
+        // handle the optional leading space
+        rest.trim_end()
+    } else {
+        s
+    }
+}
+fn drop_optional_sof_pasuq(s: &str) -> &str {
+    if let Some(rest) = s.strip_suffix(SOF_PASUQ) {
+        // handle the optional leading space
+        rest.trim_end()
+    } else {
+        s
+    }
+}
+
 #[cfg(test)]
 mod unit_tests {
-    //use crate::sentence;
-
     use super::*;
+
+    // Helper function
+    fn check_match(matched: Match, expected_str: &str, expected_start: usize, expected_end: usize) {
+        assert_eq!(matched.start(), expected_start);
+        assert_eq!(matched.end(), expected_end);
+        assert_eq!(matched.len(), expected_end - expected_start);
+        assert_eq!(matched.as_str(), expected_str);
+        assert_eq!(matched.range(), expected_start..expected_end);
+        // Check if empty
+        assert!(!matched.is_empty());
+        println!("<  {}  >", matched.as_str());
+    }
     #[test]
     fn test_find_shared_silluq() {
         // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
         let sentence = "הִי אֽוֹר׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
-        let expected = Match::new(sentence, 9, 19);
-        assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::Silluq.into()),
-            Some(expected)
-        );
+        let binding = sc.unwrap();
+        let matched = binding.find_accent(ProseAccent::Silluq.into()).unwrap();
+        check_match(matched, SILLUQ, 9, 11);
         // ProseAccent, with Soph Pasuq, no Pey or Samech
         let sentence = "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
-        let expected = Match::new(sentence, 159, 168);
-        assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::Silluq.into()),
-            Some(expected)
-        );
+        let binding = sc.unwrap();
+        let matched = binding.find_accent(ProseAccent::Silluq.into()).unwrap();
+        check_match(matched, SILLUQ, 159, 161);
         // ProseAccent, no Soph Pasuq, with Pey
         let sentence = " וַיַּלְ בִּשֵֽׁם׃ ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        let expected = Match::new(sentence, 28, 37);
-        assert_eq!(
-            sc.unwrap().find_accent(PoetryAccent::Silluq.into()),
-            Some(expected)
-        );
+        let binding = sc.unwrap();
+        let matched = binding.find_accent(ProseAccent::Silluq.into()).unwrap();
+        check_match(matched, SILLUQ, 28, 30);
         // PoetryAccent with Soph Paseq and Peh
         let sentence = " כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        let expected = Match::new(sentence, 59, 68);
-        assert_eq!(
-            sc.unwrap().find_accent(PoetryAccent::Silluq.into()),
-            Some(expected)
-        );
+        let binding = sc.unwrap();
+        let matched = binding.find_accent(ProseAccent::Silluq.into()).unwrap();
+        check_match(matched, SILLUQ, 59, 61);
         // Meteg not in the last word of the sentence
         let sentence = "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵׁם׃ ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Silluq.into()), None);
-        // Meteg followed by Maqqeph (\u{05BE}) (meaning no Meteg in the last word)
+        // Meteg followed by Maqqaph (\u{05BE}) (meaning no Meteg in the last word)
         let sentence = "וַ וַיִּצֹ֥ק שֶׁ֖מֶן עַֽל־עַל־רֹאשׁהּ׃ ׃ פ";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Silluq.into()), None);
@@ -1542,7 +1588,7 @@ mod unit_tests {
             sc.unwrap().find_accent(ProseAccent::Meayla.into()),
             Some(expected)
         );
-        // Tiphcha followed by Atnach, two words connected with a Maqqeph
+        // Tiphcha followed by Atnach, two words connected with a Maqqaph
         let sentence = "ויּ֖צא־נ֑ח וּבנ֛יו ואשׁתּ֥ו וּנשֽׁי־בנ֖יו אתּֽו׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         let expected = Match::new(sentence, 6, 18);
@@ -1569,7 +1615,7 @@ mod unit_tests {
         let sentence = "בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Meteg.into()), None);
-        // Meteg and Silluq, separated by a Maqqeph
+        // Meteg and Silluq, separated by a Maqqaph
         let sentence = "ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         let expected = Match::new(sentence, 48, 50);
@@ -2215,7 +2261,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMerkha.into()),
             None
         );
-        // accent in two words seperated by Maqqeph
+        // accent in two words seperated by Maqqaph
         let sentence = "את־א֘ב֥רהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 8, 14);
@@ -2224,7 +2270,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMerkha.into()),
             Some(expected)
         );
-        // accent in two words seperated by Maqqeph, without Tsinnorit
+        // accent in two words seperated by Maqqaph, without Tsinnorit
         let sentence = "את־אב֥רהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
@@ -2232,7 +2278,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMerkha.into()),
             None
         );
-        // accent in two words seperated by Maqqeph, without Merkha
+        // accent in two words seperated by Maqqaph, without Merkha
         let sentence = "את־א֘ברהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
@@ -2301,7 +2347,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMahpakh.into()),
             None
         );
-        // accent in two words seperated by Maqqeph, without Mahpakh
+        // accent in two words seperated by Maqqaph, without Mahpakh
         let sentence = "אא֘ת־אב֤רהם אהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 4, 16);
@@ -2310,7 +2356,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMahpakh.into()),
             Some(expected)
         );
-        // accent in two words seperated by Maqqeph, without Tsinnorit
+        // accent in two words seperated by Maqqaph, without Tsinnorit
         let sentence = "את־אב֤רהם אהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
@@ -2318,7 +2364,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMahpakh.into()),
             None
         );
-        // accent in two words seperated by Maqqeph, without Mahpakh
+        // accent in two words seperated by Maqqaph, without Mahpakh
         let sentence = "אא֘ת־אברהם אהם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
@@ -2326,7 +2372,7 @@ mod unit_tests {
                 .find_accent(PoetryAccent::TsinnoritMahpakh.into()),
             None
         );
-        // accent in two words, without Maqqeph
+        // accent in two words, without Maqqaph
         let sentence = "את־א֘ברהם אהאב֤ם";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 8, 29);
@@ -2393,40 +2439,40 @@ mod unit_tests {
     }
 
     #[test]
-    fn test_find_pseudo_maqqeph() {
-        // No Maqqeph
+    fn test_find_pseudo_maqqaph() {
+        // No Maqqaph
         let sentence = "בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        assert_eq!(sc.unwrap().find_accent(PseudoAccent::Maqqeph.into()), None);
-        // One Maqqeph
+        assert_eq!(sc.unwrap().find_accent(PseudoAccent::Maqqaph.into()), None);
+        // One Maqqaph
         let sentence = "ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 56, 58);
         assert_eq!(
-            sc.unwrap().find_accent(PseudoAccent::Maqqeph.into()),
+            sc.unwrap().find_accent(PseudoAccent::Maqqaph.into()),
             Some(expected)
         );
-        // No Maqqeph
+        // No Maqqaph
         let sentence = "בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        assert_eq!(sc.unwrap().find_accent(PseudoAccent::Maqqeph.into()), None);
-        // One Maqqeph
+        assert_eq!(sc.unwrap().find_accent(PseudoAccent::Maqqaph.into()), None);
+        // One Maqqaph
         let sentence = "ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", 56, 58);
         assert_eq!(
-            sc.unwrap().find_accent(PseudoAccent::Maqqeph.into()),
+            sc.unwrap().find_accent(PseudoAccent::Maqqaph.into()),
             Some(expected)
         );
     }
 
     #[test]
     fn test_find_pseudo_paseq() {
-        // No Maqqeph
+        // No Maqqaph
         let sentence = "בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(sc.unwrap().find_accent(PseudoAccent::Paseq.into()), None);
-        // One Maqqeph
+        // One Maqqaph
         let sentence = "ויּ֥אמר אלה֖ים׀ יה֣י א֑ור וֽיהי־אֽור׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 27, 29);
@@ -2434,7 +2480,7 @@ mod unit_tests {
             sc.unwrap().find_accent(PseudoAccent::Paseq.into()),
             Some(expected)
         );
-        // Two Maqqeph's
+        // Two Maqqaph's
         let sentence = "ויּ֥אמר׀ אלה֖ים׀ יה֣י א֑ור וֽיהי־אֽור׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         let expected = Match::new(sentence, 14, 16);
@@ -2442,11 +2488,11 @@ mod unit_tests {
             sc.unwrap().find_accent(PseudoAccent::Paseq.into()),
             Some(expected)
         );
-        // No Maqqeph
+        // No Maqqaph
         // let sentence = "בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃";
         // let sc = SentenceContext::new(sentence, Context::Poetic);
         // assert_eq!(sc.unwrap().find_accent(PseudoAccent::Paseq.into()), None);
-        // // One Maqqeph
+        // // One Maqqaph
         // let sentence = "ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃";
         // let sc = SentenceContext::new(sentence, Context::Poetic);
         // let expected = Match::new(sentence, 52, 54) ;
@@ -2660,7 +2706,7 @@ mod unit_tests_cross_context {
 mod accent_metadata_function_coverage_tests {
     use super::*;
     // use crate::sentence::{
-    //     DARGA, DECHI, GALGAL, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQEPH, MEAYLA, MERKHA,
+    //     DARGA, DECHI, GALGAL, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH, MEAYLA, MERKHA,
     //     MERKHA_KEFULA, METEG, MUNACH, MUNAH, PASEQ, PASHTA, PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA,
     //     SILLUQ, SOF_PASUQ, TARCHA, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPHCHA, YETIV, ZAQEF_GADOL,
     //     ZAQEF_QATAN, ZARQA, ZINOR,
@@ -2784,15 +2830,15 @@ mod accent_metadata_function_coverage_tests {
     }
 
     #[test]
-    fn test_find_pseudo_maqqeph() {
+    fn test_find_pseudo_maqqaph() {
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
         let binding = sc.unwrap();
-        let result = binding.find_accent(PseudoAccent::Maqqeph.into());
+        let result = binding.find_accent(PseudoAccent::Maqqaph.into());
         assert!(result.is_some());
 
         let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Prosaic);
         let binding = sc.unwrap();
-        let result = binding.find_accent(PseudoAccent::Maqqeph.into());
+        let result = binding.find_accent(PseudoAccent::Maqqaph.into());
         assert!(result.is_some());
     }
 
@@ -2816,7 +2862,9 @@ mod accent_metadata_function_coverage_tests {
             "כּי אם בּתורת יהוה חפצו וּבתורתו יהגּה יומם ולילה׃",
             Context::Prosaic,
         );
+        println!("{:?}", sc);
         let binding = sc.unwrap();
+        println!("{:?}", binding);
         let result = binding.find_accent(ProseAccent::Silluq.into());
         assert!(result.is_none());
     }
@@ -2858,12 +2906,6 @@ mod accent_metadata_function_coverage_tests {
         let result = binding.find_accent(HebrewAccent::Prose(ProseAccent::Silluq));
         // Just verify the function completes without panic
         assert!(result.is_some() || result.is_none());
-    }
-
-    // Test SINGLE_ACCENT_LEN_UTF8 constant usage
-    #[test]
-    fn test_accent_length_constant() {
-        assert_eq!(SINGLE_ACCENT_LEN_UTF8, 2);
     }
 
     // Test that all accent variants can be converted to HebrewAccent
@@ -2929,7 +2971,7 @@ mod accent_metadata_function_coverage_tests {
     #[test]
     fn test_all_pseudo_accent_variants_convert() {
         let _: HebrewAccent = PseudoAccent::SophPasuq.into();
-        let _: HebrewAccent = PseudoAccent::Maqqeph.into();
+        let _: HebrewAccent = PseudoAccent::Maqqaph.into();
         let _: HebrewAccent = PseudoAccent::Paseq.into();
     }
 }

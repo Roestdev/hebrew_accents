@@ -1,20 +1,20 @@
-use crate::MaxWordSpan;
+use crate::WordSpan;
 
 /// Some compound accent may span two words.
 /// For most accents the rule is one accent one word.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub(crate) enum WordSpan {
+pub(crate) enum PrivateWordSpan {
     OneWord,
-    TwoWords,
+    OneOrTwoWords,
     NotApplicable,
 }
 
-impl WordSpan {
-    pub(crate) const fn to_public(self) -> Option<MaxWordSpan> {
+impl PrivateWordSpan {
+    pub(crate) const fn to_public(self) -> Option<WordSpan> {
         match self {
-            WordSpan::OneWord => Some(MaxWordSpan::OneWord),
-            WordSpan::TwoWords => Some(MaxWordSpan::TwoWords),
-            WordSpan::NotApplicable => None,
+            PrivateWordSpan::OneWord => Some(WordSpan::OneWord),
+            PrivateWordSpan::OneOrTwoWords => Some(WordSpan::OneOrTwoWords),
+            PrivateWordSpan::NotApplicable => None,
         }
     }
 }
