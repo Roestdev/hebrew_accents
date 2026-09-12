@@ -126,7 +126,6 @@ mod accent_mark;
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod api;
 mod error;
-mod formatting;
 mod sentence;
 
 // Re-exports
