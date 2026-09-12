@@ -49,11 +49,7 @@ impl SentenceContext {
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
                 let res = find_silluq(&self.sentence);
                 println!("trait{:?}", res);
-                if res.is_none() {
-                    false
-                } else {
-                    true
-                }
+                !res.is_none()
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self.sentence.contains(ETNAHTA),

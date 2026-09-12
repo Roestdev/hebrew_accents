@@ -24,11 +24,11 @@
 //! | `SentenceContext` | Holds sentence text + context metadata |
 //! | `Context::Prosaic` | Standard prose accent system |
 //! | `Context::Poetic` | Poetic accent system |
-//! | `try_derive_context()` | Auto-detect context from accent patterns |
+//! | `try_derive_context()` | Try to auto-detect context from accent patterns |
 //!
 //! ## Usage Pattern
 //!
-//! ```rust,ignore
+//! ```rust
 //! use hebrew_accents::{SentenceContext, Context};
 //!
 //! let text = "וְנִשְׁמַרְתֶּם מְאֹד לְנַפְשֹׁתֵיכֶם לְאַהֲבָה אֶת־יְהוָה אֱלֹהֵיכֶם׃";
@@ -36,11 +36,15 @@
 //! // Create a sentence with explicit context
 //! let sentence = SentenceContext::new(text, Context::Prosaic).unwrap();
 //!
-//! // Or use the built-in default
+//! // Or use the built-in default (valid default is Gen 1:1)
 //! let default = SentenceContext::with_valid_default().unwrap();
 //!
 //! // Attempt to auto-detect the context directly from the text
-//! let detected = sentence.try_derive_context().unwrap();
+//! let detected = sentence.try_derive_context();
+//! match detected {
+//!     Ok(context) => {println!("Context found: {}", context.as_str())},
+//!     Err(er) => {eprintln!("an error was detected")}
+//! }
 //! ```
 
 use crate::api::context::Context;

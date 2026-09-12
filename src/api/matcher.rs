@@ -1,128 +1,28 @@
 //! # Text Match Representation
 //!
-//! This module provides the [`Match`] struct for representing a substring match
-//! within a larger text (haystack). It is designed primarily for Hebrew cantillation
-//! accent detection but works with any UTF-8 text.
+//! This module provides the [`Match`] struct for representing a substring [`HebrewAccent`]
+//! match within a larger text (haystack). It was designed for Hebrew
+//! cantillation accent detection but works with any UTF-8 text.
 //!
-//! ## Overview
+//! # Notes
 //!
-//! The [`Match`] struct stores:
-//! - A **borrowed reference** to the original haystack text
-//! - **Byte offsets** (not character offsets) for the match boundaries
-//! - Immutable, lightweight representation (uses `Copy` trait)
-//!
-//! ## Byte vs. Character Offsets
-//!
-//! ⚠️ **Important**: This struct operates on **byte offsets**, not Unicode
-//! character counts. Hebrew text with cantillation marks uses multi-byte
-//! UTF-8 sequences, so a single visual character may span multiple bytes.
-//!
-//! ```text
-//! Example: "וַיְהִי" (Hebrew text with cantillation)
-//!          |0  |3  |6  |9  |12 |
-//!          |───┼───┼───┼───┼───|
-//!           ו   א   י   ה   י
-//!           (multi-byte with combining marks)
-//!
-//! Match::new(haystack, 0, 6) → "וַיְהִ" (NOT 2 characters)
-//! ```
-//!
-//! ## Invariants
-//!
-//! The struct maintains these guarantees:
-//!
-//! | Invariant | Description |
-//! |-----------|-------------|
-//! | `end >= start` | End offset always ≥ start offset |
-//! | `len() == end - start` | Length computed from offsets |
-//! | `is_empty() == len() == 0` | Empty when start equals end |
-//! | `as_str().len() == len()` | Slice length matches computed length |
-//!
-//! ## Usage
-//!
-//! ```rust
-//!
-//! use hebrew_accents::{Context, ProseAccent, SentenceContext};
-
-//!    // Find a match in Hebrew text
-//!    let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
-//!    //let sent_ctx_res = SentenceContext::new(sentence,Context::Prosaic);
-//!    if let Ok(sent_ctx) = SentenceContext::new(sentence, Context::Prosaic) {
-//!        let matched = sent_ctx.find_accent(ProseAccent::Atnach.into());
-//!        match matched {
-//!            Some(match_res) => {
-//!                // Access match properties
-//!                assert_eq!(match_res.start(), 76);
-//!                assert_eq!(match_res.end(), 78);
-//!                assert_eq!(match_res.len(), 2);
-//!                assert_eq!(match_res.as_str(), "\u{591}");
-//!                assert_eq!(match_res.range(), 76..78);
-//!                // Check if empty
-//!                assert!(!match_res.is_empty());
-//!            }
-//!            None => {println!("Atnach not found")}
-//!        }
-//!    }
-//! ```
-//!
-//! ## Traits
-//!
-//! The `Match` struct derives several useful traits:
-//!
-//! - **`Debug`** — Human-readable output for debugging
-//! - **`Copy` / `Clone`** — Lightweight value semantics
-//! - **`Eq` / `PartialEq`** — Equality based on offsets (not content)
-//!
-//! ## Safety Considerations
-//!
-//! - **UTF-8 boundaries**: The struct does not validate that offsets align
-//!   with UTF-8 character boundaries. Calling `as_str()` with mid-character
-//!   offsets will panic due to Rust's slice bounds checking.
-//!
-//! - **Lifetime**: The struct borrows from the haystack for lifetime `'h`.
-//!   This prevents use-after-free bugs at compile time.
-//!
-//! - **Thread safety**: The struct implements `Send + Sync` and can be shared
-//!   across threads (the underlying string must remain alive).
-//!
-//! # Examples
-//!
-//! ## Single Match
-//!
-//! ```ignore
-//! let text = "Hebrew accent detection";
-//! let m = Match::new(text, 7, 13);
-//!
-//! println!("Found: {}", m.as_str()); // "accent"
-//! println!("At byte {}..{}", m.start(), m.end());
-//! println!("Length: {} bytes", m.len());
-//! ```
-//!
-//! ## Multiple Matches
-//!
-//! ```ignore
-//! let haystack = "first second third fourth";
-//! let matches = vec![
-//!     Match::new(haystack, 0, 5),   // "first"
-//!     Match::new(haystack, 6, 12),  // "second"
-//!     Match::new(haystack, 13, 18), // "third"
-//!     Match::new(haystack, 19, 25), // "fourth"
-//! ];
-//!
-//! for m in matches {
-//!     println!("Match {}: '{}' ({} bytes)",
-//!         m.as_str(),
-//!         m.len(),
-//!     );
-//! }
-//! ```
+//! The API is similar to the `Match` type in the `regex` and `fancy-regex`
+//! crates. 
+//! Unlike regex::Match, this type only offers byte-offset accessors and 
+//! is constructed by crate internals rather than iterator methods.
+//! Using the [crate::SentenceContex.find_accent()] method, the following
+//! used four are mapped to the [`Match`] typeof this crate.
+//! - [crate::SentenceContext].find([crate::HebrewAccent]) 
+//! - regex.find([crate::SentenceContext])
+//! - fancy-regex.find([crate::SentenceContext])
+//! - fn find_accent_name([crate::SentenceContext]) (internal function)
 
 use std::ops::Range;
 
-/// Represents a single substring match within a haystack.
+/// Represents a single match of an accent within SentenceContext.
 ///
 /// This struct captures the location and extent of a match without copying
-/// the underlying text. It stores byte offsets (not character offsets) and
+/// the underlying text. It stores **byte offsets** (not character offsets) and
 /// maintains a reference to the original haystack to enable zero-cost
 /// substring extraction.
 ///
@@ -136,13 +36,6 @@ use std::ops::Range;
 ///
 /// **Byte offsets, not character indices**. For UTF-8 text (especially Hebrew
 /// with cantillation marks), one visual character may occupy multiple bytes.
-///
-/// | Text | Bytes | Characters |
-/// |------|-------|------------|
-/// | `a` | 1 | 1 |
-/// | `א` | 2 | 1 |
-/// | `בְּ` (Bet + sheva + dagesh) | 4 | 1 |
-/// | `וַיְהִי` | ~18 | 5 |
 ///
 /// # Invariants
 ///
@@ -159,18 +52,24 @@ use std::ops::Range;
 /// - `start` — Byte offset where the match begins (inclusive)
 /// - `end` — Byte offset where the match ends (exclusive)
 ///
+/// Note: All fields are private
+///
 /// # Example
 ///
-/// ```ignore
-/// use crate::matcher::Match;
-///
-/// let haystack = "Hebrew text with accents";
-/// let m = Match::new(haystack, 0, 6);
-///
-/// assert_eq!(m.start(), 0);
-/// assert_eq!(m.end(), 6);
-/// assert_eq!(m.len(), 6);
-/// assert_eq!(m.as_str(), "Hebrew");
+/// ```rust
+/// use hebrew_accents::{Context, ProseAccent, SentenceContext};
+/// // Find a match in Hebrew text
+/// let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+/// let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+/// let match_res = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+/// // Access match properties
+/// assert_eq!(match_res.start(), 76);
+/// assert_eq!(match_res.end(), 78);
+/// assert_eq!(match_res.len(), 2);
+/// assert_eq!(match_res.as_str(), "\u{591}");
+/// assert_eq!(match_res.range(), 76..78);
+/// // Check if empty
+/// assert!(!match_res.is_empty());
 /// ```
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
@@ -258,16 +157,6 @@ impl<'h> Match<'h> {
     ///
     /// `0 <= start <= haystack.len()`
     ///
-    /// # Example
-    ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "Hebrew accent";
-    /// let m = Match::new(text, 7, 13);
-    ///
-    /// assert_eq!(m.start(), 7); // "accent" starts at byte 7
-    /// ```
     #[inline]
     pub fn start(&self) -> usize {
         self.start
@@ -283,16 +172,6 @@ impl<'h> Match<'h> {
     ///
     /// `start <= end <= haystack.len()`
     ///
-    /// # Example
-    ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "Hebrew accent";
-    /// let m = Match::new(text, 7, 13);
-    ///
-    /// assert_eq!(m.end(), 13); // "accent" ends at byte 13
-    /// ```
     #[inline]
     pub fn end(&self) -> usize {
         self.end
@@ -313,22 +192,6 @@ impl<'h> Match<'h> {
     ///
     /// ```text
     /// is_empty() == (len() == 0) == (start == end)
-    /// ```
-    ///
-    /// # Example
-    ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// // Empty match (position between characters)
-    /// let m_empty = Match::new("text", 3, 3);
-    /// assert!(m_empty.is_empty());
-    /// assert_eq!(m_empty.len(), 0);
-    ///
-    /// // Non-empty match
-    /// let m_full = Match::new("text", 0, 4);
-    /// assert!(!m_full.is_empty());
-    /// assert_eq!(m_full.len(), 4);
     /// ```
     #[inline]
     pub fn is_empty(&self) -> bool {
@@ -351,9 +214,8 @@ impl<'h> Match<'h> {
     ///
     /// | Example | Bytes | Characters |
     /// |---------|-------|------------|
-    /// | `"a"` | 1 | 1 |
-    /// | `"בְּ"` (Bet + diacritics) | 4 | 1 |
-    /// | `"וַיְהִי"` | ~18 | 5 |
+    /// |  a  | 1 | 1 |
+    /// |  ש  | 2 | 1 |
     ///
     /// # Example
     ///

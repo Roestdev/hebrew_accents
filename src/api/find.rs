@@ -65,11 +65,7 @@ impl<'a> SentenceContext {
             HebrewAccent::Prose(ProseAccent::Silluq)
             | HebrewAccent::Poetry(PoetryAccent::Silluq) => {
                 let res = find_silluq(&self.sentence);
-                if let Some(start) = res {
-                    Some(Match::new(&self.sentence, start, start + SILLUQ.len()))
-                } else {
-                    None
-                }
+                res.map(|start| Match::new(&self.sentence, start, start + SILLUQ.len()))
             }
             HebrewAccent::Prose(ProseAccent::Atnach)
             | HebrewAccent::Poetry(PoetryAccent::Atnach) => self
@@ -375,7 +371,7 @@ impl<'a> SentenceContext {
                 ))
             }
             HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol) if self.ctx == Context::Poetic => {
-                println!("1: {}", &self.sentence);
+                println!("1: {}", self.sentence);
                 let outer_match = match RE_OUTER_COMMON_SHALSHELET.find(&self.sentence) {
                     Some(m) => {
                         println!("\n==> RE_OUTER_COMMON_SHALSHELET: FOUND!");
@@ -392,7 +388,7 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                println!("2: {}", &self.sentence);
+                println!("2: {}", self.sentence);
                 let inner_match = match RE_INNER_COMMON_SHALSHELET.find(outer_match.as_str()) {
                     Some(m) => {
                         println!("\n==> RE_INNER_COMMON_SHALSHELET: FOUND!");
@@ -409,7 +405,7 @@ impl<'a> SentenceContext {
                         return None;
                     }
                 };
-                println!("3: {}", &self.sentence);
+                println!("3: {}", self.sentence);
 
                 let absolute_inner_start = outer_match.start() + inner_match.start();
                 let absolute_inner_end = outer_match.start() + inner_match.end();
@@ -1006,7 +1002,7 @@ pub(crate) fn find_silluq(verse: &str) -> Option<usize> {
     //println!("drop_optional_sof_pasuq: {}", verse);
     // try to extract last word
     let re_last_word = Regex::new(r"(?:^|\s)(\p{Hebrew}+)$").unwrap();
-    let last_word_match = re_last_word.find(&verse);
+    let last_word_match = re_last_word.find(verse);
     if let Some(match_res) = last_word_match {
         let offset_last_word = match_res.start();
 
@@ -1014,13 +1010,13 @@ pub(crate) fn find_silluq(verse: &str) -> Option<usize> {
         if let Some(offset_inside_last_word) = find_in_last_member_res {
             println!("{:?}", offset_inside_last_word);
             println!("{:?}", offset_inside_last_word + match_res.start());
-            return Some(offset_last_word + offset_inside_last_word);
+            Some(offset_last_word + offset_inside_last_word)
         } else {
-            return None;
+            None
         }
     } else {
         println!("ERROR no last word");
-        return None;
+        None
     }
 }
 

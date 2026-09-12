@@ -1,4 +1,5 @@
 mod accent_information;
+mod display;
 mod poetry_table;
 mod prose_table;
 mod pseudo_table;

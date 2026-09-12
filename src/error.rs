@@ -3,7 +3,7 @@ use thiserror::Error;
 /// Error types for Hebrew sentence validation and context derivation.
 ///
 /// This module defines all errors that can be returned by:
-/// - [`crate::validate_sentence()`](crate::validate_sentence) - Input validation
+/// - [`crate::SentenceContext::new()`](crate::SentenceContext::new()) - Input validation
 /// - [`crate::SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context) - Context derivation
 ///
 /// # Example
@@ -74,7 +74,7 @@ pub enum SentenceContextError {
     ///
     /// # Valid Characters
     ///
-    /// See [module-level documentation](self#allowed-characters) for the complete list.
+    /// See [module-level documentation] for the complete list.
     ///
     /// # Example
     ///
@@ -127,7 +127,8 @@ pub enum SentenceContextError {
 
     /// Input contained newline characters.
     ///
-    /// Sentences must be single-line only. Multiple lines require separate [`SentenceContext`] instances.
+    /// Sentences must be a single-line only. Multiple lines require separate [`crate::SentenceContext::new()`] instances.
+    /// Hebrew accents are used within the context of one single verse.
     ///
     /// # Example
     ///
