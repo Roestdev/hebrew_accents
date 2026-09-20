@@ -43,7 +43,7 @@ fn itearteall() {
     // 1. Create accents
     let prose = HebrewAccent::Prose(ProseAccent::Silluq);
     let poetry: HebrewAccent = PoetryAccent::Atnach.into();
-    let pseudo: HebrewAccent = PseudoAccent::Maqqeph.into();
+    let pseudo: HebrewAccent = PseudoAccent::Maqqaph.into();
 
     // 2. Print info
     println!("Prose: {}", prose);

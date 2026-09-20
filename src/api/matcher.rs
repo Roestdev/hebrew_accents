@@ -7,24 +7,35 @@
 //! # Notes
 //!
 //! The API is similar to the `Match` type in the `regex` and `fancy-regex`
-//! crates. 
-//! Unlike regex::Match, this type only offers byte-offset accessors and 
+//! crates.
+//! Unlike regex::Match, this type only offers byte-offset accessors and
 //! is constructed by crate internals rather than iterator methods.
-//! Using the [crate::SentenceContex.find_accent()] method, the following
+//! Using the [`crate::SentenceContex.find_accent()``] method, the following
 //! used four are mapped to the [`Match`] typeof this crate.
-//! - [crate::SentenceContext].find([crate::HebrewAccent]) 
+//! - [crate::SentenceContext].find([crate::HebrewAccent])
 //! - regex.find([crate::SentenceContext])
 //! - fancy-regex.find([crate::SentenceContext])
 //! - fn find_accent_name([crate::SentenceContext]) (internal function)
 
 use std::ops::Range;
 
-/// Represents a single match of an accent within SentenceContext.
+/// Represents a single match of a [`crate::HebrewAccent`] within a [`crate::SentenceContext`].
 ///
-/// This struct captures the location and extent of a match without copying
-/// the underlying text. It stores **byte offsets** (not character offsets) and
-/// maintains a reference to the original haystack to enable zero-cost
-/// substring extraction.
+/// A `Match` contains the start and end byte offsets of the match, along with
+/// the actual substring corresponding to that range. It guarantees `start <= end`;
+/// when `start == end`, the match is empty.
+///
+/// # Byte Offsets
+///
+/// This struct uses **byte offsets**, not character indices. For UTF-8 text,
+/// particularly Hebrew with cantillation marks, one visual character may occupy
+/// multiple bytes. The offsets are guaranteed to fall on valid UTF-8 codepoint
+/// boundaries, so slicing `&str` with `Match::range` will never panic.
+///
+/// # Creating Matches
+///
+/// Values are created by `SentenceContext::find_accent`, which is part of the
+/// `hebrew_accent` API. This API only supports searching UTF-8 encoded strings.
 ///
 /// # Lifetime
 ///
@@ -32,27 +43,22 @@ use std::ops::Range;
 /// This ensures the underlying text cannot be dropped while a reference to it
 /// still exists.
 ///
-/// # Offset Semantics
-///
-/// **Byte offsets, not character indices**. For UTF-8 text (especially Hebrew
-/// with cantillation marks), one visual character may occupy multiple bytes.
-///
 /// # Invariants
 ///
 /// The struct maintains these guarantees internally:
 ///
-/// 1. **Ordering**: `end >= start` (end is never before start)
+/// 1. **Ordering**: `end >= start`
 /// 2. **Length formula**: `len() == end - start`
 /// 3. **Empty definition**: `is_empty() == start == end`
 /// 4. **Slice consistency**: `as_str().len() == len()`
 ///
 /// # Fields
 ///
+/// All fields are private. Access them via the provided methods:
+///
 /// - `haystack` — Borrowed reference to the original text (lifetime `'h`)
 /// - `start` — Byte offset where the match begins (inclusive)
 /// - `end` — Byte offset where the match ends (exclusive)
-///
-/// Note: All fields are private
 ///
 /// # Example
 ///
@@ -61,15 +67,14 @@ use std::ops::Range;
 /// // Find a match in Hebrew text
 /// let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
 /// let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
-/// let match_res = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+/// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
 /// // Access match properties
-/// assert_eq!(match_res.start(), 76);
-/// assert_eq!(match_res.end(), 78);
-/// assert_eq!(match_res.len(), 2);
-/// assert_eq!(match_res.as_str(), "\u{591}");
-/// assert_eq!(match_res.range(), 76..78);
-/// // Check if empty
-/// assert!(!match_res.is_empty());
+/// assert_eq!(76,match_result.start());
+/// assert_eq!(78, match_result.end());
+/// assert_eq!(2, match_result.len());
+/// assert_eq!("\u{591}", match_result.as_str());
+/// assert_eq!(76..78, match_result.range());
+/// assert!(!match_result.is_empty());
 /// ```
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Match<'h> {
@@ -129,14 +134,19 @@ impl<'h> Match<'h> {
     ///
     /// # Example
     ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "Hello World";
-    /// let m = Match::new(text, 0, 5); // "Hello"
-    ///
-    /// assert_eq!(m.as_str(), "Hello");
-    /// assert_eq!(m.len(), 5);
+    /// ```rust
+    /// use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// // Find a match in Hebrew text
+    /// let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// assert_eq!(76,match_result.start());
+    /// assert_eq!(78, match_result.end());
+    /// assert_eq!(2, match_result.len());
+    /// assert_eq!("\u{591}", match_result.as_str());
+    /// assert_eq!(76..78, match_result.range());
+    /// assert!(!match_result.is_empty());
     /// ```
     #[inline]
     pub(crate) fn new(haystack: &'h str, start: usize, end: usize) -> Match<'h> {
@@ -157,6 +167,22 @@ impl<'h> Match<'h> {
     ///
     /// `0 <= start <= haystack.len()`
     ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// assert_eq!(76,match_result.start());
+    /// # assert_eq!(78, match_result.end());
+    /// # assert_eq!(2, match_result.len());
+    /// # assert_eq!("\u{591}", match_result.as_str());
+    /// # assert_eq!(76..78, match_result.range());
+    /// # assert!(!match_result.is_empty());
+    /// ```
     #[inline]
     pub fn start(&self) -> usize {
         self.start
@@ -172,6 +198,22 @@ impl<'h> Match<'h> {
     ///
     /// `start <= end <= haystack.len()`
     ///
+        /// # Example
+    ///
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// # assert_eq!(76,match_result.start());
+    /// assert_eq!(78, match_result.end());
+    /// # assert_eq!(2, match_result.len());
+    /// # assert_eq!("\u{591}", match_result.as_str());
+    /// # assert_eq!(76..78, match_result.range());
+    /// # assert!(!match_result.is_empty());
+    /// ```
     #[inline]
     pub fn end(&self) -> usize {
         self.end
@@ -188,10 +230,21 @@ impl<'h> Match<'h> {
     /// - `true` — No bytes are included in the match (`start == end`)
     /// - `false` — At least one byte is included in the match
     ///
-    /// # Relation to `len()`
+    /// # Example
     ///
-    /// ```text
-    /// is_empty() == (len() == 0) == (start == end)
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// # assert_eq!(76,match_result.start());
+    /// # assert_eq!(78, match_result.end());
+    /// # assert_eq!(2, match_result.len());
+    /// # assert_eq!("\u{591}", match_result.as_str());
+    /// # assert_eq!(76..78, match_result.range());
+    /// assert!(!match_result.is_empty());
     /// ```
     #[inline]
     pub fn is_empty(&self) -> bool {
@@ -219,14 +272,19 @@ impl<'h> Match<'h> {
     ///
     /// # Example
     ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "בְּרֵאשִׁ֖ית";
-    /// let m = Match::new(text, 0, 6);
-    ///
-    /// println!("Bytes: {}", m.len());     // e.g., 6 bytes
-    /// println!("Chars: {}", m.as_str().chars().count()); // fewer chars
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// # assert_eq!(76,match_result.start());
+    /// # assert_eq!(78, match_result.end());
+    /// assert_eq!(2, match_result.len());
+    /// # assert_eq!("\u{591}", match_result.as_str());
+    /// # assert_eq!(76..78, match_result.range());
+    /// # assert!(!match_result.is_empty());
     /// ```
     #[inline]
     pub fn len(&self) -> usize {
@@ -244,20 +302,22 @@ impl<'h> Match<'h> {
     /// - **Direct slicing**: `&haystack[m.range()]`
     /// - **Iteration**: `for i in m.range()`
     /// - **Overlap detection**: Compare ranges for intersection
+    /// 
+/// # Example
     ///
-    /// # Example
-    ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "Hello World";
-    /// let m = Match::new(text, 6, 11);
-    ///
-    /// let range = m.range();
-    /// assert_eq!(range, 6..11);
-    ///
-    /// // Use for slicing
-    /// assert_eq!(&text[range], m.as_str()); // "World"
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// # // Access match properties
+    /// # assert_eq!(76,match_result.start());
+    /// # assert_eq!(78, match_result.end());
+    /// # assert_eq!(2, match_result.len());
+    /// # assert_eq!("\u{591}", match_result.as_str());
+    /// assert_eq!(76..78, match_result.range());
+    /// # assert!(!match_result.is_empty());
     /// ```
     #[inline]
     pub fn range(&self) -> Range<usize> {
@@ -284,20 +344,24 @@ impl<'h> Match<'h> {
     ///
     /// # Length Guarantee
     ///
-    /// ```text
     /// as_str().len() == len()
-    /// ```
     ///
     /// # Example
     ///
-    /// ```ignore
-    /// use crate::matcher::Match;
-    ///
-    /// let text = "בְּרֵאשִׁ֖ית בָּרָ֣א";
-    /// let m = Match::new(text, 0, 10);
-    ///
-    /// assert_eq!(m.as_str(), "בְּרֵאשִׁ֖ית");
-    /// assert_eq!(m.as_str().len(), m.len()); // Consistent lengths
+    /// ```rust
+    /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
+    /// # // Find a match in Hebrew text
+    /// # let sentence = "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת־יְהוָ֥ה אֱלֹהֵיכֶֽם׃";
+    /// # let sent_ctx = SentenceContext::new(sentence, Context::Prosaic).expect("valid sentence");
+    /// let match_result = sent_ctx.find_accent(ProseAccent::Atnach.into()).expect("Atnach not found");
+    /// // Access match properties
+    /// # assert_eq!(76,match_result.start());
+    /// # assert_eq!(78, match_result.end());
+    /// # assert_eq!(2, match_result.len());
+    /// assert_eq!("\u{591}", match_result.as_str()); // \u{591} = Atnach character
+    /// assert_eq!(match_result.as_str().len(), match_result.len());
+    /// # assert_eq!(76..78, match_result.range());
+    /// # assert!(!match_result.is_empty());
     /// ```
     #[inline]
     pub fn as_str(&self) -> &'h str {

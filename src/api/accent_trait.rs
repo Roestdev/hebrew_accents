@@ -1,13 +1,12 @@
-use crate::accent::resolve_disjunctive_group;
+use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
 use crate::accent_data::{
     BHS_POETRY_RANK_MAP, BHS_PROSE_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE,
-    PSEUDO_ACCENT_TABLE,
+    PSEUDO_ACCENT_TABLE
 };
 use crate::{
     AccentCategory, AccentKind, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent,
     ProseAccent, PseudoAccent, WordSpan,
 };
-
 /// The `Accent` trait provides a unified interface for working with Hebrew
 /// cantillation marks (also known as ta'amim or trope).
 ///
@@ -195,7 +194,8 @@ pub trait Accent: Copy + Sized {
     /// Where `1` represents the strongest/most dominant accent.
     /// Higher numbers indicate weaker/subordinate accents.
     ///
-    /// - **Prose/Poetry**: Returns `Some(u8)` with strength ranking
+    /// - **Disjunctive Prose/Poetry**: Returns `Some(u8)` with strength ranking
+    /// - **Conjunctive Prose/Poetry**: Returns `None` (no hierarchy)
     /// - **Pseudo**: Always returns `None` (no hierarchy)
     ///
     /// # Example
@@ -475,7 +475,7 @@ impl Accent for ProseAccent {
 
     #[inline]
     fn relative_strength(self) -> Option<u8> {
-        Some(BHS_PROSE_RANK_MAP[self.as_index()])
+        resolve_relative_strength(BHS_PROSE_RANK_MAP[self.as_index()])
     }
 
     #[inline]
@@ -569,7 +569,7 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn relative_strength(self) -> Option<u8> {
-        Some(BHS_POETRY_RANK_MAP[self.as_index()])
+        resolve_relative_strength(BHS_POETRY_RANK_MAP[self.as_index()])
     }
 
     #[inline]
