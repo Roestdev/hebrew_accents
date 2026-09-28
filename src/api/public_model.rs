@@ -35,17 +35,18 @@ pub enum AccentCategory {
     Conjunctive,
 }
 
-/// Disjunctive accent hierarchy group level following Futato's classification system.
+/// **Disjunctive accent** hierarchy group level following Futato's classification system.
 ///
 /// Ranges from Tier1 (strongest pause/break) to higher numbers (weaker pauses).
 /// Conjunctive accents and pseudo-accent markers return `None` as they lack
 /// hierarchical disjunctive function.
 ///
-/// In Prose accents, there are 4 group levels.
-/// Poetry has 3 levels.
+/// Note:
+///   In Prose accents, there are 4 group levels.
+///   Poetry has 3 levels.
 ///
 /// # Example
-/// ```
+/// ```rust
 /// use hebrew_accents::{Accent, HebrewAccent, ProseAccent, GroupLevel};
 ///
 /// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
@@ -73,7 +74,7 @@ impl GroupLevel {
         self as u8
     }
 
-    /// Human-readable description of hierarchy tier
+    /// Human-readable description of hierarchy tier groups
     pub const fn description(self) -> &'static str {
         match self {
             Self::Tier1 => "Primary disjunctive (major clause break)",
@@ -81,6 +82,30 @@ impl GroupLevel {
             Self::Tier3 => "Tertiary disjunctive (minor division)",
             Self::Tier4 => "Quaternary disjunctive (fine subdivision)",
         }
+    }
+    /// Human-readable description of hierarchy tier groups
+    ///
+    /// In the literature other names are sometimes used
+    pub const fn alt_description(self) -> &'static str {
+        match self {
+            Self::Tier1 => "Emperor",
+            Self::Tier2 => "Kings",
+            Self::Tier3 => "Dukes",
+            Self::Tier4 => "Officers",
+        }
+    }
+    /// Returns the maximum tier available for poetry accents.
+    /// Poetry accents stop at Tier3; prose can reach Tier4.
+    pub const fn max_poetry_tier() -> Self {
+        Self::Tier3
+    }
+    /// Returns the maximum tier available for prose accents.
+    pub const fn max_prose_tier() -> Self {
+        Self::Tier4
+    }
+    /// Checks if this tier is available in poetry context.
+    pub const fn is_poetry_available(self) -> bool {
+        matches!(self, Self::Tier1 | Self::Tier2 | Self::Tier3)
     }
 }
 
@@ -96,14 +121,15 @@ impl std::fmt::Display for GroupLevel {
 }
 
 impl TryFrom<u8> for GroupLevel {
-    type Error = u8;
-    fn try_from(v: u8) -> Result<Self, Self::Error> {
-        match v {
+    type Error = crate::GroupLevelError; // ← Use shared error type
+
+    fn try_from(raw_value: u8) -> Result<Self, Self::Error> {
+        match raw_value {
             1 => Ok(Self::Tier1),
             2 => Ok(Self::Tier2),
             3 => Ok(Self::Tier3),
             4 => Ok(Self::Tier4),
-            _ => Err(v),
+            _ => Err(crate::GroupLevelError::InvalidGroupLevel(raw_value)),
         }
     }
 }
@@ -352,11 +378,26 @@ impl From<CodePointPosition> for CantillationMarkPlacement {
 mod group_level_tests {
     use super::*;
     #[test]
-    fn round_trips_and_epithets() {
-        for v in 1..=4u8 {
-            let t = GroupLevel::try_from(v).unwrap();
-            assert_eq!(t.value(), v);
-        }
-        assert_eq!(GroupLevel::try_from(5), Err(5));
+    fn test_invalid_group_level_error_type() {
+        use crate::GroupLevelError;
+
+        // Invalid values should return the correct error type
+        let err5 = GroupLevel::try_from(5u8).unwrap_err();
+        assert!(matches!(err5, GroupLevelError::InvalidGroupLevel(5)));
+
+        let err0 = GroupLevel::try_from(0u8).unwrap_err();
+        assert!(matches!(err0, GroupLevelError::InvalidGroupLevel(0)));
+
+        let err255 = GroupLevel::try_from(255u8).unwrap_err();
+        assert!(matches!(err255, GroupLevelError::InvalidGroupLevel(255)));
+    }
+
+    #[test]
+    fn test_group_level_error_message() {
+        let err = GroupLevel::try_from(7u8).unwrap_err();
+        assert_eq!(
+            err.to_string(),
+            "Invalid GroupLevel value: 7 (valid range: 1-4)"
+        );
     }
 }

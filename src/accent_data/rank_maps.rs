@@ -83,5 +83,3 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
 //     BHS_POETRY_RANK_MAP.iter().all(|&v| v == STRENGTH_NONE || (1..=23).contains(&v)),
 //     "Poetry rank map contains out-of-range strengths"
 // );
-
-

@@ -1,7 +1,7 @@
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
 use crate::accent_data::{
     BHS_POETRY_RANK_MAP, BHS_PROSE_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE,
-    PSEUDO_ACCENT_TABLE
+    PSEUDO_ACCENT_TABLE,
 };
 use crate::{
     AccentCategory, AccentKind, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent,
@@ -11,11 +11,6 @@ use crate::{
 /// cantillation marks (also known as ta'amim or trope).
 ///
 /// ## Overview
-///
-/// Hebrew accents serve multiple purposes in biblical texts:
-/// - **Musical notation**: Indicating chant melodies for Torah reading
-/// - **Syntactic function**: Marking disjunctive (pauses) and conjunctive (connectors) relationships
-/// - **Word stress**: Indicating which syllable receives emphasis
 ///
 /// This trait abstracts over three distinct accent systems:
 /// - [`ProseAccent`] - Used in most biblical books (prosaic texts)
@@ -33,7 +28,7 @@ use crate::{
 /// - `PoetryAccent` - Looked up via `POETRY_ACCENT_TABLE`
 /// - `PseudoAccent` - Looked up via `PSEUDO_ACCENT_TABLE`
 ///
-pub trait Accent: Copy + Sized {
+pub trait Accent {
     /// Returns the Hebrew name of the accent.
     ///
     /// # Example
@@ -44,7 +39,7 @@ pub trait Accent: Copy + Sized {
     /// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
     /// assert_eq!(silluq.hebrew_name(), "סִלּוּק");
     /// ```
-    fn hebrew_name(self) -> &'static str;
+    fn hebrew_name(&self) -> &'static str;
 
     /// Returns the semantic meaning/concept of the Hebrew name.
     ///
@@ -57,20 +52,21 @@ pub trait Accent: Copy + Sized {
     /// // אַתְנָח literally means "rest" or "pause"
     /// assert_eq!(atnach.hebrew_concept(), "a causing to rest");
     /// ```
-    fn hebrew_concept(self) -> &'static str;
+    fn hebrew_concept(&self) -> &'static str;
 
     /// Returns the English transliteration of the accent name.
     ///
-    /// # Example
+    /// See [Transliteration Rules](crate::docs::transliteration) for the used rules.
+    ///
     /// ```rust
     /// use hebrew_accents::{Accent, PoetryAccent};
     ///
     /// let revia = PoetryAccent::ReviaGadol;
     /// assert_eq!(revia.english_name(), "Revia Gadol");
     /// ```
-    fn english_name(self) -> &'static str;
+    fn english_name(&self) -> &'static str;
 
-    /// Returns the SBL (Society of Biblical Literature) academic transliteration.
+    /// Returns the SBL academic transliteration (Society of Biblical Literature).
     ///
     /// Note: This provides detailed distinctions between sounds and marks,
     /// accounting for dagesh and other diacritical elements.
@@ -82,28 +78,49 @@ pub trait Accent: Copy + Sized {
     /// ```rust
     /// use hebrew_accents::{Accent, ProseAccent};
     ///
-    ///
     /// let silluq = ProseAccent::Silluq;
     /// // May differ from english_name for phonetic precision
     /// println!("SBL: {}", silluq.sbl_academic_name());
     /// assert_eq!(silluq.sbl_academic_name(), "sillûq");
     /// ```
-    fn sbl_academic_name(self) -> &'static str;
+    fn sbl_academic_name(&self) -> &'static str;
 
     /// Returns the accent kind (primary or secondary), if applicable.
     ///
-    /// Primary accents typically carry more weight in the phrasing hierarchy.
+    /// **Primary** accents carry the main stress on a word (e.g., silluq, munach, pashta).
+    /// They determine which syllable gets the prominent beat in recitation.
+    ///
+    /// **Secondary** accents like meteg (also called ga'ya) mark weaker stress or vowel lengthening,
+    /// often functioning as a "subordinate" stress marker alongside or in place of another accent.
+    /// It can indicate where a secondary stress falls within a word or help resolve ambiguities
+    /// like vocal sheva vs. silent sheva.
+    ///
+    /// Returns `None` only for pseudo accents.
+    ///
+    /// # Return Value
+    ///
+    /// - `Some(AccentKind::Primary)` — Main stress/phrasing mark
+    /// - `Some(AccentKind::Secondary)` — Secondary stress/vowel modifier
+    /// - `None` — Pseudo accent (no hierarchical kind)
     ///
     /// # Example
-    /// ```rust
-    /// use hebrew_accents::{Accent, ProseAccent,AccentKind};
     ///
+    /// ```rust
+    /// use hebrew_accents::{Accent, ProseAccent, PoetryAccent, PseudoAccent, AccentKind};
+    ///
+    /// // Primary accent: main phrasing division
     /// let silluq = ProseAccent::Silluq;
-    /// // Silluq is a primary accent (marks end of verse)
-    /// assert!(silluq.kind().is_some());
     /// assert_eq!(silluq.kind(), Some(AccentKind::Primary));
+    ///
+    /// // Secondary accent: stress marker
+    /// let meteg = PoetryAccent::Meteg;
+    /// assert_eq!(meteg.kind(), Some(AccentKind::Secondary));
+    ///
+    /// // Pseudo accent: no hierarchical kind
+    /// let paseq = PseudoAccent::Paseq;
+    /// assert_eq!(paseq.kind(), None);
     /// ```
-    fn kind(self) -> Option<AccentKind>;
+    fn kind(&self) -> Option<AccentKind>;
 
     /// Returns the accent category (disjunctive or conjunctive), if applicable.
     ///
@@ -121,11 +138,13 @@ pub trait Accent: Copy + Sized {
     /// assert_eq!(silluq.category(), Some(AccentCategory::Disjunctive));
     /// assert_eq!(munach.category(), Some(AccentCategory::Conjunctive));
     /// ```
-    fn category(self) -> Option<AccentCategory>;
+    fn category(&self) -> Option<AccentCategory>;
 
     /// Returns whether this accent consists of multiple Unicode codepoints.
     ///
-    /// Compound accents have both a primary AND secondary cantillation mark.
+    /// Compound accents combine a primary cantillation mark with a secondary
+    /// diacritic, resulting in multiple Unicode codepoints when rendered.
+    /// Non-compound accents use a single codepoint.
     ///
     /// # Example
     /// ```rust
@@ -136,7 +155,7 @@ pub trait Accent: Copy + Sized {
     ///
     /// assert!(!silluq.is_compound());
     /// assert!(shalshelet.is_compound());
-    fn is_compound(self) -> bool;
+    fn is_compound(&self) -> bool;
 
     /// Returns the primary cantillation mark (always present).
     ///
@@ -155,7 +174,7 @@ pub trait Accent: Copy + Sized {
     ///
     /// assert_eq!(primary.placement,CantillationMarkPlacement::BelowCenter);
     /// ```
-    fn primary_cantillation_mark(self) -> CantillationMark;
+    fn primary_cantillation_mark(&self) -> CantillationMark;
 
     /// Returns the secondary cantillation mark (only for compound accents).
     ///
@@ -171,9 +190,9 @@ pub trait Accent: Copy + Sized {
     ///     println!("This accent is not compound");
     /// }
     /// ```
-    fn secondary_cantillation_mark(self) -> Option<CantillationMark>;
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark>;
 
-    /// Returns scholarly notes or context about this accent, if available.
+    /// Returns (scholarly) notes or context about this accent, if available.
     ///
     /// # Example
     /// ```rust   
@@ -187,31 +206,52 @@ pub trait Accent: Copy + Sized {
     ///     println!("No additional notes available");
     /// }
     /// ```
-    fn notes(self) -> Option<&'static str>;
+    fn notes(&self) -> Option<&'static str>;
 
-    /// Indicates the relative strength for disjunctive accents.
+    /// Indicates the relative strength for disjunctive accents only.
     ///
-    /// Where `1` represents the strongest/most dominant accent.
-    /// Higher numbers indicate weaker/subordinate accents.
+    /// Disjunctive accents mark where pauses occur during reading. Stronger
+    /// accents correspond to longer pauses; weaker accents indicate shorter
+    /// pauses. This mirrors English punctuation: a period ends a sentence with
+    /// a full stop, while a comma within a sentence signals a brief pause.
     ///
-    /// - **Disjunctive Prose/Poetry**: Returns `Some(u8)` with strength ranking
-    /// - **Conjunctive Prose/Poetry**: Returns `None` (no hierarchy)
-    /// - **Pseudo**: Always returns `None` (no hierarchy)
+    /// Strength rankings use a numeric scale where `1` represents the strongest
+    /// (most dominant) accent, and higher numbers indicate progressively weaker
+    /// (more subordinate) accents.
     ///
+    /// # Return Value
+    ///
+    /// - **Disjunctive accents** (Prose or Poetry): Returns `Some(u8)` with the
+    ///   strength ranking
+    /// - **Conjunctive accents** (Prose or Poetry): Returns `None` (no hierarchy)
+    /// - **Pseudo accents**: Always returns `None` (no hierarchy)
     /// # Example
+    ///
     /// ```rust
-    /// use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
+    /// use hebrew_accents::{Accent, ProseAccent, PoetryAccent,PseudoAccent};
     ///
+    /// // Disjunctive accents return strength rankings (1 = strongest)
     /// let silluq = ProseAccent::Silluq;
+    /// let atnach = ProseAccent::Atnach;
+    /// let legarmeh = ProseAccent::Legarmeh;
     ///
-    /// if let Some(strength) = silluq.relative_strength() {
-    ///     println!("Relative strength: {}", strength);
-    ///     if strength == 1 {
-    ///         println!("This is a primary disjunctive accent!");
-    ///     }
+    /// // Lower number = stronger accent
+    /// assert_eq!(silluq.relative_strength(), Some(1));
+    /// assert_eq!(atnach.relative_strength(), Some(2));
+    /// assert_eq!(legarmeh.relative_strength(), Some(18));
+    ///
+    /// // Compare strength levels programmatically
+    /// if let (Some(s1), Some(s2)) = (silluq.relative_strength(), atnach.relative_strength()) {
+    ///     assert!(s1 < s2, "Lower rank means stronger pause");
     /// }
+    ///
+    /// // Conjunctive and pseudo accents return None (no hierarchy)
+    /// let munach = ProseAccent::Munach;
+    /// let paseq = PseudoAccent::Paseq;
+    /// assert_eq!(munach.relative_strength(), None);
+    /// assert_eq!(paseq.relative_strength(), None);
     /// ```
-    fn relative_strength(self) -> Option<u8>;
+    fn relative_strength(&self) -> Option<u8>;
 
     /// Returns the hierarchical disjunctive group level (Futato classification).
     ///
@@ -232,12 +272,13 @@ pub trait Accent: Copy + Sized {
     ///      assert_eq!(GroupLevel::Tier1, level);
     ///   }
     /// ```
-    fn group_level(self) -> Option<GroupLevel>;
+    fn group_level(&self) -> Option<GroupLevel>;
 
-    /// Returns the cantillation symbol as a Unicode string.
+    /// Returns the cantillation symbol augmented with dotted circles
     ///
-    /// This is the rendered representation of the accent mark(s).
-    /// For compound accents, includes both primary and secondary marks.
+    /// The U+25CC ◌ DOTTED CIRCLE serves as a neutral base glyph for displaying Hebrew combining marks,
+    /// such as niqqud vowel points and cantillation symbols—in isolation,
+    /// without attachment to a specific letter.
     ///
     /// # Example
     /// ```rust
@@ -248,7 +289,7 @@ pub trait Accent: Copy + Sized {
     ///
     /// println!("Display: {}", symbol);  // "֫"
     /// ```
-    fn cantillation_symbol(self) -> String;
+    fn cantillation_symbol(&self) -> String;
 
     /// Returns the maximum word span for this accent.
     ///
@@ -269,7 +310,7 @@ pub trait Accent: Copy + Sized {
     ///      assert_eq!(span, WordSpan::OneOrTwoWords);
     /// }
     /// ```
-    fn word_span(self) -> Option<WordSpan>;
+    fn word_span(&self) -> Option<WordSpan>;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -278,7 +319,7 @@ pub trait Accent: Copy + Sized {
 
 impl Accent for HebrewAccent {
     #[inline]
-    fn hebrew_name(self) -> &'static str {
+    fn hebrew_name(&self) -> &'static str {
         match self {
             HebrewAccent::Prose(p) => p.hebrew_name(),
             HebrewAccent::Poetry(p) => p.hebrew_name(),
@@ -287,7 +328,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn hebrew_concept(self) -> &'static str {
+    fn hebrew_concept(&self) -> &'static str {
         match self {
             HebrewAccent::Prose(p) => p.hebrew_concept(),
             HebrewAccent::Poetry(p) => p.hebrew_concept(),
@@ -296,7 +337,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn english_name(self) -> &'static str {
+    fn english_name(&self) -> &'static str {
         match self {
             HebrewAccent::Prose(p) => p.english_name(),
             HebrewAccent::Poetry(p) => p.english_name(),
@@ -305,7 +346,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn sbl_academic_name(self) -> &'static str {
+    fn sbl_academic_name(&self) -> &'static str {
         match self {
             HebrewAccent::Prose(p) => p.sbl_academic_name(),
             HebrewAccent::Poetry(p) => p.sbl_academic_name(),
@@ -314,7 +355,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn kind(self) -> Option<AccentKind> {
+    fn kind(&self) -> Option<AccentKind> {
         match self {
             HebrewAccent::Prose(p) => p.kind(),
             HebrewAccent::Poetry(p) => p.kind(),
@@ -323,7 +364,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn category(self) -> Option<AccentCategory> {
+    fn category(&self) -> Option<AccentCategory> {
         match self {
             HebrewAccent::Prose(p) => p.category(),
             HebrewAccent::Poetry(p) => p.category(),
@@ -332,7 +373,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn is_compound(self) -> bool {
+    fn is_compound(&self) -> bool {
         match self {
             HebrewAccent::Prose(p) => p.is_compound(),
             HebrewAccent::Poetry(p) => p.is_compound(),
@@ -341,7 +382,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn primary_cantillation_mark(self) -> CantillationMark {
+    fn primary_cantillation_mark(&self) -> CantillationMark {
         match self {
             HebrewAccent::Prose(p) => p.primary_cantillation_mark(),
             HebrewAccent::Poetry(p) => p.primary_cantillation_mark(),
@@ -350,7 +391,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
         match self {
             HebrewAccent::Prose(p) => p.secondary_cantillation_mark(),
             HebrewAccent::Poetry(p) => p.secondary_cantillation_mark(),
@@ -359,7 +400,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn notes(self) -> Option<&'static str> {
+    fn notes(&self) -> Option<&'static str> {
         match self {
             HebrewAccent::Prose(p) => p.notes(),
             HebrewAccent::Poetry(p) => p.notes(),
@@ -368,7 +409,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn relative_strength(self) -> Option<u8> {
+    fn relative_strength(&self) -> Option<u8> {
         match self {
             HebrewAccent::Prose(p) => p.relative_strength(),
             HebrewAccent::Poetry(p) => p.relative_strength(),
@@ -377,12 +418,12 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn group_level(self) -> Option<GroupLevel> {
-        resolve_disjunctive_group(self).and_then(|g| g.into_public_level())
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group(*self).and_then(|g| g.into_public_level())
     }
 
     #[inline]
-    fn cantillation_symbol(self) -> String {
+    fn cantillation_symbol(&self) -> String {
         match self {
             HebrewAccent::Prose(p) => p.cantillation_symbol(),
             HebrewAccent::Poetry(p) => p.cantillation_symbol(),
@@ -391,7 +432,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn word_span(self) -> Option<WordSpan> {
+    fn word_span(&self) -> Option<WordSpan> {
         match self {
             HebrewAccent::Prose(p) => p.word_span(),
             HebrewAccent::Poetry(p) => p.word_span(),
@@ -406,37 +447,37 @@ impl Accent for HebrewAccent {
 
 impl Accent for ProseAccent {
     #[inline]
-    fn hebrew_name(self) -> &'static str {
+    fn hebrew_name(&self) -> &'static str {
         PROSE_ACCENT_TABLE[self.as_index()].hebrew_name
     }
 
     #[inline]
-    fn hebrew_concept(self) -> &'static str {
+    fn hebrew_concept(&self) -> &'static str {
         PROSE_ACCENT_TABLE[self.as_index()].hebrew_concept
     }
 
     #[inline]
-    fn english_name(self) -> &'static str {
+    fn english_name(&self) -> &'static str {
         PROSE_ACCENT_TABLE[self.as_index()].english_name
     }
 
     #[inline]
-    fn sbl_academic_name(self) -> &'static str {
+    fn sbl_academic_name(&self) -> &'static str {
         PROSE_ACCENT_TABLE[self.as_index()].sbl_academic
     }
 
     #[inline]
-    fn kind(self) -> Option<AccentKind> {
+    fn kind(&self) -> Option<AccentKind> {
         PROSE_ACCENT_TABLE[self.as_index()].kind.to_public()
     }
 
     #[inline]
-    fn category(self) -> Option<AccentCategory> {
+    fn category(&self) -> Option<AccentCategory> {
         PROSE_ACCENT_TABLE[self.as_index()].category.to_public()
     }
 
     #[inline]
-    fn is_compound(self) -> bool {
+    fn is_compound(&self) -> bool {
         PROSE_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -444,7 +485,7 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn primary_cantillation_mark(self) -> CantillationMark {
+    fn primary_cantillation_mark(&self) -> CantillationMark {
         let info = PROSE_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .primary_mark;
@@ -457,7 +498,7 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
         PROSE_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -469,27 +510,27 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn notes(self) -> Option<&'static str> {
+    fn notes(&self) -> Option<&'static str> {
         PROSE_ACCENT_TABLE[self.as_index()].notes
     }
 
     #[inline]
-    fn relative_strength(self) -> Option<u8> {
+    fn relative_strength(&self) -> Option<u8> {
         resolve_relative_strength(BHS_PROSE_RANK_MAP[self.as_index()])
     }
 
     #[inline]
-    fn group_level(self) -> Option<GroupLevel> {
-        resolve_disjunctive_group(self.into()).and_then(|g| g.into_public_level())
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
     }
 
     #[inline]
-    fn cantillation_symbol(self) -> String {
+    fn cantillation_symbol(&self) -> String {
         "TODO".to_string()
     }
 
     #[inline]
-    fn word_span(self) -> Option<WordSpan> {
+    fn word_span(&self) -> Option<WordSpan> {
         PROSE_ACCENT_TABLE[self.as_index()].word_span.to_public()
     }
 }
@@ -500,37 +541,37 @@ impl Accent for ProseAccent {
 
 impl Accent for PoetryAccent {
     #[inline]
-    fn hebrew_name(self) -> &'static str {
+    fn hebrew_name(&self) -> &'static str {
         POETRY_ACCENT_TABLE[self.as_index()].hebrew_name
     }
 
     #[inline]
-    fn hebrew_concept(self) -> &'static str {
+    fn hebrew_concept(&self) -> &'static str {
         POETRY_ACCENT_TABLE[self.as_index()].hebrew_concept
     }
 
     #[inline]
-    fn english_name(self) -> &'static str {
+    fn english_name(&self) -> &'static str {
         POETRY_ACCENT_TABLE[self.as_index()].english_name
     }
 
     #[inline]
-    fn sbl_academic_name(self) -> &'static str {
+    fn sbl_academic_name(&self) -> &'static str {
         POETRY_ACCENT_TABLE[self.as_index()].sbl_academic
     }
 
     #[inline]
-    fn kind(self) -> Option<AccentKind> {
+    fn kind(&self) -> Option<AccentKind> {
         POETRY_ACCENT_TABLE[self.as_index()].kind.to_public()
     }
 
     #[inline]
-    fn category(self) -> Option<AccentCategory> {
+    fn category(&self) -> Option<AccentCategory> {
         POETRY_ACCENT_TABLE[self.as_index()].category.to_public()
     }
 
     #[inline]
-    fn is_compound(self) -> bool {
+    fn is_compound(&self) -> bool {
         POETRY_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -538,7 +579,7 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn primary_cantillation_mark(self) -> CantillationMark {
+    fn primary_cantillation_mark(&self) -> CantillationMark {
         let info = POETRY_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .primary_mark;
@@ -551,7 +592,7 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
         POETRY_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -563,27 +604,27 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn notes(self) -> Option<&'static str> {
+    fn notes(&self) -> Option<&'static str> {
         POETRY_ACCENT_TABLE[self.as_index()].notes
     }
 
     #[inline]
-    fn relative_strength(self) -> Option<u8> {
+    fn relative_strength(&self) -> Option<u8> {
         resolve_relative_strength(BHS_POETRY_RANK_MAP[self.as_index()])
     }
 
     #[inline]
-    fn group_level(self) -> Option<GroupLevel> {
-        resolve_disjunctive_group(self.into()).and_then(|g| g.into_public_level())
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
     }
 
     #[inline]
-    fn cantillation_symbol(self) -> String {
+    fn cantillation_symbol(&self) -> String {
         "TODO".to_string()
     }
 
     #[inline]
-    fn word_span(self) -> Option<WordSpan> {
+    fn word_span(&self) -> Option<WordSpan> {
         POETRY_ACCENT_TABLE[self.as_index()].word_span.to_public()
     }
 }
@@ -594,37 +635,37 @@ impl Accent for PoetryAccent {
 
 impl Accent for PseudoAccent {
     #[inline]
-    fn hebrew_name(self) -> &'static str {
+    fn hebrew_name(&self) -> &'static str {
         PSEUDO_ACCENT_TABLE[self.as_index()].hebrew_name
     }
 
     #[inline]
-    fn hebrew_concept(self) -> &'static str {
+    fn hebrew_concept(&self) -> &'static str {
         PSEUDO_ACCENT_TABLE[self.as_index()].hebrew_concept
     }
 
     #[inline]
-    fn english_name(self) -> &'static str {
+    fn english_name(&self) -> &'static str {
         PSEUDO_ACCENT_TABLE[self.as_index()].english_name
     }
 
     #[inline]
-    fn sbl_academic_name(self) -> &'static str {
+    fn sbl_academic_name(&self) -> &'static str {
         PSEUDO_ACCENT_TABLE[self.as_index()].sbl_academic
     }
 
     #[inline]
-    fn kind(self) -> Option<AccentKind> {
+    fn kind(&self) -> Option<AccentKind> {
         PSEUDO_ACCENT_TABLE[self.as_index()].kind.to_public()
     }
 
     #[inline]
-    fn category(self) -> Option<AccentCategory> {
+    fn category(&self) -> Option<AccentCategory> {
         PSEUDO_ACCENT_TABLE[self.as_index()].category.to_public()
     }
 
     #[inline]
-    fn is_compound(self) -> bool {
+    fn is_compound(&self) -> bool {
         PSEUDO_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -632,7 +673,7 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn primary_cantillation_mark(self) -> CantillationMark {
+    fn primary_cantillation_mark(&self) -> CantillationMark {
         let info = PSEUDO_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .primary_mark;
@@ -645,7 +686,7 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn secondary_cantillation_mark(self) -> Option<CantillationMark> {
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
         PSEUDO_ACCENT_TABLE[self.as_index()]
             .cantillation_symbol
             .secondary_mark
@@ -657,27 +698,27 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn notes(self) -> Option<&'static str> {
+    fn notes(&self) -> Option<&'static str> {
         PSEUDO_ACCENT_TABLE[self.as_index()].notes
     }
 
     #[inline]
-    fn relative_strength(self) -> Option<u8> {
+    fn relative_strength(&self) -> Option<u8> {
         None
     }
 
     #[inline]
-    fn group_level(self) -> Option<GroupLevel> {
+    fn group_level(&self) -> Option<GroupLevel> {
         None
     }
 
     #[inline]
-    fn cantillation_symbol(self) -> String {
+    fn cantillation_symbol(&self) -> String {
         "TODO".to_string()
     }
 
     #[inline]
-    fn word_span(self) -> Option<WordSpan> {
+    fn word_span(&self) -> Option<WordSpan> {
         None
     }
 }

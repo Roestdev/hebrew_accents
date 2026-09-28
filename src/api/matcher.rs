@@ -198,7 +198,7 @@ impl<'h> Match<'h> {
     ///
     /// `start <= end <= haystack.len()`
     ///
-        /// # Example
+    /// # Example
     ///
     /// ```rust
     /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};
@@ -302,8 +302,8 @@ impl<'h> Match<'h> {
     /// - **Direct slicing**: `&haystack[m.range()]`
     /// - **Iteration**: `for i in m.range()`
     /// - **Overlap detection**: Compare ranges for intersection
-    /// 
-/// # Example
+    ///
+    /// # Example
     ///
     /// ```rust
     /// # use hebrew_accents::{Context, ProseAccent, SentenceContext};

@@ -149,4 +149,13 @@ pub use crate::api::WordSpan;
 pub use crate::api::try_derive_context;
 
 // used for errorhandling
-pub use crate::error::SentenceContextError;
+pub use crate::error::{GroupLevelError, SentenceContextError};
+
+/// This module contains additional documentation resources.
+pub mod docs {
+    /// Transliteration Rules
+    ///
+    /// Full documentation for how accents are transliterated.
+    #[doc = include_str!("../TRANSLITERATION.md")]
+    pub mod transliteration {}
+}
