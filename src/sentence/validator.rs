@@ -2,7 +2,7 @@ use hebrew_unicode_script::{is_hbr_block, is_hbr_consonant_final, is_hbr_consona
 
 use crate::SentenceContextError;
 
-const MAX_SENTENCE_LENGTH: usize = 3_000;
+const MAX_SENTENCE_LENGTH: usize = 7_000;
 
 /// Validates a Hebrew sentence for proper character composition and structure.
 ///
