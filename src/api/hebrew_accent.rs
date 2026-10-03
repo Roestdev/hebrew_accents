@@ -1,4 +1,7 @@
-use crate::{PoetryAccent, ProseAccent, PseudoAccent};
+use crate::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
+use crate::accent::{resolve_disjunctive_group};
+use crate::api::CompoundType;
+use crate::{AccentCategory, AccentKind, CantillationMark, GroupLevel};
 
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -318,6 +321,121 @@ impl From<PseudoAccent> for HebrewAccent {
 impl Default for HebrewAccent {
     fn default() -> Self {
         HebrewAccent::Prose(ProseAccent::default())
+    }
+}
+
+impl Accent for HebrewAccent {
+    #[inline]
+    fn hebrew_name(&self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.hebrew_name(),
+            HebrewAccent::Poetry(p) => p.hebrew_name(),
+            HebrewAccent::Pseudo(p) => p.hebrew_name(),
+        }
+    }
+
+    #[inline]
+    fn hebrew_concept(&self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.hebrew_concept(),
+            HebrewAccent::Poetry(p) => p.hebrew_concept(),
+            HebrewAccent::Pseudo(p) => p.hebrew_concept(),
+        }
+    }
+
+    #[inline]
+    fn english_name(&self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.english_name(),
+            HebrewAccent::Poetry(p) => p.english_name(),
+            HebrewAccent::Pseudo(p) => p.english_name(),
+        }
+    }
+
+    #[inline]
+    fn sbl_academic_name(&self) -> &'static str {
+        match self {
+            HebrewAccent::Prose(p) => p.sbl_academic_name(),
+            HebrewAccent::Poetry(p) => p.sbl_academic_name(),
+            HebrewAccent::Pseudo(p) => p.sbl_academic_name(),
+        }
+    }
+
+    #[inline]
+    fn kind(&self) -> Option<AccentKind> {
+        match self {
+            HebrewAccent::Prose(p) => p.kind(),
+            HebrewAccent::Poetry(p) => p.kind(),
+            HebrewAccent::Pseudo(p) => p.kind(),
+        }
+    }
+
+    #[inline]
+    fn category(&self) -> Option<AccentCategory> {
+        match self {
+            HebrewAccent::Prose(p) => p.category(),
+            HebrewAccent::Poetry(p) => p.category(),
+            HebrewAccent::Pseudo(p) => p.category(),
+        }
+    }
+
+    #[inline]
+    fn compound_type(&self) -> Option<CompoundType> {
+        match self {
+            HebrewAccent::Prose(p) => p.compound_type(),
+            HebrewAccent::Poetry(p) => p.compound_type(),
+            HebrewAccent::Pseudo(p) => p.compound_type(),
+        }
+    }
+
+    #[inline]
+    fn primary_cantillation_mark(&self) -> CantillationMark {
+        match self {
+            HebrewAccent::Prose(p) => p.primary_cantillation_mark(),
+            HebrewAccent::Poetry(p) => p.primary_cantillation_mark(),
+            HebrewAccent::Pseudo(p) => p.primary_cantillation_mark(),
+        }
+    }
+
+    #[inline]
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
+        match self {
+            HebrewAccent::Prose(p) => p.secondary_cantillation_mark(),
+            HebrewAccent::Poetry(p) => p.secondary_cantillation_mark(),
+            HebrewAccent::Pseudo(p) => p.secondary_cantillation_mark(),
+        }
+    }
+
+    #[inline]
+    fn notes(&self) -> Option<&'static str> {
+        match self {
+            HebrewAccent::Prose(p) => p.notes(),
+            HebrewAccent::Poetry(p) => p.notes(),
+            HebrewAccent::Pseudo(p) => p.notes(),
+        }
+    }
+
+    #[inline]
+    fn relative_strength(&self) -> Option<u8> {
+        match self {
+            HebrewAccent::Prose(p) => p.relative_strength(),
+            HebrewAccent::Poetry(p) => p.relative_strength(),
+            HebrewAccent::Pseudo(p) => p.relative_strength(),
+        }
+    }
+
+    #[inline]
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group(*self).and_then(|g| g.into_public_level())
+    }
+
+    #[inline]
+    fn cantillation_symbol(&self) -> String {
+        match self {
+            HebrewAccent::Prose(p) => p.cantillation_symbol(),
+            HebrewAccent::Poetry(p) => p.cantillation_symbol(),
+            HebrewAccent::Pseudo(p) => p.cantillation_symbol(),
+        }
     }
 }
 

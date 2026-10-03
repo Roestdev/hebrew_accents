@@ -41,6 +41,10 @@
 
 use crate::Accent;
 use strum_macros::{EnumCount, EnumIter};
+use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
+use crate::accent_data::{BHS_POETRY_RANK_MAP,  POETRY_ACCENT_TABLE};
+use crate::api::CompoundType;
+use crate::{display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel};
 
 /// Represents a single Hebrew poetry cantillation mark.
 ///
@@ -325,3 +329,86 @@ const _: () = {
     const LAST_DISCRIMINANT: u8 = PoetryAccent::Meteg as u8;
     assert!((LAST_DISCRIMINANT + 1) as usize == PoetryAccent::LEN);
 };
+
+
+impl Accent for PoetryAccent {
+    #[inline]
+    fn hebrew_name(&self) -> &'static str {
+        POETRY_ACCENT_TABLE[self.as_index()].hebrew_name
+    }
+
+    #[inline]
+    fn hebrew_concept(&self) -> &'static str {
+        POETRY_ACCENT_TABLE[self.as_index()].hebrew_concept
+    }
+
+    #[inline]
+    fn english_name(&self) -> &'static str {
+        POETRY_ACCENT_TABLE[self.as_index()].english_name
+    }
+
+    #[inline]
+    fn sbl_academic_name(&self) -> &'static str {
+        POETRY_ACCENT_TABLE[self.as_index()].sbl_academic
+    }
+
+    #[inline]
+    fn kind(&self) -> Option<AccentKind> {
+        POETRY_ACCENT_TABLE[self.as_index()].kind
+    }
+
+    #[inline]
+    fn category(&self) -> Option<AccentCategory> {
+        POETRY_ACCENT_TABLE[self.as_index()].category
+    }
+
+    #[inline]
+    fn compound_type(&self) -> Option<CompoundType> {
+        POETRY_ACCENT_TABLE[self.as_index()].compound_type
+    }
+
+    #[inline]
+    fn primary_cantillation_mark(&self) -> CantillationMark {
+        let info = POETRY_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .primary_mark;
+
+        CantillationMark {
+            symbol: info.symbol,
+            placement: info.position.into(),
+            stress_position: info.stress_position.to_public(),
+        }
+    }
+
+    #[inline]
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
+        POETRY_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .secondary_mark
+            .map(|info| CantillationMark {
+                symbol: info.symbol,
+                placement: info.position.into(),
+                stress_position: info.stress_position.to_public(),
+            })
+    }
+
+    #[inline]
+    fn notes(&self) -> Option<&'static str> {
+        POETRY_ACCENT_TABLE[self.as_index()].notes
+    }
+
+    #[inline]
+    fn relative_strength(&self) -> Option<u8> {
+        resolve_relative_strength(BHS_POETRY_RANK_MAP[self.as_index()])
+    }
+
+    #[inline]
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
+    }
+
+    #[inline]
+    fn cantillation_symbol(&self) -> String {
+        display_cantillation_symbol((*self).into())
+    }
+}

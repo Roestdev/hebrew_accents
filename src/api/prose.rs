@@ -44,6 +44,10 @@
 
 use crate::Accent;
 use strum_macros::{EnumCount, EnumIter};
+use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
+use crate::accent_data::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
+use crate::api::CompoundType;
+use crate::{display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel};
 
 /// Represents a single Hebrew prose cantillation mark.
 ///
@@ -380,3 +384,86 @@ const _: () = {
     const LAST_DISCRIMINANT: u8 = ProseAccent::Meteg as u8;
     assert!((LAST_DISCRIMINANT + 1) as usize == ProseAccent::LEN);
 };
+
+
+impl Accent for ProseAccent {
+    #[inline]
+    fn hebrew_name(&self) -> &'static str {
+        PROSE_ACCENT_TABLE[self.as_index()].hebrew_name
+    }
+
+    #[inline]
+    fn hebrew_concept(&self) -> &'static str {
+        PROSE_ACCENT_TABLE[self.as_index()].hebrew_concept
+    }
+
+    #[inline]
+    fn english_name(&self) -> &'static str {
+        PROSE_ACCENT_TABLE[self.as_index()].english_name
+    }
+
+    #[inline]
+    fn sbl_academic_name(&self) -> &'static str {
+        PROSE_ACCENT_TABLE[self.as_index()].sbl_academic
+    }
+
+    #[inline]
+    fn kind(&self) -> Option<AccentKind> {
+        PROSE_ACCENT_TABLE[self.as_index()].kind
+    }
+
+    #[inline]
+    fn category(&self) -> Option<AccentCategory> {
+        PROSE_ACCENT_TABLE[self.as_index()].category
+    }
+
+    #[inline]
+    fn compound_type(&self) -> Option<CompoundType> {
+        PROSE_ACCENT_TABLE[self.as_index()].compound_type
+    }
+
+    #[inline]
+    fn primary_cantillation_mark(&self) -> CantillationMark {
+        let info = PROSE_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .primary_mark;
+
+        CantillationMark {
+            symbol: info.symbol,
+            placement: info.position.into(),
+            stress_position: info.stress_position.into(),
+        }
+    }
+
+    #[inline]
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
+        PROSE_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .secondary_mark
+            .map(|info| CantillationMark {
+                symbol: info.symbol,
+                placement: info.position.into(),
+                stress_position: info.stress_position.to_public(),
+            })
+    }
+
+    #[inline]
+    fn notes(&self) -> Option<&'static str> {
+        PROSE_ACCENT_TABLE[self.as_index()].notes
+    }
+
+    #[inline]
+    fn relative_strength(&self) -> Option<u8> {
+        resolve_relative_strength(BHS_PROSE_RANK_MAP[self.as_index()])
+    }
+
+    #[inline]
+    fn group_level(&self) -> Option<GroupLevel> {
+        resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
+    }
+
+    #[inline]
+    fn cantillation_symbol(&self) -> String {
+        display_cantillation_symbol((*self).into())
+    }
+}

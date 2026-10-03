@@ -28,6 +28,9 @@
 
 use crate::Accent;
 use strum_macros::{EnumCount, EnumIter};
+use crate::accent_data::{PSEUDO_ACCENT_TABLE};
+use crate::api::CompoundType;
+use crate::{display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel};
 
 /// Represents a syntactic marker associated with Hebrew cantillation.
 ///
@@ -177,3 +180,86 @@ const _: () = {
     const LAST_DISCRIMINANT: u8 = PseudoAccent::Paseq as u8;
     assert!((LAST_DISCRIMINANT + 1) as usize == PseudoAccent::LEN);
 };
+
+
+impl Accent for PseudoAccent {
+    #[inline]
+    fn hebrew_name(&self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self.as_index()].hebrew_name
+    }
+
+    #[inline]
+    fn hebrew_concept(&self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self.as_index()].hebrew_concept
+    }
+
+    #[inline]
+    fn english_name(&self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self.as_index()].english_name
+    }
+
+    #[inline]
+    fn sbl_academic_name(&self) -> &'static str {
+        PSEUDO_ACCENT_TABLE[self.as_index()].sbl_academic
+    }
+
+    #[inline]
+    fn kind(&self) -> Option<AccentKind> {
+        PSEUDO_ACCENT_TABLE[self.as_index()].kind
+    }
+
+    #[inline]
+    fn category(&self) -> Option<AccentCategory> {
+        PSEUDO_ACCENT_TABLE[self.as_index()].category
+    }
+
+    #[inline]
+    fn compound_type(&self) -> Option<CompoundType> {
+        PSEUDO_ACCENT_TABLE[self.as_index()].compound_type
+    }
+
+    #[inline]
+    fn primary_cantillation_mark(&self) -> CantillationMark {
+        let info = PSEUDO_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .primary_mark;
+
+        CantillationMark {
+            symbol: info.symbol,
+            placement: info.position.into(),
+            stress_position: info.stress_position.to_public(),
+        }
+    }
+
+    #[inline]
+    fn secondary_cantillation_mark(&self) -> Option<CantillationMark> {
+        PSEUDO_ACCENT_TABLE[self.as_index()]
+            .cantillation_symbol
+            .secondary_mark
+            .map(|info| CantillationMark {
+                symbol: info.symbol,
+                placement: info.position.into(),
+                stress_position: info.stress_position.to_public(),
+            })
+    }
+
+    #[inline]
+    fn notes(&self) -> Option<&'static str> {
+        PSEUDO_ACCENT_TABLE[self.as_index()].notes
+    }
+
+    #[inline]
+    fn relative_strength(&self) -> Option<u8> {
+        None
+    }
+
+    #[inline]
+    fn group_level(&self) -> Option<GroupLevel> {
+        None
+    }
+
+    #[inline]
+    fn cantillation_symbol(&self) -> String {
+        display_cantillation_symbol((*self).into())
+    }
+}
