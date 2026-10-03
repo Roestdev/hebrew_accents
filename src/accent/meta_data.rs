@@ -1,10 +1,9 @@
 //! Main entry point for Hebrew Accent information
-
-use crate::accent::Category;
-use crate::accent::Kind;
-use crate::accent::PrivateWordSpan;
 use crate::accent_mark::TraditionNames;
 use crate::accent_mark::Utf8CodePoint;
+use crate::AccentCategory;
+use crate::AccentKind;
+use crate::CompoundType;
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
@@ -22,15 +21,15 @@ pub(crate) struct AccentMetaData {
     /// Associated Cantillation Symbol
     pub(crate) cantillation_symbol: CantillationSymbol,
     /// Indicates the accent accenttype (Primary, Secondary),
-    pub(crate) kind: Kind,
+    pub(crate) kind: Option<AccentKind>,
     /// Indicates the accent category (Disjunctive, Conjunctive)
-    pub(crate) category: Category,
+    pub(crate) category: Option<AccentCategory>,
     /// Tradition-specific naming information
     pub(crate) traditions: TraditionNames,
     /// Contextual notes or scholarly commentary
     pub(crate) notes: Option<&'static str>,
-    /// Maximum word span of the accent
-    pub(crate) word_span: PrivateWordSpan,
+    /// Compound Type of the accent
+    pub(crate) compound_type: Option<CompoundType>,
 }
 
 /// Optional alternate representations for an accent.

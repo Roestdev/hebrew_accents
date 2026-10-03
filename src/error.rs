@@ -1,12 +1,12 @@
+//! This module defines all errors that can be returned by:
+//! - [`crate::SentenceContext::new()`](crate::SentenceContext::new()) - Input validation
+//! - [`crate::SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context) - Context derivation
+//! - [`crate::GroupLevel::try_from()`](crate::GroupLevel::try_from) - Numeric conversion
+//!
+
 use thiserror::Error;
 
 /// Error types for Hebrew sentence validation and context derivation.
-///
-/// This module defines all errors that can be returned by:
-/// - [`crate::SentenceContext::new()`](crate::SentenceContext::new()) - Input validation
-/// - [`crate::SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context) - Context derivation
-/// - [`crate::GroupLevel::try_from()`](crate::GroupLevel::try_from) - Numeric conversion
-///
 /// # Example
 ///
 /// ```rust
@@ -118,7 +118,7 @@ pub enum SentenceContextError {
     /// ```
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
-    /// let long_text: String = "א".repeat(10_001);
+    /// let long_text: String = "א".repeat(7_001);
     /// let result = SentenceContext::new(long_text, Context::Prosaic);
     /// assert!(matches!(result, Err(SentenceContextError::SentenceTooLong(max, actual))
     ///                  if max < actual));
@@ -233,7 +233,7 @@ pub enum SentenceContextError {
     DerivationFailed(&'static str),
 }
 
-/// Error types for accent group level coversion.
+/// Error types for accent group level conversion.
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum GroupLevelError {
     /// Invalid GroupLevel value provided (must be 1-4).
@@ -497,34 +497,37 @@ mod sentence_tests {
         assert_ne!(err, SentenceContextError::SentenceTooLong(500, 1500));
     }
 
-#[test]
-fn test_group_level_error_formatting() {
-    let err = GroupLevelError::InvalidGroupLevel(5);
-    assert_eq!(err.to_string(), "Invalid GroupLevel value: 5 (valid range: 1-4)");
-    assert_eq!(err, GroupLevelError::InvalidGroupLevel(5));
-}
-
-#[test]
-fn test_group_level_error_distinct_values() {
-    // Different values should produce different errors
-    let err5 = GroupLevelError::InvalidGroupLevel(5);
-    let err6 = GroupLevelError::InvalidGroupLevel(6);
-    assert_ne!(err5, err6);
-}
-
-#[test]
-fn test_group_level_error_hash() {
-    // Hash should differ based on value
-    let h5 = get_hash(&GroupLevelError::InvalidGroupLevel(5));
-    let h6 = get_hash(&GroupLevelError::InvalidGroupLevel(6));
-    assert_ne!(h5, h6);
-}
-
-#[test]
-fn test_all_invalid_values() {
-    for val in [0u8, 5, 10, 255] {
-        let err = GroupLevelError::InvalidGroupLevel(val);
-        assert!(err.to_string().contains(&val.to_string()));
+    #[test]
+    fn test_group_level_error_formatting() {
+        let err = GroupLevelError::InvalidGroupLevel(5);
+        assert_eq!(
+            err.to_string(),
+            "Invalid GroupLevel value: 5 (valid range: 1-4)"
+        );
+        assert_eq!(err, GroupLevelError::InvalidGroupLevel(5));
     }
-}
+
+    #[test]
+    fn test_group_level_error_distinct_values() {
+        // Different values should produce different errors
+        let err5 = GroupLevelError::InvalidGroupLevel(5);
+        let err6 = GroupLevelError::InvalidGroupLevel(6);
+        assert_ne!(err5, err6);
+    }
+
+    #[test]
+    fn test_group_level_error_hash() {
+        // Hash should differ based on value
+        let h5 = get_hash(&GroupLevelError::InvalidGroupLevel(5));
+        let h6 = get_hash(&GroupLevelError::InvalidGroupLevel(6));
+        assert_ne!(h5, h6);
+    }
+
+    #[test]
+    fn test_all_invalid_values() {
+        for val in [0u8, 5, 10, 255] {
+            let err = GroupLevelError::InvalidGroupLevel(val);
+            assert!(err.to_string().contains(&val.to_string()));
+        }
+    }
 }

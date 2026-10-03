@@ -135,6 +135,7 @@ pub use crate::api::AccentKind;
 pub use crate::api::CantillationMark;
 pub use crate::api::CantillationMarkPlacement;
 pub use crate::api::CantillationMarkStressPosition;
+pub use crate::api::CompoundType;
 pub use crate::api::Context;
 pub use crate::api::GroupLevel;
 pub use crate::api::HebrewAccent;
@@ -143,13 +144,14 @@ pub use crate::api::PoetryAccent;
 pub use crate::api::ProseAccent;
 pub use crate::api::PseudoAccent;
 pub use crate::api::SentenceContext;
-pub use crate::api::WordSpan;
 
 // public functions
 pub use crate::api::try_derive_context;
 
 // used for errorhandling
 pub use crate::error::{GroupLevelError, SentenceContextError};
+
+pub(crate) use crate::accent::display_cantillation_symbol;
 
 /// This module contains additional documentation resources.
 pub mod docs {

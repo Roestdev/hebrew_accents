@@ -39,7 +39,7 @@ fn count_by_category() {
 }
 
 #[test]
-fn itearteall() {
+fn iterall() {
     // 1. Create accents
     let prose = HebrewAccent::Prose(ProseAccent::Silluq);
     let poetry: HebrewAccent = PoetryAccent::Atnach.into();

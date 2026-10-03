@@ -1,14 +1,24 @@
+use std::fmt;
+
 use crate::accent_mark::CodePointPosition;
 use crate::accent_mark::StressPosition;
 
 /// Hebrew Accent kind — (absence is expressed via `Option<T>`)
-#[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum AccentKind {
-    #[default]
     /// Primary Hebrew accent type
     Primary,
     /// Secondary Hebrew accent type
     Secondary,
+}
+
+impl fmt::Display for AccentKind {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Primary => write!(f, "primary"),
+            Self::Secondary => write!(f, "secondary"),
+        }
+    }
 }
 
 /// Hebrew Accent category — (absence is expressed via `Option<T>`)
@@ -26,15 +36,22 @@ pub enum AccentKind {
 /// let munach: HebrewAccent = ProseAccent::Munach.into();
 /// assert_eq!(munach.category(), Some(AccentCategory::Conjunctive));
 /// ```
-#[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum AccentCategory {
-    #[default]
     /// accents that separate words
     Disjunctive,
     /// accents that connect words
     Conjunctive,
 }
 
+impl fmt::Display for AccentCategory {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Disjunctive => write!(f, "disjunctive"),
+            Self::Conjunctive => write!(f, "conjunctive"),
+        }
+    }
+}
 /// **Disjunctive accent** hierarchy group level following Futato's classification system.
 ///
 /// Ranges from Tier1 (strongest pause/break) to higher numbers (weaker pauses).
@@ -55,7 +72,7 @@ pub enum AccentCategory {
 /// let conjunctive = HebrewAccent::Prose(ProseAccent::Munach);
 /// assert_eq!(conjunctive.group_level(), None);
 /// ```
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 #[repr(u8)]
 pub enum GroupLevel {
     /// Primary disjunctive tier — creates major clause/phrasal breaks
@@ -109,7 +126,7 @@ impl GroupLevel {
     }
 }
 
-impl std::fmt::Display for GroupLevel {
+impl fmt::Display for GroupLevel {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Tier1 => write!(f, "Tier 1 (Primary disjunctive)"),
@@ -134,51 +151,83 @@ impl TryFrom<u8> for GroupLevel {
     }
 }
 
-// TODO better text: add all 2 wordspan accents /accenten met paseq
-
-/// How many consecutive words a single accent sign can cover.
-///
-/// Almost every ta'am of Scripture is confined to the word it belongs to.
-/// Exactly three accents — ʿoleh we-yored, tsinnorit, and maḥpaḥ — are
-/// also able to stretch across the interword space and tie two adjacent
-/// words together. This enum records that ability: whether the accent is
-/// always single-word, or one of the exceptions that may span two.
-#[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum WordSpan {
-    /// The accent sign is always confined to a single word.
-    ///
-    /// Every taʿam falls into this category except
-    /// ʿoleh we-yored, tsinnorit, and maḥpaḥ.
-    #[default]
-    OneWord,
-    /// The accent sign covers either one word or two consecutive words.
-    ///
-    /// Only three accents have this capability:
-    ///
-    /// - **ʿOleh we-yored** (עולה ויורד) — when the two strokes occur
-    ///   together, one rises at the end of the first word and the other
-    ///   descends onto the beginning of the next.
-    /// - **Tsinnorit** (צינורית) — a horizontal line stretched over the
-    ///   interword space, like a channel connecting the two words.
-    /// - **Maḥpaḥ** (מחפך) — its clasp-shaped sign can reach from the
-    ///   first word over to the second.
-    OneOrTwoWords,
+/// Public-facing representation of a cantillation mark
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+pub struct CantillationMark {
+    /// The actual Hebrew character/symbol, e.g. "֗"
+    pub symbol: char,
+    /// Position relative to the consonant
+    pub placement: CantillationMarkPlacement,
+    /// Stress relation
+    pub stress_position: Option<CantillationMarkStressPosition>,
 }
 
-impl WordSpan {
-    /// Whether the accent sign can ever cross a word boundary.
-    /// Only ʿoleh we-yored, tsinnorit, and maḥpaḥ
-    /// ([`WordSpan::OneOrTwoWords`]) can.
-    pub const fn can_span_word_boundary(self) -> bool {
-        matches!(self, WordSpan::OneOrTwoWords)
-    }
+/// Placement of the cantillation mark related to the consonant
+///
+/// - **True cantillation marks**: have a `vertical + horizontal` component, e.g. AboveLeft
+/// - **Pseudo-accents**: can not be expressed in `vertical + horizontal` components
+///
+/// Distinguishes from [`CantillationMarkStressPosition`] which describes
+/// linguistic relationship to the stressed syllable.
+///
+/// **Note:** Linguistically, no Te'amim exist for BelowLeft placement.
+/// See: <https://en.wikipedia.org/wiki/Te'amim>
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+pub enum CantillationMarkPlacement {
+    // Above placements
+    /// The cantillation mark is placed above the consonant in the center
+    AboveCenter,
+    /// The cantillation mark is placed above the consonant at the left side
+    AboveLeft,
+    /// The cantillation mark is placed above the consonant at the right side
+    AboveRight,
 
-    /// The number of words the sign covers, in either the minimum or
-    /// maximum case.
-    pub const fn word_count_bounds(self) -> (usize, usize) {
+    // Below placements
+    /// The cantillation mark is placed below the consonant in the center
+    BelowCenter,
+    /// The cantillation mark is placed below the consonant at the right side
+    BelowRight,
+
+    // Between-word/special placements
+    /// The cantillation mark is placed after the last word in the verse
+    SofPasuq,
+    /// The cantillation mark is placed between two words
+    Maqqaph,
+    /// The cantillation mark is placed at the left side of a word
+    Paseq,
+}
+
+// Conversion from internal to public type
+impl From<CodePointPosition> for CantillationMarkPlacement {
+    fn from(pos: CodePointPosition) -> Self {
+        use CantillationMarkPlacement as Public;
+        use CodePointPosition as Internal;
+
+        match pos {
+            Internal::AboveLeft => Public::AboveLeft,
+            Internal::AboveCenter => Public::AboveCenter,
+            Internal::AboveRight => Public::AboveRight,
+            //Internal::BelowLeft => Public::BelowLeft,
+            Internal::BelowCenter => Public::BelowCenter,
+            Internal::BelowRight => Public::BelowRight,
+            Internal::SofPasuq => Public::SofPasuq,
+            Internal::Maqqaph => Public::Maqqaph,
+            Internal::Paseq => Public::Paseq,
+        }
+    }
+}
+
+impl fmt::Display for CantillationMarkPlacement {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            WordSpan::OneWord => (1, 1),
-            WordSpan::OneOrTwoWords => (1, 2),
+            Self::AboveCenter => write!(f, "Above Center"),
+            Self::AboveLeft => write!(f, "Above Left"),
+            Self::AboveRight => write!(f, "Above Right"),
+            Self::BelowCenter => write!(f, "Below Center"),
+            Self::BelowRight => write!(f, "Below Right"),
+            Self::SofPasuq => write!(f, "End of Verse (Sof Pasuq)"),
+            Self::Maqqaph => write!(f, "Between Words (Maqqaph)"),
+            Self::Paseq => write!(f, "Word Separator (Paseq)"),
         }
     }
 }
@@ -255,9 +304,8 @@ impl WordSpan {
 ///
 /// Both are compile-time properties of the accent type, not runtime properties
 /// of individual word instances.
-#[derive(Default, Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum CantillationMarkStressPosition {
-    #[default]
     /// On the stressed syllable
     /// The accent mark sits directly on the stressed syllable
     Impositive,
@@ -267,6 +315,16 @@ pub enum CantillationMarkStressPosition {
     /// After the stressed syllable
     /// The accent mark is placed on a syllable following the stressed one
     Postpositive,
+}
+
+impl fmt::Display for CantillationMarkStressPosition {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Impositive => write!(f, "impositive"),
+            Self::Prepositive => write!(f, "prepositive"),
+            Self::Postpositive => write!(f, "postpositive"),
+        }
+    }
 }
 
 // Conversion from internal to public type
@@ -280,74 +338,6 @@ impl From<StressPosition> for Option<CantillationMarkStressPosition> {
             Internal::Prepositive => Some(Public::Prepositive),
             Internal::Postpositive => Some(Public::Postpositive),
             Internal::NotApplicable => None,
-        }
-    }
-}
-
-/// Public-facing representation of a cantillation codepoint
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub struct CantillationMark {
-    /// The actual Hebrew character/symbol, e.g. "֗"
-    pub symbol: char,
-    /// Position relative to the consonant
-    pub placement: CantillationMarkPlacement,
-    /// stress realtion
-    pub stress_position: Option<CantillationMarkStressPosition>,
-}
-
-/// Complete visual placement decomposed into independent dimensions.
-///
-/// ## Placement Priority
-/// When `special` is `Some(...)`, the `vertical` and `horizontal` fields
-/// should be ignored — `special` acts as a complete override.
-///
-/// ## Usage Patterns
-/// - **True cantillation marks**: `special = None`, use `vertical + horizontal`
-/// - **Pseudo-accents**: `special = Some(...)`, ignore vertical/horizontal
-///
-/// Distinguishes from [`CantillationMarkStressPosition`] which describes
-/// linguistic relationship to the stressed syllable.
-///
-/// Note: Not one accent is placed 'BelowLeft'
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
-pub enum CantillationMarkPlacement {
-    /// todo
-    #[default]
-    AboveCenter,
-    /// todo
-    AboveLeft,
-    /// todo
-    AboveRight,
-    /// todo
-    BelowCenter,
-    /// todo
-    /// BelowLeft,
-    /// todo
-    BelowRight,
-    /// todo
-    Maqqaf,
-    /// todo
-    SofPasuq,
-    /// todo
-    Paseq,
-}
-
-// Conversion from internal to public type
-impl From<CodePointPosition> for CantillationMarkPlacement {
-    fn from(pos: CodePointPosition) -> Self {
-        use CantillationMarkPlacement as Public;
-        use CodePointPosition as Internal;
-
-        match pos {
-            Internal::AboveLeft => Public::AboveLeft,
-            Internal::AboveCenter => Public::AboveCenter,
-            Internal::AboveRight => Public::AboveRight,
-            //Internal::BelowLeft => Public::BelowLeft,
-            Internal::BelowCenter => Public::BelowCenter,
-            Internal::BelowRight => Public::BelowRight,
-            Internal::Maqqaf => Public::Maqqaf,
-            Internal::SofPasuq => Public::SofPasuq,
-            Internal::Paseq => Public::Paseq,
         }
     }
 }

@@ -3,9 +3,10 @@ use crate::accent_data::{
     BHS_POETRY_RANK_MAP, BHS_PROSE_RANK_MAP, POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE,
     PSEUDO_ACCENT_TABLE,
 };
+use crate::api::CompoundType;
 use crate::{
-    AccentCategory, AccentKind, CantillationMark, GroupLevel, HebrewAccent, PoetryAccent,
-    ProseAccent, PseudoAccent, WordSpan,
+    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
+    HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
 };
 /// The `Accent` trait provides a unified interface for working with Hebrew
 /// cantillation marks (also known as ta'amim or trope).
@@ -95,14 +96,6 @@ pub trait Accent {
     /// It can indicate where a secondary stress falls within a word or help resolve ambiguities
     /// like vocal sheva vs. silent sheva.
     ///
-    /// Returns `None` only for pseudo accents.
-    ///
-    /// # Return Value
-    ///
-    /// - `Some(AccentKind::Primary)` — Main stress/phrasing mark
-    /// - `Some(AccentKind::Secondary)` — Secondary stress/vowel modifier
-    /// - `None` — Pseudo accent (no hierarchical kind)
-    ///
     /// # Example
     ///
     /// ```rust
@@ -129,7 +122,7 @@ pub trait Accent {
     ///
     /// # Example
     /// ```rust
-    /// use hebrew_accents::{Accent, ProseAccent,AccentCategory};
+    /// use hebrew_accents::{Accent, ProseAccent, AccentCategory};
     ///
     /// let silluq = ProseAccent::Silluq;   // Disjunctive
     /// let munach = ProseAccent::Munach;   // Conjunctive
@@ -153,9 +146,9 @@ pub trait Accent {
     /// let silluq = ProseAccent::Silluq;
     /// let shalshelet = ProseAccent::Shalshelet;  // Compound
     ///
-    /// assert!(!silluq.is_compound());
-    /// assert!(shalshelet.is_compound());
-    fn is_compound(&self) -> bool;
+    /// // assert!(!silluq.is_compound());
+    /// // assert!(shalshelet.is_compound());
+    fn compound_type(&self) -> Option<CompoundType>; // None = not compound
 
     /// Returns the primary cantillation mark (always present).
     ///
@@ -225,6 +218,7 @@ pub trait Accent {
     ///   strength ranking
     /// - **Conjunctive accents** (Prose or Poetry): Returns `None` (no hierarchy)
     /// - **Pseudo accents**: Always returns `None` (no hierarchy)
+    ///
     /// # Example
     ///
     /// ```rust
@@ -274,7 +268,7 @@ pub trait Accent {
     /// ```
     fn group_level(&self) -> Option<GroupLevel>;
 
-    /// Returns the cantillation symbol augmented with dotted circles
+    /// Returns the cantillation symbol augmented with dotted circle(s)
     ///
     /// The U+25CC ◌ DOTTED CIRCLE serves as a neutral base glyph for displaying Hebrew combining marks,
     /// such as niqqud vowel points and cantillation symbols—in isolation,
@@ -290,27 +284,6 @@ pub trait Accent {
     /// println!("Display: {}", symbol);  // "֫"
     /// ```
     fn cantillation_symbol(&self) -> String;
-
-    /// Returns the maximum word span for this accent.
-    ///
-    /// Indicates how many words this accent can span across.
-    /// Most accents span a single word; some compound or special
-    /// accents may span multiple words.
-    ///
-    /// - **Typical**: `WordSpan::OneWord`
-    /// - **Special cases**: `WordSpan::OneOrTwoWords` or `NotApplicable`
-    /// - **Pseudo accents**: Always `None`
-    ///
-    /// # Example
-    /// ```rust
-    /// use hebrew_accents::{Accent, HebrewAccent, PoetryAccent, WordSpan};
-    ///
-    /// let oleh_weyored = PoetryAccent::OlehWeYored;
-    /// if let Some(span) = oleh_weyored.word_span() {
-    ///      assert_eq!(span, WordSpan::OneOrTwoWords);
-    /// }
-    /// ```
-    fn word_span(&self) -> Option<WordSpan>;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -373,11 +346,11 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn is_compound(&self) -> bool {
+    fn compound_type(&self) -> Option<CompoundType> {
         match self {
-            HebrewAccent::Prose(p) => p.is_compound(),
-            HebrewAccent::Poetry(p) => p.is_compound(),
-            HebrewAccent::Pseudo(p) => p.is_compound(),
+            HebrewAccent::Prose(p) => p.compound_type(),
+            HebrewAccent::Poetry(p) => p.compound_type(),
+            HebrewAccent::Pseudo(p) => p.compound_type(),
         }
     }
 
@@ -430,15 +403,6 @@ impl Accent for HebrewAccent {
             HebrewAccent::Pseudo(p) => p.cantillation_symbol(),
         }
     }
-
-    #[inline]
-    fn word_span(&self) -> Option<WordSpan> {
-        match self {
-            HebrewAccent::Prose(p) => p.word_span(),
-            HebrewAccent::Poetry(p) => p.word_span(),
-            HebrewAccent::Pseudo(p) => p.word_span(),
-        }
-    }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -468,20 +432,17 @@ impl Accent for ProseAccent {
 
     #[inline]
     fn kind(&self) -> Option<AccentKind> {
-        PROSE_ACCENT_TABLE[self.as_index()].kind.to_public()
+        PROSE_ACCENT_TABLE[self.as_index()].kind
     }
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        PROSE_ACCENT_TABLE[self.as_index()].category.to_public()
+        PROSE_ACCENT_TABLE[self.as_index()].category
     }
 
     #[inline]
-    fn is_compound(&self) -> bool {
-        PROSE_ACCENT_TABLE[self.as_index()]
-            .cantillation_symbol
-            .secondary_mark
-            .is_some()
+    fn compound_type(&self) -> Option<CompoundType> {
+        PROSE_ACCENT_TABLE[self.as_index()].compound_type
     }
 
     #[inline]
@@ -493,7 +454,7 @@ impl Accent for ProseAccent {
         CantillationMark {
             symbol: info.symbol,
             placement: info.position.into(),
-            stress_position: info.stress_position.to_public(),
+            stress_position: info.stress_position.into(),
         }
     }
 
@@ -526,12 +487,7 @@ impl Accent for ProseAccent {
 
     #[inline]
     fn cantillation_symbol(&self) -> String {
-        "TODO".to_string()
-    }
-
-    #[inline]
-    fn word_span(&self) -> Option<WordSpan> {
-        PROSE_ACCENT_TABLE[self.as_index()].word_span.to_public()
+        display_cantillation_symbol((*self).into())
     }
 }
 
@@ -562,20 +518,17 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn kind(&self) -> Option<AccentKind> {
-        POETRY_ACCENT_TABLE[self.as_index()].kind.to_public()
+        POETRY_ACCENT_TABLE[self.as_index()].kind
     }
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        POETRY_ACCENT_TABLE[self.as_index()].category.to_public()
+        POETRY_ACCENT_TABLE[self.as_index()].category
     }
 
     #[inline]
-    fn is_compound(&self) -> bool {
-        POETRY_ACCENT_TABLE[self.as_index()]
-            .cantillation_symbol
-            .secondary_mark
-            .is_some()
+    fn compound_type(&self) -> Option<CompoundType> {
+        POETRY_ACCENT_TABLE[self.as_index()].compound_type
     }
 
     #[inline]
@@ -620,12 +573,7 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn cantillation_symbol(&self) -> String {
-        "TODO".to_string()
-    }
-
-    #[inline]
-    fn word_span(&self) -> Option<WordSpan> {
-        POETRY_ACCENT_TABLE[self.as_index()].word_span.to_public()
+        display_cantillation_symbol((*self).into())
     }
 }
 
@@ -656,20 +604,17 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn kind(&self) -> Option<AccentKind> {
-        PSEUDO_ACCENT_TABLE[self.as_index()].kind.to_public()
+        PSEUDO_ACCENT_TABLE[self.as_index()].kind
     }
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        PSEUDO_ACCENT_TABLE[self.as_index()].category.to_public()
+        PSEUDO_ACCENT_TABLE[self.as_index()].category
     }
 
     #[inline]
-    fn is_compound(&self) -> bool {
-        PSEUDO_ACCENT_TABLE[self.as_index()]
-            .cantillation_symbol
-            .secondary_mark
-            .is_some()
+    fn compound_type(&self) -> Option<CompoundType> {
+        PSEUDO_ACCENT_TABLE[self.as_index()].compound_type
     }
 
     #[inline]
@@ -714,18 +659,12 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn cantillation_symbol(&self) -> String {
-        "TODO".to_string()
-    }
-
-    #[inline]
-    fn word_span(&self) -> Option<WordSpan> {
-        None
+        display_cantillation_symbol((*self).into())
     }
 }
 
 #[cfg(test)]
 mod tests1 {
-    use crate::WordSpan;
     #[test]
     fn level() {
         use crate::{Accent, GroupLevel, ProseAccent};
@@ -736,15 +675,6 @@ mod tests1 {
             assert_eq!(GroupLevel::Tier1, level);
         } else {
             panic!("BUG::wrong grouplevel");
-        }
-    }
-    #[test]
-    fn wordspan() {
-        use crate::{Accent, PoetryAccent};
-
-        let oleh_weyored = PoetryAccent::OlehWeYored;
-        if let Some(span) = oleh_weyored.word_span() {
-            assert_eq!(span, WordSpan::OneOrTwoWords);
         }
     }
 

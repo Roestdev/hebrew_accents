@@ -148,7 +148,19 @@ impl HebrewAccent {
         }
     }
 
-    /// todo
+    /// Gives the possisiblitiy to iterrate overall Hebrew Accents
+    ///
+    /// ```rust
+    /// use hebrew_accents::{HebrewAccent};
+    ///
+    /// for accent in HebrewAccent::iter() {
+    ///    match accent {
+    ///        HebrewAccent::Prose(p) => println!("Prose variant {:?}", p),
+    ///        HebrewAccent::Poetry(p) => println!("Poetry variant {:?}", p),
+    ///        HebrewAccent::Pseudo(p) => println!("Pseudo variant {:?}", p),
+    ///    }
+    /// }
+    /// ```
     pub fn iter() -> impl Iterator<Item = HebrewAccent> {
         use strum::IntoEnumIterator;
 
@@ -176,7 +188,7 @@ impl From<ProseAccent> for HebrewAccent {
     ///
     /// Basic conversion using `.into()`:
     ///
-    /// ```
+    /// ```rust
     /// use hebrew_accents::{HebrewAccent, ProseAccent};
     ///
     /// let prose = ProseAccent::Silluq;
@@ -187,7 +199,7 @@ impl From<ProseAccent> for HebrewAccent {
     ///
     /// Using explicit `From::from()` syntax:
     ///
-    /// ```
+    /// ```rust
     /// use hebrew_accents::{HebrewAccent, ProseAccent};
     ///
     /// let accent = HebrewAccent::from(ProseAccent::Atnach);

@@ -15,7 +15,7 @@ const fn utf8_cp_constructor(
     symbol: char,
     position: CodePointPosition,
     stress_position: StressPosition,
-    canonical_name: &'static str,
+    unicode_name: &'static str,
     code_point_value: &'static str,
     hex_bytes: &'static str,
 ) -> Utf8CodePoint {
@@ -23,7 +23,7 @@ const fn utf8_cp_constructor(
         symbol,
         position,
         stress_position,
-        canonical_name,
+        unicode_name,
         code_point_value,
         hex_bytes,
     }
@@ -421,7 +421,7 @@ pub(crate) const CODEPOINT_METEG: Utf8CodePoint = utf8_cp_constructor(
 
 pub(crate) const CODEPOINT_MAQAF: Utf8CodePoint = utf8_cp_constructor(
     '־',
-    CodePointPosition::Maqqaf,
+    CodePointPosition::Maqqaph,
     StressPosition::NotApplicable,
     "HEBREW PUNCTUATION MAQAF",
     "U+05BE",

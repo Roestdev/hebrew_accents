@@ -859,7 +859,7 @@ fn is_part_of_two_code_point_accent_look_behind(
     target_char: &str,
     idx_target: usize,
     lookbehind_combos: &[char],
-    word_span: usize,
+    compound_type: usize,
 ) -> bool {
     // 1️⃣  Convert the incoming `&str` to a single `char`.
     // --------------------------------------------------------------
@@ -894,7 +894,7 @@ fn is_part_of_two_code_point_accent_look_behind(
         if c == ' ' || c == MAQQAPH_AS_CHAR {
             word_breaks += 1;
             // If we have crossed the allowed number of word spans, stop.
-            if word_breaks >= word_span {
+            if word_breaks >= compound_type {
                 return false;
             }
             continue;

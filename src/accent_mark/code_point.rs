@@ -14,5 +14,5 @@ pub(crate) struct Utf8CodePoint {
     /// The hex value of the UTF-8 code-point
     pub(crate) hex_bytes: &'static str,
     /// The name of the UTF-8 code-point as mentioned in the UTF-8 code tables
-    pub(crate) canonical_name: &'static str,
+    pub(crate) unicode_name: &'static str,
 }

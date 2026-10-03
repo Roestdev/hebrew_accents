@@ -7,6 +7,7 @@
 /// - **Grid positions (0-5)**: Standard placement relative to base consonant
 /// - **Special positions (6-8)**: Semantic overrides that bypass normal grid
 ///
+/// BelowLeft is a position that is not used by any accent
 /// All values are compile-time constants in static registries.
 /// No heap allocation or runtime construction required.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
@@ -25,10 +26,10 @@ pub(crate) enum CodePointPosition {
     BelowCenter = 4,
     /// Below the baseline, right of the consonant
     BelowRight = 5,
-    /// Inter-word connector (Maqqaf — ֿ)
-    Maqqaf = 6,
     /// End-of-verse marker (Sof Pasuq — ׃)
-    SofPasuq = 7,
+    SofPasuq = 6,
+    /// Inter-word connector (Maqqaf — ֿ)
+    Maqqaph = 7,
     /// Visual separator (Paseq — ֊)
     Paseq = 8,
 }

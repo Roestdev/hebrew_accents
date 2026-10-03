@@ -25,7 +25,7 @@ use crate::ProseAccent;
 /// ## Safety Requirements
 /// - Order MUST match `ProseAccent` discriminant values exactly
 /// - Length equals `ProseAccent::LEN` (validated via tests)
-/// - All name fields populated (no "todo" placeholders)
+/// - All name fields populated (no "// todo" placeholders)
 ///
 /// ## Sources
 /// - Biblia Hebraica Stuttgartensia (Kittel 4th ed.)
