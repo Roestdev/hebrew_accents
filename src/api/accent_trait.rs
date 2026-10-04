@@ -287,7 +287,7 @@ pub trait Accent {
     /// ```rust
     /// use hebrew_accents::{Accent, ProseAccent};
     ///
-    /// let accent = ProseAccent::SomeVariant;
+    /// let accent = ProseAccent::PazerGadol;
     /// if let Some(alts) = accent.alternate_names() {
     ///     println!("Hebrew: {}", alts.hebrew_name);
     ///     println!("English: {}", alts.english_name);

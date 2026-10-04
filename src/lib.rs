@@ -127,6 +127,7 @@ mod accent_mark;
 mod api;
 mod error;
 mod sentence;
+mod version;
 
 // Re-exports
 pub use crate::api::Accent;
@@ -153,6 +154,11 @@ pub use crate::api::try_derive_context;
 pub use crate::error::{GroupLevelError, SentenceContextError};
 
 pub(crate) use crate::accent::display_cantillation_symbol;
+
+// Re-export unicode info for convenient access
+pub use version::{
+    unicode_version, unicode_version_info, UnicodeVersionInfo, UNICODE_REFERENCE, UNICODE_VERSION,
+};
 
 /// This module contains additional documentation resources.
 pub mod docs {
