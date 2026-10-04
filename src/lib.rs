@@ -101,14 +101,14 @@
 //!
 //!  - accent type          (Primary, Secondary)
 //!  - category             (Disjunctive, Conjunctive)
-//!  - stress_position          (Impositive, Postpositive, Prepositive)
+//!  - stress_position      (Impositive, Postpositive, Prepositive)
 //!
 //!  For debugging purposes:
 //!
 //!  - details    
 //!
 //! ## Examples
-//! todo
+//! // TODO
 //!
 //! ### Text inspection
 //!
@@ -132,6 +132,7 @@ mod sentence;
 pub use crate::api::Accent;
 pub use crate::api::AccentCategory;
 pub use crate::api::AccentKind;
+pub use crate::api::AlternateNames;
 pub use crate::api::CantillationMark;
 pub use crate::api::CantillationMarkPlacement;
 pub use crate::api::CantillationMarkStressPosition;

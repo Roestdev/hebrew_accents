@@ -16,7 +16,7 @@ use crate::{
 /// **Safety Requirements:**
 /// - `PseudoAccent::LEN` must always equal table length (validated via compile-time guard)
 /// - Entries must correspond exactly to enum declaration order
-/// - All name fields populated (no "// todo" placeholders)
+/// - All name fields populated
 ///
 pub(crate) static PSEUDO_ACCENT_TABLE: [AccentMetaData; PseudoAccent::LEN] =
     [SOPH_PASUQ_INFO, MAQQAPH_INFO, PASEQ_INFO];

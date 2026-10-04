@@ -1,4 +1,5 @@
 mod accent_trait;
+mod alternate_names;
 mod compound_type;
 mod contains;
 mod context;
@@ -13,6 +14,7 @@ mod public_model;
 mod sentence_context;
 
 pub use accent_trait::Accent;
+pub use alternate_names::AlternateNames;
 pub use compound_type::CompoundType;
 pub use context::Context;
 pub use hebrew_accent::HebrewAccent;

@@ -885,11 +885,11 @@ mod prose_accents {
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
 
-        // One Mehuppach, part of Mehuppach Legarmeh (no space) TODO
+        // One Mehuppach, part of Mehuppach Legarmeh (no space)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת׀ הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
-        // One Mehuppach, part of Mehuppach Legarmeh (one space) TODO
+        // One Mehuppach, part of Mehuppach Legarmeh (one space)
         let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת ׀ הארץ׃", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));

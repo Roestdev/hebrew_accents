@@ -1,5 +1,5 @@
 use crate::api::CompoundType;
-use crate::{AccentCategory, AccentKind, CantillationMark, GroupLevel};
+use crate::{AccentCategory, AccentKind, AlternateNames, CantillationMark, GroupLevel};
 /// The `Accent` trait provides a unified interface for working with Hebrew
 /// cantillation marks (also known as ta'amim or trope).
 ///
@@ -276,6 +276,24 @@ pub trait Accent {
     /// println!("Display: {}", symbol);  // "֫"
     /// ```
     fn cantillation_symbol(&self) -> String;
+
+    /// Returns alternate/transvariant names for this accent, if documented.
+    ///
+    /// Some accents have variant spellings or names used in different
+    /// textual traditions (e.g., BHS variants, manuscript variants).
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use hebrew_accents::{Accent, ProseAccent};
+    ///
+    /// let accent = ProseAccent::SomeVariant;
+    /// if let Some(alts) = accent.alternate_names() {
+    ///     println!("Hebrew: {}", alts.hebrew_name);
+    ///     println!("English: {}", alts.english_name);
+    /// }
+    /// ```
+    fn alternate_names(&self) -> Option<AlternateNames>;
 }
 
 #[cfg(test)]

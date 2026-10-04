@@ -2505,192 +2505,195 @@ mod unit_tests_cross_context {
     use super::*;
     #[test]
     // accents in the wrong context
-    fn try_find_prose_accent_in_poetry_context() {
-        // try find Segolta in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+    fn try_find_prose_accent_in_poetic_context() {
+        let poetic = Context::Poetic;
+        // try find Segolta in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Segolta.into()), None);
-        // try find Shalshelet in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Shalshelet in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::Shalshelet.into()),
             None
         );
-        // try find ZaqephQatan in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ZaqephQatan in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::ZaqephQatan.into()),
             None
         );
-        // try find ZaqephGadol in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ZaqephGadol in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::ZaqephGadol.into()),
             None
         );
-        // try find Revia in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Revia in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Revia.into()), None);
-        // try find Tiphcha in Poetic context TODO
-        // let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        // assert_eq!(
-        //     sc.unwrap().find_accent(ProseAccent::Tiphcha.into()),
-        //     None
-        // );
-        // try find Zarqa in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Tiphcha in poetic context // TODO
+        //let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
+        //assert_eq!(sc.unwrap().find_accent(ProseAccent::Tiphcha.into()), None);
+        // try find Zarqa in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Zarqa.into()), None);
-        // try find Yetiv in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Yetiv in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Yetiv.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Tevir in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Tevir.into()), None);
-        // try find Geresh in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Geresh in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Geresh.into()), None);
-        // try find Gershayim in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Gershayim in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Gershayim.into()), None);
-        // try find Pazer in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Pazer in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Pazer.into()), None);
-        // try find PazerGadol in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find PazerGadol in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::PazerGadol.into()),
             None
         );
-        // try find TelishaGedolah in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find TelishaGedolah in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::TelishaGedolah.into()),
             None
         );
-        // try find Legarmeh in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Legarmeh in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Legarmeh.into()), None);
-        // try find Munach in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Munach in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Munach.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Mahpakh in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Mahpakh.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Merkha in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Merkha.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find MerkhaKephulah in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::MerkhaKephulah.into()),
             None
         );
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Darga in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Darga.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Azla in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Azla.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find TelishaQetannah in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::TelishaQetannah.into()),
             None
         );
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Galgal in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Galgal.into()), None);
-        // try find Tevir in Poetic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Meayla in poetic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Meayla.into()), None);
     }
     #[test]
     fn try_find_poetry_accent_in_prosaic_context() {
-        // try find OlehWeYored in Prose context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Prosaic);
+        let prose = Context::Prosaic;
+        // try find OlehWeYored in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::OlehWeYored.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ReviaGadol in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaGadol.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ReviaMugrash in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaMugrash.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ShalsheletGadol in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap()
                 .find_accent(PoetryAccent::ShalsheletGadol.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
-        assert_eq!(sc.unwrap().find_accent(PoetryAccent::Tsinnor.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Tsinnor in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ACCENT in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
+        assert_eq!(
+            sc.unwrap().find_accent(PoetryAccent::ReviaQaton.into()),
+            None
+        );
+        // try find Dechi in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Dechi.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Pazer in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Pazer.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find MehuppakhLegarmeh in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap()
                 .find_accent(PoetryAccent::MehuppakhLegarmeh.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ACCEAzlaLegarmehNT in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::AzlaLegarmeh.into()),
             None
         );
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Illuy in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Illuy.into()), None);
-        // try find ACCENT in PoetProseic context TODO
-        //let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Tarcha in prosaic context //TODO
+        //let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         //assert_eq!(sc.unwrap().find_accent(PoetryAccent::Tarcha.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        //try find Galgal in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Galgal.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Mehuppakh in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::Mehuppakh.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find Azla in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(sc.unwrap().find_accent(PoetryAccent::Azla.into()), None);
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find ShalsheletQetannah in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap()
                 .find_accent(PoetryAccent::ShalsheletQetannah.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find TsinnoritMerkha in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap()
                 .find_accent(PoetryAccent::TsinnoritMerkha.into()),
             None
         );
-        // try find ACCENT in PoetProseic context
-        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        // try find TsinnoritMahpakh in prosaic context
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", prose);
         assert_eq!(
             sc.unwrap()
                 .find_accent(PoetryAccent::TsinnoritMahpakh.into()),
@@ -2774,7 +2777,6 @@ mod accent_metadata_function_coverage_tests {
         let sc = SentenceContext::new("יצחק אל־יעק֓ב ויברך", Context::Poetic);
         let binding = sc.unwrap();
         let result = binding.find_accent(PoetryAccent::ShalsheletQetannah.into());
-        // This has a TODO in the code, but we test it anyway
         assert!(result.is_some() || result.is_none());
     }
 

@@ -1,6 +1,10 @@
 use crate::accent_mark::{CodePointPosition, StressPosition};
 
 /// Details on a specific UTF-8 Unicode code-point
+///
+/// This is an internal structure combining:
+///   - Cantillation Mark (symbol, position, stress_position)
+///   - technical information (code_point_value,hex_bytes,unicode_name)
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct Utf8CodePoint {
     /// The symbol of the UTF-8 code-point

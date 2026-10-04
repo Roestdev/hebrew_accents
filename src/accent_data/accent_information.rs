@@ -1,7 +1,7 @@
 //! This file contains all static data of the 'Hebrew Accents'
 
 // Crate‑internal (local modules)
-use crate::accent::{AccentMetaData, AlternateNames, CantillationSymbol};
+use crate::accent::{AccentMetaData, CantillationSymbol, PrivAlternateNames};
 use crate::api::CompoundType;
 use crate::{AccentCategory, AccentKind};
 
@@ -10,10 +10,10 @@ use crate::accent_mark::{
     CODEPOINT_ILUY, CODEPOINT_MAHAPAKH, CODEPOINT_MAQAF, CODEPOINT_MERKHA, CODEPOINT_MERKHA_KEFULA,
     CODEPOINT_METEG, CODEPOINT_MUNAH, CODEPOINT_OLE, CODEPOINT_PASEQ, CODEPOINT_PASHTA,
     CODEPOINT_PAZER, CODEPOINT_QADMA, CODEPOINT_QARNEY_PARA, CODEPOINT_REVIA, CODEPOINT_SEGOL,
-    CODEPOINT_SHALSHELET, CODEPOINT_SILLUQ, CODEPOINT_SOPH_PASUQ, CODEPOINT_TELISHA_GEDOLA,
-    CODEPOINT_TELISHA_QETANA, CODEPOINT_TEVIR, CODEPOINT_TIPEHA, CODEPOINT_YERAH_BEN_YOMO,
-    CODEPOINT_YETIV, CODEPOINT_ZAQEF_GADOL, CODEPOINT_ZAQEF_QATAN, CODEPOINT_ZARQA,
-    CODEPOINT_ZINOR, TRADITION_NAMES_AZLA_LEGARMEH, TRADITION_NAMES_DARGA, TRADITION_NAMES_DEHI,
+    CODEPOINT_SHALSHELET, CODEPOINT_SOPH_PASUQ, CODEPOINT_TELISHA_GEDOLA, CODEPOINT_TELISHA_QETANA,
+    CODEPOINT_TEVIR, CODEPOINT_TIPEHA, CODEPOINT_YERAH_BEN_YOMO, CODEPOINT_YETIV,
+    CODEPOINT_ZAQEF_GADOL, CODEPOINT_ZAQEF_QATAN, CODEPOINT_ZARQA, CODEPOINT_ZINOR,
+    TRADITION_NAMES_AZLA_LEGARMEH, TRADITION_NAMES_DARGA, TRADITION_NAMES_DEHI,
     TRADITION_NAMES_ETNAHTA, TRADITION_NAMES_GERESH, TRADITION_NAMES_GERSHAYIM,
     TRADITION_NAMES_ILUY, TRADITION_NAMES_LEGARMEH, TRADITION_NAMES_MAHAPAKH,
     TRADITION_NAMES_MAQAF, TRADITION_NAMES_MEHUPPAKH_LEGARMEH, TRADITION_NAMES_MERKHA,
@@ -34,13 +34,17 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "close, cessation",
     sbl_academic: "sillûq",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SILLUQ,
+        primary_mark: &CODEPOINT_METEG,
         secondary_mark: None,
     },
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse."#,
+        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
+            It is possible to have both a Silluq and Meteg in one word,
+            where the Meteg comes before the Silluq.
+            The Silluq appears once per verse.
+"#,
     ),
     kind: Some(AccentKind::Primary),
     category: Some(AccentCategory::Disjunctive),
@@ -58,7 +62,10 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some(r#"The major disjunctive accent dividing the verse in two halves."#),
+    notes: Some(
+        r#"The major disjunctive accent dividing the verse in two halves.
+    It appears only once per verse"#,
+    ),
     kind: Some(AccentKind::Primary),
     category: Some(AccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ETNAHTA,
@@ -98,7 +105,7 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
-pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
+pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
     hebrew_concept: "small upright or small standing one",
@@ -107,12 +114,7 @@ pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_ZAQEF_QATAN,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
-        english_name: "Zaqeph Qatan",
-        hebrew_name: "זָקֵף קָטָן",
-        hebrew_concept: "small upright or small standing one",
-        sbl_academic: "zāqēp qāṭān",
-    }),
+    alternate_names: None,
     compound_type: None,
     notes: Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#),
     kind: Some(AccentKind::Primary),
@@ -248,7 +250,7 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_GERESH,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Teres",
         hebrew_name: "טֶרֶס",
         hebrew_concept: "a boundary or border",
@@ -306,7 +308,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_QARNEY_PARA,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Qarne Pharah",
         hebrew_name: "קַרְנֵי פָרָה",
         hebrew_concept: "horns of a cow",
@@ -380,7 +382,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_MAHAPAKH,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Mehuppakh",
         hebrew_name: "מְהֻפָּ֤ךְ",
         hebrew_concept: "reversed",
@@ -453,7 +455,7 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_QADMA,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Qadma",
         hebrew_name: "קַדְמָ֨א",
         hebrew_concept: "antiquity or a former state",
@@ -492,7 +494,7 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_YERAH_BEN_YOMO,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Jerach Ben Jomo",
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         hebrew_concept: "moon one day old",
@@ -514,7 +516,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_TIPEHA,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Mayla",
         hebrew_name: "מַיְלָא",
         hebrew_concept: "that which is above or elevated position",
@@ -542,7 +544,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_METEG,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Gayah",
         hebrew_name: "גַּעְיָה",
         hebrew_concept: "a lowing",
@@ -555,7 +557,9 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
     The metaphor is vivid: just as an ox lows or bellows to draw attention, 
     the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak."#,
+    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
+    It is possible to have both a Meteg and Silluq in one word,
+    where the Meteg comes before the Silluq.!"#,
     ),
     kind: Some(AccentKind::Secondary),
     category: Some(AccentCategory::Conjunctive),
@@ -580,9 +584,19 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_OLE,
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
-    alternate_names: None,
+    alternate_names: Some(PrivAlternateNames {
+        english_name: "Mahpakh and Merkha",
+        hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
+        hebrew_concept: "turning round and prolonging",
+        sbl_academic: "mahpak ûmērəkāʾ",
+    }),
     compound_type: Some(CompoundType::CanSpanTwoWords),
-    notes: Some("The primary_mark codepoint is Mehuppakh but located above the consonant. It is then called OLE."),
+    notes: Some(
+        r#"The primary_mark looks like a Mehuppakh, 
+but is located above the consonant in stead of below.
+It is then called OLE. When preceded by no place to attach, Yored remains alone.
+The alternate BHS naming is fabricated"#,
+    ),
     kind: Some(AccentKind::Primary),
     category: Some(AccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_OLEH_WEYORED,
@@ -650,7 +664,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_ZINOR,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Zarqa",
         hebrew_name: "זַרְקָא",
         hebrew_concept: "to sprinkle, scatter",
@@ -689,7 +703,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_DEHI,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Tiphcha",
         hebrew_name: "טִפְחָא",
         hebrew_concept: "handbreadth or diagonal",
@@ -797,7 +811,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_MAHAPAKH,
         secondary_mark: None,
     },
-    alternate_names: Some(AlternateNames {
+    alternate_names: Some(PrivAlternateNames {
         english_name: "Mahpakh",
         hebrew_name: "מַהְפַּךְ",
         hebrew_concept: "turning round",
@@ -899,7 +913,10 @@ pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("Can link two (or more) short words together after which they function as a single compound word bearing a single Hebrew accent."),
+    notes: Some(
+        "Can link two (or more) short words together after which 
+    they function as a single compound word bearing a single Hebrew accent.",
+    ),
     kind: None,
     category: None,
     traditions: TRADITION_NAMES_MAQAF,

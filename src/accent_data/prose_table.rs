@@ -4,7 +4,7 @@ use crate::accent_data::accent_information::{
     MAHPAKH_INFO, MEAYLA_INFO, MERKHA_INFO, MERKHA_KEPHULAH_INFO, METEG_INFO, MUNACH_INFO,
     PASHTA_INFO, PAZER_GADOL_INFO, PAZER_INFO, REVIA_INFO, SEGOLTA_INFO, SHALSHELET_INFO,
     SILLUQ_INFO, TELISHA_GEDOLAH_INFO, TELISHA_QETANNAH_INFO, TEVIR_INFO, TIPHCHA_INFO, YETIV_INFO,
-    ZAQEPH_GADOL_INFO, ZAQEPH_QATON_INFO, ZARQA_INFO,
+    ZAQEPH_GADOL_INFO, ZAQEPH_QATAN_INFO, ZARQA_INFO,
 };
 use crate::ProseAccent;
 
@@ -25,7 +25,7 @@ use crate::ProseAccent;
 /// ## Safety Requirements
 /// - Order MUST match `ProseAccent` discriminant values exactly
 /// - Length equals `ProseAccent::LEN` (validated via tests)
-/// - All name fields populated (no "// todo" placeholders)
+/// - All name fields populated
 ///
 /// ## Sources
 /// - Biblia Hebraica Stuttgartensia (Kittel 4th ed.)
@@ -36,7 +36,7 @@ pub(crate) static PROSE_ACCENT_TABLE: [AccentMetaData; ProseAccent::LEN] = [
     ATNACH_INFO,
     SEGOLTA_INFO,
     SHALSHELET_INFO,
-    ZAQEPH_QATON_INFO,
+    ZAQEPH_QATAN_INFO,
     ZAQEPH_GADOL_INFO,
     REVIA_INFO,
     TIPHCHA_INFO,

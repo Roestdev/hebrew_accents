@@ -1,6 +1,6 @@
-use crate::{Accent, PoetryAccent, ProseAccent, PseudoAccent};
-use crate::accent::{resolve_disjunctive_group};
+use crate::accent::resolve_disjunctive_group;
 use crate::api::CompoundType;
+use crate::{Accent, AlternateNames, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::{AccentCategory, AccentKind, CantillationMark, GroupLevel};
 
 /// Hebrew Accent, either a Prose or Poetry accent
@@ -436,6 +436,11 @@ impl Accent for HebrewAccent {
             HebrewAccent::Poetry(p) => p.cantillation_symbol(),
             HebrewAccent::Pseudo(p) => p.cantillation_symbol(),
         }
+    }
+
+    #[inline]
+    fn alternate_names(&self) -> Option<AlternateNames> {
+        None //TODO
     }
 }
 

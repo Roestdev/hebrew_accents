@@ -26,11 +26,13 @@
 //! println!("{}", mark); // "Maqqaph (מַקָּף), meaning: hyphen"
 //! ```
 
-use crate::Accent;
-use strum_macros::{EnumCount, EnumIter};
-use crate::accent_data::{PSEUDO_ACCENT_TABLE};
+use crate::accent_data::PSEUDO_ACCENT_TABLE;
 use crate::api::CompoundType;
-use crate::{display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel};
+use crate::{
+    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
+};
+use crate::{Accent, AlternateNames};
+use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a syntactic marker associated with Hebrew cantillation.
 ///
@@ -141,6 +143,7 @@ pub enum PseudoAccent {
     /// Paseq does not function as a standalone accent. It only appears
     /// between other cantillation marks and does not affect the melodic
     /// chanting of the verse.
+    ///
     Paseq = 2,
 }
 
@@ -180,7 +183,6 @@ const _: () = {
     const LAST_DISCRIMINANT: u8 = PseudoAccent::Paseq as u8;
     assert!((LAST_DISCRIMINANT + 1) as usize == PseudoAccent::LEN);
 };
-
 
 impl Accent for PseudoAccent {
     #[inline]
@@ -261,5 +263,10 @@ impl Accent for PseudoAccent {
     #[inline]
     fn cantillation_symbol(&self) -> String {
         display_cantillation_symbol((*self).into())
+    }
+
+    #[inline]
+    fn alternate_names(&self) -> Option<AlternateNames> {
+        None //TODO
     }
 }

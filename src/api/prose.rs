@@ -42,12 +42,14 @@
 //! println!("Strength: {:?}", accent.relative_strength());
 //! ```
 
-use crate::Accent;
-use strum_macros::{EnumCount, EnumIter};
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
 use crate::accent_data::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::{display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel};
+use crate::{
+    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
+};
+use crate::{Accent, AlternateNames};
+use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew prose cantillation mark.
 ///
@@ -385,7 +387,6 @@ const _: () = {
     assert!((LAST_DISCRIMINANT + 1) as usize == ProseAccent::LEN);
 };
 
-
 impl Accent for ProseAccent {
     #[inline]
     fn hebrew_name(&self) -> &'static str {
@@ -465,5 +466,10 @@ impl Accent for ProseAccent {
     #[inline]
     fn cantillation_symbol(&self) -> String {
         display_cantillation_symbol((*self).into())
+    }
+
+    #[inline]
+    fn alternate_names(&self) -> Option<AlternateNames> {
+        None // TODO
     }
 }

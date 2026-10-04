@@ -1,7 +1,7 @@
 //! This file contains all static data of 'UTF-8 code point'
 //!
 //! Constants below are a mix of the following:
-//! - UTF-8 code table (<https://utf8-chartable.de/unicode-utf8-table.pl>)
+//! - UTF-8 code table (<https://www.unicode.org/Public/18.0.0/charts/PDF/U0590.pdf>)
 //! - naming of the accents according **to** different traditions:
 //!   - <https://en.wikipedia.org/wiki/Hebrew_cantillation>
 //!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
@@ -42,9 +42,8 @@ pub(crate) const CODEPOINT_ETNAHTA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// SEGOL (U+0592) - Only 3 traditions
+// SEGOL (U+0592)
 // ============================================================================
-
 pub(crate) const CODEPOINT_SEGOL: Utf8CodePoint = utf8_cp_constructor(
     '֒',
     CodePointPosition::AboveLeft,
@@ -57,7 +56,6 @@ pub(crate) const CODEPOINT_SEGOL: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // SHALSHELET (U+0593)
 // ============================================================================
-
 pub(crate) const CODEPOINT_SHALSHELET: Utf8CodePoint = utf8_cp_constructor(
     '֓',
     CodePointPosition::AboveCenter,
@@ -70,7 +68,6 @@ pub(crate) const CODEPOINT_SHALSHELET: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ZAQEF QATAN (U+0594)
 // ============================================================================
-
 pub(crate) const CODEPOINT_ZAQEF_QATAN: Utf8CodePoint = utf8_cp_constructor(
     '֔',
     CodePointPosition::AboveCenter,
@@ -81,7 +78,7 @@ pub(crate) const CODEPOINT_ZAQEF_QATAN: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// ZAQEF GADOL (U+0595) - All identical (use uniform!)
+// ZAQEF GADOL (U+0595) (use uniform!)
 // ============================================================================
 pub(crate) const CODEPOINT_ZAQEF_GADOL: Utf8CodePoint = utf8_cp_constructor(
     '֕',
@@ -95,7 +92,6 @@ pub(crate) const CODEPOINT_ZAQEF_GADOL: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // TIPEHA (U+0596)
 // ============================================================================
-
 pub(crate) const CODEPOINT_TIPEHA: Utf8CodePoint = utf8_cp_constructor(
     '֖',
     CodePointPosition::BelowCenter,
@@ -124,7 +120,7 @@ pub(crate) const CODEPOINT_REVIA: Utf8CodePoint = utf8_cp_constructor(
 
 pub(crate) const CODEPOINT_ZARQA: Utf8CodePoint = utf8_cp_constructor(
     '֘',
-    CodePointPosition::AboveCenter,
+    CodePointPosition::AboveLeft,
     StressPosition::Impositive,
     "HEBREW ACCENT ZARQA",
     "U+0598",
@@ -183,12 +179,22 @@ pub(crate) const CODEPOINT_GERESH: Utf8CodePoint = utf8_cp_constructor(
     "0xd6 0x9c",
 );
 
-// Geresh Muqdam is disabled - see ticket
+// Geresh Muqdam is DISABLED - see ticket
+// ============================================================================
+//  GERESH MUQDAM (U+059D)
+// ============================================================================
+// pub(crate) const CODEPOINT_GERESH_MUQDAM: Utf8CodePoint = utf8_cp_constructor(
+//     '֜',?
+//     CodePointPosition::AboveCenter,?
+//     StressPosition::Impositive,?
+//     "HEBREW ACCENT GERESH MUQDAM",
+//     "U+059D",
+//     "0xd6 0x9d",
+// );
 
 // ============================================================================
 // GERSHAYIM (U+059E)
 // ============================================================================
-
 pub(crate) const CODEPOINT_GERSHAYIM: Utf8CodePoint = utf8_cp_constructor(
     '֞',
     CodePointPosition::AboveCenter,
@@ -199,7 +205,7 @@ pub(crate) const CODEPOINT_GERSHAYIM: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// QARNEY PARA (U+059F) - All identical
+// QARNEY PARA (U+059F)
 // ============================================================================
 pub(crate) const CODEPOINT_QARNEY_PARA: Utf8CodePoint = utf8_cp_constructor(
     '֟',
@@ -223,7 +229,7 @@ pub(crate) const CODEPOINT_TELISHA_GEDOLA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// PAZER (U+05A1) - Only 3 traditions
+// PAZER (U+05A1)
 // ============================================================================
 pub(crate) const CODEPOINT_PAZER: Utf8CodePoint = utf8_cp_constructor(
     '֡',
@@ -234,10 +240,21 @@ pub(crate) const CODEPOINT_PAZER: Utf8CodePoint = utf8_cp_constructor(
     "0xd6 0xa1",
 );
 
-// At nah Hafukh disabled - see ticket
+// Atnach Hafukh DISABLED - see ticket
+// ============================================================================
+// ATNAH HAFUKH (U+05A2)
+// ============================================================================
+// pub(crate) const CODEPOINT_ATNAH_HAFUKH: Utf8CodePoint = utf8_cp_constructor(
+//     '֡',?
+//     CodePointPosition::AboveCenter,?
+//     StressPosition::Impositive, ?
+//     "HEBREW ACCENT ATNAH HAFUKH",
+//     "U+05A2",
+//     "0xd6 0xa2",
+// );
 
 // ============================================================================
-// MUNAH (U+05A3) - Only 3 traditions
+// MUNAH (U+05A3)
 // ============================================================================
 pub(crate) const CODEPOINT_MUNAH: Utf8CodePoint = utf8_cp_constructor(
     '֣',
@@ -249,7 +266,7 @@ pub(crate) const CODEPOINT_MUNAH: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// MAHPAKH (U+05A4)
+// MAHAPAKH (U+05A4)
 // ============================================================================
 pub(crate) const CODEPOINT_MAHAPAKH: Utf8CodePoint = utf8_cp_constructor(
     '֤',
@@ -273,9 +290,8 @@ pub(crate) const CODEPOINT_MERKHA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// MERKHA KEFULA (U+05A6) - Only 3 traditions
+// MERKHA KEFULA (U+05A6)
 // ============================================================================
-
 pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePoint = utf8_cp_constructor(
     '֦',
     CodePointPosition::BelowCenter,
@@ -286,9 +302,8 @@ pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// DARGA (U+05A7) - All identical
+// DARGA (U+05A7)
 // ============================================================================
-
 pub(crate) const CODEPOINT_DARGA: Utf8CodePoint = utf8_cp_constructor(
     '֧',
     CodePointPosition::BelowCenter,
@@ -299,9 +314,8 @@ pub(crate) const CODEPOINT_DARGA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// QADMA (U+05A8) - Only 3 traditions
+// QADMA (U+05A8)
 // ============================================================================
-
 pub(crate) const CODEPOINT_QADMA: Utf8CodePoint = utf8_cp_constructor(
     '֨',
     CodePointPosition::AboveCenter,
@@ -314,7 +328,6 @@ pub(crate) const CODEPOINT_QADMA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // TELISHA QETANA (U+05A9)
 // ============================================================================
-
 pub(crate) const CODEPOINT_TELISHA_QETANA: Utf8CodePoint = utf8_cp_constructor(
     '֩',
     CodePointPosition::AboveLeft,
@@ -325,9 +338,8 @@ pub(crate) const CODEPOINT_TELISHA_QETANA: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// YERAH BEN YOMO (U+05AA) - All identical
+// YERAH BEN YOMO (U+05AA)
 // ============================================================================
-
 pub(crate) const CODEPOINT_YERAH_BEN_YOMO: Utf8CodePoint = utf8_cp_constructor(
     '֪',
     CodePointPosition::BelowCenter,
@@ -338,7 +350,7 @@ pub(crate) const CODEPOINT_YERAH_BEN_YOMO: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// OLE (U+05AB) - All identical
+// OLE (U+05AB)
 // ============================================================================
 
 pub(crate) const CODEPOINT_OLE: Utf8CodePoint = utf8_cp_constructor(
@@ -351,9 +363,8 @@ pub(crate) const CODEPOINT_OLE: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// ILUY (U+05AC) - All identical
+// ILUY (U+05AC)
 // ============================================================================
-
 pub(crate) const CODEPOINT_ILUY: Utf8CodePoint = utf8_cp_constructor(
     '֬',
     CodePointPosition::AboveCenter,
@@ -364,9 +375,8 @@ pub(crate) const CODEPOINT_ILUY: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// DEHI (U+05AD) - All identical
+// DEHI (U+05AD)
 // ============================================================================
-
 pub(crate) const CODEPOINT_DEHI: Utf8CodePoint = utf8_cp_constructor(
     '֭',
     CodePointPosition::BelowCenter,
@@ -377,9 +387,8 @@ pub(crate) const CODEPOINT_DEHI: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// ZINOR (U+05AE) - All identical
+// ZINOR (U+05AE)
 // ============================================================================
-
 pub(crate) const CODEPOINT_ZINOR: Utf8CodePoint = utf8_cp_constructor(
     '֮',
     CodePointPosition::AboveCenter,
@@ -390,22 +399,10 @@ pub(crate) const CODEPOINT_ZINOR: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics)
+// ADDITIONAL CodePoints used
 // ============================================================================
-
-pub(crate) const CODEPOINT_SILLUQ: Utf8CodePoint = utf8_cp_constructor(
-    'ֽ',
-    CodePointPosition::BelowCenter,
-    StressPosition::Impositive,
-    "HEBREW POINT SILLUQ",
-    "U+05BD",
-    "0xd6 0xbd",
-);
-
+// METEG (U+05BD) (shares codepoint with Silluq)
 // ============================================================================
-// METEG (U+05BD) - All identical (shares codepoint with Silluq)
-// ============================================================================
-
 pub(crate) const CODEPOINT_METEG: Utf8CodePoint = utf8_cp_constructor(
     'ֽ',
     CodePointPosition::BelowCenter,
@@ -416,9 +413,8 @@ pub(crate) const CODEPOINT_METEG: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// MAQAF (U+05BE) - No traditions
+// MAQAF (U+05BE)
 // ============================================================================
-
 pub(crate) const CODEPOINT_MAQAF: Utf8CodePoint = utf8_cp_constructor(
     '־',
     CodePointPosition::Maqqaph,
@@ -429,9 +425,8 @@ pub(crate) const CODEPOINT_MAQAF: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// PASEQ (U+05C0) - All identical
+// PASEQ (U+05C0)
 // ============================================================================
-
 pub(crate) const CODEPOINT_PASEQ: Utf8CodePoint = utf8_cp_constructor(
     '׀',
     CodePointPosition::Paseq,
@@ -442,9 +437,8 @@ pub(crate) const CODEPOINT_PASEQ: Utf8CodePoint = utf8_cp_constructor(
 );
 
 // ============================================================================
-// SOPH PASUQ (U+05C3) - No traditions
+// SOPH PASUQ (U+05C3)
 // ============================================================================
-
 pub(crate) const CODEPOINT_SOPH_PASUQ: Utf8CodePoint = utf8_cp_constructor(
     '׃',
     CodePointPosition::SofPasuq,
