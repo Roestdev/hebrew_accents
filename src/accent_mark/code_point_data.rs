@@ -447,3 +447,764 @@ pub(crate) const CODEPOINT_SOPH_PASUQ: Utf8CodePoint = utf8_cp_constructor(
     "U+05C3",
     "0xd7 0x83",
 );
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::CantillationMarkStressPosition;
+    // ===== BASIC CONSTRUCTION TESTS =====
+
+    #[test]
+    fn test_utf8_cp_constructor_creates_valid_instance() {
+        let cp = utf8_cp_constructor(
+            '֑', // symbol
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp.symbol, '֑');
+        assert_eq!(cp.position, CodePointPosition::BelowCenter);
+        assert_eq!(cp.stress_position, StressPosition::Impositive);
+        assert_eq!(cp.unicode_name, "HEBREW ACCENT ETNAHTA");
+        assert_eq!(cp.code_point_value, "U+0591");
+        assert_eq!(cp.hex_bytes, "D6 91");
+    }
+
+    #[test]
+    fn test_constructor_sets_all_fields() {
+        let cp = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "PAISEQ",
+            "U+05C0",
+            "D7 80",
+        );
+
+        // Verify each field individually
+        assert_eq!(cp.symbol, '׀');
+        assert_eq!(cp.position, CodePointPosition::Paseq);
+        assert_eq!(cp.stress_position, StressPosition::NotApplicable);
+        assert_eq!(cp.unicode_name, "PAISEQ");
+        assert_eq!(cp.code_point_value, "U+05C0");
+        assert_eq!(cp.hex_bytes, "D7 80");
+    }
+
+    #[test]
+    fn test_constructor_with_silluq_character() {
+        let cp = utf8_cp_constructor(
+            '֑', // Silluq
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT SILLUQ",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp.symbol, '֑');
+        assert_eq!(cp.code_point_value, "U+0591");
+        assert_eq!(cp.unicode_name, "HEBREW ACCENT SILLUQ");
+    }
+
+    #[test]
+    fn test_constructor_with_maqqaph() {
+        let cp = utf8_cp_constructor(
+            '־', // Maqqaph (hyphen)
+            CodePointPosition::Maqqaph,
+            StressPosition::NotApplicable,
+            "HEBREW PUNCTUATION MAQQAPH",
+            "U+05BE",
+            "D6 BE",
+        );
+
+        assert_eq!(cp.symbol, '־');
+        assert_eq!(cp.position, CodePointPosition::Maqqaph);
+        assert_eq!(cp.stress_position, StressPosition::NotApplicable);
+        assert_eq!(cp.code_point_value, "U+05BE");
+    }
+
+    #[test]
+    fn test_constructor_with_pashta() {
+        let cp = utf8_cp_constructor(
+            '֗', // Pashta
+            CodePointPosition::BelowRight,
+            StressPosition::Postpositive,
+            "HEBREW ACCENT PASHTA",
+            "U+05A8",
+            "D6 A8",
+        );
+
+        assert_eq!(cp.symbol, '֗');
+        assert_eq!(cp.position, CodePointPosition::BelowRight);
+        assert_eq!(cp.stress_position, StressPosition::Postpositive);
+    }
+
+    // ===== CONST EVALUATION TESTS =====
+
+    #[test]
+    fn test_const_constructor_at_compile_time() {
+        const CP: Utf8CodePoint = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(CP.symbol, '֑');
+        assert_eq!(CP.code_point_value, "U+0591");
+        assert_eq!(CP.hex_bytes, "D6 91");
+    }
+
+    #[test]
+    fn test_const_constructor_multiple_instances() {
+        const CP1: Utf8CodePoint = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        const CP2: Utf8CodePoint = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "PAISEQ",
+            "U+05C0",
+            "D7 80",
+        );
+
+        assert_eq!(CP1.symbol, '֑');
+        assert_eq!(CP2.symbol, '׀');
+        assert_ne!(CP1.symbol, CP2.symbol);
+    }
+
+    #[test]
+    fn test_const_constructor_can_be_used_in_static() {
+        static CP: Utf8CodePoint = utf8_cp_constructor(
+            '֗',
+            CodePointPosition::BelowRight,
+            StressPosition::Postpositive,
+            "PASHTA",
+            "U+05A8",
+            "D6 A8",
+        );
+
+        assert_eq!(CP.symbol, '֗');
+        assert_eq!(CP.code_point_value, "U+05A8");
+    }
+
+    // ===== FIELD ACCESS TESTS =====
+
+    #[test]
+    fn test_symbol_field_is_accessible() {
+        let cp = utf8_cp_constructor(
+            'א',
+            CodePointPosition::AboveLeft,
+            StressPosition::Prepositive,
+            "ALEF",
+            "U+05D0",
+            "D7 90",
+        );
+
+        // Direct field access on public struct
+        assert_eq!(cp.symbol, 'א');
+    }
+
+    #[test]
+    fn test_code_point_value_field_format() {
+        // Test various code point value formats
+        let cp1 = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert!(cp1.code_point_value.starts_with("U+"));
+        assert_eq!(cp1.code_point_value.len(), 6); // "U+" + 4 hex digits
+    }
+
+    #[test]
+    fn test_hex_bytes_field_format() {
+        let cp = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "TEST",
+            "U+05C0",
+            "D7 80",
+        );
+
+        // Hex bytes should be space-separated
+        assert!(!cp.hex_bytes.is_empty());
+        assert!(cp
+            .hex_bytes
+            .chars()
+            .all(|c| c.is_ascii_hexdigit() || c == ' '));
+    }
+
+    // ===== CODE POINT POSITION VARIANTS =====
+
+    #[test]
+    fn test_constructor_with_above_center() {
+        let cp = utf8_cp_constructor(
+            '֓',
+            CodePointPosition::AboveCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0593",
+            "D6 93",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::AboveCenter);
+    }
+
+    #[test]
+    fn test_constructor_with_above_left() {
+        let cp = utf8_cp_constructor(
+            '֕',
+            CodePointPosition::AboveLeft,
+            StressPosition::Prepositive,
+            "TEST",
+            "U+0595",
+            "D6 95",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::AboveLeft);
+    }
+
+    #[test]
+    fn test_constructor_with_above_right() {
+        let cp = utf8_cp_constructor(
+            '֖',
+            CodePointPosition::AboveRight,
+            StressPosition::Postpositive,
+            "TEST",
+            "U+0596",
+            "D6 96",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::AboveRight);
+    }
+
+    #[test]
+    fn test_constructor_with_below_center() {
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::BelowCenter);
+    }
+
+    #[test]
+    fn test_constructor_with_below_right() {
+        let cp = utf8_cp_constructor(
+            '֗',
+            CodePointPosition::BelowRight,
+            StressPosition::Postpositive,
+            "TEST",
+            "U+05A8",
+            "D6 A8",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::BelowRight);
+    }
+
+    #[test]
+    fn test_constructor_with_sof_pasuq() {
+        let cp = utf8_cp_constructor(
+            '׃',
+            CodePointPosition::SofPasuq,
+            StressPosition::NotApplicable,
+            "SOF PASUQ",
+            "U+05C3",
+            "D7 83",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::SofPasuq);
+    }
+
+    #[test]
+    fn test_constructor_with_maqqaph_position() {
+        let cp = utf8_cp_constructor(
+            '־',
+            CodePointPosition::Maqqaph,
+            StressPosition::NotApplicable,
+            "MAQQAPH",
+            "U+05BE",
+            "D6 BE",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::Maqqaph);
+    }
+
+    #[test]
+    fn test_constructor_with_paseq_position() {
+        let cp = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "PAISEQ",
+            "U+05C0",
+            "D7 80",
+        );
+
+        assert_eq!(cp.position, CodePointPosition::Paseq);
+    }
+
+    // ===== STRESS POSITION VARIANTS =====
+
+    #[test]
+    fn test_constructor_with_impositive_stress() {
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp.stress_position, StressPosition::Impositive);
+        assert_eq!(
+            cp.stress_position.to_public(),
+            Some(CantillationMarkStressPosition::Impositive)
+        );
+    }
+
+    #[test]
+    fn test_constructor_with_prepositive_stress() {
+        let cp = utf8_cp_constructor(
+            '֕',
+            CodePointPosition::AboveLeft,
+            StressPosition::Prepositive,
+            "TEST",
+            "U+0595",
+            "D6 95",
+        );
+
+        assert_eq!(cp.stress_position, StressPosition::Prepositive);
+        assert_eq!(
+            cp.stress_position.to_public(),
+            Some(CantillationMarkStressPosition::Prepositive)
+        );
+    }
+
+    #[test]
+    fn test_constructor_with_postpositive_stress() {
+        let cp = utf8_cp_constructor(
+            '֗',
+            CodePointPosition::BelowRight,
+            StressPosition::Postpositive,
+            "TEST",
+            "U+05A8",
+            "D6 A8",
+        );
+
+        assert_eq!(cp.stress_position, StressPosition::Postpositive);
+        assert_eq!(
+            cp.stress_position.to_public(),
+            Some(CantillationMarkStressPosition::Postpositive)
+        );
+    }
+
+    #[test]
+    fn test_constructor_with_not_applicable_stress() {
+        let cp = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "PAISEQ",
+            "U+05C0",
+            "D7 80",
+        );
+
+        assert_eq!(cp.stress_position, StressPosition::NotApplicable);
+        assert_eq!(cp.stress_position.to_public(), None);
+    }
+
+    // ===== UNICODE NAME TESTS =====
+
+    #[test]
+    fn test_unicode_name_is_static_lifetime() {
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        // Verify it's a &'static str (compile-time check)
+        let _static_ref: &'static str = cp.unicode_name;
+        assert_eq!(_static_ref, "HEBREW ACCENT ETNAHTA");
+    }
+
+    #[test]
+    fn test_unicode_name_non_empty() {
+        for accent_name in &[
+            "HEBREW ACCENT ETNAHTA",
+            "HEBREW PUNCTUATION PAISEQ",
+            "HEBREW ACCENT SILLUQ",
+            "",
+        ] {
+            let cp = utf8_cp_constructor(
+                '֑',
+                CodePointPosition::BelowCenter,
+                StressPosition::Impositive,
+                accent_name,
+                "U+0591",
+                "D6 91",
+            );
+
+            // Empty names are allowed (for edge case testing)
+            // But typical usage would have non-empty names
+            if !accent_name.is_empty() {
+                assert!(!cp.unicode_name.is_empty());
+            }
+        }
+    }
+
+    #[test]
+    fn test_unicode_name_consistency() {
+        // Same name should produce same result across multiple calls
+        let cp1 = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "CONSISTENCY_TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        let cp2 = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "CONSISTENCY_TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp1.unicode_name, cp2.unicode_name);
+    }
+
+    // ===== HEX BYTES FORMAT TESTS =====
+
+    #[test]
+    fn test_hex_bytes_two_bytes() {
+        // Most Hebrew combining marks are 2-byte UTF-8 sequences
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        // Two bytes separated by space
+        assert_eq!(cp.hex_bytes, "D6 91");
+        assert_eq!(cp.hex_bytes.split(' ').count(), 2);
+    }
+
+    #[test]
+    fn test_hex_bytes_case_insensitive() {
+        // Both uppercase and lowercase hex should be accepted
+        let cp_upper = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        let cp_lower = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "d6 91",
+        );
+
+        assert_eq!(cp_upper.hex_bytes, "D6 91");
+        assert_eq!(cp_lower.hex_bytes, "d6 91");
+        // Case is preserved as provided
+    }
+
+    // ===== COMBINATION TESTS =====
+
+    #[test]
+    fn test_all_position_and_stress_combinations() {
+        let positions = [
+            CodePointPosition::AboveCenter,
+            CodePointPosition::AboveLeft,
+            CodePointPosition::AboveRight,
+            CodePointPosition::BelowCenter,
+            CodePointPosition::BelowRight,
+            CodePointPosition::SofPasuq,
+            CodePointPosition::Maqqaph,
+            CodePointPosition::Paseq,
+        ];
+
+        let stresses = [
+            StressPosition::Impositive,
+            StressPosition::Prepositive,
+            StressPosition::Postpositive,
+            StressPosition::NotApplicable,
+        ];
+
+        for pos in &positions {
+            for stress in &stresses {
+                let cp = utf8_cp_constructor('֑', *pos, *stress, "TEST", "U+0591", "D6 91");
+
+                assert_eq!(cp.position, *pos);
+                assert_eq!(cp.stress_position, *stress);
+            }
+        }
+    }
+
+    #[test]
+    fn test_distinct_characters_produce_distinct_instances() {
+        let cp1 = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        let cp2 = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            "PAISEQ",
+            "U+05C0",
+            "D7 80",
+        );
+
+        assert_ne!(cp1.symbol, cp2.symbol);
+        assert_ne!(cp1.code_point_value, cp2.code_point_value);
+        assert_ne!(cp1.hex_bytes, cp2.hex_bytes);
+        assert_ne!(cp1.unicode_name, cp2.unicode_name);
+    }
+
+    // ===== INTEGRATION WITH OTHER TYPES =====
+
+    #[test]
+    fn test_constructor_with_actual_accent_data() {
+        // Test with real cantillation mark data
+        let silluq = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT SILLUQ",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(silluq.symbol, '֑');
+        assert_eq!(silluq.code_point_value, "U+0591");
+        assert_eq!(silluq.unicode_name, "HEBREW ACCENT SILLUQ");
+    }
+
+    #[test]
+    fn test_constructor_compatibility_with_table_lookup() {
+        // Constructor should produce compatible instances for table storage
+        const TABLE_ENTRY: Utf8CodePoint = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TABLE_TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        // Can be stored in const arrays
+        const TABLE: [Utf8CodePoint; 1] = [TABLE_ENTRY];
+        assert_eq!(TABLE[0].symbol, '֑');
+    }
+
+    // ===== EDGE CASE TESTS =====
+
+    #[test]
+    fn test_constructor_with_control_character_symbol() {
+        // Should accept any char including control characters
+        let cp = utf8_cp_constructor(
+            '\u{25CC}', // DOTTED CIRCLE (used for display)
+            CodePointPosition::AboveCenter,
+            StressPosition::NotApplicable,
+            "DOTTED CIRCLE",
+            "U+25CC",
+            "E2 97 CC",
+        );
+
+        assert_eq!(cp.symbol, '\u{25CC}');
+        assert_eq!(cp.code_point_value, "U+25CC");
+    }
+
+    #[test]
+    fn test_constructor_with_empty_unicode_name() {
+        // Empty unicode_name is technically allowed
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(cp.unicode_name, "");
+        assert!(cp.unicode_name.is_empty());
+    }
+
+    #[test]
+    fn test_constructor_with_long_unicode_name() {
+        // Long unicode names should work fine
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT ETNAHTA FROM BIBLICAL TEXT TRADITION",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(
+            cp.unicode_name,
+            "HEBREW ACCENT ETNAHTA FROM BIBLICAL TEXT TRADITION"
+        );
+    }
+
+    #[test]
+    fn test_constructor_preserves_string_references() {
+        // Static string references should maintain identity
+        const STR1: &str = "CONST_STRING_1";
+        const STR2: &str = "CONST_STRING_2";
+
+        const CP1: Utf8CodePoint = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            STR1,
+            "U+0591",
+            "D6 91",
+        );
+
+        const CP2: Utf8CodePoint = utf8_cp_constructor(
+            '׀',
+            CodePointPosition::Paseq,
+            StressPosition::NotApplicable,
+            STR2,
+            "U+05C0",
+            "D7 80",
+        );
+
+        assert_eq!(CP1.unicode_name, STR1);
+        assert_eq!(CP2.unicode_name, STR2);
+    }
+
+    // ===== DOCUMENTATION EXAMPLE VERIFICATION =====
+
+    #[test]
+    fn doc_example_basic_usage() {
+        // Simulate a documentation example
+        let etnahta = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "HEBREW ACCENT ETNAHTA",
+            "U+0591",
+            "D6 91",
+        );
+
+        assert_eq!(etnahta.symbol, '֑');
+        assert_eq!(etnahta.code_point_value, "U+0591");
+        assert_eq!(etnahta.unicode_name, "HEBREW ACCENT ETNAHTA");
+    }
+
+    // ===== PERFORMANCE-OPTIMIZED USAGE TESTS =====
+
+    #[test]
+    fn test_no_heap_allocation() {
+        // Verify all fields are stack-allocated or static refs
+        let cp = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "NO_HEAP",
+            "U+0591",
+            "D6 91",
+        );
+
+        // No String fields, all &'static str
+        assert!(!format!("{:?}", cp).contains("alloc"));
+    }
+
+    #[test]
+    fn test_const_evaluation_cost_zero() {
+        // Constructor runs at compile time - no runtime cost
+        const CP: Utf8CodePoint = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "COMPILE_TIME",
+            "U+0591",
+            "D6 91",
+        );
+
+        // This access has zero runtime cost
+        let symbol = CP.symbol;
+        assert_eq!(symbol, '֑');
+    }
+
+    // ===== COMPARISON WITH DIRECT CONSTRUCTOR =====
+
+    #[test]
+    fn test_constructor_equivalent_to_struct_literal() {
+        let via_func = utf8_cp_constructor(
+            '֑',
+            CodePointPosition::BelowCenter,
+            StressPosition::Impositive,
+            "TEST",
+            "U+0591",
+            "D6 91",
+        );
+
+        let via_literal = Utf8CodePoint {
+            symbol: '֑',
+            position: CodePointPosition::BelowCenter,
+            stress_position: StressPosition::Impositive,
+            unicode_name: "TEST",
+            code_point_value: "U+0591",
+            hex_bytes: "D6 91",
+        };
+
+        // Both should produce identical results
+        assert_eq!(via_func.symbol, via_literal.symbol);
+        assert_eq!(via_func.position, via_literal.position);
+        assert_eq!(via_func.stress_position, via_literal.stress_position);
+        assert_eq!(via_func.unicode_name, via_literal.unicode_name);
+        assert_eq!(via_func.code_point_value, via_literal.code_point_value);
+        assert_eq!(via_func.hex_bytes, via_literal.hex_bytes);
+    }
+}

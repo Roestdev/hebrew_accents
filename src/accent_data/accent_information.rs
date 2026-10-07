@@ -576,7 +576,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
 
 // Oleh Weyored compound accent
 pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
-    english_name: "Oleh Weyored",
+    english_name: "Oleh WeYored",
     hebrew_name: "עֹלֶה וְיֹרֵד",
     hebrew_concept: "ascending and descending",
     sbl_academic: "ʿōleh wəyōrēd",
@@ -904,7 +904,7 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
     english_name: "Maqqaph",
-    hebrew_name: "מַקֵּף",
+    hebrew_name: "מַקָּף",
     hebrew_concept: "binder",
     sbl_academic: "maqqēp",
     cantillation_symbol: CantillationSymbol {

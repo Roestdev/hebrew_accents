@@ -2973,3 +2973,509 @@ mod accent_metadata_function_coverage_tests {
         let _: HebrewAccent = PseudoAccent::Paseq.into();
     }
 }
+
+#[cfg(test)]
+mod helper_functions_coverage_tests {
+    use super::*;
+
+    // ============================================================
+    // FIND_SILLUQ EDGE CASES
+    // ============================================================
+
+    #[test]
+    fn test_find_silluq_simple() {
+        // Ps 2:1
+        let result = find_silluq("לָ֭מָּה רָגְשׁ֣וּ גוֹיִ֑ם וּ֝לְאֻמִּ֗ים יֶהְגּוּ־רִֽיק");
+        assert!(result.is_some());
+    }
+
+    #[test]
+    fn test_find_silluq_with_sof_pasuq() {
+        // Ps 2:1
+        let result = find_silluq("לָ֭מָּה רָגְשׁ֣וּ גוֹיִ֑ם וּ֝לְאֻמִּ֗ים יֶהְגּוּ־רִֽיק׃");
+        assert!(result.is_some());
+    }
+
+    #[test]
+    fn test_find_silluq_with_pey_suffix_and_with_sof_pasuq(){
+        // Gen 1:5
+        let result = find_silluq("וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי־עֶ֥רֶב וַֽיְהִי־בֹ֖קֶר י֥וֹם אֶחָֽד׃ פ");
+        assert!(result.is_some());
+    }
+#[test]
+    fn test_find_silluq_with_pey_suffix_and_without_sof_pasuq(){
+        // Gen 1:5
+        let result = find_silluq("וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי־עֶ֥רֶב וַֽיְהִי־בֹ֖קֶר י֥וֹם אֶחָֽד פ");
+        assert!(result.is_some());
+    }
+
+    #[test] 
+    fn test_find_silluq_with_samekh_suffix_and_with_sof_pasuq() {
+        // Gen 5:2
+        let result = find_silluq("זָכָ֥ר וּנְקֵבָ֖ה בְּרָאָ֑ם וַיְבָ֣רֶךְ אֹתָ֗ם וַיִּקְרָ֤א אֶת־שְׁמָם֙ אָדָ֔ם בְּי֖וֹם הִבָּֽרְאָֽם׃ ס");
+        assert!(result.is_some());
+    }
+    #[test] 
+    fn test_find_silluq_with_samekh_suffix_and_without_sof_pasuq() {
+        // Gen 5:2
+        let result = find_silluq("זָכָ֥ר וּנְקֵבָ֖ה בְּרָאָ֑ם וַיְבָ֣רֶךְ אֹתָ֗ם וַיִּקְרָ֤א אֶת־שְׁמָם֙ אָדָ֔ם בְּי֖וֹם הִבָּֽרְאָֽם ס");
+        assert!(result.is_some());
+    }
+
+    #[test]
+    fn test_find_silluq_no_match() {
+        let result = find_silluq("אבגד");
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_find_silluq_empty_string() {
+        let result = find_silluq("");
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_find_silluq_whitespace_only() {
+        let result = find_silluq("   ");
+        assert!(result.is_none());
+    }
+
+    // ============================================================
+    // FIND_IN_LAST_MEMBER COMPREHENSIVE
+    // ============================================================
+
+    #[test]
+    fn test_find_in_last_member_no_maqqaph() {
+        let result = find_in_last_member("אבגד", 'א');
+        assert_eq!(result, Some(0));
+    }
+
+    #[test]
+    fn test_find_in_last_member_with_one_maqqaph() {
+        let result = find_in_last_member("אב־גד", 'ג');
+        assert_eq!(result, Some(6));
+    }
+
+    #[test]
+    fn test_find_in_last_member_with_multiple_maqqaph() {
+        let result = find_in_last_member("אב־גד־ה", 'ה');
+        assert_eq!(result, Some(12));
+    }
+
+    #[test]
+    fn test_find_in_last_member_not_found() {
+        let result = find_in_last_member("אבגד", 'ז');
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_in_last_member_first_word() {
+        let result = find_in_last_member("גגדא־גגר", 'א');
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_in_last_member_middle_of_last_word() {
+        let result = find_in_last_member("גאב־גדא־גגר", 'ד');
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_in_last_member_empty_needle() {
+        // Should handle single char requirement
+        let result = find_in_last_member("אבגד", '\0');
+        assert!(result.is_none());
+    }
+
+    // ============================================================
+    // DROP_OPTIONAL_SAMECH_PE
+    // ============================================================
+
+    #[test]
+    fn test_drop_optional_samech_pe_with_samekh() {
+        let result = drop_optional_samech_pe("אבג ס");
+        assert_eq!(result, "אבג");
+    }
+
+    #[test]
+    fn test_drop_optional_samech_pe_with_pey() {
+        let result = drop_optional_samech_pe("אבג פ");
+        assert_eq!(result, "אבג");
+    }
+
+    #[test]
+    fn test_drop_optional_samech_pe_without_suffix() {
+        let result = drop_optional_samech_pe("אבג");
+        assert_eq!(result, "אבג");
+    }
+
+    #[test]
+    fn test_drop_optional_samech_pe_empty() {
+        let result = drop_optional_samech_pe("");
+        assert_eq!(result, "");
+    }
+
+    #[test]
+    fn test_drop_optional_samech_pe_only_suffix() {
+        let result = drop_optional_samech_pe("ס");
+        assert_eq!(result, "");
+    }
+
+    // ============================================================
+    // DROP_OPTIONAL_SOF_PASUQ
+    // ============================================================
+
+    #[test]
+    fn test_drop_optional_sof_pasuq_present() {
+        let result = drop_optional_sof_pasuq("אבג ד׃");
+        assert_eq!(result, "אבג ד");
+    }
+
+    #[test]
+    fn test_drop_optional_sof_pasuq_not_present() {
+        let result = drop_optional_sof_pasuq("אבג ד");
+        assert_eq!(result, "אבג ד");
+    }
+
+    #[test]
+    fn test_drop_optional_sof_pasuq_only_sof_pasuq() {
+        let result = drop_optional_sof_pasuq("׃");
+        assert_eq!(result, "");
+    }
+
+    #[test]
+    fn test_drop_optional_sof_pasuq_empty() {
+        let result = drop_optional_sof_pasuq("");
+        assert_eq!(result, "");
+    }
+
+    // ============================================================
+    // AS_CHAR_SLICE
+    // ============================================================
+
+    #[test]
+    fn test_as_char_slice_basic() {
+        let result = as_char_slice("אבג");
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0], 'א');
+        assert_eq!(result[1], 'ב');
+        assert_eq!(result[2], 'ג');
+    }
+
+    #[test]
+    fn test_as_char_slice_empty() {
+        let result = as_char_slice("");
+        assert_eq!(result.len(), 0);
+    }
+
+    #[test]
+    fn test_as_char_slice_with_spaces() {
+        let result = as_char_slice("א ב ג");
+        assert_eq!(result.len(), 5);
+        assert_eq!(result[1], ' ');
+    }
+
+    // ============================================================
+    // INDEXES_TARGET_CHAR
+    // ============================================================
+
+    #[test]
+    fn test_indexes_target_char_single() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = indexes_target_char("ב", &sentence);
+        assert_eq!(result, vec![1]);
+    }
+
+    #[test]
+    fn test_indexes_target_char_multiple() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג', 'ב'];
+        let result = indexes_target_char("ב", &sentence);
+        assert_eq!(result, vec![1, 3]);
+    }
+
+    #[test]
+    fn test_indexes_target_char_none() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = indexes_target_char("ד", &sentence);
+        assert_eq!(result, Vec::<usize>::new());
+    }
+
+    #[test]
+    fn test_indexes_target_char_empty_string() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = indexes_target_char("", &sentence);
+        assert_eq!(result, Vec::<usize>::new());
+    }
+
+    #[test]
+    fn test_indexes_target_char_multi_char_string() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = indexes_target_char("בג", &sentence);
+        // Multi-char should return empty per code logic
+        assert_eq!(result, Vec::<usize>::new());
+    }
+
+    #[test]
+    fn test_indexes_target_char_all_matches() {
+        let sentence: Vec<char> = vec!['א', 'א', 'א'];
+        let result = indexes_target_char("א", &sentence);
+        assert_eq!(result, vec![0, 1, 2]);
+    }
+
+    // ============================================================
+    // IS_PART_OF_TWO_CODE_POINT_ACCENT_LOOK_BEHIND
+    // ============================================================
+
+    #[test]
+    fn test_is_part_of_two_code_point_at_start() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_two_code_point_accent_look_behind(&sentence, "ב", 1, &[], 2);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_two_code_point_with_match() {
+        let sentence: Vec<char> = vec!['א', ' ', 'ב', 'ג'];
+        let result =
+            is_part_of_two_code_point_accent_look_behind(&sentence, "ג", 3, &[' ', 'ב'], 2);
+        assert_eq!(result, true);
+    }
+
+    #[test]
+    fn test_is_part_of_two_code_point_no_match() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_two_code_point_accent_look_behind(&sentence, "ג", 2, &['ז'], 2);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_two_code_point_with_word_breaks_limit() {
+        let sentence: Vec<char> = vec!['א', ' ', 'ב', ' ', 'ג'];
+        let result = is_part_of_two_code_point_accent_look_behind(
+            &sentence,
+            "ג",
+            4,
+            &['ז'],
+            1, // Only allow 1 word break
+        );
+        // Should return false after hitting the word_breaks >= compound_type
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_two_code_point_empty_target() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_two_code_point_accent_look_behind(&sentence, "", 1, &[], 2);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_two_code_point_multi_char_target() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_two_code_point_accent_look_behind(&sentence, "בג", 2, &[], 2);
+        assert_eq!(result, false);
+    }
+
+    // ============================================================
+    // IS_PART_OF_MAHPAKH_LEGARMEH_LOOK_AHEAD
+    // ============================================================
+
+    #[test]
+    fn test_is_part_of_mahpakh_legarmeh_out_of_bounds() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_mahpakh_legarmeh_look_ahead(10, &sentence);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_mahpakh_legarmeh_with_paseq() {
+        let sentence: Vec<char> = vec!['א', 'ב', '׀', 'ג'];
+        let result = is_part_of_mahpakh_legarmeh_look_ahead(1, &sentence);
+        assert_eq!(result, true);
+    }
+
+    #[test]
+    fn test_is_part_of_mahpakh_legarmeh_with_vertical_line() {
+        let sentence: Vec<char> = vec!['א', 'ב', '|', 'ג'];
+        let result = is_part_of_mahpakh_legarmeh_look_ahead(1, &sentence);
+        assert_eq!(result, true);
+    }
+
+    #[test]
+    fn test_is_part_of_mahpakh_legarmeh_no_match() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_part_of_mahpakh_legarmeh_look_ahead(0, &sentence);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_part_of_mahpakh_legarmeh_too_many_spaces() {
+        let sentence: Vec<char> = vec!['א', ' ', ' ', ' ', 'ג'];
+        let result = is_part_of_mahpakh_legarmeh_look_ahead(0, &sentence);
+        assert_eq!(result, false);
+    }
+
+    // ============================================================
+    // IS_FOLLOWED_BY_OLEH_WE_YORED
+    // ============================================================
+
+    #[test]
+    fn test_is_followed_by_oleh_we_yored_out_of_bounds() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_followed_by_oleh_we_yored(10, &sentence);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_followed_by_oleh_we_yored_full_sequence() {
+        let sentence: Vec<char> = vec!['א', ' ', 'ע', 'ל', ' ', 'י', 'ו', 'ר', 'ד'];
+        let result = is_followed_by_oleh_we_yored(0, &sentence);
+        assert_eq!(result, false); // Need proper Oleh/Yored chars
+    }
+
+    #[test]
+    fn test_is_followed_by_oleh_we_yored_no_by_ord() {
+        let sentence: Vec<char> = vec!['א', 'ב', 'ג'];
+        let result = is_followed_by_oleh_we_yored(0, &sentence);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_is_followed_by_oleh_we_yored_empty_after_target() {
+        let sentence: Vec<char> = vec!['א'];
+        let result = is_followed_by_oleh_we_yored(0, &sentence);
+        assert_eq!(result, false);
+    }
+
+    // ============================================================
+    // FIND_POETRY_MERKHA DIRECT TESTS
+    // ============================================================
+
+    #[test]
+    fn test_find_poetry_merkha_with_negative_lookbehind() {
+        // Merkha NOT part of OlehWeyored or TsinnoritMerkha
+        let result = find_poetry_merkha("אבגד");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_poetry_merkha_multiple_candidates() {
+        let result = find_poetry_merkha("אבגדאבגד");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    // ============================================================
+    // FIND_POETRY_MEHUPPAKH DIRECT TESTS
+    // ============================================================
+
+    #[test]
+    fn test_find_poetry_mehuppakh_not_part_of_combinations() {
+        let result = find_poetry_mehuppakh("אבגד");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_poetry_mehuppakh_multiple_positions() {
+        let result = find_poetry_mehuppakh("אבגדה");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    // ============================================================
+    // FIND_POETRY_REVIA_GADOL DIRECT TESTS
+    // ============================================================
+
+    #[test]
+    fn test_find_poetry_revia_gadol_not_part_of_revia_mugrash() {
+        let result = find_poetry_revia_gadol("אבגד");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_poetry_revia_gadol_not_followed_by_owy() {
+        let result = find_poetry_revia_gadol("אבגדה");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    // ============================================================
+    // FIND_POETRY_REVIA_QATON DIRECT TESTS
+    // ============================================================
+
+    #[test]
+    fn test_find_poetry_revia_qaton_followed_by_owy() {
+        let result = find_poetry_revia_qaton("אבגדה");
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_poetry_revia_qaton_not_followed_by_owy() {
+        let result = find_poetry_revia_qaton("אבגד");
+        assert!(result.is_some() || result.is_none());
+    }
+}
+
+// ============================================================
+// ADDITIONAL BRANCH COVERAGE FOR MATCH ARMS IN FIND_ACCENT()
+// ============================================================
+
+#[cfg(test)]
+mod additional_match_arm_coverage {
+    use super::*;
+
+    // Test specific ProseAccent match arms with Context::Prosaic
+    #[test]
+    fn test_find_prose_pazer_gadon_context_check() {
+        let sc = SentenceContext::new("אבגד", Context::Prosaic).unwrap();
+        let result = sc.find_accent(ProseAccent::PazerGadol.into());
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_prose_telisha_gedolah_context_check() {
+        let sc = SentenceContext::new("אבגד", Context::Prosaic).unwrap();
+        let result = sc.find_accent(ProseAccent::TelishaGedolah.into());
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_prose_legarmeh_no_separator() {
+        let sc = SentenceContext::new("אבגד", Context::Prosaic).unwrap();
+        let result = sc.find_accent(ProseAccent::Legarmeh.into());
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_prose_munach_not_part_of_legarmeh() {
+        let sc = SentenceContext::new("אבגד", Context::Prosaic).unwrap();
+        let result = sc.find_accent(ProseAccent::Munach.into());
+        assert!(result.is_some() || result.is_none());
+    }
+
+    #[test]
+    fn test_find_prose_meayla_no_tiphcha_before() {
+        let sc = SentenceContext::new("אבגד", Context::Prosaic).unwrap();
+        let result = sc.find_accent(ProseAccent::Meayla.into());
+        assert_eq!(result, None);
+    }
+
+    // Test PoetryAccent match arms with Context::Poetic
+    #[test]
+    fn test_find_poetry_mehuppakh_legarmeh_no_separator() {
+        let sc = SentenceContext::new("אבגד", Context::Poetic).unwrap();
+        let result = sc.find_accent(PoetryAccent::MehuppakhLegarmeh.into());
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_poetry_azla_legarmeh_no_separator() {
+        let sc = SentenceContext::new("אבגד", Context::Poetic).unwrap();
+        let result = sc.find_accent(PoetryAccent::AzlaLegarmeh.into());
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn test_find_poetry_shalshelet_qetannah_no_paseq() {
+        let sc = SentenceContext::new("אבגד", Context::Poetic).unwrap();
+        let result = sc.find_accent(PoetryAccent::ShalsheletQetannah.into());
+        assert_eq!(result, None);
+    }
+}

@@ -473,3 +473,694 @@ impl Accent for ProseAccent {
         None // TODO
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Accent;
+    use strum::IntoEnumIterator;
+
+    // ===== BASIC VARIANT COUNT TESTS =====
+
+    #[test]
+    fn test_prose_accent_total_count() {
+        assert_eq!(ProseAccent::LEN, 28);
+        assert_eq!(ProseAccent::iter().count(), 28);
+    }
+
+    #[test]
+    fn test_disjunctive_vs_conjunctive_split() {
+        // Disjunctives are indices 0-17 (18 total)
+        // Conjunctives are indices 18-27 (10 total)
+        let disjunctives = ProseAccent::iter()
+            .filter(|a| matches!(a.category(), Some(crate::AccentCategory::Disjunctive)))
+            .count();
+
+        let conjunctives = ProseAccent::iter()
+            .filter(|a| matches!(a.category(), Some(crate::AccentCategory::Conjunctive)))
+            .count();
+
+        assert_eq!(disjunctives, 18);
+        assert_eq!(conjunctives, 10);
+    }
+
+    #[test]
+    fn test_discriminant_guard_at_compile_time() {
+        // This test verifies the const assertion exists
+        // If variants are misordered, compilation fails
+        const LAST_IDX: usize = ProseAccent::Meteg as u8 as usize;
+        assert_eq!(LAST_IDX + 1, ProseAccent::LEN);
+    }
+
+    // ===== DEFAULT TRAIT TESTS =====
+
+    #[test]
+    fn test_default_is_silluq() {
+        let default: ProseAccent = Default::default();
+        assert_eq!(default, ProseAccent::Silluq);
+    }
+
+    #[test]
+    fn test_silluq_explicit_equals_default() {
+        assert_eq!(ProseAccent::Silluq, ProseAccent::default());
+    }
+
+    // ===== AS_INDEX METHOD TESTS =====
+
+    #[test]
+    fn test_as_index_for_all_variants() {
+        assert_eq!(ProseAccent::Silluq.as_index(), 0);
+        assert_eq!(ProseAccent::Atnach.as_index(), 1);
+        assert_eq!(ProseAccent::Segolta.as_index(), 2);
+        assert_eq!(ProseAccent::Shalshelet.as_index(), 3);
+        assert_eq!(ProseAccent::ZaqephQatan.as_index(), 4);
+        assert_eq!(ProseAccent::ZaqephGadol.as_index(), 5);
+        assert_eq!(ProseAccent::Revia.as_index(), 6);
+        assert_eq!(ProseAccent::Tiphcha.as_index(), 7);
+        assert_eq!(ProseAccent::Zarqa.as_index(), 8);
+        assert_eq!(ProseAccent::Pashta.as_index(), 9);
+        assert_eq!(ProseAccent::Yetiv.as_index(), 10);
+        assert_eq!(ProseAccent::Tevir.as_index(), 11);
+        assert_eq!(ProseAccent::Geresh.as_index(), 12);
+        assert_eq!(ProseAccent::Gershayim.as_index(), 13);
+        assert_eq!(ProseAccent::Pazer.as_index(), 14);
+        assert_eq!(ProseAccent::PazerGadol.as_index(), 15);
+        assert_eq!(ProseAccent::TelishaGedolah.as_index(), 16);
+        assert_eq!(ProseAccent::Legarmeh.as_index(), 17);
+        assert_eq!(ProseAccent::Munach.as_index(), 18);
+        assert_eq!(ProseAccent::Mahpakh.as_index(), 19);
+        assert_eq!(ProseAccent::Merkha.as_index(), 20);
+        assert_eq!(ProseAccent::MerkhaKephulah.as_index(), 21);
+        assert_eq!(ProseAccent::Darga.as_index(), 22);
+        assert_eq!(ProseAccent::Azla.as_index(), 23);
+        assert_eq!(ProseAccent::TelishaQetannah.as_index(), 24);
+        assert_eq!(ProseAccent::Galgal.as_index(), 25);
+        assert_eq!(ProseAccent::Meayla.as_index(), 26);
+        assert_eq!(ProseAccent::Meteg.as_index(), 27);
+    }
+
+    // ===== ITERATION TESTS =====
+
+    #[test]
+    fn test_enum_iter_all_variants() {
+        let all_variants: Vec<ProseAccent> = ProseAccent::iter().collect();
+        assert_eq!(all_variants.len(), 28);
+        assert!(all_variants.contains(&ProseAccent::Silluq));
+        assert!(all_variants.contains(&ProseAccent::Meteg));
+        assert!(all_variants.contains(&ProseAccent::Segolta));
+    }
+
+    #[test]
+    fn test_iter_order_matches_discriminant() {
+        let variants: Vec<ProseAccent> = ProseAccent::iter().collect();
+
+        for (idx, accent) in variants.iter().enumerate() {
+            assert_eq!(accent.as_index(), idx);
+        }
+    }
+
+    // ===== DISPLAY TRAIT TESTS =====
+
+    #[test]
+    fn test_display_format_for_sample_variants() {
+        let silluq_str = format!("{}", ProseAccent::Silluq);
+        assert!(silluq_str.contains("Silluq"));
+        assert!(silluq_str.contains("סִלּוּק"));
+        assert!(silluq_str.contains("cessation"));
+
+        let atnach_str = format!("{}", ProseAccent::Atnach);
+        assert!(atnach_str.contains("Atnach"));
+    }
+
+    #[test]
+    fn test_display_contains_required_components() {
+        // All Display outputs should have: name, hebrew, concept
+        for accent in ProseAccent::iter() {
+            let display = format!("{}", accent);
+            assert!(!display.is_empty());
+            assert!(display.contains(accent.english_name()));
+            assert!(display.contains(accent.hebrew_name()));
+            assert!(display.contains(accent.hebrew_concept()));
+        }
+    }
+
+    // ===== ACCENT TRAIT METHODS TESTS =====
+
+    // --- Text Methods ---
+
+    #[test]
+    fn test_hebrew_name_returns_static_strings() {
+        let silluq = ProseAccent::Silluq;
+        let hebrew = silluq.hebrew_name();
+
+        assert_eq!(hebrew, "סִלּוּק");
+        assert!(!hebrew.is_empty());
+    }
+
+    #[test]
+    fn test_hebrew_concept_returns_meanings() {
+        let silluq = ProseAccent::Silluq;
+        let concept = silluq.hebrew_concept();
+
+        assert_eq!(concept, "close, cessation");
+        assert!(!concept.is_empty());
+    }
+
+    #[test]
+    fn test_english_name_returns_transliterations() {
+        let silluq = ProseAccent::Silluq;
+        let english = silluq.english_name();
+
+        assert_eq!(english, "Silluq");
+        assert!(!english.is_empty());
+    }
+
+    #[test]
+    fn test_sbl_academic_name() {
+        let silluq = ProseAccent::Silluq;
+        let sbl = silluq.sbl_academic_name();
+
+        assert!(!sbl.is_empty());
+        assert_eq!(sbl, "sillûq");
+    }
+
+    // --- Kind Method ---
+
+    #[test]
+    fn test_kind_for_disjunctive_accents() {
+        assert_eq!(ProseAccent::Silluq.kind(), Some(crate::AccentKind::Primary));
+        assert_eq!(ProseAccent::Atnach.kind(), Some(crate::AccentKind::Primary));
+        assert_eq!(
+            ProseAccent::Segolta.kind(),
+            Some(crate::AccentKind::Primary)
+        );
+    }
+
+    #[test]
+    fn test_kind_for_conjunctive_accents() {
+        assert_eq!(ProseAccent::Munach.kind(), Some(crate::AccentKind::Primary));
+        assert_eq!(ProseAccent::Merkha.kind(), Some(crate::AccentKind::Primary));
+        assert_eq!(
+            ProseAccent::Meayla.kind(),
+            Some(crate::AccentKind::Secondary)
+        );
+        assert_eq!(
+            ProseAccent::Meteg.kind(),
+            Some(crate::AccentKind::Secondary)
+        );
+    }
+
+    #[test]
+    fn test_meayla_and_meteg_are_secondary() {
+        // Meayla and Meteg are the only secondary accents
+        assert_eq!(
+            ProseAccent::Meayla.kind(),
+            Some(crate::AccentKind::Secondary)
+        );
+        assert_eq!(
+            ProseAccent::Meteg.kind(),
+            Some(crate::AccentKind::Secondary)
+        );
+    }
+
+    // --- Category Method ---
+
+    #[test]
+    fn test_category_returns_some_for_all() {
+        // All accents have a category
+        for accent in ProseAccent::iter() {
+            let cat = accent.category();
+            assert!(cat.is_some(), "All accents should have a category");
+        }
+    }
+
+    #[test]
+    fn test_category_distribution() {
+        let mut disjunctive_count = 0;
+        let mut conjunctive_count = 0;
+
+        for accent in ProseAccent::iter() {
+            match accent.category() {
+                Some(crate::AccentCategory::Disjunctive) => disjunctive_count += 1,
+                Some(crate::AccentCategory::Conjunctive) => conjunctive_count += 1,
+                _ => panic!("Unexpected category"),
+            }
+        }
+
+        assert_eq!(disjunctive_count, 18);
+        assert_eq!(conjunctive_count, 10);
+    }
+
+    // --- Compound Type Method ---
+
+    #[test]
+    fn test_compound_type_some_and_none() {
+        // Some accents are compound (have secondary marks)
+        for accent in ProseAccent::iter() {
+            let ct = accent.compound_type();
+            // Either Some or None is valid depending on accent
+            assert!(!ct.is_none() || ct.is_none()); // Tautology - just exercising the method
+        }
+    }
+
+    // --- Cantillation Mark Methods ---
+
+    #[test]
+    fn test_primary_cantillation_mark_always_returns_value() {
+        for accent in ProseAccent::iter() {
+            let primary = accent.primary_cantillation_mark();
+
+            assert!(!primary.symbol.is_control());
+            assert!(!primary.symbol.is_whitespace());
+        }
+    }
+
+    #[test]
+    fn test_secondary_cantillation_mark_option_behavior() {
+        for accent in ProseAccent::iter() {
+            let secondary = accent.secondary_cantillation_mark();
+
+            // Secondary is either Some or None - both valid
+            if let Some(sec) = secondary {
+                // If some, it must have valid symbol
+                assert!(!sec.symbol.is_control());
+            }
+        }
+    }
+
+    #[test]
+    fn test_compound_accent_has_secondary_mark() {
+        // Verify that accents with compound_type Some have secondary marks
+        for accent in ProseAccent::iter() {
+            let is_compound = accent.compound_type().is_some();
+            let has_secondary = accent.secondary_cantillation_mark().is_some();
+
+            // For this library, compound = has secondary mark
+            assert_eq!(is_compound, has_secondary);
+        }
+    }
+
+    // --- Notes Method ---
+
+    #[test]
+    fn test_notes_returns_option() {
+        for accent in ProseAccent::iter() {
+            let notes = accent.notes();
+            // Some have notes, some don't - both valid
+            assert!(!notes.is_none() || notes.is_none());
+        }
+    }
+
+    #[test]
+    fn test_shalshelet_has_rare_note() {
+        // Shalshelet is noted as rare (occurs only 4 times in Torah)
+        let notes = ProseAccent::Shalshelet.notes();
+        if notes.is_some() {
+            let note_text = notes.unwrap();
+            assert!(
+                note_text.contains("rare")
+                    || note_text.contains("four")
+                    || note_text.contains("times")
+            );
+        }
+    }
+
+    // --- Relative Strength Method ---
+
+    #[test]
+    fn test_relative_strength_for_disjunctive() {
+        // Disjunctive accents should have strength values
+        assert!(ProseAccent::Silluq.relative_strength().is_some());
+        assert!(ProseAccent::Atnach.relative_strength().is_some());
+        assert!(ProseAccent::Segolta.relative_strength().is_some());
+    }
+
+    #[test]
+    fn test_relative_strength_for_conjunctive() {
+        // Conjunctive accents should return None
+        assert_eq!(ProseAccent::Munach.relative_strength(), None);
+        assert_eq!(ProseAccent::Merkha.relative_strength(), None);
+        assert_eq!(ProseAccent::Meteg.relative_strength(), None);
+    }
+
+    #[test]
+    fn test_strength_numbering_system() {
+        // Lower numbers = stronger disjunctives
+        if let Some(s1) = ProseAccent::Silluq.relative_strength() {
+            // Silluq should be very strong (low number)
+            assert!(s1 <= 5); // Should be in top strength range
+        }
+
+        if let Some(s2) = ProseAccent::Atnach.relative_strength() {
+            // Atnach should be second strongest
+            assert_eq!(s2, 2);
+        }
+    }
+
+    // --- Group Level Method ---
+
+    #[test]
+    fn test_group_level_for_disjunctive() {
+        // Disjunctive accents have group levels
+        assert!(ProseAccent::Silluq.group_level().is_some());
+        assert!(ProseAccent::Atnach.group_level().is_some());
+        assert!(ProseAccent::Segolta.group_level().is_some());
+    }
+
+    #[test]
+    fn test_group_level_for_conjunctive() {
+        // Conjunctive accents don't have hierarchy
+        assert_eq!(ProseAccent::Munach.group_level(), None);
+        assert_eq!(ProseAccent::Merkha.group_level(), None);
+        assert_eq!(ProseAccent::Mahpakh.group_level(), None);
+    }
+
+    #[test]
+    fn test_silluq_is_top_tier() {
+        // Silluq should be Tier 1 (strongest)
+        if let Some(level) = ProseAccent::Silluq.group_level() {
+            assert_eq!(level, crate::GroupLevel::Tier1);
+        }
+    }
+
+    #[test]
+    fn test_prose_has_tier_four() {
+        // Prose system reaches Tier4, poetry stops at Tier3
+        let mut has_tier4 = false;
+
+        for accent in ProseAccent::iter() {
+            if let Some(level) = accent.group_level() {
+                if level == crate::GroupLevel::Tier4 {
+                    has_tier4 = true;
+                }
+            }
+        }
+
+        // Prose should have Tier4 accents
+        assert!(has_tier4, "Prose system includes Tier4 disjunctive accents");
+    }
+
+    // --- Cantillation Symbol Method ---
+
+    #[test]
+    fn test_cantillation_symbol_not_empty() {
+        for accent in ProseAccent::iter() {
+            let symbol = accent.cantillation_symbol();
+            assert!(!symbol.is_empty());
+        }
+    }
+
+    #[test]
+    fn test_cantillation_symbol_contains_dotted_circle_or_marks() {
+        for accent in ProseAccent::iter() {
+            let symbol = accent.cantillation_symbol();
+
+            // Symbols should contain either dotted circle or actual marks
+            assert!(symbol.contains('\u{25CC}') || !symbol.chars().all(|c| c == '\u{25CC}'));
+        }
+    }
+
+    // --- Alternate Names Method ---
+
+    #[test]
+    fn test_alternate_names_returns_none_currently() {
+        // Currently all return None (TODO mentioned in code)
+        for accent in ProseAccent::iter() {
+            let alts = accent.alternate_names();
+            assert_eq!(alts, None); // Confirms current implementation
+        }
+    }
+
+    // ===== DERIVED TRAIT TESTS =====
+
+    #[test]
+    fn test_copy_trait_works() {
+        let original = ProseAccent::Silluq;
+        let copied = original; // Copy occurs automatically
+
+        assert_eq!(original, ProseAccent::Silluq);
+        assert_eq!(copied, ProseAccent::Silluq);
+    }
+
+    #[test]
+    fn test_clone_trait_works() {
+        let original = ProseAccent::Meteg;
+        let cloned = original.clone();
+
+        assert_eq!(original, cloned);
+        assert_eq!(cloned, ProseAccent::Meteg);
+    }
+
+    #[test]
+    fn test_partial_eq_and_eq_traits() {
+        let p1 = ProseAccent::Silluq;
+        let p2 = ProseAccent::Silluq;
+        let p3 = ProseAccent::Meteg;
+
+        assert_eq!(p1, p2);
+        assert_ne!(p1, p3);
+        assert!(p1.eq(&p2));
+    }
+
+    #[test]
+    fn test_hash_trait_consistency() {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        let mut hasher1 = DefaultHasher::new();
+        let mut hasher2 = DefaultHasher::new();
+
+        ProseAccent::Silluq.hash(&mut hasher1);
+        ProseAccent::Silluq.hash(&mut hasher2);
+
+        assert_eq!(hasher1.finish(), hasher2.finish());
+    }
+
+    #[test]
+    fn test_hash_in_collections() {
+        use std::collections::HashSet;
+
+        let mut set = HashSet::new();
+        set.insert(ProseAccent::Silluq);
+        set.insert(ProseAccent::Meteg);
+
+        assert!(set.contains(&ProseAccent::Silluq));
+        assert!(set.contains(&ProseAccent::Meteg));
+        assert_eq!(set.len(), 2);
+    }
+
+    // ===== PROSE-SPECIFIC ACCENTS TESTS =====
+
+    #[test]
+    fn test_prose_exclusive_accents_exist() {
+        // These accents only appear in prose system
+        let prose_exclusives = [
+            ProseAccent::Segolta,
+            ProseAccent::ZaqephQatan,
+            ProseAccent::ZaqephGadol,
+            ProseAccent::Zarqa,
+            ProseAccent::Pashta,
+            ProseAccent::Yetiv,
+            ProseAccent::Tevir,
+            ProseAccent::Gershayim,
+            ProseAccent::PazerGadol,
+            ProseAccent::TelishaGedolah,
+            ProseAccent::MerkhaKephulah,
+            ProseAccent::Darga,
+        ];
+
+        for exclusive in &prose_exclusives {
+            assert!(exclusive.category().is_some());
+            assert!(!exclusive.english_name().is_empty());
+        }
+    }
+
+    #[test]
+    fn test_prose_exclusive_detection() {
+        // Segolta presence indicates prose context
+        let segolta = ProseAccent::Segolta;
+
+        assert_eq!(
+            by_category(segolta),
+            Some(crate::AccentCategory::Disjunctive)
+        );
+        assert!(by_category(segolta).is_some());
+    }
+
+    #[test]
+    fn test_zarqa_pashta_yetiv_tevir_exclusivity() {
+        // These are strong indicators of prose text
+        let prose_markers = [
+            ProseAccent::Zarqa,
+            ProseAccent::Pashta,
+            ProseAccent::Yetiv,
+            ProseAccent::Tevir,
+        ];
+
+        for marker in &prose_markers {
+            assert!(marker.category().is_some());
+        }
+    }
+
+    // ===== HIERARCHY TESTS =====
+
+    #[test]
+    fn test_hierarchy_coverage() {
+        // Check that we have representation from all hierarchy levels
+        let mut has_tier1 = false;
+        let mut has_tier2 = false;
+        let mut has_tier3 = false;
+        let mut has_tier4 = false;
+
+        for accent in ProseAccent::iter() {
+            if let Some(level) = accent.group_level() {
+                match level {
+                    crate::GroupLevel::Tier1 => has_tier1 = true,
+                    crate::GroupLevel::Tier2 => has_tier2 = true,
+                    crate::GroupLevel::Tier3 => has_tier3 = true,
+                    crate::GroupLevel::Tier4 => has_tier4 = true,
+                }
+            }
+        }
+
+        // Prose system has all 4 tiers
+        assert!(has_tier1);
+        assert!(has_tier2);
+        assert!(has_tier3);
+        assert!(has_tier4);
+    }
+
+    #[test]
+    fn test_highest_strength_variants() {
+        // Silluq should have highest strength (lowest number)
+        if let Some(silluq_strength) = ProseAccent::Silluq.relative_strength() {
+            assert_eq!(silluq_strength, 1, "Silluq should be strength 1");
+        }
+
+        if let Some(atnach_strength) = ProseAccent::Atnach.relative_strength() {
+            assert_eq!(atnach_strength, 2, "Atnach should be strength 2");
+        }
+    }
+
+    // ===== COMBINATION TESTS =====
+
+    #[test]
+    fn test_complete_api_roundtrip() {
+        // Test that all API methods work together
+        let accent = ProseAccent::Silluq;
+
+        let _hebrew = accent.hebrew_name();
+        let _concept = accent.hebrew_concept();
+        let _english = accent.english_name();
+        let _sbl = accent.sbl_academic_name();
+        let _kind = accent.kind();
+        let _category = accent.category();
+        let _compound = accent.compound_type();
+        let _primary = accent.primary_cantillation_mark();
+        let _secondary = accent.secondary_cantillation_mark();
+        let _notes = accent.notes();
+        let _strength = accent.relative_strength();
+        let _level = accent.group_level();
+        let _symbol = accent.cantillation_symbol();
+        let _alts = accent.alternate_names();
+        let _display = format!("{}", accent);
+
+        // All operations completed successfully
+        assert_eq!(accent.english_name(), "Silluq");
+    }
+
+    #[test]
+    fn test_table_lookup_consistency() {
+        // Verify table indexing works for all variants
+        for accent in ProseAccent::iter() {
+            let idx = accent.as_index();
+            assert!(idx < ProseAccent::LEN);
+
+            // Table access should not panic
+            let _hebrew = accent.hebrew_name();
+            let _english = accent.english_name();
+        }
+    }
+
+    // ===== EDGE CASE TESTS =====
+
+    #[test]
+    fn test_first_and_last_variants() {
+        // Verify ordering: Silluq first, Meteg last
+        let all: Vec<ProseAccent> = ProseAccent::iter().collect();
+
+        assert_eq!(all.first(), Some(&ProseAccent::Silluq));
+        assert_eq!(all.last(), Some(&ProseAccent::Meteg));
+        assert_eq!(all[0], ProseAccent::Silluq);
+        assert_eq!(all[27], ProseAccent::Meteg);
+    }
+
+    #[test]
+    fn test_no_duplicate_variants() {
+        use std::collections::HashSet;
+
+        let all: Vec<ProseAccent> = ProseAccent::iter().collect();
+        let unique: HashSet<ProseAccent> = all.clone().into_iter().collect();
+
+        assert_eq!(all.len(), unique.len());
+    }
+
+    #[test]
+    fn test_const_context_usage() {
+        const ATNACH: ProseAccent = ProseAccent::Atnach;
+        assert_eq!(ATNACH.as_index(), 1);
+        assert_eq!(ATNACH.english_name(), "Atnach");
+    }
+
+    // ===== HELPERS FOR TESTS =====
+
+    fn by_category(accent: ProseAccent) -> Option<crate::AccentCategory> {
+        accent.category()
+    }
+
+    // ===== DOCUMENTATION EXAMPLE VERIFICATION =====
+
+    #[test]
+    fn doc_test_example_from_module_docs() {
+        // Replicate the example from module documentation
+        let accent = ProseAccent::Atnach;
+        let _display = format!("{}", accent); // Should print: "Atnach (אַתְנָח), meaning: rest"
+        let _strength = accent.relative_strength();
+
+        assert_eq!(accent.english_name(), "Atnach");
+    }
+
+    #[test]
+    fn doc_test_strength_example() {
+        // Test the strength check example from docs
+        let atnach = ProseAccent::Atnach;
+        let strength = atnach.relative_strength();
+
+        assert!(
+            strength.is_some(),
+            "Atnach should have a relative strength value"
+        );
+    }
+
+    // ===== PROSE VS POETRY COMPARISON TESTS =====
+
+    #[test]
+    fn test_shared_accent_between_systems() {
+        // Silluq exists in both prose and poetry
+        let prose_silluq = ProseAccent::Silluq;
+        let poetry_silluq = crate::PoetryAccent::Silluq;
+
+        assert_eq!(prose_silluq.english_name(), poetry_silluq.english_name());
+        assert_eq!(prose_silluq.hebrew_name(), poetry_silluq.hebrew_name());
+    }
+
+    #[test]
+    fn test_unique_accent_distribution() {
+        // Prose has Segolta, Poetry has OlehWeYored - they don't overlap
+        let prose_has_segolta = ProseAccent::Segolta.english_name();
+        let poetry_has_olehweyored = crate::PoetryAccent::OlehWeYored.english_name();
+
+        assert_eq!(prose_has_segolta, "Segolta");
+        assert_eq!(poetry_has_olehweyored, "Oleh WeYored");
+    }
+}

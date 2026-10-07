@@ -198,7 +198,7 @@ mod tests {
         // Verify exact format structure
         assert_eq!(formatted, "Unicode 18.0 (Hebrew)");
         assert!(!formatted.contains('\n'));
-        assert_eq!(formatted.len(), 16); // Fixed length verification
+        assert_eq!(formatted.len(), 21);
     }
 
     #[test]

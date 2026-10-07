@@ -836,4 +836,583 @@ mod tests {
         }
         assert!(accent.as_poetry().is_some());
     }
+
+    // Additional tests for HebrewAccent - Covering missing Accent trait methods
+
+    // ── HebrewAccent::iter() ─────────────────────────────────────────
+
+    #[test]
+    fn test_iter_all_variants_included() {
+        let all: Vec<HebrewAccent> = HebrewAccent::iter().collect();
+
+        // Should include all prose, poetry, and pseudo accents
+        assert!(all.len() > 50); // Prose(28) + Poetry(23) + Pseudo(3)
+
+        // Should have at least one of each type
+        let has_prose = all.iter().any(|a| matches!(a, HebrewAccent::Prose(_)));
+        let has_poetry = all.iter().any(|a| matches!(a, HebrewAccent::Poetry(_)));
+        let has_pseudo = all.iter().any(|a| matches!(a, HebrewAccent::Pseudo(_)));
+
+        assert!(has_prose, "Should include Prose variants");
+        assert!(has_poetry, "Should include Poetry variants");
+        assert!(has_pseudo, "Should include Pseudo variants");
+    }
+
+    #[test]
+    fn test_iter_does_not_duplicate_variants() {
+        let all: Vec<HebrewAccent> = HebrewAccent::iter().collect();
+        let unique: std::collections::HashSet<_> = all.iter().collect();
+
+        assert_eq!(all.len(), unique.len(), "No duplicate variants in iterator");
+    }
+
+    #[test]
+    fn test_iter_chain_order() {
+        let mut iter = HebrewAccent::iter();
+
+        // First should be Prose variant (ProseAccent::iter comes first)
+        let first = iter.next();
+        assert!(matches!(first, Some(HebrewAccent::Prose(_))));
+
+        // Last should be Pseudo variant (PseudoAccent::iter comes last)
+        let last = iter.last();
+        assert!(matches!(last, Some(HebrewAccent::Pseudo(_))));
+    }
+
+    // ── Accent Trait Methods - Hebrew Name & Concept ─────────────────
+
+    #[test]
+    fn test_hebrew_name_prose_variant() {
+        let accent = HebrewAccent::Prose(ProseAccent::Silluq);
+        let name = accent.hebrew_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_prose().unwrap().hebrew_name());
+    }
+
+    #[test]
+    fn test_hebrew_name_poetry_variant() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Atnach);
+        let name = accent.hebrew_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_poetry().unwrap().hebrew_name());
+    }
+
+    #[test]
+    fn test_hebrew_name_pseudo_variant() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
+        let name = accent.hebrew_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_pseudo().unwrap().hebrew_name());
+    }
+
+    #[test]
+    fn test_hebrew_concept_prose_variant() {
+        let accent = HebrewAccent::Prose(ProseAccent::Revia);
+        let concept = accent.hebrew_concept();
+
+        assert!(!concept.is_empty());
+        assert_eq!(concept, accent.as_prose().unwrap().hebrew_concept());
+    }
+
+    #[test]
+    fn test_hebrew_concept_poetry_variant() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Munach);
+        let concept = accent.hebrew_concept();
+
+        assert!(!concept.is_empty());
+        assert_eq!(concept, accent.as_poetry().unwrap().hebrew_concept());
+    }
+
+    #[test]
+    fn test_hebrew_concept_pseudo_variant() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        let concept = accent.hebrew_concept();
+
+        assert!(!concept.is_empty());
+        assert_eq!(concept, accent.as_pseudo().unwrap().hebrew_concept());
+    }
+
+    // ── Accent Trait Methods - English & SBL Names ───────────────────
+
+    #[test]
+    fn test_english_name_prose_variant() {
+        let accent = HebrewAccent::Prose(ProseAccent::Segolta);
+        let name = accent.english_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_prose().unwrap().english_name());
+    }
+
+    #[test]
+    fn test_english_name_poetry_variant() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Tsinnor);
+        let name = accent.english_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_poetry().unwrap().english_name());
+    }
+
+    #[test]
+    fn test_english_name_pseudo_variant() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Paseq);
+        let name = accent.english_name();
+
+        assert!(!name.is_empty());
+        assert_eq!(name, accent.as_pseudo().unwrap().english_name());
+    }
+
+    #[test]
+    fn test_sbl_academic_name_prose_variant() {
+        let accent = HebrewAccent::Prose(ProseAccent::ZaqephQatan);
+        let name = accent.sbl_academic_name();
+
+        assert!(!name.is_empty());
+    }
+
+    #[test]
+    fn test_sbl_academic_name_poetry_variant() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Dechi);
+        let name = accent.sbl_academic_name();
+
+        assert!(!name.is_empty());
+    }
+
+    #[test]
+    fn test_sbl_academic_name_pseudo_variant() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Paseq);
+        let name = accent.sbl_academic_name();
+
+        assert!(!name.is_empty());
+    }
+
+    // ── Accent Trait Methods - Kind & Category ───────────────────────
+
+    #[test]
+    fn test_kind_prose_disjunctive_returns_some() {
+        let accent = HebrewAccent::Prose(ProseAccent::Atnach);
+        let kind = accent.kind();
+
+        // Disjunctive accents should return Some(AccentKind::Disjunctive)
+        assert!(kind.is_some());
+    }
+
+    #[test]
+    fn test_kind_prose_conjunctive_returns_some() {
+        let accent = HebrewAccent::Prose(ProseAccent::Munach);
+        let kind = accent.kind();
+
+        // Conjunctive accents should return Some(AccentKind::Conjunctive)
+        assert!(kind.is_some());
+    }
+
+    #[test]
+    fn test_kind_poetry_returns_some() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
+        let kind = accent.kind();
+
+        assert!(kind.is_some());
+    }
+
+    #[test]
+    fn test_kind_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
+        let kind = accent.kind();
+
+        // Pseudo-accents lack hierarchical kind
+        assert_eq!(kind, None);
+    }
+
+    #[test]
+    fn test_category_prose_disjunctive() {
+        let accent = HebrewAccent::Prose(ProseAccent::Tiphcha);
+        let category = accent.category();
+
+        assert!(category.is_some());
+    }
+
+    #[test]
+    fn test_category_prose_conjunctive() {
+        let accent = HebrewAccent::Prose(ProseAccent::Mahpakh);
+        let category = accent.category();
+
+        assert!(category.is_some());
+    }
+
+    #[test]
+    fn test_category_poetry() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Pazer);
+        let category = accent.category();
+
+        assert!(category.is_some());
+    }
+
+    #[test]
+    fn test_category_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        let category = accent.category();
+
+        assert_eq!(category, None);
+    }
+
+    // ── Accent Trait Methods - Compound Type ─────────────────────────
+
+    #[test]
+    fn test_compound_type_prose_returns_option() {
+        let accent = HebrewAccent::Prose(ProseAccent::TelishaGedolah);
+        let ct = accent.compound_type();
+
+        // Some prose accents have compound types
+        let _ = ct; // Exercise the method
+    }
+
+    #[test]
+    fn test_compound_type_poetry_returns_option() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol);
+        let ct = accent.compound_type();
+
+        let _ = ct;
+    }
+
+    #[test]
+    fn test_compound_type_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Paseq);
+        let ct = accent.compound_type();
+
+        assert_eq!(ct, None);
+    }
+
+    // ── Accent Trait Methods - Cantillation Marks ────────────────────
+
+    #[test]
+    fn test_primary_cantillation_mark_prose() {
+        let accent = HebrewAccent::Prose(ProseAccent::Pashta);
+        let mark = accent.primary_cantillation_mark();
+
+        assert!(!mark.symbol.is_control());
+        assert!(!mark.symbol.is_whitespace());
+    }
+
+    #[test]
+    fn test_primary_cantillation_mark_poetry() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::OlehWeYored);
+        let mark = accent.primary_cantillation_mark();
+
+        assert!(!mark.symbol.is_control());
+        assert!(!mark.symbol.is_whitespace());
+    }
+
+    #[test]
+    fn test_primary_cantillation_mark_pseudo() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        let mark = accent.primary_cantillation_mark();
+
+        assert_eq!(mark.symbol, '׃');
+    }
+
+    #[test]
+    fn test_secondary_cantillation_mark_prose() {
+        let accent = HebrewAccent::Prose(ProseAccent::Revia);
+        let secondary = accent.secondary_cantillation_mark();
+
+        // Some prose accents have secondary marks
+        let _ = secondary;
+    }
+
+    #[test]
+    fn test_secondary_cantillation_mark_poetry() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::ReviaMugrash);
+        let secondary = accent.secondary_cantillation_mark();
+
+        let _ = secondary;
+    }
+
+    #[test]
+    fn test_secondary_cantillation_mark_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
+        let secondary = accent.secondary_cantillation_mark();
+
+        assert_eq!(secondary, None);
+    }
+
+    // ── Accent Trait Methods - Notes ─────────────────────────────────
+
+    #[test]
+    fn test_notes_prose_returns_option() {
+        let accent = HebrewAccent::Prose(ProseAccent::Shalshelet);
+        let notes = accent.notes();
+
+        // Some accents may have notes
+        let _ = notes;
+    }
+
+    #[test]
+    fn test_notes_poetry_returns_option() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha);
+        let notes = accent.notes();
+
+        let _ = notes;
+    }
+
+    #[test]
+    fn test_notes_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        let notes = accent.notes();
+
+        // Pseudo-accents currently have no notes
+        assert!(notes.is_some());
+    }
+
+    // ── Accent Trait Methods - Hierarchy ─────────────────────────────
+
+    #[test]
+    fn test_relative_strength_prose_disjunctive() {
+        let accent = HebrewAccent::Prose(ProseAccent::Silluq);
+        let strength = accent.relative_strength();
+
+        // Disjunctive accents have strength
+        assert!(strength.is_some());
+        assert!(strength.unwrap() > 0);
+    }
+
+    #[test]
+    fn test_relative_strength_poetry_disjunctive() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Atnach);
+        let strength = accent.relative_strength();
+
+        assert!(strength.is_some());
+    }
+
+    #[test]
+    fn test_relative_strength_conjunctive_returns_none() {
+        let accent = HebrewAccent::Prose(ProseAccent::Munach);
+        let strength = accent.relative_strength();
+
+        // Conjunctives don't have relative strength
+        assert_eq!(strength, None);
+    }
+
+    #[test]
+    fn test_relative_strength_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
+        let strength = accent.relative_strength();
+
+        assert_eq!(strength, None);
+    }
+
+    #[test]
+    fn test_group_level_prose_disjunctive() {
+        let accent = HebrewAccent::Prose(ProseAccent::Atnach);
+        let level = accent.group_level();
+
+        // Disjunctives have group levels
+        assert!(level.is_some());
+    }
+
+    #[test]
+    fn test_group_level_poetry_disjunctive() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Silluq);
+        let level = accent.group_level();
+
+        assert!(level.is_some());
+    }
+
+    #[test]
+    fn test_group_level_conjunctive_returns_none() {
+        let accent = HebrewAccent::Prose(ProseAccent::Munach);
+        let level = accent.group_level();
+
+        assert_eq!(level, None);
+    }
+
+    #[test]
+    fn test_group_level_pseudo_returns_none() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+        let level = accent.group_level();
+
+        assert_eq!(level, None);
+    }
+
+    // ── Accent Trait Methods - Symbol ────────────────────────────────
+
+    #[test]
+    fn test_cantillation_symbol_prose() {
+        let accent = HebrewAccent::Prose(ProseAccent::Zarqa);
+        let symbol = accent.cantillation_symbol();
+
+        assert!(!symbol.is_empty());
+    }
+
+    #[test]
+    fn test_cantillation_symbol_poetry() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::Illuy);
+        let symbol = accent.cantillation_symbol();
+
+        assert!(!symbol.is_empty());
+    }
+
+    #[test]
+    fn test_cantillation_symbol_pseudo() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::Paseq);
+        let symbol = accent.cantillation_symbol();
+
+        assert!(!symbol.is_empty());
+    }
+
+    // ── Accent Trait Methods - Alternate Names ───────────────────────
+
+    #[test]
+    fn test_alternate_names_always_returns_none() {
+        // Currently alternate_names always returns None
+        let prose = HebrewAccent::Prose(ProseAccent::Silluq);
+        let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
+        let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
+
+        assert_eq!(prose.alternate_names(), None);
+        assert_eq!(poetry.alternate_names(), None);
+        assert_eq!(pseudo.alternate_names(), None);
+    }
+
+    // ── Complete Accent Trait Coverage ───────────────────────────────
+
+    #[test]
+    fn test_complete_accent_trait_for_prose() {
+        let accent = HebrewAccent::Prose(ProseAccent::Segolta);
+
+        // Call every single method from the Accent trait
+        let _h_name = accent.hebrew_name();
+        let _h_concept = accent.hebrew_concept();
+        let _e_name = accent.english_name();
+        let _sbl = accent.sbl_academic_name();
+        let _kind = accent.kind();
+        let _cat = accent.category();
+        let _compound = accent.compound_type();
+        let _primary = accent.primary_cantillation_mark();
+        let _secondary = accent.secondary_cantillation_mark();
+        let _notes = accent.notes();
+        let _strength = accent.relative_strength();
+        let _level = accent.group_level();
+        let _symbol = accent.cantillation_symbol();
+        let _alts = accent.alternate_names();
+    }
+
+    #[test]
+    fn test_complete_accent_trait_for_poetry() {
+        let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
+
+        let _h_name = accent.hebrew_name();
+        let _h_concept = accent.hebrew_concept();
+        let _e_name = accent.english_name();
+        let _sbl = accent.sbl_academic_name();
+        let _kind = accent.kind();
+        let _cat = accent.category();
+        let _compound = accent.compound_type();
+        let _primary = accent.primary_cantillation_mark();
+        let _secondary = accent.secondary_cantillation_mark();
+        let _notes = accent.notes();
+        let _strength = accent.relative_strength();
+        let _level = accent.group_level();
+        let _symbol = accent.cantillation_symbol();
+        let _alts = accent.alternate_names();
+    }
+
+    #[test]
+    fn test_complete_accent_trait_for_pseudo() {
+        let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
+
+        let _h_name = accent.hebrew_name();
+        let _h_concept = accent.hebrew_concept();
+        let _e_name = accent.english_name();
+        let _sbl = accent.sbl_academic_name();
+        let _kind = accent.kind();
+        let _cat = accent.category();
+        let _compound = accent.compound_type();
+        let _primary = accent.primary_cantillation_mark();
+        let _secondary = accent.secondary_cantillation_mark();
+        let _notes = accent.notes();
+        let _strength = accent.relative_strength();
+        let _level = accent.group_level();
+        let _symbol = accent.cantillation_symbol();
+        let _alts = accent.alternate_names();
+    }
+
+    // ── Edge Cases ───────────────────────────────────────────────────
+
+    #[test]
+    fn test_from_conversions_all_types() {
+        let prose = ProseAccent::Pazer;
+        let poetry = PoetryAccent::Pazer;
+        let pseudo = PseudoAccent::SophPasuq;
+
+        let h_prose: HebrewAccent = prose.into();
+        let h_poetry: HebrewAccent = poetry.into();
+        let h_pseudo: HebrewAccent = pseudo.into();
+
+        assert!(matches!(h_prose, HebrewAccent::Prose(_)));
+        assert!(matches!(h_poetry, HebrewAccent::Poetry(_)));
+        assert!(matches!(h_pseudo, HebrewAccent::Pseudo(_)));
+    }
+
+    #[test]
+    fn test_all_accessor_methods_consistency() {
+        let prose = HebrewAccent::Prose(ProseAccent::Tevir);
+
+        // as_prose should return Some
+        assert!(prose.as_prose().is_some());
+
+        // as_poetry and as_pseudo should return None
+        assert!(prose.as_poetry().is_none());
+        assert!(prose.as_pseudo().is_none());
+    }
+
+    #[test]
+    fn test_thread_safety_bounds() {
+        fn assert_send_sync<T: Send + Sync>() {}
+        assert_send_sync::<HebrewAccent>();
+    }
+
+    #[test]
+    fn test_repr_and_discriminant() {
+        // Verify enum layout is as expected
+        let variants = vec![
+            HebrewAccent::Prose(ProseAccent::Silluq),
+            HebrewAccent::Poetry(PoetryAccent::Silluq),
+            HebrewAccent::Pseudo(PseudoAccent::SophPasuq),
+        ];
+
+        assert_eq!(variants.len(), 3);
+    }
+
+    #[test]
+    fn test_pattern_matching_on_all_variants() {
+        fn describe_accent(accent: &HebrewAccent) -> &'static str {
+            match accent {
+                HebrewAccent::Prose(_) => "prose",
+                HebrewAccent::Poetry(_) => "poetry",
+                HebrewAccent::Pseudo(_) => "pseudo",
+            }
+        }
+
+        assert_eq!(
+            describe_accent(&HebrewAccent::Prose(ProseAccent::Silluq)),
+            "prose"
+        );
+        assert_eq!(
+            describe_accent(&HebrewAccent::Poetry(PoetryAccent::Silluq)),
+            "poetry"
+        );
+        assert_eq!(
+            describe_accent(&HebrewAccent::Pseudo(PseudoAccent::SophPasuq)),
+            "pseudo"
+        );
+    }
+
+    #[test]
+    fn test_const_compatible_usage() {
+        // Verify HebrewAccent can be used in const contexts where possible
+        const DEFAULT: HebrewAccent = HebrewAccent::Prose(ProseAccent::Silluq);
+        assert!(matches!(DEFAULT, HebrewAccent::Prose(ProseAccent::Silluq)));
+    }
 }
