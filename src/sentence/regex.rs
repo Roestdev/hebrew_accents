@@ -479,10 +479,10 @@ mod regex_initialization_tests {
 
 #[cfg(test)]
 mod comprehensive_regex_coverage_tests {
-    use super::*;
     use super::poetry_patterns::*;
     use super::prose_patterns::*;
     use super::shared_patterns::*;
+    use super::*;
 
     // ============================================================
     // CONSTANT STRING PATTERNS - TEST BUILDING BLOCKS
@@ -549,7 +549,7 @@ mod comprehensive_regex_coverage_tests {
     #[test]
     fn test_fa_re_outer_prose_munach_no_match_when_followed_by_paseq() {
         // Should NOT match if followed by Paseq (that's Legarmeh)
-         assert!(FA_RE_OUTER_PROSE_MUNACH.is_match("א֣׀").unwrap());
+        assert!(FA_RE_OUTER_PROSE_MUNACH.is_match("א֣׀").unwrap());
     }
 
     #[test]
@@ -675,30 +675,34 @@ mod comprehensive_regex_coverage_tests {
 
     #[test]
     fn test_fa_re_outer_poetry_azla_matches_without_separator() {
-         assert!(FA_RE_OUTER_POETRY_AZLA.is_match("קַדְמָ֨א").unwrap());
+        assert!(FA_RE_OUTER_POETRY_AZLA.is_match("קַדְמָ֨א").unwrap());
     }
 
     #[test]
     fn test_fa_re_outer_poetry_azla_matches_with_maqqaph() {
         // Azla with Maqqaph should match
-         assert!(FA_RE_OUTER_POETRY_AZLA.is_match("א֣").unwrap());
+        assert!(FA_RE_OUTER_POETRY_AZLA.is_match("א֣").unwrap());
     }
 
     #[test]
     fn test_fa_re_outer_poetry_azla_no_match_with_paseq() {
         // Should NOT match if followed by Paseq (that's AzlaLegarmeh)
-         assert!(FA_RE_OUTER_POETRY_AZLA.is_match("קַדְמָ֨׀").unwrap());
+        assert!(FA_RE_OUTER_POETRY_AZLA.is_match("קַדְמָ֨׀").unwrap());
     }
 
     #[test]
     fn test_fa_re_outer_poetry_shalshelet_qetannah_matches() {
-         assert!(FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH.is_match("שַׁלְשֶׁ֓לֶת").unwrap());
+        assert!(FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
+            .is_match("שַׁלְשֶׁ֓לֶת")
+            .unwrap());
     }
 
     #[test]
     fn test_fa_re_outer_poetry_shalshelet_qetannah_no_match_with_paseq() {
         // Should NOT match if followed by Paseq
-        assert!(FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH.is_match("שַׁלְשֶׁ֓לֶת׀").unwrap());
+        assert!(FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH
+            .is_match("שַׁלְשֶׁ֓לֶת׀")
+            .unwrap());
     }
 
     #[test]
@@ -799,14 +803,14 @@ mod comprehensive_regex_coverage_tests {
     #[test]
     fn test_fa_re_outer_common_meteg_matches() {
         // Meteg not at end of sentence should match
-         assert!(FA_RE_OUTER_COMMON_METEG.is_match("אֽב").unwrap());
+        assert!(FA_RE_OUTER_COMMON_METEG.is_match("אֽב").unwrap());
     }
 
     #[test]
     fn test_fa_re_outer_common_meteg_no_match_at_sentence_end() {
         // Meteg at end should NOT match (it's Silluq, not Meteg)
         // Depends on the constraint implementation
-         assert!(FA_RE_OUTER_COMMON_METEG.is_match("א֣").unwrap());
+        assert!(FA_RE_OUTER_COMMON_METEG.is_match("א֣").unwrap());
     }
 
     // ============================================================
@@ -959,11 +963,11 @@ mod comprehensive_regex_coverage_tests {
     fn test_regex_performance_with_long_text() {
         let regex = &RE_OUTER_POETRY_OLEH_WEYORED;
         let long_text = "אב".repeat(1000);
-        
+
         let start = std::time::Instant::now();
         let result = regex.is_match(&long_text);
         let elapsed = start.elapsed();
-        
+
         assert!(result);
         assert!(elapsed.as_micros() < 10000); // Should complete quickly
     }
@@ -972,11 +976,11 @@ mod comprehensive_regex_coverage_tests {
     fn test_regex_performance_with_many_candidates() {
         let regex = &RE_OUTER_COMMON_SHALSHELET;
         let text_with_many_paseqs = "אב֓׀".repeat(100);
-        
+
         let start = std::time::Instant::now();
         let result = regex.is_match(&text_with_many_paseqs);
         let elapsed = start.elapsed();
-        
+
         assert!(result);
         assert!(elapsed.as_micros() < 10000);
     }

@@ -2997,25 +2997,26 @@ mod helper_functions_coverage_tests {
     }
 
     #[test]
-    fn test_find_silluq_with_pey_suffix_and_with_sof_pasuq(){
+    fn test_find_silluq_with_pey_suffix_and_with_sof_pasuq() {
         // Gen 1:5
-        let result = find_silluq("וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי־עֶ֥רֶב וַֽיְהִי־בֹ֖קֶר י֥וֹם אֶחָֽד׃ פ");
+        let result =
+            find_silluq("וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי־עֶ֥רֶב וַֽיְהִי־בֹ֖קֶר י֥וֹם אֶחָֽד׃ פ");
         assert!(result.is_some());
     }
-#[test]
-    fn test_find_silluq_with_pey_suffix_and_without_sof_pasuq(){
+    #[test]
+    fn test_find_silluq_with_pey_suffix_and_without_sof_pasuq() {
         // Gen 1:5
         let result = find_silluq("וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי־עֶ֥רֶב וַֽיְהִי־בֹ֖קֶר י֥וֹם אֶחָֽד פ");
         assert!(result.is_some());
     }
 
-    #[test] 
+    #[test]
     fn test_find_silluq_with_samekh_suffix_and_with_sof_pasuq() {
         // Gen 5:2
         let result = find_silluq("זָכָ֥ר וּנְקֵבָ֖ה בְּרָאָ֑ם וַיְבָ֣רֶךְ אֹתָ֗ם וַיִּקְרָ֤א אֶת־שְׁמָם֙ אָדָ֔ם בְּי֖וֹם הִבָּֽרְאָֽם׃ ס");
         assert!(result.is_some());
     }
-    #[test] 
+    #[test]
     fn test_find_silluq_with_samekh_suffix_and_without_sof_pasuq() {
         // Gen 5:2
         let result = find_silluq("זָכָ֥ר וּנְקֵבָ֖ה בְּרָאָ֑ם וַיְבָ֣רֶךְ אֹתָ֗ם וַיִּקְרָ֤א אֶת־שְׁמָם֙ אָדָ֔ם בְּי֖וֹם הִבָּֽרְאָֽם ס");
