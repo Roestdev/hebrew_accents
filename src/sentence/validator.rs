@@ -52,6 +52,7 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     }) {
         return Err(SentenceContextError::MultipleLines);
     }
+
     // Find first non-whitespace character
     let Some(first_non_ws) = s
         .char_indices()
@@ -64,7 +65,7 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     validate_first_non_white_char(first_non_ws.1)?;
 
     // Validate remaining characters (including first)
-    for (idx, c) in s.char_indices() {
+    for (idx, c) in s.char_indices().skip(first_non_ws.0) {
         if !is_valid_hebrew_char(c) {
             return Err(SentenceContextError::InvalidCharacter(c, idx));
         }
@@ -220,7 +221,15 @@ mod tests {
 
     #[test]
     fn various_whitespace_only_returns_empty_sentence_error() {
-        for ws in [" ", "\u{00A0}", "\t", "\r"] {
+        for ws in [
+            "\u{0020}", // SPACE
+            "\u{00A0}", // NO-BREAK SPACE
+            "\u{200E}", // LEFT-TO-RIGHT MARK
+            "\u{200F}", // RIGHT-TO-LEFT MARK
+            "\u{2009}", // THIN SPACE
+            "\u{205F}", // MEDIUM MATHEMATICAL SPACE
+            "\u{3000}", // IDEOGRAPHIC SPACE
+        ] {
             assert_eq!(
                 validate_sentence(ws),
                 Err(SentenceContextError::EmptySentence)
@@ -325,7 +334,7 @@ mod tests {
     fn carriage_return_is_invalid_character() {
         assert_eq!(
             validate_sentence("\rשלום"),
-            Err(SentenceContextError::InvalidCharacter('\r', 0))
+            Err(SentenceContextError::MultipleLines)
         );
     }
 
@@ -697,20 +706,20 @@ mod tests {
         );
     }
 
-   #[test]
+    #[test]
     fn test_arabic_blocked() {
         assert_eq!(
-               validate_sentence("مرحبا"),
-               Err(SentenceContextError::InvalidCharacter('م', 0))
-           );
+            validate_sentence("مرحبا"),
+            Err(SentenceContextError::InvalidCharacter('م', 0))
+        );
     }
 
     #[test]
     fn test_numbers_blocked() {
-         assert_eq!(
-                    validate_sentence("123"),
-                    Err(SentenceContextError::InvalidCharacter('1', 0))
-                );
+        assert_eq!(
+            validate_sentence("123"),
+            Err(SentenceContextError::InvalidCharacter('1', 0))
+        );
     }
 
     #[test]
@@ -1182,5 +1191,458 @@ mod detect_context_tests {
                 marker
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod is_space_like_char_tests {
+    use super::*;
+
+    // ... your existing tests ...
+
+    // Paste the new is_space_like_char_tests here
+
+    // Also add this integration test:
+    #[test]
+    fn test_space_like_chars_integration() {
+        // Combine with is_valid_hebrew_char to ensure both work together
+        let test_chars = [
+            ('\u{0020}', true, true),  // Valid Hebrew, space-like
+            ('\u{00A0}', true, true),  // Valid Hebrew, space-like
+            ('\u{200E}', true, true),  // Valid Hebrew, space-like
+            ('\u{200D}', true, false), // Valid Hebrew, NOT space-like (layout)
+            ('א', true, false),        // Valid Hebrew, NOT space-like (consonant)
+        ];
+
+        for (c, valid_hebrew, space_like) in &test_chars {
+            assert_eq!(
+                is_valid_hebrew_char(*c),
+                *valid_hebrew,
+                "Valid Hebrew check failed for U+{:04X}",
+                *c as u32
+            );
+            assert_eq!(
+                is_space_like_char(*c),
+                *space_like,
+                "Space-like check failed for U+{:04X}",
+                *c as u32
+            );
+        }
+    }
+}
+
+#[cfg(test)]
+mod is_paseq_alternative_char_tests {
+    use super::*;
+
+    // ============================================================
+    // POSITIVE TESTS
+    // ============================================================
+
+    #[test]
+    fn test_ascii_pipe_returns_true() {
+        assert!(is_paseq_alternative_char('|'));
+    }
+
+    #[test]
+    fn test_pipe_byte_representation() {
+        // Verify the exact code point
+        assert_eq!('|' as u32, 0x007C);
+        assert!(is_paseq_alternative_char('\u{007C}'));
+    }
+
+    // ============================================================
+    // NEGATIVE TESTS - Similar Looking Characters
+    // ============================================================
+
+    #[test]
+    fn test_fullwidth_vertical_bar_returns_false() {
+        // FULLWIDTH VERTICAL LINE - visually similar but NOT the same
+        assert!(!is_paseq_alternative_char('\u{FF5C}')); // ｜
+    }
+
+    #[test]
+    fn test_actual_paseq_returns_false() {
+        // The real Paseq (U+05C0) is handled by is_hbr_block, not this function
+        assert!(!is_paseq_alternative_char('\u{05C0}')); // ׀
+    }
+
+    #[test]
+    fn test_division_slash_returns_false() {
+        assert!(!is_paseq_alternative_char('/'));
+    }
+
+    #[test]
+    fn test_backslash_returns_false() {
+        assert!(!is_paseq_alternative_char('\\'));
+    }
+
+    #[test]
+    fn test_exclamation_mark_returns_false() {
+        // Exclamation visually resembles a pipe
+        assert!(!is_paseq_alternative_char('!'));
+    }
+
+    #[test]
+    fn test_lowercase_l_returns_false() {
+        // Lowercase L visually resembles a pipe
+        assert!(!is_paseq_alternative_char('l'));
+    }
+
+    #[test]
+    fn test_uppercase_i_returns_false() {
+        // Uppercase I visually resembles a pipe
+        assert!(!is_paseq_alternative_char('I'));
+    }
+
+    #[test]
+    fn test_box_drawing_chars_return_false() {
+        // Box drawing vertical lines
+        assert!(!is_paseq_alternative_char('\u{2502}')); // │
+        assert!(!is_paseq_alternative_char('\u{2503}')); // ┃
+        assert!(!is_paseq_alternative_char('\u{2551}')); // ║
+    }
+
+    // ============================================================
+    // NEGATIVE TESTS - Other Categories
+    // ============================================================
+
+    #[test]
+    fn test_hebrew_consonants_return_false() {
+        assert!(!is_paseq_alternative_char('א'));
+        assert!(!is_paseq_alternative_char('ב'));
+        assert!(!is_paseq_alternative_char('ת'));
+    }
+
+    #[test]
+    fn test_spaces_return_false() {
+        assert!(!is_paseq_alternative_char('\u{0020}')); // SPACE
+        assert!(!is_paseq_alternative_char('\u{00A0}')); // NBSP
+    }
+
+    #[test]
+    fn test_newline_chars_return_false() {
+        assert!(!is_paseq_alternative_char('\n'));
+        assert!(!is_paseq_alternative_char('\r'));
+    }
+
+    #[test]
+    fn test_emoji_returns_false() {
+        assert!(!is_paseq_alternative_char('😀'));
+    }
+
+    // ============================================================
+    // BOUNDARY TESTS - Neighbors of U+007C
+    // ============================================================
+
+    #[test]
+    fn test_neighbors_of_pipe_return_false() {
+        assert!(!is_paseq_alternative_char('\u{007B}')); // { (before pipe)
+        assert!(!is_paseq_alternative_char('\u{007D}')); // } (after pipe)
+        assert!(!is_paseq_alternative_char('\u{007A}')); // z
+        assert!(!is_paseq_alternative_char('\u{007E}')); // ~
+    }
+
+    // ============================================================
+    // INTEGRATION TESTS
+    // ============================================================
+
+    #[test]
+    fn test_pipe_valid_in_sentence_body() {
+        // Pipe accepted in body (used as paseq alternative)
+        assert_eq!(validate_sentence("אב׀ג"), Ok(()));
+        assert_eq!(validate_sentence("א֣ים|אב"), Ok(()));
+    }
+
+    #[test]
+    fn test_pipe_invalid_as_first_char() {
+        // Pipe is not a consonant - cannot start sentence
+        assert_eq!(
+            validate_sentence("|אב"),
+            Err(SentenceContextError::StartsWithNonConsonant('|'))
+        );
+    }
+
+    #[test]
+    fn test_pipe_vs_paseq_both_valid() {
+        // Both ASCII pipe and Hebrew Paseq are valid in body
+        assert_eq!(validate_sentence("אב|גד"), Ok(()));
+        assert_eq!(validate_sentence("אב׀גד"), Ok(())); // U+05C0
+    }
+}
+
+#[cfg(test)]
+mod is_meteg_layout_char_tests {
+    use super::*;
+
+    // ============================================================
+    // POSITIVE TESTS - All Three Layout Characters
+    // ============================================================
+
+    #[test]
+    fn test_cgj_returns_true() {
+        assert!(is_meteg_layout_char('\u{034F}')); // COMBINING GRAPHEME JOINER
+    }
+
+    #[test]
+    fn test_zwnj_returns_true() {
+        assert!(is_meteg_layout_char('\u{200C}')); // ZERO WIDTH NON-JOINER
+    }
+
+    #[test]
+    fn test_zwj_returns_true() {
+        assert!(is_meteg_layout_char('\u{200D}')); // ZERO WIDTH JOINER
+    }
+
+    #[test]
+    fn test_all_layout_chars_in_sequence() {
+        let layout_chars = ['\u{034F}', '\u{200C}', '\u{200D}'];
+
+        for &c in &layout_chars {
+            assert!(
+                is_meteg_layout_char(c),
+                "Expected layout char to return true: U+{:04X}",
+                c as u32
+            );
+        }
+    }
+
+    #[test]
+    fn test_layout_char_code_points() {
+        // Verify exact code points
+        assert_eq!('\u{034F}' as u32, 0x034F);
+        assert_eq!('\u{200C}' as u32, 0x200C);
+        assert_eq!('\u{200D}' as u32, 0x200D);
+    }
+
+    // ============================================================
+    // NEGATIVE TESTS - Visually Similar Zero-Width Characters
+    // ============================================================
+
+    #[test]
+    fn test_zwsp_returns_false() {
+        // ZERO WIDTH SPACE (U+200B) - NOT in the layout list!
+        assert!(!is_meteg_layout_char('\u{200B}'));
+    }
+
+    #[test]
+    fn test_word_joiner_returns_false() {
+        // WORD JOINER (U+2060) - similar purpose but NOT accepted
+        assert!(!is_meteg_layout_char('\u{2060}'));
+    }
+
+    #[test]
+    fn test_left_to_right_embedding_returns_false() {
+        assert!(!is_meteg_layout_char('\u{202A}')); // LRE
+        assert!(!is_meteg_layout_char('\u{202B}')); // RLE
+        assert!(!is_meteg_layout_char('\u{202C}')); // PDF
+        assert!(!is_meteg_layout_char('\u{202D}')); // LRO
+        assert!(!is_meteg_layout_char('\u{202E}')); // RLO
+    }
+
+    #[test]
+    fn test_variation_selector_returns_false() {
+        assert!(!is_meteg_layout_char('\u{FE00}')); // VARIATION SELECTOR-1
+        assert!(!is_meteg_layout_char('\u{FE0F}')); // VARIATION SELECTOR-16
+    }
+
+    #[test]
+    fn test_zero_width_joiner_vs_neighbors() {
+        // The neighbors of U+200C/U+200D
+        assert!(!is_meteg_layout_char('\u{200B}')); // ZWSP (before)
+        assert!(!is_meteg_layout_char('\u{200E}')); // LRM (after)
+        assert!(!is_meteg_layout_char('\u{200F}')); // RLM (after)
+    }
+
+    // ============================================================
+    // NEGATIVE TESTS - Other Categories
+    // ============================================================
+
+    #[test]
+    fn test_bidi_marks_return_false() {
+        // LRM/RLM are categorized as space-like, NOT layout
+        assert!(!is_meteg_layout_char('\u{200E}')); // LRM
+        assert!(!is_meteg_layout_char('\u{200F}')); // RLM
+    }
+
+    #[test]
+    fn test_hebrew_consonants_return_false() {
+        assert!(!is_meteg_layout_char('א'));
+        assert!(!is_meteg_layout_char('ש'));
+        assert!(!is_meteg_layout_char('ת'));
+    }
+
+    #[test]
+    fn test_hebrew_niqqud_returns_false() {
+        assert!(!is_meteg_layout_char('\u{05B0}')); // Sheva
+        assert!(!is_meteg_layout_char('\u{05B8}')); // Qamats
+    }
+
+    #[test]
+    fn test_hebrew_cantillation_returns_false() {
+        assert!(!is_meteg_layout_char('\u{0591}')); // Etnachta
+        assert!(!is_meteg_layout_char('\u{0592}')); // Segolta
+    }
+
+    #[test]
+    fn test_meteg_itself_returns_false() {
+        // The actual Meteg/Silluq (U+05BD) is in Hebrew block, NOT layout
+        assert!(!is_meteg_layout_char('\u{05BD}'));
+    }
+
+    #[test]
+    fn test_spaces_return_false() {
+        assert!(!is_meteg_layout_char('\u{0020}')); // SPACE
+        assert!(!is_meteg_layout_char('\u{00A0}')); // NBSP
+        assert!(!is_meteg_layout_char('\u{2009}')); // THIN SPACE
+    }
+
+    #[test]
+    fn test_pipe_returns_false() {
+        assert!(!is_meteg_layout_char('|'));
+    }
+
+    #[test]
+    fn test_ascii_letters_return_false() {
+        assert!(!is_meteg_layout_char('a'));
+        assert!(!is_meteg_layout_char('Z'));
+    }
+
+    #[test]
+    fn test_newline_chars_return_false() {
+        assert!(!is_meteg_layout_char('\n'));
+        assert!(!is_meteg_layout_char('\r'));
+    }
+
+    #[test]
+    fn test_emoji_returns_false() {
+        assert!(!is_meteg_layout_char('😀'));
+    }
+
+    // ============================================================
+    // BOUNDARY TESTS - Neighbors of U+034F
+    // ============================================================
+
+    #[test]
+    fn test_neighbors_of_cgj_return_false() {
+        assert!(!is_meteg_layout_char('\u{034E}')); // Before CGJ
+        assert!(!is_meteg_layout_char('\u{0350}')); // After CGJ
+    }
+
+    // ============================================================
+    // CATEGORY DIFFERENTIATION TESTS
+    // ============================================================
+
+    #[test]
+    fn test_layout_vs_space_category_distinction() {
+        // Layout controls: CGJ, ZWNJ, ZWJ
+        assert!(is_meteg_layout_char('\u{200D}'));
+        assert!(!is_space_like_char('\u{200D}'));
+
+        // Space-like: LRM, RLM (adjacent code points to ZWNJ/ZWJ!)
+        assert!(!is_meteg_layout_char('\u{200E}'));
+        assert!(is_space_like_char('\u{200E}'));
+        assert!(!is_meteg_layout_char('\u{200F}'));
+        assert!(is_space_like_char('\u{200F}'));
+    }
+
+    #[test]
+    fn test_layout_vs_paseq_category_distinction() {
+        assert!(is_meteg_layout_char('\u{200D}'));
+        assert!(!is_paseq_alternative_char('\u{200D}'));
+
+        assert!(!is_meteg_layout_char('|'));
+        assert!(is_paseq_alternative_char('|'));
+    }
+
+    #[test]
+    fn test_categories_are_mutually_exclusive() {
+        // Verify no char falls in multiple helper categories
+        let common_chars = [
+            'א', 'ב', '\u{0020}', '\u{00A0}', '|', '\u{034F}', '\u{200C}', '\u{200D}', '\u{200E}',
+            '\u{200F}', 'a', '1', '!', '\u{05B0}',
+        ];
+
+        for &c in &common_chars {
+            let categories = [
+                is_space_like_char(c),
+                is_paseq_alternative_char(c),
+                is_meteg_layout_char(c),
+            ];
+
+            let true_count = categories.iter().filter(|&&b| b).count();
+
+            // Each char should be in at most ONE of the three categories
+            // (Hebrew block chars like א may be in zero of them)
+            assert!(
+                true_count <= 1,
+                "Char U+{:04X} is in {} categories (space-like/paseq-alt/meteg-layout)",
+                c as u32,
+                true_count
+            );
+        }
+    }
+
+    // ============================================================
+    // INTEGRATION TESTS WITH validate_sentence
+    // ============================================================
+
+    #[test]
+    fn test_layout_chars_valid_in_sentence_body() {
+        // All three layout chars accepted within Hebrew text
+        assert_eq!(validate_sentence("א\u{034F}ב"), Ok(())); // CGJ
+        assert_eq!(validate_sentence("א\u{200C}ב"), Ok(())); // ZWNJ
+        assert_eq!(validate_sentence("א\u{200D}ב"), Ok(())); // ZWJ
+    }
+
+    #[test]
+    fn test_layout_chars_invalid_as_first_char() {
+        // Layout controls are not consonants - cannot start sentence
+        assert_eq!(
+            validate_sentence("\u{034F}אב"),
+            Err(SentenceContextError::StartsWithNonConsonant('\u{034F}'))
+        );
+        assert_eq!(
+            validate_sentence("\u{200C}אב"),
+            Err(SentenceContextError::StartsWithNonConsonant('\u{200C}'))
+        );
+        assert_eq!(
+            validate_sentence("\u{200D}אב"),
+            Err(SentenceContextError::StartsWithNonConsonant('\u{200D}'))
+        );
+    }
+
+    #[test]
+    fn test_multiple_layout_chars_together() {
+        // Sequences of layout chars are valid
+        assert_eq!(validate_sentence("א\u{200D}\u{200C}\u{034F}ב"), Ok(()));
+    }
+
+    #[test]
+    fn test_zero_width_space_is_invalid() {
+        // ZWSP (U+200B) deliberately NOT in any valid category
+        assert_eq!(
+            validate_sentence("א\u{200B}ב"),
+            Err(SentenceContextError::InvalidCharacter('\u{200B}', 2))
+        );
+    }
+
+    #[test]
+    fn test_meteg_scenario_in_hebrew_text() {
+        // Realistic use: layout chars around meteg/silluq
+        let with_meteg = "א֖֥ב\u{034F}\u{05BD}";
+        assert_eq!(validate_sentence(with_meteg), Ok(()));
+    }
+
+    // ============================================================
+    // COVERAGE OF is_valid_hebrew_char DELEGATION
+    // ============================================================
+
+    #[test]
+    fn test_layout_chars_are_valid_hebrew_chars() {
+        // These chars pass overall validity through is_meteg_layout_char
+        assert!(is_valid_hebrew_char('\u{034F}'));
+        assert!(is_valid_hebrew_char('\u{200C}'));
+        assert!(is_valid_hebrew_char('\u{200D}'));
     }
 }

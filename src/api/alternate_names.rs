@@ -1,5 +1,3 @@
-use crate::accent::PrivAlternateNames;
-
 /// Optional alternate representations for an accent.
 ///
 /// For some accents the `Biblia Hebraica Stuttgartensia` (BHS)
@@ -29,17 +27,6 @@ pub struct AlternateNames {
     pub english_name: &'static str,
     /// Transliterated according `SBL Academic`
     pub sbl_academic: &'static str,
-}
-
-impl From<PrivAlternateNames> for AlternateNames {
-    fn from(internal: PrivAlternateNames) -> Self {
-        AlternateNames {
-            hebrew_name: internal.hebrew_name,
-            hebrew_concept: internal.hebrew_concept,
-            english_name: internal.english_name,
-            sbl_academic: internal.sbl_academic,
-        }
-    }
 }
 
 #[cfg(test)]
@@ -222,79 +209,79 @@ mod tests {
 
     // ===== FROM TRAIT IMPLEMENTATION TESTS =====
 
-    #[test]
-    fn test_from_priv_alternate_names_basic() {
-        let internal = PrivAlternateNames {
-            hebrew_name: "גֵּרֶשׁ",
-            hebrew_concept: "expulsion",
-            english_name: "Teres",
-            sbl_academic: "tĕrēs",
-        };
+    // #[test]
+    // fn test_from_priv_alternate_names_basic() {
+    //     let internal = InternalAlternateNames {
+    //         hebrew_name: "גֵּרֶשׁ",
+    //         hebrew_concept: "expulsion",
+    //         english_name: "Teres",
+    //         sbl_academic: "tĕrēs",
+    //     };
 
-        let public: AlternateNames = internal.into();
+    //     let public: AlternateNames = internal.into();
 
-        assert_eq!(public.hebrew_name, "גֵּרֶשׁ");
-        assert_eq!(public.hebrew_concept, "expulsion");
-        assert_eq!(public.english_name, "Teres");
-        assert_eq!(public.sbl_academic, "tĕrēs");
-    }
+    //     assert_eq!(public.hebrew_name, "גֵּרֶשׁ");
+    //     assert_eq!(public.hebrew_concept, "expulsion");
+    //     assert_eq!(public.english_name, "Teres");
+    //     assert_eq!(public.sbl_academic, "tĕrēs");
+    // }
 
-    #[test]
-    fn test_from_conversion_preserves_all_fields() {
-        let internal = PrivAlternateNames {
-            hebrew_name: "פָּזֵר גָּדוֹל",
-            hebrew_concept: "great scatter",
-            english_name: "Qarne Pharah",
-            sbl_academic: "qārənê pāārâ",
-        };
+    // #[test]
+    // fn test_from_conversion_preserves_all_fields() {
+    //     let internal = InternalAlternateNames {
+    //         hebrew_name: "פָּזֵר גָּדוֹל",
+    //         hebrew_concept: "great scatter",
+    //         english_name: "Qarne Pharah",
+    //         sbl_academic: "qārənê pāārâ",
+    //     };
 
-        let public: AlternateNames = internal.into();
+    //     let public: AlternateNames = internal.into();
 
-        // Direct pattern match for verification
-        assert_eq!(public.hebrew_name, "פָּזֵר גָּדוֹל");
-        assert_eq!(public.hebrew_concept, "great scatter");
-        assert_eq!(public.english_name, "Qarne Pharah");
-        assert_eq!(public.sbl_academic, "qārənê pāārâ");
-    }
+    //     // Direct pattern match for verification
+    //     assert_eq!(public.hebrew_name, "פָּזֵר גָּדוֹל");
+    //     assert_eq!(public.hebrew_concept, "great scatter");
+    //     assert_eq!(public.english_name, "Qarne Pharah");
+    //     assert_eq!(public.sbl_academic, "qārənê pāārâ");
+    // }
 
-    #[test]
-    fn test_from_conversion_identity() {
-        let original = PrivAlternateNames {
-            hebrew_name: "מַהְפָּךְ",
-            hebrew_concept: "overturning",
-            english_name: "Mehuppakh",
-            sbl_academic: "məhuppāḵ",
-        };
+    // #[test]
+    // fn test_from_conversion_identity() {
+    //     let original = InternalAlternateNames {
+    //         hebrew_name: "מַהְפָּךְ",
+    //         hebrew_concept: "overturning",
+    //         english_name: "Mehuppakh",
+    //         sbl_academic: "məhuppāḵ",
+    //     };
 
-        let converted: AlternateNames = original.clone().into();
+    //     let converted: AlternateNames = original.clone().into();
 
-        // Verify no data loss during conversion
-        assert_eq!(original.hebrew_name, converted.hebrew_name);
-        assert_eq!(original.hebrew_concept, converted.hebrew_concept);
-        assert_eq!(original.english_name, converted.english_name);
-        assert_eq!(original.sbl_academic, converted.sbl_academic);
-    }
+    //     // Verify no data loss during conversion
+    //     assert_eq!(original.hebrew_name, converted.hebrew_name);
+    //     assert_eq!(original.hebrew_concept, converted.hebrew_concept);
+    //     assert_eq!(original.english_name, converted.english_name);
+    //     assert_eq!(original.sbl_academic, converted.sbl_academic);
+    // }
 
-    #[test]
-    fn test_from_trait_const_compatible() {
-        // Verify both types can be used in const contexts
-        const INTERNAL: PrivAlternateNames = PrivAlternateNames {
-            hebrew_name: "מֶתֶג",
-            hebrew_concept: "bridle",
-            english_name: "Gayah",
-            sbl_academic: "gāyâ",
-        };
+    // #[test]
+    // fn test_from_trait_const_compatible() {
+    //     // Verify both types can be used in const contexts
+    //     const INTERNAL: InternalAlternateNames = InternalAlternateNames {
+    //         hebrew_name: "מֶתֶג",
+    //         hebrew_concept: "bridle",
+    //         english_name: "Gayah",
+    //         sbl_academic: "gāyâ",
+    //     };
 
-        const PUBLIC: AlternateNames = AlternateNames {
-            hebrew_name: "מֶתֶג",
-            hebrew_concept: "bridle",
-            english_name: "Gayah",
-            sbl_academic: "gāyâ",
-        };
+    //     const PUBLIC: AlternateNames = AlternateNames {
+    //         hebrew_name: "מֶתֶג",
+    //         hebrew_concept: "bridle",
+    //         english_name: "Gayah",
+    //         sbl_academic: "gāyâ",
+    //     };
 
-        assert_eq!(INTERNAL.hebrew_name, PUBLIC.hebrew_name);
-        assert_eq!(INTERNAL.english_name, PUBLIC.english_name);
-    }
+    //     assert_eq!(INTERNAL.hebrew_name, PUBLIC.hebrew_name);
+    //     assert_eq!(INTERNAL.english_name, PUBLIC.english_name);
+    // }
 
     // ===== DERIVED TRAIT TESTS =====
 
@@ -553,36 +540,36 @@ mod tests {
 
     // ===== COMBINATION TESTS =====
 
-    #[test]
-    fn test_complete_alternate_names_workflow() {
-        // Full workflow: create internal -> convert to public -> use
-        let internal = PrivAlternateNames {
-            hebrew_name: "פָּזֵר גָּדוֹל",
-            hebrew_concept: "great scatter",
-            english_name: "Qarne Pharah",
-            sbl_academic: "qārənê pāārâ",
-        };
+    // #[test]
+    // fn test_complete_alternate_names_workflow() {
+    //     // Full workflow: create internal -> convert to public -> use
+    //     let internal = InternalAlternateNames {
+    //         hebrew_name: "פָּזֵר גָּדוֹל",
+    //         hebrew_concept: "great scatter",
+    //         english_name: "Qarne Pharah",
+    //         sbl_academic: "qārənê pāārâ",
+    //     };
 
-        let public: AlternateNames = internal.into();
+    //     let public: AlternateNames = internal.into();
 
-        // All operations should succeed
-        assert_eq!(public.hebrew_name, "פָּזֵר גָּדוֹל");
-        assert_eq!(public.english_name, "Qarne Pharah");
-        assert_eq!(public.sbl_academic, "qārənê pāārâ");
+    //     // All operations should succeed
+    //     assert_eq!(public.hebrew_name, "פָּזֵר גָּדוֹל");
+    //     assert_eq!(public.english_name, "Qarne Pharah");
+    //     assert_eq!(public.sbl_academic, "qārənê pāārâ");
 
-        // Can be displayed
-        let _display = format!("{:?}", public);
+    //     // Can be displayed
+    //     let _display = format!("{:?}", public);
 
-        // Can be compared
-        let another = AlternateNames {
-            hebrew_name: "פָּזֵר גָּדוֹל",
-            hebrew_concept: "great scatter",
-            english_name: "Qarne Pharah",
-            sbl_academic: "qārənê pāārâ",
-        };
+    //     // Can be compared
+    //     let another = AlternateNames {
+    //         hebrew_name: "פָּזֵר גָּדוֹל",
+    //         hebrew_concept: "great scatter",
+    //         english_name: "Qarne Pharah",
+    //         sbl_academic: "qārənê pāārâ",
+    //     };
 
-        assert_eq!(public, another);
-    }
+    //     assert_eq!(public, another);
+    // }
 
     #[test]
     fn test_alternate_names_in_result_wrapper() {

@@ -45,10 +45,10 @@
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
 use crate::accent_data::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
+use crate::Accent;
 use crate::{
     display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
 };
-use crate::{Accent, AlternateNames};
 use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew prose cantillation mark.
@@ -410,17 +410,24 @@ impl Accent for ProseAccent {
 
     #[inline]
     fn kind(&self) -> Option<AccentKind> {
-        PROSE_ACCENT_TABLE[self.as_index()].kind
+        let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
+        table_entry.kind.map(|priv_kind| priv_kind.into())
     }
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        PROSE_ACCENT_TABLE[self.as_index()].category
+        let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .category
+            .map(|priv_category| priv_category.into())
     }
 
     #[inline]
     fn compound_type(&self) -> Option<CompoundType> {
-        PROSE_ACCENT_TABLE[self.as_index()].compound_type
+        let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .compound_type
+            .map(|priv_compound_type| priv_compound_type.into())
     }
 
     #[inline]
@@ -469,8 +476,11 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn alternate_names(&self) -> Option<AlternateNames> {
-        None // TODO
+    fn alternate_names(&self) -> Option<crate::api::AlternateNames> {
+        let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .alternate_names
+            .map(|priv_names| priv_names.into())
     }
 }
 

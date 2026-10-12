@@ -1,7 +1,16 @@
-use crate::{Accent, CompoundType, HebrewAccent};
+use crate::accent_mark::Utf8CodePoint;
+use crate::api::{Accent, CompoundType, HebrewAccent};
 
 const DOTTED_CIRCLE: char = '\u{25CC}';
 const SPACE: char = '\u{0020}';
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub(crate) struct CantillationSymbol {
+    /// Primary UTF-8 code point, the one that is encountered first
+    pub(crate) primary_mark: &'static Utf8CodePoint,
+    /// Secondary UTF-8 code point, if applicable
+    pub(crate) secondary_mark: Option<&'static Utf8CodePoint>,
+}
 
 /// Displays cantillation symbol with dotted circles indicating syllable positions.
 ///

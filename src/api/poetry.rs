@@ -355,17 +355,24 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn kind(&self) -> Option<AccentKind> {
-        POETRY_ACCENT_TABLE[self.as_index()].kind
+        let table_entry = &POETRY_ACCENT_TABLE[self.as_index()];
+        table_entry.kind.map(|priv_kind| priv_kind.into())
     }
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        POETRY_ACCENT_TABLE[self.as_index()].category
+        let table_entry = &POETRY_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .category
+            .map(|priv_category| priv_category.into())
     }
 
     #[inline]
     fn compound_type(&self) -> Option<CompoundType> {
-        POETRY_ACCENT_TABLE[self.as_index()].compound_type
+        let table_entry = &POETRY_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .compound_type
+            .map(|priv_compound_type| priv_compound_type.into())
     }
 
     #[inline]

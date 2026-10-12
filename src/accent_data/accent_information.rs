@@ -1,9 +1,9 @@
 //! This file contains all static data of the 'Hebrew Accents'
 
-// Crate‑internal (local modules)
-use crate::accent::{AccentMetaData, CantillationSymbol, PrivAlternateNames};
-use crate::api::CompoundType;
-use crate::{AccentCategory, AccentKind};
+use crate::accent::{
+    AccentMetaData, CantillationSymbol, InternalAccentCategory, InternalAccentKind,
+    InternalAlternateNames, InternalCompoundType,
+};
 
 use crate::accent_mark::{
     CODEPOINT_DARGA, CODEPOINT_DEHI, CODEPOINT_ETNAHTA, CODEPOINT_GERESH, CODEPOINT_GERSHAYIM,
@@ -46,8 +46,8 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
             The Silluq appears once per verse.
 "#,
     ),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_SILLUQ,
 };
 
@@ -66,8 +66,8 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
         r#"The major disjunctive accent dividing the verse in two halves.
     It appears only once per verse"#,
     ),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ETNAHTA,
 };
 
@@ -83,8 +83,8 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Appears frequently in prose, preceding Atnach or Silluq."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_SEGOL,
 };
 
@@ -98,14 +98,15 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::ContainsPaseq),
+    compound_type: Some(InternalCompoundType::ContainsPaseq),
     notes: Some(r#"Rare accent occurring only four times in the Torah."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
 pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
+    // TODO QATAN QATON
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
     hebrew_concept: "small upright or small standing one",
@@ -117,8 +118,8 @@ pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ZAQEF_QATAN,
 };
 
@@ -134,8 +135,8 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Less common than Zaqeph Qaton; appears after Qadma or Azla."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ZAQEF_GADOL,
 };
 
@@ -150,9 +151,9 @@ pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("probably due to its four-note tune."),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"probably due to its four-note tune."#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -167,16 +168,16 @@ pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("before Atnach and Silluq"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"before Atnach and Silluq"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_TIPEHA,
 };
 
 pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     english_name: "Zarqa",
     hebrew_name: "זַרְקָא",
-    hebrew_concept: "to sprinkle, scatter",
+    hebrew_concept: "to sprinkle, to scatter",
     sbl_academic: "zarqāʾ",
     cantillation_symbol: CantillationSymbol {
         primary_mark: &CODEPOINT_ZINOR,
@@ -184,9 +185,9 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("before Segolta"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"before Segolta"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ZINOR,
 };
 
@@ -201,9 +202,9 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("appears on the last syllable of the word, extending rightward."),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"appears on the last syllable of the word, extending rightward."#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_PASHTA,
 };
 
@@ -218,9 +219,9 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("occasionally substitutes for a Pashta"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"occasionally substitutes for a Pashta"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_YETIV,
 };
 
@@ -236,8 +237,8 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Often followed by Revia; indicates a melodic break."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_TEVIR,
 };
 
@@ -250,7 +251,7 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_GERESH,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Teres",
         hebrew_name: "טֶרֶס",
         hebrew_concept: "a boundary or border",
@@ -258,8 +259,8 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Functions as Level 4 disjunctive; often preceded by Azla."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_GERESH,
 };
 
@@ -275,8 +276,8 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Double Geresh; rarer variant appearing in specific syntactic contexts."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_GERSHAYIM,
 };
 
@@ -294,8 +295,8 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
     notes: Some(
         r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#,
     ),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_PAZER,
 };
 
@@ -308,7 +309,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_QARNEY_PARA,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Qarne Pharah",
         hebrew_name: "קַרְנֵי פָרָה",
         hebrew_concept: "horns of a cow",
@@ -316,8 +317,8 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Also known as Qarne Pharah; rare variant resembling horns."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_QARNEY_PARA,
 };
 
@@ -333,8 +334,8 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Level 4 disjunctive; distinct from Telisha Qetannah."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_TELISHA_GEDOLA,
 };
 
@@ -348,10 +349,10 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::ContainsPaseq),
-    notes: Some("Munach with Passeq; Before Revia"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    compound_type: Some(InternalCompoundType::ContainsPaseq),
+    notes: Some(r#"Munach with Passeq; Before Revia"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_LEGARMEH,
 };
 
@@ -368,8 +369,8 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Most common conjunctive; precedes disjunctive accents."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MUNAH,
 };
 
@@ -382,7 +383,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_MAHAPAKH,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Mehuppakh",
         hebrew_name: "מְהֻפָּ֤ךְ",
         hebrew_concept: "reversed",
@@ -390,8 +391,8 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Conjunctive accent; in poetry can function as Mehuppakh Legarmeh."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MAHAPAKH,
 };
 
@@ -407,8 +408,8 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Lengthens the phrase; often precedes Revia or Telisha."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MERKHA,
 };
 
@@ -424,8 +425,8 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some("Merkha duplex"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MERKHA_KEFULA,
 };
 
@@ -441,8 +442,8 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Conjunctive accent; synonymous with Qadma in some traditions."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_DARGA,
 };
 
@@ -455,16 +456,16 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_QADMA,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Qadma",
         hebrew_name: "קַדְמָ֨א",
         hebrew_concept: "antiquity or a former state",
         sbl_academic: "qadmāʾ",
     }),
     compound_type: None,
-    notes: Some("When Geresh: Qadma"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    notes: Some(r#"When Geresh: Qadma"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_QADMA,
 };
 
@@ -480,8 +481,8 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Short form of Telisha; conjunctive function."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_TELISHA_QETANA,
 };
 
@@ -494,7 +495,7 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_YERAH_BEN_YOMO,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Jerach Ben Jomo",
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         hebrew_concept: "moon one day old",
@@ -502,8 +503,8 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Conjunctive accent; also known as Yerach Ben Yomo."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_YERAH_BEN_YOMO,
 };
 
@@ -516,7 +517,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_TIPEHA,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Mayla",
         hebrew_name: "מַיְלָא",
         hebrew_concept: "that which is above or elevated position",
@@ -530,8 +531,8 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     Different traditions use different names: 
         Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
     ),
-    kind: Some(AccentKind::Secondary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Secondary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_TIPEHA,
 };
 
@@ -544,7 +545,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_METEG,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Gayah",
         hebrew_name: "גַּעְיָה",
         hebrew_concept: "a lowing",
@@ -561,8 +562,8 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     It is possible to have both a Meteg and Silluq in one word,
     where the Meteg comes before the Silluq.!"#,
     ),
-    kind: Some(AccentKind::Secondary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Secondary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_METEG,
 };
 
@@ -584,21 +585,21 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_OLE,
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Mahpakh and Merkha",
         hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
         hebrew_concept: "turning round and prolonging",
         sbl_academic: "mahpak ûmērəkāʾ",
     }),
-    compound_type: Some(CompoundType::CanSpanTwoWords),
+    compound_type: Some(InternalCompoundType::CanSpanTwoWords),
     notes: Some(
         r#"The primary_mark looks like a Mehuppakh, 
 but is located above the consonant in stead of below.
 It is then called OLE. When preceded by no place to attach, Yored remains alone.
 The alternate BHS naming is fabricated"#,
     ),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_OLEH_WEYORED,
 };
 
@@ -616,8 +617,8 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Poetry Level 2 disjunctive; equivalent to Revia in prose."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -631,10 +632,10 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_REVIA),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::Standard),
+    compound_type: Some(InternalCompoundType::Standard),
     notes: Some(r#"Revia with Geresh secondary mark; indicates exiled position."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_GERESH,
 };
 
@@ -648,10 +649,10 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::ContainsPaseq),
+    compound_type: Some(InternalCompoundType::ContainsPaseq),
     notes: Some(r#"Poetic variant of Shalshelet; larger chain form."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_SHALSHELET_GADOL,
 };
 
@@ -664,7 +665,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_ZINOR,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Zarqa",
         hebrew_name: "זַרְקָא",
         hebrew_concept: "to sprinkle, scatter",
@@ -672,8 +673,8 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Poetry equivalent of Zarqa; appears in poetic books."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_ZINOR,
 };
 
@@ -688,9 +689,9 @@ pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("After that occurs Oleh Weyored"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    notes: Some(r#"After that occurs Oleh Weyored"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_REVIA,
 };
 
@@ -703,7 +704,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_DEHI,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Tiphcha",
         hebrew_name: "טִפְחָא",
         hebrew_concept: "handbreadth or diagonal",
@@ -711,8 +712,8 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Poetry Level 2 disjunctive; related to Tiphcha."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_DEHI,
 };
 
@@ -729,7 +730,7 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::ContainsPaseq),
+    compound_type: Some(InternalCompoundType::ContainsPaseq),
     notes: Some(
         r#"While the search results suggest that Mahpach Legarmeh as a complete compound term 
         is most distinctly associated with the Ashkenazi tradition, 
@@ -739,8 +740,8 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         This reflects a broader pattern where Ashkenazi terminology tends to be more explicit with compound names 
         (e.g., Munach Legarmeh), while Sephardi and other traditions may use simpler designations."#,
     ),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_MEHUPPAKH_LEGARMEH,
 };
 
@@ -755,10 +756,10 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_PASEQ),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::ContainsPaseq),
+    compound_type: Some(InternalCompoundType::ContainsPaseq),
     notes: Some(r#"Compound disjunctive in poetry; Qadma with Paseq."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Disjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_AZLA_LEGARMEH,
 };
 
@@ -777,9 +778,9 @@ pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("also called Munach superior"),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    notes: Some(r#"also called Munach superior"#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_ILUY,
 };
 
@@ -794,9 +795,11 @@ pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("it refers to the effort, strain, or inconvenience involved in doing something."),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    notes: Some(
+        r#"it refers to the effort, strain, or inconvenience involved in doing something."#,
+    ),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_TIPEHA,
 };
 
@@ -811,7 +814,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
         primary_mark: &CODEPOINT_MAHAPAKH,
         secondary_mark: None,
     },
-    alternate_names: Some(PrivAlternateNames {
+    alternate_names: Some(InternalAlternateNames {
         english_name: "Mahpakh",
         hebrew_name: "מַהְפַּךְ",
         hebrew_concept: "turning round",
@@ -819,8 +822,8 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(r#"Poetic conjunctive; variant spelling of Mahpakh."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MAHAPAKH,
 };
 
@@ -838,8 +841,8 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(r#"Poetic conjunctive; smaller chain form."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
@@ -854,10 +857,10 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MERKHA),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::CanSpanTwoWords),
+    compound_type: Some(InternalCompoundType::CanSpanTwoWords),
     notes: Some(r#"Compound conjunctive in poetry; Tsinnor with Merkha secondary."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_TSINNORIT_MERKHA,
 };
 
@@ -872,13 +875,14 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: Some(&CODEPOINT_MAHAPAKH),
     },
     alternate_names: None,
-    compound_type: Some(CompoundType::CanSpanTwoWords),
+    compound_type: Some(InternalCompoundType::CanSpanTwoWords),
     notes: Some(r#"Compound conjunctive in poetry; Tsinnor with Mahpakh secondary."#),
-    kind: Some(AccentKind::Primary),
-    category: Some(AccentCategory::Conjunctive),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_TSINNORIT_MAHPACH,
 };
 
+// METEG see prose
 /********************************************************
  *                      PSEUDO ACCENT
  *******************************************************/
