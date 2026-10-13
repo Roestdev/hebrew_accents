@@ -1447,7 +1447,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Meayla.group_level(), None);
         assert_eq!(ProseAccent::Meteg.group_level(), None);
     }
-#[test]
+    #[test]
     fn test_prose_disjunctive_cantillation_symbol() {
         // Primary disjunctives: indices 0-17, strengths 1-18
         assert_eq!(ProseAccent::Silluq.cantillation_symbol(), "// TODO");
@@ -1479,12 +1479,15 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::MerkhaKephulah.cantillation_symbol(), "// TODO");
         assert_eq!(ProseAccent::Darga.cantillation_symbol(), "// TODO");
         assert_eq!(ProseAccent::Azla.cantillation_symbol(), "// TODO");
-        assert_eq!(ProseAccent::TelishaQetannah.cantillation_symbol(),"// TODO");
+        assert_eq!(
+            ProseAccent::TelishaQetannah.cantillation_symbol(),
+            "// TODO"
+        );
         assert_eq!(ProseAccent::Galgal.cantillation_symbol(), "// TODO");
         assert_eq!(ProseAccent::Meayla.cantillation_symbol(), "// TODO");
         assert_eq!(ProseAccent::Meteg.cantillation_symbol(), "// TODO");
     }
-        #[test]
+    #[test]
     fn test_prose_disjunctive_alternate_names() {
         // Primary disjunctives: indices 0-17, strengths 1-18
         assert_eq!(ProseAccent::Silluq.alternate_names(), None);

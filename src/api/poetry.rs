@@ -1355,12 +1355,18 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(),"// TODO");
+        assert_eq!(
+            PoetryAccent::ShalsheletGadol.cantillation_symbol(),
+            "// TODO"
+        );
         assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),"// TODO");
+        assert_eq!(
+            PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),
+            "// TODO"
+        );
         assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "// TODO");
     }
 
@@ -1376,9 +1382,18 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::Galgal.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::Mehuppakh.cantillation_symbol(), "// TODO");
         assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::ShalsheletQetannah.cantillation_symbol(),"// TODO");
-        assert_eq!(PoetryAccent::TsinnoritMerkha.cantillation_symbol(),"// TODO");
-        assert_eq!(PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),"// TODO");
+        assert_eq!(
+            PoetryAccent::ShalsheletQetannah.cantillation_symbol(),
+            "// TODO"
+        );
+        assert_eq!(
+            PoetryAccent::TsinnoritMerkha.cantillation_symbol(),
+            "// TODO"
+        );
+        assert_eq!(
+            PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
+            "// TODO"
+        );
         assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "// TODO");
     }
     #[test]

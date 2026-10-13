@@ -1,5 +1,6 @@
 use crate::accent_mark::Utf8CodePoint;
 use crate::api::{Accent, CompoundType, HebrewAccent};
+use crate::CantillationMarkStressPosition;
 
 const DOTTED_CIRCLE: char = '\u{25CC}';
 const SPACE: char = '\u{0020}';
@@ -16,50 +17,84 @@ pub(crate) struct CantillationSymbol {
 ///
 /// Pattern conventions:
 /// - Single accent: `{char}◌` (1 circle)
-/// - Compound + twowords: `◌{sec}◌ _ ◌{pri}◌` (4 circles, spaced)
-/// - Compound + paseq: `{sec} ◌{pri}◌◌` (3 circles)  
-/// - Compound + nopaseq: `{sec}◌{pri}◌◌` (3 circles)
+/// - Compound + twowords: `◌{sec}◌ _ ◌{primary_symbol}◌` (4 circles, spaced)
+/// - Compound + paseq: `{sec} ◌{primary_symbol}◌◌` (3 circles)  
+/// - Compound + nopaseq: `{sec}◌{primary_symbol}◌◌` (3 circles)
 ///
-/// Note: Circle count reflects word boundary markers, not mark count.
-pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
-    let pri = accent.primary_cantillation_mark().symbol;
 
-    match accent.compound_type() {
-        None => {
-            // Non-compound: single mark
-            format!("{}{}", pri, DOTTED_CIRCLE)
+pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
+    //get primary cantillationmark info
+    let primary_symbol = accent.primary_cantillation_mark().symbol;
+    let primary_stress_pos = accent.primary_cantillation_mark().stress_position.unwrap();
+    if accent.compound_type().is_none() {
+        // Non-compound: single mark - most common one!
+        match primary_stress_pos {
+            CantillationMarkStressPosition::Postpositive => {
+                return format!(
+                    "{}{}{}{}",
+                    primary_symbol, DOTTED_CIRCLE, DOTTED_CIRCLE, DOTTED_CIRCLE
+                );
+            }
+            CantillationMarkStressPosition::Impositive => {
+                return format!(
+                    "{}{}{}{}",
+                    DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE, DOTTED_CIRCLE
+                );
+            }
+            CantillationMarkStressPosition::Prepositive => {
+                return format!(
+                    "{}{}{}{}",
+                    DOTTED_CIRCLE, DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE
+                );
+            }
         }
-        Some(CompoundType::Standard) => {
-            // Compound (two marks, one word, no Paseq)
-            let sec = accent
-                .secondary_cantillation_mark()
-                .expect("Standard compound must have secondary mark")
-                .symbol;
-            format!(
-                "{}{}{}{}{}",
-                sec, DOTTED_CIRCLE, pri, DOTTED_CIRCLE, DOTTED_CIRCLE
-            )
-        }
-        Some(CompoundType::ContainsPaseq) => {
-            let sec = accent
-                .secondary_cantillation_mark()
-                .expect("Paseq compound must have secondary mark")
-                .symbol;
-            format!("{}{}{}{}{}", sec, SPACE, DOTTED_CIRCLE, pri, DOTTED_CIRCLE)
-        }
-        Some(CompoundType::CanSpanTwoWords) => {
-            let sec = accent
-                .secondary_cantillation_mark()
-                .expect("Twoword must have secondary mark")
-                .symbol;
-            format!(
-                "{}{}{} {}{}{}",
-                DOTTED_CIRCLE, sec, DOTTED_CIRCLE, DOTTED_CIRCLE, pri, DOTTED_CIRCLE
-            )
+    } else {
+        // found compound accent - only 11 present
+        // get secondary cantillationmark info
+        let secondary_symbol = accent.secondary_cantillation_mark().expect("//TODO").symbol;
+
+        let compound_type = accent.compound_type().unwrap();
+        match compound_type {
+            CompoundType::Standard => {
+                // Compound (two marks, one word, no Paseq)
+                // three dotted circles
+                format!(
+                    "{}{}{}{}{}",
+                    DOTTED_CIRCLE, secondary_symbol, DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE
+                )
+            }
+            CompoundType::ContainsPaseq => {
+                // Position of the primary mark dependant of its stress-position
+                // All applicable primary marks are 'Impositive'
+                // Position of the secondary mark (=Paseq) is always after the word
+                return format!(
+                    "{}{}{}{}{}{}",
+                    secondary_symbol,
+                    SPACE,
+                    DOTTED_CIRCLE,
+                    primary_symbol,
+                    DOTTED_CIRCLE,
+                    DOTTED_CIRCLE
+                );
+            }
+            CompoundType::CanSpanTwoWords => {
+                // all applicable marks are 'Impositive'
+                return format!(
+                    "{}{}{}{}{}{}{}{}{}",
+                    DOTTED_CIRCLE,
+                    secondary_symbol,
+                    DOTTED_CIRCLE,
+                    DOTTED_CIRCLE,
+                    SPACE,
+                    DOTTED_CIRCLE,
+                    primary_symbol,
+                    DOTTED_CIRCLE,
+                    DOTTED_CIRCLE
+                );
+            }
         }
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
