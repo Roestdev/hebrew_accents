@@ -485,6 +485,1078 @@ impl Accent for ProseAccent {
 }
 
 #[cfg(test)]
+mod test_accent_trait {
+    use crate::{
+        Accent, AccentCategory, AccentKind, AlternateNames, CantillationMark,
+        CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, GroupLevel,
+        ProseAccent,
+    };
+    // TODO  // cantillation_symbol
+    #[test]
+    fn test_prose_disjunctive_hebrew_name() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.hebrew_name(), "סִלּוּק");
+        assert_eq!(ProseAccent::Atnach.hebrew_name(), "אַתְנַח");
+        assert_eq!(ProseAccent::Segolta.hebrew_name(), "סְגֹולְתָּא");
+        assert_eq!(ProseAccent::Shalshelet.hebrew_name(), "שַׁלְשֶׁלֶת");
+        assert_eq!(ProseAccent::ZaqephQatan.hebrew_name(), "זָקֵף קָטוֹן");
+        assert_eq!(ProseAccent::ZaqephGadol.hebrew_name(), "זָקֵף גָּדוֹל");
+        assert_eq!(ProseAccent::Revia.hebrew_name(), "רְבִיעַ");
+        assert_eq!(ProseAccent::Tiphcha.hebrew_name(), "טִפְחָא");
+        assert_eq!(ProseAccent::Zarqa.hebrew_name(), "זַרְקָא");
+        assert_eq!(ProseAccent::Pashta.hebrew_name(), "פַּשְׁטָא");
+        assert_eq!(ProseAccent::Yetiv.hebrew_name(), "יְתִיב");
+        assert_eq!(ProseAccent::Tevir.hebrew_name(), "תְּבִיר");
+        assert_eq!(ProseAccent::Geresh.hebrew_name(), "גֵּרֵישׁ");
+        assert_eq!(ProseAccent::Gershayim.hebrew_name(), "גֵּרְשַׁיִם");
+        assert_eq!(ProseAccent::Pazer.hebrew_name(), "פָּזֶר");
+        assert_eq!(ProseAccent::PazerGadol.hebrew_name(), "פָּזֶר גּדוֹל");
+        assert_eq!(ProseAccent::TelishaGedolah.hebrew_name(), "תְּלִישָׁא גְּדוֹלָה");
+        assert_eq!(ProseAccent::Legarmeh.hebrew_name(), "לְגַרְמֶהּ");
+    }
+
+    #[test]
+    fn test_prose_conjunctive_hebrew_name() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.hebrew_name(), "מוּנַ֣ח");
+        assert_eq!(ProseAccent::Mahpakh.hebrew_name(), "מַהְפַּךְ");
+        assert_eq!(ProseAccent::Merkha.hebrew_name(), "מֵרְכָא");
+        assert_eq!(ProseAccent::MerkhaKephulah.hebrew_name(), "מֵרְכָא כְּפוּלָה");
+        assert_eq!(ProseAccent::Darga.hebrew_name(), "דַּרְגָּא");
+        assert_eq!(ProseAccent::Azla.hebrew_name(), "אַזְלָא");
+        assert_eq!(ProseAccent::TelishaQetannah.hebrew_name(), "תְּלִישָא קְטַנָּה");
+        assert_eq!(ProseAccent::Galgal.hebrew_name(), "גַּלְגַּל",);
+        assert_eq!(ProseAccent::Meayla.hebrew_name(), "מְאַיְלָא");
+        assert_eq!(ProseAccent::Meteg.hebrew_name(), "מֶתֶג");
+    }
+    #[test]
+    fn test_prose_disjunctive_hebrew_concept() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.hebrew_concept(), "close, cessation");
+        assert_eq!(ProseAccent::Atnach.hebrew_concept(), "a causing to rest");
+        assert_eq!(
+            ProseAccent::Segolta.hebrew_concept(),
+            "a little grape-bunch"
+        );
+        assert_eq!(ProseAccent::Shalshelet.hebrew_concept(), "chain or link");
+        assert_eq!(
+            ProseAccent::ZaqephQatan.hebrew_concept(),
+            "small upright or small standing one"
+        );
+        assert_eq!(ProseAccent::ZaqephGadol.hebrew_concept(), "large upright");
+        assert_eq!(
+            ProseAccent::Revia.hebrew_concept(),
+            "fourth [in a sequence]"
+        );
+        assert_eq!(
+            ProseAccent::Tiphcha.hebrew_concept(),
+            "handbreadth or diagonal"
+        );
+        assert_eq!(
+            ProseAccent::Zarqa.hebrew_concept(),
+            "to sprinkle, to scatter"
+        );
+        assert_eq!(
+            ProseAccent::Pashta.hebrew_concept(),
+            "extending, stretching out in length"
+        );
+        assert_eq!(ProseAccent::Yetiv.hebrew_concept(), "resting or sitting");
+        assert_eq!(
+            ProseAccent::Tevir.hebrew_concept(),
+            "broken, downward tumble"
+        );
+        assert_eq!(
+            ProseAccent::Geresh.hebrew_concept(),
+            "expulsion, driving out, divorce"
+        );
+        assert_eq!(
+            ProseAccent::Gershayim.hebrew_concept(),
+            "double of expulsion, driving out, divorce"
+        );
+        assert_eq!(ProseAccent::Pazer.hebrew_concept(), "lavish or scatter");
+        assert_eq!(
+            ProseAccent::PazerGadol.hebrew_concept(),
+            "large lavish or scatter"
+        );
+        assert_eq!(
+            ProseAccent::TelishaGedolah.hebrew_concept(),
+            "great (long) detached"
+        );
+        assert_eq!(
+            ProseAccent::Legarmeh.hebrew_concept(),
+            "for or by itself, independent"
+        );
+    }
+
+    #[test]
+    fn test_prose_conjunctive_hebrew_concept() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.hebrew_concept(), "resting or placed");
+        assert_eq!(ProseAccent::Mahpakh.hebrew_concept(), "turning round");
+        assert_eq!(
+            ProseAccent::Merkha.hebrew_concept(),
+            "lengthener, prolonging"
+        );
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.hebrew_concept(),
+            "double lengthener"
+        );
+        assert_eq!(ProseAccent::Darga.hebrew_concept(), "step, stair-step");
+        assert_eq!(
+            ProseAccent::Azla.hebrew_concept(),
+            "going on (not pausing), depart"
+        );
+        assert_eq!(
+            ProseAccent::TelishaQetannah.hebrew_concept(),
+            "small (short) detached"
+        );
+        assert_eq!(ProseAccent::Galgal.hebrew_concept(), "wheel, circle");
+        assert_eq!(ProseAccent::Meayla.hebrew_concept(), "upper, above, higher");
+        assert_eq!(
+            ProseAccent::Meteg.hebrew_concept(),
+            "to bridle, check, control"
+        );
+    }
+    #[test]
+    fn test_prose_disjunctive_english_name() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.english_name(), "Silluq");
+        assert_eq!(ProseAccent::Atnach.english_name(), "Atnach");
+        assert_eq!(ProseAccent::Segolta.english_name(), "Segolta");
+        assert_eq!(ProseAccent::Shalshelet.english_name(), "Shalshelet");
+        // TODO assert_eq!(ProseAccent::ZaqephQatan.english_name(), "Zaqeph Qatan");
+        assert_eq!(ProseAccent::ZaqephGadol.english_name(), "Zaqeph Gadol");
+        assert_eq!(ProseAccent::Revia.english_name(), "Revia");
+        assert_eq!(ProseAccent::Tiphcha.english_name(), "Tiphcha");
+        assert_eq!(ProseAccent::Zarqa.english_name(), "Zarqa");
+        assert_eq!(ProseAccent::Pashta.english_name(), "Pashta");
+        assert_eq!(ProseAccent::Yetiv.english_name(), "Yetiv");
+        assert_eq!(ProseAccent::Tevir.english_name(), "Tevir");
+        assert_eq!(ProseAccent::Geresh.english_name(), "Geresh");
+        assert_eq!(ProseAccent::Gershayim.english_name(), "Gershayim");
+        assert_eq!(ProseAccent::Pazer.english_name(), "Pazer");
+        assert_eq!(ProseAccent::PazerGadol.english_name(), "Pazer Gadol");
+        assert_eq!(
+            ProseAccent::TelishaGedolah.english_name(),
+            "Telisha Gedolah"
+        );
+        assert_eq!(ProseAccent::Legarmeh.english_name(), "Legarmeh");
+    }
+
+    #[test]
+    fn test_prose_conjunctive_english_name() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.english_name(), "Munach");
+        assert_eq!(ProseAccent::Mahpakh.english_name(), "Mahpakh");
+        assert_eq!(ProseAccent::Merkha.english_name(), "Merkha");
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.english_name(),
+            "Merkha Kephulah"
+        );
+        assert_eq!(ProseAccent::Darga.english_name(), "Darga");
+        assert_eq!(ProseAccent::Azla.english_name(), "Azla");
+        assert_eq!(
+            ProseAccent::TelishaQetannah.english_name(),
+            "Telisha Qetannah"
+        );
+        assert_eq!(ProseAccent::Galgal.english_name(), "Galgal");
+        assert_eq!(ProseAccent::Meayla.english_name(), "Meayla");
+        assert_eq!(ProseAccent::Meteg.english_name(), "Meteg");
+    }
+    #[test]
+    fn test_prose_disjunctive_sbl_academic_name() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.sbl_academic_name(), "sillûq");
+        assert_eq!(ProseAccent::Atnach.sbl_academic_name(), "ʾatnaḥ");
+        assert_eq!(ProseAccent::Segolta.sbl_academic_name(), "səgôlətāʾ");
+        assert_eq!(ProseAccent::Shalshelet.sbl_academic_name(), "šalšelet");
+        assert_eq!(ProseAccent::ZaqephQatan.sbl_academic_name(), "zāqēp qāṭôn");
+        assert_eq!(ProseAccent::ZaqephGadol.sbl_academic_name(), "zāqēp gādôl");
+        assert_eq!(ProseAccent::Revia.sbl_academic_name(), "rəbîaʿ");
+        assert_eq!(ProseAccent::Tiphcha.sbl_academic_name(), "ṭipḥāʾ");
+        assert_eq!(ProseAccent::Zarqa.sbl_academic_name(), "zarqāʾ");
+        assert_eq!(ProseAccent::Pashta.sbl_academic_name(), "pašṭāʾ");
+        assert_eq!(ProseAccent::Yetiv.sbl_academic_name(), "yətîb");
+        assert_eq!(ProseAccent::Tevir.sbl_academic_name(), "təbîr");
+        assert_eq!(ProseAccent::Geresh.sbl_academic_name(), "gērêš");
+        assert_eq!(ProseAccent::Gershayim.sbl_academic_name(), "gērəšayīm");
+        assert_eq!(ProseAccent::Pazer.sbl_academic_name(), "pāzer");
+        assert_eq!(ProseAccent::PazerGadol.sbl_academic_name(), "pāzer gdôl");
+        assert_eq!(
+            ProseAccent::TelishaGedolah.sbl_academic_name(),
+            "təlîšāʾ gədôlâ"
+        );
+        assert_eq!(ProseAccent::Legarmeh.sbl_academic_name(), "ləgarmeh");
+    }
+
+    #[test]
+    fn test_prose_conjunctive_sbl_academic_name() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.sbl_academic_name(), "mûnaḥ");
+        assert_eq!(ProseAccent::Mahpakh.sbl_academic_name(), "mahpak");
+        assert_eq!(ProseAccent::Merkha.sbl_academic_name(), "mērəkāʾ");
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.sbl_academic_name(),
+            "mērəkāʾ kəpûlâ"
+        );
+        assert_eq!(ProseAccent::Darga.sbl_academic_name(), "dargāʾ");
+        assert_eq!(ProseAccent::Azla.sbl_academic_name(), "ʾazlāʾ");
+        assert_eq!(
+            ProseAccent::TelishaQetannah.sbl_academic_name(),
+            "təlîšāʾ qəṭannâ"
+        );
+        assert_eq!(ProseAccent::Galgal.sbl_academic_name(), "galgal");
+        assert_eq!(ProseAccent::Meayla.sbl_academic_name(), "məʾaylāʾ");
+        assert_eq!(ProseAccent::Meteg.sbl_academic_name(), "meteg");
+    }
+    #[test]
+    fn test_prose_disjunctive_kind() {
+        assert_eq!(ProseAccent::Silluq.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Atnach.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Segolta.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Shalshelet.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ZaqephQatan.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ZaqephGadol.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Revia.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Tiphcha.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Zarqa.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Pashta.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Yetiv.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Tevir.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Geresh.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Gershayim.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Pazer.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::PazerGadol.kind(), Some(AccentKind::Primary));
+        assert_eq!(
+            ProseAccent::TelishaGedolah.kind(),
+            Some(AccentKind::Primary)
+        );
+        assert_eq!(ProseAccent::Legarmeh.kind(), Some(AccentKind::Primary));
+    }
+
+    #[test]
+    fn test_prose_conjunctive_kind() {
+        // Conjunctives: indices AccentKind::Primary-AccentKind::Primary, all should be None
+        assert_eq!(ProseAccent::Munach.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Mahpakh.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Merkha.kind(), Some(AccentKind::Primary));
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.kind(),
+            Some(AccentKind::Primary)
+        );
+        assert_eq!(ProseAccent::Darga.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Azla.kind(), Some(AccentKind::Primary));
+        assert_eq!(
+            ProseAccent::TelishaQetannah.kind(),
+            Some(AccentKind::Primary)
+        );
+        assert_eq!(ProseAccent::Galgal.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::Meayla.kind(), Some(AccentKind::Secondary));
+        assert_eq!(ProseAccent::Meteg.kind(), Some(AccentKind::Secondary));
+    }
+    #[test]
+    fn test_prose_disjunctive_category() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(
+            ProseAccent::Silluq.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Atnach.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Segolta.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Shalshelet.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephQatan.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephGadol.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Revia.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Tiphcha.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Zarqa.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Pashta.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Yetiv.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Tevir.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Geresh.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Gershayim.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Pazer.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::PazerGadol.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::TelishaGedolah.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Legarmeh.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+    }
+
+    #[test]
+    fn test_prose_conjunctive_category() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(
+            ProseAccent::Munach.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Mahpakh.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Merkha.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Darga.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Azla.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::TelishaQetannah.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Galgal.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Meayla.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
+            ProseAccent::Meteg.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+    }
+    #[test]
+    fn test_prose_disjunctive_compound_type() {
+        assert_eq!(ProseAccent::Silluq.compound_type(), None);
+        assert_eq!(ProseAccent::Atnach.compound_type(), None);
+        assert_eq!(ProseAccent::Segolta.compound_type(), None);
+        assert_eq!(
+            ProseAccent::Shalshelet.compound_type(),
+            Some(CompoundType::ContainsPaseq)
+        );
+        assert_eq!(ProseAccent::ZaqephQatan.compound_type(), None);
+        assert_eq!(ProseAccent::ZaqephGadol.compound_type(), None);
+        assert_eq!(ProseAccent::Revia.compound_type(), None);
+        assert_eq!(ProseAccent::Tiphcha.compound_type(), None);
+        assert_eq!(ProseAccent::Zarqa.compound_type(), None);
+        assert_eq!(ProseAccent::Pashta.compound_type(), None);
+        assert_eq!(ProseAccent::Yetiv.compound_type(), None);
+        assert_eq!(ProseAccent::Tevir.compound_type(), None);
+        assert_eq!(ProseAccent::Geresh.compound_type(), None);
+        assert_eq!(ProseAccent::Gershayim.compound_type(), None);
+        assert_eq!(ProseAccent::Pazer.compound_type(), None);
+        assert_eq!(ProseAccent::PazerGadol.compound_type(), None);
+        assert_eq!(ProseAccent::TelishaGedolah.compound_type(), None);
+        assert_eq!(
+            ProseAccent::Legarmeh.compound_type(),
+            Some(CompoundType::ContainsPaseq)
+        );
+    }
+
+    #[test]
+    fn test_prose_conjunctive_compound_type() {
+        // Conjunctives: indices CompoundType::Primary-CompoundType::Primary, all should be None
+        assert_eq!(ProseAccent::Munach.compound_type(), None);
+        assert_eq!(ProseAccent::Mahpakh.compound_type(), None);
+        assert_eq!(ProseAccent::Merkha.compound_type(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.compound_type(), None);
+        assert_eq!(ProseAccent::Darga.compound_type(), None);
+        assert_eq!(ProseAccent::Azla.compound_type(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.compound_type(), None);
+        assert_eq!(ProseAccent::Galgal.compound_type(), None);
+        assert_eq!(ProseAccent::Meayla.compound_type(), None);
+        assert_eq!(ProseAccent::Meteg.compound_type(), None);
+    }
+    #[test]
+    fn test_prose_disjunctive_primary_cantillation_mark() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(
+            ProseAccent::Silluq.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5bd}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Atnach.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{591}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Segolta.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{592}',
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Shalshelet.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{593}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::ZaqephQatan.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{594}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::ZaqephGadol.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{595}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Revia.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{597}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Tiphcha.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{596}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Zarqa.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5ae}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Pashta.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{599}',
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Yetiv.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{59a}',
+                placement: CantillationMarkPlacement::BelowRight,
+                stress_position: Some(CantillationMarkStressPosition::Prepositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Tevir.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{59b}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Geresh.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{59c}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Gershayim.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{59e}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Pazer.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a1}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::PazerGadol.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{59f}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::TelishaGedolah.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a0}',
+                placement: CantillationMarkPlacement::AboveRight,
+                stress_position: Some(CantillationMarkStressPosition::Prepositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Legarmeh.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a3}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+    }
+
+    /// Test all prose conjunctive accents (should return None)
+    #[test]
+    fn test_prose_conjunctive_primary_cantillation_mark() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(
+            ProseAccent::Munach.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a3}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Mahpakh.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a4}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Merkha.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a5}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a6}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Darga.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a7}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Azla.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a8}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::TelishaQetannah.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a9}',
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Galgal.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5aa}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Meayla.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{596}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::Meteg.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5bd}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+    }
+    #[test]
+    fn test_prose_disjunctive_secondary_cantillation_mark() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Atnach.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Segolta.secondary_cantillation_mark(), None);
+        assert_eq!(
+            ProseAccent::Shalshelet.secondary_cantillation_mark(),
+            Some(CantillationMark {
+                symbol: '׀',
+                placement: CantillationMarkPlacement::Paseq,
+                stress_position: None
+            })
+        );
+        assert_eq!(ProseAccent::ZaqephQatan.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::ZaqephGadol.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Revia.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Tiphcha.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Zarqa.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Pashta.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Yetiv.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Tevir.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Geresh.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Gershayim.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Pazer.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::PazerGadol.secondary_cantillation_mark(), None);
+        assert_eq!(
+            ProseAccent::TelishaGedolah.secondary_cantillation_mark(),
+            None
+        );
+        assert_eq!(
+            ProseAccent::Legarmeh.secondary_cantillation_mark(),
+            Some(CantillationMark {
+                symbol: '׀',
+                placement: CantillationMarkPlacement::Paseq,
+                stress_position: None
+            })
+        );
+    }
+
+    #[test]
+    fn test_prose_conjunctive_secondary_cantillation_mark() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Mahpakh.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Merkha.secondary_cantillation_mark(), None);
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.secondary_cantillation_mark(),
+            None
+        );
+        assert_eq!(ProseAccent::Darga.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Azla.secondary_cantillation_mark(), None);
+        assert_eq!(
+            ProseAccent::TelishaQetannah.secondary_cantillation_mark(),
+            None
+        );
+        assert_eq!(ProseAccent::Galgal.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Meayla.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::Meteg.secondary_cantillation_mark(), None);
+    }
+    #[test]
+    fn test_prose_disjunctive_notes() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(
+            ProseAccent::Silluq.notes(),
+            Some(
+                r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
+            It is possible to have both a Silluq and Meteg in one word,
+            where the Meteg comes before the Silluq.
+            The Silluq appears once per verse.
+"#
+            )
+        );
+        assert_eq!(
+            ProseAccent::Atnach.notes(),
+            Some(
+                r#"The major disjunctive accent dividing the verse in two halves.
+    It appears only once per verse"#
+            )
+        );
+        assert_eq!(
+            ProseAccent::Segolta.notes(),
+            Some(r#"Appears frequently in prose, preceding Atnach or Silluq."#)
+        );
+        assert_eq!(
+            ProseAccent::Shalshelet.notes(),
+            Some(r#"Rare accent occurring only four times in the Torah."#)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephQatan.notes(),
+            Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephGadol.notes(),
+            Some(r#"Less common than Zaqeph Qaton; appears after Qadma or Azla."#)
+        );
+        assert_eq!(
+            ProseAccent::Revia.notes(),
+            Some(r#"probably due to its four-note tune."#)
+        );
+        assert_eq!(
+            ProseAccent::Tiphcha.notes(),
+            Some(r#"before Atnach and Silluq"#)
+        );
+        assert_eq!(ProseAccent::Zarqa.notes(), Some(r#"before Segolta"#));
+        assert_eq!(
+            ProseAccent::Pashta.notes(),
+            Some(r#"appears on the last syllable of the word, extending rightward."#)
+        );
+        assert_eq!(
+            ProseAccent::Yetiv.notes(),
+            Some(r#"occasionally substitutes for a Pashta"#)
+        );
+        assert_eq!(
+            ProseAccent::Tevir.notes(),
+            Some(r#"Often followed by Revia; indicates a melodic break."#)
+        );
+        assert_eq!(
+            ProseAccent::Geresh.notes(),
+            Some(r#"Functions as Level 4 disjunctive; often preceded by Azla."#)
+        );
+        assert_eq!(
+            ProseAccent::Gershayim.notes(),
+            Some(r#"Double Geresh; rarer variant appearing in specific syntactic contexts."#)
+        );
+        assert_eq!(
+            ProseAccent::Pazer.notes(),
+            Some(
+                r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#,
+            )
+        );
+        assert_eq!(
+            ProseAccent::PazerGadol.notes(),
+            Some(r#"Also known as Qarne Pharah; rare variant resembling horns."#)
+        );
+        assert_eq!(
+            ProseAccent::TelishaGedolah.notes(),
+            Some(r#"Level 4 disjunctive; distinct from Telisha Qetannah."#)
+        );
+        assert_eq!(
+            ProseAccent::Legarmeh.notes(),
+            Some(r#"Munach with Passeq; Before Revia"#)
+        );
+    }
+
+    /// Test all prose conjunctive accents (should return None)
+    #[test]
+    fn test_prose_conjunctive_notes() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(
+            ProseAccent::Munach.notes(),
+            Some(r#"Most common conjunctive; precedes disjunctive accents."#)
+        );
+        assert_eq!(
+            ProseAccent::Mahpakh.notes(),
+            Some(r#"Conjunctive accent; in poetry can function as Mehuppakh Legarmeh."#)
+        );
+        assert_eq!(
+            ProseAccent::Merkha.notes(),
+            Some(r#"Lengthens the phrase; often precedes Revia or Telisha."#)
+        );
+        assert_eq!(
+            ProseAccent::MerkhaKephulah.notes(),
+            Some(r#"Merkha duplex"#)
+        );
+        assert_eq!(
+            ProseAccent::Darga.notes(),
+            Some(r#"Conjunctive accent; synonymous with Qadma in some traditions."#)
+        );
+        assert_eq!(ProseAccent::Azla.notes(), Some(r#"When Geresh: Qadma"#));
+        assert_eq!(
+            ProseAccent::TelishaQetannah.notes(),
+            Some(r#"Short form of Telisha; conjunctive function."#)
+        );
+        assert_eq!(
+            ProseAccent::Galgal.notes(),
+            Some(r#"Conjunctive accent; also known as Yerach Ben Yomo."#)
+        );
+        assert_eq!(
+            ProseAccent::Meayla.notes(),
+            Some(
+                r#"Name given to a Tiphcha, when in the same word as Atnach or Silluq.
+    This accent is historically the same glyph as Tipcha (U+0596) but functions as a secondary conjunctive 
+    in specific syntactic contexts.
+    Different traditions use different names: 
+        Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
+            )
+        );
+        assert_eq!(
+            ProseAccent::Meteg.notes(),
+            Some(
+                r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
+    an additional emphasis placed on a syllable beyond the primary word stress. 
+    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
+    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
+    It is possible to have both a Meteg and Silluq in one word,
+    where the Meteg comes before the Silluq.!"#,
+            )
+        );
+    }
+    #[test]
+    fn test_prose_disjunctive_strength() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.relative_strength(), Some(1));
+        assert_eq!(ProseAccent::Atnach.relative_strength(), Some(2));
+        assert_eq!(ProseAccent::Segolta.relative_strength(), Some(3));
+        assert_eq!(ProseAccent::Shalshelet.relative_strength(), Some(4));
+        assert_eq!(ProseAccent::ZaqephQatan.relative_strength(), Some(5));
+        assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), Some(6));
+        assert_eq!(ProseAccent::Revia.relative_strength(), Some(7));
+        assert_eq!(ProseAccent::Tiphcha.relative_strength(), Some(8));
+        assert_eq!(ProseAccent::Zarqa.relative_strength(), Some(9));
+        assert_eq!(ProseAccent::Pashta.relative_strength(), Some(10));
+        assert_eq!(ProseAccent::Yetiv.relative_strength(), Some(11));
+        assert_eq!(ProseAccent::Tevir.relative_strength(), Some(12));
+        assert_eq!(ProseAccent::Geresh.relative_strength(), Some(13));
+        assert_eq!(ProseAccent::Gershayim.relative_strength(), Some(14));
+        assert_eq!(ProseAccent::Pazer.relative_strength(), Some(15));
+        assert_eq!(ProseAccent::PazerGadol.relative_strength(), Some(16));
+        assert_eq!(ProseAccent::TelishaGedolah.relative_strength(), Some(17));
+        assert_eq!(ProseAccent::Legarmeh.relative_strength(), Some(18));
+    }
+
+    /// Test all prose conjunctive accents (should return None)
+    #[test]
+    fn test_prose_conjunctive_strength() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.relative_strength(), None);
+        assert_eq!(ProseAccent::Mahpakh.relative_strength(), None);
+        assert_eq!(ProseAccent::Merkha.relative_strength(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.relative_strength(), None);
+        assert_eq!(ProseAccent::Darga.relative_strength(), None);
+        assert_eq!(ProseAccent::Azla.relative_strength(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.relative_strength(), None);
+        assert_eq!(ProseAccent::Galgal.relative_strength(), None);
+        assert_eq!(ProseAccent::Meayla.relative_strength(), None);
+        assert_eq!(ProseAccent::Meteg.relative_strength(), None);
+    }
+    #[test]
+    fn test_prose_disjunctive_group_level() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.group_level(), Some(GroupLevel::Tier1));
+        assert_eq!(ProseAccent::Atnach.group_level(), Some(GroupLevel::Tier1));
+        assert_eq!(ProseAccent::Segolta.group_level(), Some(GroupLevel::Tier2));
+        assert_eq!(
+            ProseAccent::Shalshelet.group_level(),
+            Some(GroupLevel::Tier2)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephQatan.group_level(),
+            Some(GroupLevel::Tier2)
+        );
+        assert_eq!(
+            ProseAccent::ZaqephGadol.group_level(),
+            Some(GroupLevel::Tier2)
+        );
+        assert_eq!(ProseAccent::Revia.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Tiphcha.group_level(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::Zarqa.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Pashta.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Yetiv.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Tevir.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Geresh.group_level(), Some(GroupLevel::Tier4));
+        assert_eq!(
+            ProseAccent::Gershayim.group_level(),
+            Some(GroupLevel::Tier4)
+        );
+        assert_eq!(ProseAccent::Pazer.group_level(), Some(GroupLevel::Tier4));
+        assert_eq!(
+            ProseAccent::PazerGadol.group_level(),
+            Some(GroupLevel::Tier4)
+        );
+        assert_eq!(
+            ProseAccent::TelishaGedolah.group_level(),
+            Some(GroupLevel::Tier4)
+        );
+        assert_eq!(ProseAccent::Legarmeh.group_level(), Some(GroupLevel::Tier4));
+    }
+
+    /// Test all prose conjunctive accents (should return None)
+    #[test]
+    fn test_prose_conjunctive_group_level() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.group_level(), None);
+        assert_eq!(ProseAccent::Mahpakh.group_level(), None);
+        assert_eq!(ProseAccent::Merkha.group_level(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.group_level(), None);
+        assert_eq!(ProseAccent::Darga.group_level(), None);
+        assert_eq!(ProseAccent::Azla.group_level(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.group_level(), None);
+        assert_eq!(ProseAccent::Galgal.group_level(), None);
+        assert_eq!(ProseAccent::Meayla.group_level(), None);
+        assert_eq!(ProseAccent::Meteg.group_level(), None);
+    }
+#[test]
+    fn test_prose_disjunctive_cantillation_symbol() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Atnach.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Segolta.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Shalshelet.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::ZaqephQatan.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::ZaqephGadol.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Revia.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Tiphcha.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Zarqa.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Pashta.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Yetiv.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Tevir.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Geresh.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Gershayim.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Pazer.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::PazerGadol.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::TelishaGedolah.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Legarmeh.cantillation_symbol(), "// TODO");
+    }
+
+    #[test]
+    fn test_prose_conjunctive_cantillation_symbol() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Mahpakh.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Merkha.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::MerkhaKephulah.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Darga.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Azla.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::TelishaQetannah.cantillation_symbol(),"// TODO");
+        assert_eq!(ProseAccent::Galgal.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Meayla.cantillation_symbol(), "// TODO");
+        assert_eq!(ProseAccent::Meteg.cantillation_symbol(), "// TODO");
+    }
+        #[test]
+    fn test_prose_disjunctive_alternate_names() {
+        // Primary disjunctives: indices 0-17, strengths 1-18
+        assert_eq!(ProseAccent::Silluq.alternate_names(), None);
+        assert_eq!(ProseAccent::Atnach.alternate_names(), None);
+        assert_eq!(ProseAccent::Segolta.alternate_names(), None);
+        assert_eq!(ProseAccent::Shalshelet.alternate_names(), None);
+        assert_eq!(ProseAccent::ZaqephQatan.alternate_names(), None);
+        assert_eq!(ProseAccent::ZaqephGadol.alternate_names(), None);
+        assert_eq!(ProseAccent::Revia.alternate_names(), None);
+        assert_eq!(ProseAccent::Tiphcha.alternate_names(), None);
+        assert_eq!(ProseAccent::Zarqa.alternate_names(), None);
+        assert_eq!(ProseAccent::Pashta.alternate_names(), None);
+        assert_eq!(ProseAccent::Yetiv.alternate_names(), None);
+        assert_eq!(ProseAccent::Tevir.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Geresh.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "טֶרֶס",
+                hebrew_concept: "a boundary or border",
+                english_name: "Teres",
+                sbl_academic: "ṭeres",
+            })
+        );
+        assert_eq!(ProseAccent::Gershayim.alternate_names(), None);
+        assert_eq!(ProseAccent::Pazer.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::PazerGadol.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "קַרְנֵי פָרָה",
+                hebrew_concept: "horns of a cow",
+                english_name: "Qarne Pharah",
+                sbl_academic: "qarnê pārâ",
+            })
+        );
+        assert_eq!(ProseAccent::TelishaGedolah.alternate_names(), None);
+        assert_eq!(ProseAccent::Legarmeh.alternate_names(), None);
+    }
+
+    // TODO
+    #[test]
+    fn test_prose_conjunctive_alternate_names() {
+        // Conjunctives: indices 18-27, all should be None
+        assert_eq!(ProseAccent::Munach.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Mahpakh.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "",
+                hebrew_concept: "",
+                sbl_academic: "",
+                english_name: "",
+            })
+        );
+        assert_eq!(ProseAccent::Merkha.alternate_names(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.alternate_names(), None);
+        assert_eq!(ProseAccent::Darga.alternate_names(), None);
+        assert_eq!(ProseAccent::Azla.alternate_names(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Galgal.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "",
+                hebrew_concept: "",
+                sbl_academic: "",
+                english_name: "",
+            })
+        );
+        assert_eq!(ProseAccent::Meayla.alternate_names(), None);
+        assert_eq!(ProseAccent::Meteg.alternate_names(), None);
+    }
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::Accent;
@@ -615,95 +1687,6 @@ mod tests {
     }
 
     // ===== ACCENT TRAIT METHODS TESTS =====
-
-    // --- Text Methods ---
-
-    #[test]
-    fn test_hebrew_name_returns_static_strings() {
-        let silluq = ProseAccent::Silluq;
-        let hebrew = silluq.hebrew_name();
-
-        assert_eq!(hebrew, "סִלּוּק");
-        assert!(!hebrew.is_empty());
-    }
-
-    #[test]
-    fn test_hebrew_concept_returns_meanings() {
-        let silluq = ProseAccent::Silluq;
-        let concept = silluq.hebrew_concept();
-
-        assert_eq!(concept, "close, cessation");
-        assert!(!concept.is_empty());
-    }
-
-    #[test]
-    fn test_english_name_returns_transliterations() {
-        let silluq = ProseAccent::Silluq;
-        let english = silluq.english_name();
-
-        assert_eq!(english, "Silluq");
-        assert!(!english.is_empty());
-    }
-
-    #[test]
-    fn test_sbl_academic_name() {
-        let silluq = ProseAccent::Silluq;
-        let sbl = silluq.sbl_academic_name();
-
-        assert!(!sbl.is_empty());
-        assert_eq!(sbl, "sillûq");
-    }
-
-    // --- Kind Method ---
-
-    #[test]
-    fn test_kind_for_disjunctive_accents() {
-        assert_eq!(ProseAccent::Silluq.kind(), Some(crate::AccentKind::Primary));
-        assert_eq!(ProseAccent::Atnach.kind(), Some(crate::AccentKind::Primary));
-        assert_eq!(
-            ProseAccent::Segolta.kind(),
-            Some(crate::AccentKind::Primary)
-        );
-    }
-
-    #[test]
-    fn test_kind_for_conjunctive_accents() {
-        assert_eq!(ProseAccent::Munach.kind(), Some(crate::AccentKind::Primary));
-        assert_eq!(ProseAccent::Merkha.kind(), Some(crate::AccentKind::Primary));
-        assert_eq!(
-            ProseAccent::Meayla.kind(),
-            Some(crate::AccentKind::Secondary)
-        );
-        assert_eq!(
-            ProseAccent::Meteg.kind(),
-            Some(crate::AccentKind::Secondary)
-        );
-    }
-
-    #[test]
-    fn test_meayla_and_meteg_are_secondary() {
-        // Meayla and Meteg are the only secondary accents
-        assert_eq!(
-            ProseAccent::Meayla.kind(),
-            Some(crate::AccentKind::Secondary)
-        );
-        assert_eq!(
-            ProseAccent::Meteg.kind(),
-            Some(crate::AccentKind::Secondary)
-        );
-    }
-
-    // --- Category Method ---
-
-    #[test]
-    fn test_category_returns_some_for_all() {
-        // All accents have a category
-        for accent in ProseAccent::iter() {
-            let cat = accent.category();
-            assert!(cat.is_some(), "All accents should have a category");
-        }
-    }
-
     #[test]
     fn test_category_distribution() {
         let mut disjunctive_count = 0;
@@ -721,138 +1704,6 @@ mod tests {
         assert_eq!(conjunctive_count, 10);
     }
 
-    // --- Compound Type Method ---
-
-    #[test]
-    fn test_compound_type_some_and_none() {
-        // Some accents are compound (have secondary marks)
-        for accent in ProseAccent::iter() {
-            let ct = accent.compound_type();
-            // Either Some or None is valid depending on accent
-            assert!(!ct.is_none() || ct.is_none()); // Tautology - just exercising the method
-        }
-    }
-
-    // --- Cantillation Mark Methods ---
-
-    #[test]
-    fn test_primary_cantillation_mark_always_returns_value() {
-        for accent in ProseAccent::iter() {
-            let primary = accent.primary_cantillation_mark();
-
-            assert!(!primary.symbol.is_control());
-            assert!(!primary.symbol.is_whitespace());
-        }
-    }
-
-    #[test]
-    fn test_secondary_cantillation_mark_option_behavior() {
-        for accent in ProseAccent::iter() {
-            let secondary = accent.secondary_cantillation_mark();
-
-            // Secondary is either Some or None - both valid
-            if let Some(sec) = secondary {
-                // If some, it must have valid symbol
-                assert!(!sec.symbol.is_control());
-            }
-        }
-    }
-
-    #[test]
-    fn test_compound_accent_has_secondary_mark() {
-        // Verify that accents with compound_type Some have secondary marks
-        for accent in ProseAccent::iter() {
-            let is_compound = accent.compound_type().is_some();
-            let has_secondary = accent.secondary_cantillation_mark().is_some();
-
-            // For this library, compound = has secondary mark
-            assert_eq!(is_compound, has_secondary);
-        }
-    }
-
-    // --- Notes Method ---
-
-    #[test]
-    fn test_notes_returns_option() {
-        for accent in ProseAccent::iter() {
-            let notes = accent.notes();
-            // Some have notes, some don't - both valid
-            assert!(!notes.is_none() || notes.is_none());
-        }
-    }
-
-    #[test]
-    fn test_shalshelet_has_rare_note() {
-        // Shalshelet is noted as rare (occurs only 4 times in Torah)
-        let notes = ProseAccent::Shalshelet.notes();
-        if notes.is_some() {
-            let note_text = notes.unwrap();
-            assert!(
-                note_text.contains("rare")
-                    || note_text.contains("four")
-                    || note_text.contains("times")
-            );
-        }
-    }
-
-    // --- Relative Strength Method ---
-
-    #[test]
-    fn test_relative_strength_for_disjunctive() {
-        // Disjunctive accents should have strength values
-        assert!(ProseAccent::Silluq.relative_strength().is_some());
-        assert!(ProseAccent::Atnach.relative_strength().is_some());
-        assert!(ProseAccent::Segolta.relative_strength().is_some());
-    }
-
-    #[test]
-    fn test_relative_strength_for_conjunctive() {
-        // Conjunctive accents should return None
-        assert_eq!(ProseAccent::Munach.relative_strength(), None);
-        assert_eq!(ProseAccent::Merkha.relative_strength(), None);
-        assert_eq!(ProseAccent::Meteg.relative_strength(), None);
-    }
-
-    #[test]
-    fn test_strength_numbering_system() {
-        // Lower numbers = stronger disjunctives
-        if let Some(s1) = ProseAccent::Silluq.relative_strength() {
-            // Silluq should be very strong (low number)
-            assert!(s1 <= 5); // Should be in top strength range
-        }
-
-        if let Some(s2) = ProseAccent::Atnach.relative_strength() {
-            // Atnach should be second strongest
-            assert_eq!(s2, 2);
-        }
-    }
-
-    // --- Group Level Method ---
-
-    #[test]
-    fn test_group_level_for_disjunctive() {
-        // Disjunctive accents have group levels
-        assert!(ProseAccent::Silluq.group_level().is_some());
-        assert!(ProseAccent::Atnach.group_level().is_some());
-        assert!(ProseAccent::Segolta.group_level().is_some());
-    }
-
-    #[test]
-    fn test_group_level_for_conjunctive() {
-        // Conjunctive accents don't have hierarchy
-        assert_eq!(ProseAccent::Munach.group_level(), None);
-        assert_eq!(ProseAccent::Merkha.group_level(), None);
-        assert_eq!(ProseAccent::Mahpakh.group_level(), None);
-    }
-
-    #[test]
-    fn test_silluq_is_top_tier() {
-        // Silluq should be Tier 1 (strongest)
-        if let Some(level) = ProseAccent::Silluq.group_level() {
-            assert_eq!(level, crate::GroupLevel::Tier1);
-        }
-    }
-
     #[test]
     fn test_prose_has_tier_four() {
         // Prose system reaches Tier4, poetry stops at Tier3
@@ -868,37 +1719,6 @@ mod tests {
 
         // Prose should have Tier4 accents
         assert!(has_tier4, "Prose system includes Tier4 disjunctive accents");
-    }
-
-    // --- Cantillation Symbol Method ---
-
-    #[test]
-    fn test_cantillation_symbol_not_empty() {
-        for accent in ProseAccent::iter() {
-            let symbol = accent.cantillation_symbol();
-            assert!(!symbol.is_empty());
-        }
-    }
-
-    #[test]
-    fn test_cantillation_symbol_contains_dotted_circle_or_marks() {
-        for accent in ProseAccent::iter() {
-            let symbol = accent.cantillation_symbol();
-
-            // Symbols should contain either dotted circle or actual marks
-            assert!(symbol.contains('\u{25CC}') || !symbol.chars().all(|c| c == '\u{25CC}'));
-        }
-    }
-
-    // --- Alternate Names Method ---
-
-    #[test]
-    fn test_alternate_names_returns_none_currently() {
-        // Currently all return None (TODO mentioned in code)
-        for accent in ProseAccent::iter() {
-            let alts = accent.alternate_names();
-            assert_eq!(alts, None); // Confirms current implementation
-        }
     }
 
     // ===== DERIVED TRAIT TESTS =====
@@ -960,57 +1780,6 @@ mod tests {
     }
 
     // ===== PROSE-SPECIFIC ACCENTS TESTS =====
-
-    #[test]
-    fn test_prose_exclusive_accents_exist() {
-        // These accents only appear in prose system
-        let prose_exclusives = [
-            ProseAccent::Segolta,
-            ProseAccent::ZaqephQatan,
-            ProseAccent::ZaqephGadol,
-            ProseAccent::Zarqa,
-            ProseAccent::Pashta,
-            ProseAccent::Yetiv,
-            ProseAccent::Tevir,
-            ProseAccent::Gershayim,
-            ProseAccent::PazerGadol,
-            ProseAccent::TelishaGedolah,
-            ProseAccent::MerkhaKephulah,
-            ProseAccent::Darga,
-        ];
-
-        for exclusive in &prose_exclusives {
-            assert!(exclusive.category().is_some());
-            assert!(!exclusive.english_name().is_empty());
-        }
-    }
-
-    #[test]
-    fn test_prose_exclusive_detection() {
-        // Segolta presence indicates prose context
-        let segolta = ProseAccent::Segolta;
-
-        assert_eq!(
-            by_category(segolta),
-            Some(crate::AccentCategory::Disjunctive)
-        );
-        assert!(by_category(segolta).is_some());
-    }
-
-    #[test]
-    fn test_zarqa_pashta_yetiv_tevir_exclusivity() {
-        // These are strong indicators of prose text
-        let prose_markers = [
-            ProseAccent::Zarqa,
-            ProseAccent::Pashta,
-            ProseAccent::Yetiv,
-            ProseAccent::Tevir,
-        ];
-
-        for marker in &prose_markers {
-            assert!(marker.category().is_some());
-        }
-    }
 
     // ===== HIERARCHY TESTS =====
 
@@ -1120,57 +1889,5 @@ mod tests {
         const ATNACH: ProseAccent = ProseAccent::Atnach;
         assert_eq!(ATNACH.as_index(), 1);
         assert_eq!(ATNACH.english_name(), "Atnach");
-    }
-
-    // ===== HELPERS FOR TESTS =====
-
-    fn by_category(accent: ProseAccent) -> Option<crate::AccentCategory> {
-        accent.category()
-    }
-
-    // ===== DOCUMENTATION EXAMPLE VERIFICATION =====
-
-    #[test]
-    fn doc_test_example_from_module_docs() {
-        // Replicate the example from module documentation
-        let accent = ProseAccent::Atnach;
-        let _display = format!("{}", accent); // Should print: "Atnach (אַתְנָח), meaning: rest"
-        let _strength = accent.relative_strength();
-
-        assert_eq!(accent.english_name(), "Atnach");
-    }
-
-    #[test]
-    fn doc_test_strength_example() {
-        // Test the strength check example from docs
-        let atnach = ProseAccent::Atnach;
-        let strength = atnach.relative_strength();
-
-        assert!(
-            strength.is_some(),
-            "Atnach should have a relative strength value"
-        );
-    }
-
-    // ===== PROSE VS POETRY COMPARISON TESTS =====
-
-    #[test]
-    fn test_shared_accent_between_systems() {
-        // Silluq exists in both prose and poetry
-        let prose_silluq = ProseAccent::Silluq;
-        let poetry_silluq = crate::PoetryAccent::Silluq;
-
-        assert_eq!(prose_silluq.english_name(), poetry_silluq.english_name());
-        assert_eq!(prose_silluq.hebrew_name(), poetry_silluq.hebrew_name());
-    }
-
-    #[test]
-    fn test_unique_accent_distribution() {
-        // Prose has Segolta, Poetry has OlehWeYored - they don't overlap
-        let prose_has_segolta = ProseAccent::Segolta.english_name();
-        let poetry_has_olehweyored = crate::PoetryAccent::OlehWeYored.english_name();
-
-        assert_eq!(prose_has_segolta, "Segolta");
-        assert_eq!(poetry_has_olehweyored, "Oleh WeYored");
     }
 }

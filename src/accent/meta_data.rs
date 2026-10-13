@@ -33,4 +33,4 @@ pub(crate) struct AccentMetaData {
     pub(crate) compound_type: Option<InternalCompoundType>,
 }
 
-// TODO traditionnames behoren bij een mark 
+// TODO traditionnames behoren bij een mark

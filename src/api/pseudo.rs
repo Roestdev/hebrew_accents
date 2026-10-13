@@ -279,6 +279,146 @@ impl Accent for PseudoAccent {
 }
 
 #[cfg(test)]
+mod test_accent_trait {
+    use crate::{Accent, CantillationMark, CantillationMarkPlacement, PseudoAccent};
+
+    // TODO  // cantillation_symbol
+    #[test]
+    fn test_pseudo_accent_hebrew_name() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.hebrew_name(), "סוֹף פָּסוּק");
+        assert_eq!(PseudoAccent::Maqqaph.hebrew_name(), "מַקָּף");
+        assert_eq!(PseudoAccent::Paseq.hebrew_name(), "פָּסֵק");
+    }
+    #[test]
+    fn test_pseudo_accent_hebrew_concept() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.hebrew_concept(), "end of verse");
+        assert_eq!(PseudoAccent::Maqqaph.hebrew_concept(), "binder");
+        assert_eq!(
+            PseudoAccent::Paseq.hebrew_concept(),
+            "to pause, to stop or to interrupt"
+        );
+    }
+    #[test]
+    fn test_pseudo_accent_english_name() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.english_name(), "Soph Pasuq");
+        assert_eq!(PseudoAccent::Maqqaph.english_name(), "Maqqaph");
+        assert_eq!(PseudoAccent::Paseq.english_name(), "Paseq");
+    }
+    #[test]
+    fn test_pseudo_accent_sbl_academic_name() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.sbl_academic_name(), "sôp pāsûq");
+        assert_eq!(PseudoAccent::Maqqaph.sbl_academic_name(), "maqqēp");
+        assert_eq!(PseudoAccent::Paseq.sbl_academic_name(), "pāsēq");
+    }
+    #[test]
+    fn test_pseudo_accent_kind() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.kind(), None);
+        assert_eq!(PseudoAccent::Maqqaph.kind(), None);
+        assert_eq!(PseudoAccent::Paseq.kind(), None);
+    }
+    #[test]
+    fn test_pseudo_accent_category() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.category(), None);
+        assert_eq!(PseudoAccent::Maqqaph.category(), None);
+        assert_eq!(PseudoAccent::Paseq.category(), None);
+    }
+    #[test]
+    fn test_pseudo_accent_compound_type() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.compound_type(), None);
+        assert_eq!(PseudoAccent::Maqqaph.compound_type(), None);
+        assert_eq!(PseudoAccent::Paseq.compound_type(), None);
+    }
+    #[test]
+    fn test_pseudo_accent_primary_cantillation_mark() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(
+            PseudoAccent::SophPasuq.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '׃',
+                placement: CantillationMarkPlacement::SofPasuq,
+                stress_position: None
+            }
+        );
+        assert_eq!(
+            PseudoAccent::Maqqaph.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '־',
+                placement: CantillationMarkPlacement::Maqqaph,
+                stress_position: None
+            }
+        );
+        assert_eq!(
+            PseudoAccent::Paseq.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '׀',
+                placement: CantillationMarkPlacement::Paseq,
+                stress_position: None
+            }
+        );
+    }
+    #[test]
+    fn test_pseudo_accent_secondary_cantillation_mark() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.secondary_cantillation_mark(), None);
+        assert_eq!(PseudoAccent::Maqqaph.secondary_cantillation_mark(), None);
+        assert_eq!(PseudoAccent::Paseq.secondary_cantillation_mark(), None);
+    }
+    #[test]
+    fn test_pseudo_accent_notes() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.notes(), Some(
+        "it doesn't carry any theological or interpretive meaning beyond marking a boundary",
+    ));
+        assert_eq!(
+            PseudoAccent::Maqqaph.notes(),
+            Some(
+                "Can link two (or more) short words together after which 
+    they function as a single compound word bearing a single Hebrew accent.",
+            )
+        );
+        assert_eq!(PseudoAccent::Paseq.notes(), Some(
+        "It's indicating that someone or something is stopping temporarily or creating a pause.",
+    ));
+    }
+    #[test]
+    fn test_pseudo_accent_strength() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.relative_strength(), None);
+        assert_eq!(PseudoAccent::Maqqaph.relative_strength(), None);
+        assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
+    }
+    #[test]
+    fn test_pseudo_accent_cantillation_symbol() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.cantillation_symbol(), "// TODO");
+        assert_eq!(PseudoAccent::Maqqaph.cantillation_symbol(), "// TODO");
+        assert_eq!(PseudoAccent::Paseq.cantillation_symbol(), "// TODO");
+    }
+    #[test]
+    fn test_pseudo_accent_group_level() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.group_level(), None);
+        assert_eq!(PseudoAccent::Maqqaph.group_level(), None);
+        assert_eq!(PseudoAccent::Paseq.group_level(), None);
+    }
+    // TODO Cantillation Symbol
+    #[test]
+    fn test_pseudo_accent_alternate_names() {
+        // Pseudo accents never have strength hierarchy
+        assert_eq!(PseudoAccent::SophPasuq.alternate_names(), None);
+        assert_eq!(PseudoAccent::Maqqaph.alternate_names(), None);
+        assert_eq!(PseudoAccent::Paseq.alternate_names(), None);
+    }
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::Accent;
