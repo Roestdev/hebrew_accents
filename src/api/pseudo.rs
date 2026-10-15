@@ -274,7 +274,10 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn alternate_names(&self) -> Option<AlternateNames> {
-        None //TODO
+        let table_entry = &PSEUDO_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .alternate_names
+            .map(|priv_names| priv_names.into())
     }
 }
 

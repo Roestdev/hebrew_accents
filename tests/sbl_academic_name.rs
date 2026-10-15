@@ -51,8 +51,6 @@ mod prose_sbl_academic_name {
 }
 mod poetry_sbl_academic_name {
     use hebrew_accents::{Accent, PoetryAccent};
-    /// Test all poetry disjunctive accents (should return Some(strength))
-    /// Silluq, Atnach,pazer zie prose // TODO
     #[test]
     fn test_poetry_disjunctive_sbl_academic_name() {
         // Primary disjunctives: indices 0-11, strengths 1-12
@@ -85,8 +83,6 @@ mod poetry_sbl_academic_name {
         );
     }
 
-    /// Test all poetry conjunctive accents (should return None)
-    /// // TODO common: munach,merkha,galgal,azla,meteg
     #[test]
     fn test_poetry_conjunctive_sbl_academic_name() {
         // Conjunctives: indices 12-22, all should be None

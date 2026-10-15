@@ -10,7 +10,7 @@
 /// | Pazer Gadol | Qarne Pharah |
 /// | Mahpakh | Mehuppakh |
 /// | Azla | Teres |
-/// | Galgal | Jerach Ben Jomo |
+/// | Galgal | Yerach Ben Yomo |
 /// | Meayla | Mayla |
 /// | Meteg | Gayah |
 /// | Oleh Weyored | Mahpakh and Merkha |
@@ -124,15 +124,15 @@ mod tests {
     }
 
     #[test]
-    fn test_galgal_alternative_jerach_ben_jomo() {
+    fn test_galgal_alternative_yerach_ben_yomo() {
         let galgal_alts = AlternateNames {
             hebrew_name: "גַּלְגַּל",
             hebrew_concept: "wheel",
-            english_name: "Jerach Ben Jomo", // Alternative
+            english_name: "Yerach Ben Yomo", // Alternative
             sbl_academic: "yarēaḥ ben yôwām",
         };
 
-        assert_eq!(galgal_alts.english_name, "Jerach Ben Jomo");
+        assert_eq!(galgal_alts.english_name, "Yerach Ben Yomo");
     }
 
     #[test]
@@ -516,7 +516,7 @@ mod tests {
             ("Pazer Gadol", "Qarne Pharah"),
             ("Mahpakh", "Mehuppakh"),
             ("Azla", "Teres"),
-            ("Galgal", "Jerach Ben Jomo"),
+            ("Galgal", "Yerach Ben Yomo"),
             ("Meayla", "Mayla"),
             ("Meteg", "Gayah"),
             ("Oleh Weyored", "Mahpakh and Merkha"),
@@ -773,7 +773,7 @@ mod tests {
             ("Pazer Gadol", "Qarne Pharah"),
             ("Mahpakh", "Mehuppakh"),
             ("Azla", "Teres"),
-            ("Galgal", "Jerach Ben Jomo"),
+            ("Galgal", "Yerach Ben Yomo"),
             ("Meayla", "Mayla"),
             ("Meteg", "Gayah"),
             ("Oleh Weyored", "Mahpakh and Merkha"),

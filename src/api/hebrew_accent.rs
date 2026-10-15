@@ -442,7 +442,11 @@ impl Accent for HebrewAccent {
 
     #[inline]
     fn alternate_names(&self) -> Option<AlternateNames> {
-        None //TODO
+        match self {
+            HebrewAccent::Prose(p) => p.alternate_names(),
+            HebrewAccent::Poetry(p) => p.alternate_names(),
+            HebrewAccent::Pseudo(p) => p.alternate_names(),
+        }
     }
 }
 

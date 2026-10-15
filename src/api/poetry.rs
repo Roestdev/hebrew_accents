@@ -422,7 +422,10 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn alternate_names(&self) -> Option<AlternateNames> {
-        None // TODO
+        let table_entry = &POETRY_ACCENT_TABLE[self.as_index()];
+        table_entry
+            .alternate_names
+            .map(|priv_names| priv_names.into())
     }
 }
 
@@ -1403,10 +1406,10 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(
             PoetryAccent::OlehWeYored.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
+                hebrew_concept: "turning round and prolonging",
+                english_name: "Mahpakh and Merkha",
+                sbl_academic: "mahpak ûmērəkāʾ",
             })
         );
         assert_eq!(PoetryAccent::Atnach.alternate_names(), None);
@@ -1416,20 +1419,20 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(
             PoetryAccent::Tsinnor.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Zarqa",
+                hebrew_name: "זַרְקָא",
+                hebrew_concept: "to sprinkle, scatter",
+                sbl_academic: "zarqāʾ",
             })
         );
         assert_eq!(PoetryAccent::ReviaQaton.alternate_names(), None);
         assert_eq!(
             PoetryAccent::Dechi.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Tiphcha",
+                hebrew_name: "טִפְחָא",
+                hebrew_concept: "handbreadth or diagonal",
+                sbl_academic: "ṭipḥāʾ",
             })
         );
         assert_eq!(PoetryAccent::Pazer.alternate_names(), None);
@@ -1448,34 +1451,42 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(
             PoetryAccent::Galgal.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+                hebrew_concept: "moon one day old",
+                english_name: "yēreḥ ben yômô", // TODO translit
+                sbl_academic: "Yerach Ben Yomo",
             })
         );
         assert_eq!(
             PoetryAccent::Mehuppakh.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Mahpakh",
+                hebrew_name: "מַהְפַּךְ",
+                hebrew_concept: "turning round",
+                sbl_academic: "mahpak",
             })
         );
         assert_eq!(
             PoetryAccent::Azla.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Qadma",
+                hebrew_name: "קַדְמָ֨א",
+                hebrew_concept: "antiquity or a former state",
+                sbl_academic: "qadmāʾ",
             })
         );
         assert_eq!(PoetryAccent::ShalsheletQetannah.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMerkha.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.alternate_names(), None);
-        assert_eq!(PoetryAccent::Meteg.alternate_names(), None);
+        assert_eq!(
+            PoetryAccent::Meteg.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "גַּעְיָה",
+                hebrew_concept: "a lowing",
+                english_name: "Gayah",
+                sbl_academic: "gaʿyâ",
+            })
+        );
     }
 }
 

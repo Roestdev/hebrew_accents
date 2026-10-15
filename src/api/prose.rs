@@ -45,10 +45,10 @@
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
 use crate::accent_data::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::Accent;
 use crate::{
     display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
 };
+use crate::{Accent, AlternateNames};
 use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew prose cantillation mark.
@@ -476,7 +476,7 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn alternate_names(&self) -> Option<crate::api::AlternateNames> {
+    fn alternate_names(&self) -> Option<AlternateNames> {
         let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
         table_entry
             .alternate_names
@@ -1526,7 +1526,6 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Legarmeh.alternate_names(), None);
     }
 
-    // TODO
     #[test]
     fn test_prose_conjunctive_alternate_names() {
         // Conjunctives: indices 18-27, all should be None
@@ -1534,28 +1533,52 @@ mod test_accent_trait {
         assert_eq!(
             ProseAccent::Mahpakh.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                hebrew_name: "מְהֻפָּ֤ךְ",
+                hebrew_concept: "reversed",
+                sbl_academic: "məhuppāk",
+                english_name: "Mehuppakh",
             })
         );
         assert_eq!(ProseAccent::Merkha.alternate_names(), None);
         assert_eq!(ProseAccent::MerkhaKephulah.alternate_names(), None);
         assert_eq!(ProseAccent::Darga.alternate_names(), None);
-        assert_eq!(ProseAccent::Azla.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Azla.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "קַדְמָ֨א",
+                hebrew_concept: "antiquity or a former state",
+                english_name: "Qadma",
+                sbl_academic: "qadmāʾ",
+            })
+        );
         assert_eq!(ProseAccent::TelishaQetannah.alternate_names(), None);
         assert_eq!(
             ProseAccent::Galgal.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+                hebrew_concept: "moon one day old",
+                english_name: "Yerach Ben Yomo",
+                sbl_academic: "yēreḥ ben yômô",
             })
         );
-        assert_eq!(ProseAccent::Meayla.alternate_names(), None);
-        assert_eq!(ProseAccent::Meteg.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Meayla.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "מַיְלָא",
+                hebrew_concept: "that which is above or elevated position",
+                english_name: "Mayla",
+                sbl_academic: "maylāʾ",
+            })
+        );
+        assert_eq!(
+            ProseAccent::Meteg.alternate_names(),
+            Some(AlternateNames {
+                hebrew_name: "גַּעְיָה",
+                hebrew_concept: "a lowing",
+                english_name: "Gayah",
+                sbl_academic: "gaʿyâ",
+            })
+        );
     }
 }
 

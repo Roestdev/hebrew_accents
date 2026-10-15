@@ -126,7 +126,7 @@ mod poetry_hebrew_concept {
         );
     }
 
-    /// Test all poetry conjunctive accents (should return "// TODO")
+    /// Test all poetry conjunctive accents (should return "
     #[test]
     fn test_poetry_conjunctive_hebrew_concept() {
         // Conjunctives: indices 12-22, all should be None

@@ -1,4 +1,3 @@
-// TODO implementation is not ready yet
 mod prose_alternate_names {
     use hebrew_accents::{Accent, AlternateNames, ProseAccent};
 

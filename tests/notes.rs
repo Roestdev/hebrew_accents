@@ -1,4 +1,3 @@
-// TODO
 
 mod prose_notes {
     use hebrew_accents::{Accent, ProseAccent};
@@ -208,7 +207,7 @@ The alternate BHS naming is fabricated"#,
             Some(
                 r#"Level 4 disjunctive; can appear in place of Zaqeph Qaton in certain conditions."#,
             )
-        ); // TODO otherlevelin poetry
+        );
         assert_eq!(
             PoetryAccent::MehuppakhLegarmeh.notes(),
             Some(

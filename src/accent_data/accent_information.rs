@@ -496,10 +496,10 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
-        english_name: "Jerach Ben Jomo",
+        english_name: "yēreḥ ben yômô",
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         hebrew_concept: "moon one day old",
-        sbl_academic: "yēreḥ ben yômô",
+        sbl_academic: "Yerach Ben Yomo",
     }),
     compound_type: None,
     notes: Some(r#"Conjunctive accent; also known as Yerach Ben Yomo."#),

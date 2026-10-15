@@ -45,7 +45,6 @@ mod prose_cantillation_symbol {
 }
 mod poetry_cantillation_symbol {
     use hebrew_accents::{Accent, PoetryAccent};
-    /// Silluq, Atnach,pazer zie prose // TODO
     #[test]
     fn test_poetry_disjunctive_cantillation_symbol() {
         // Primary disjunctives: indices 0-11, strengths 1-12

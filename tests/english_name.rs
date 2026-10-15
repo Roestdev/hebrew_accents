@@ -51,7 +51,6 @@ mod prose_english_name {
 }
 mod poetry_english_name {
     use hebrew_accents::{Accent, PoetryAccent};
-    /// Silluq, Atnach,pazer zie prose // TODO
     #[test]
     fn test_poetry_disjunctive_english_name() {
         // Primary disjunctives: indices 0-11, strengths 1-12
@@ -75,8 +74,6 @@ mod poetry_english_name {
         assert_eq!(PoetryAccent::AzlaLegarmeh.english_name(), "Azla Legarmeh");
     }
 
-    /// Test all poetry conjunctive accents (should return None)
-    /// // TODO common: munach,merkha,galgal,azla,meteg
     #[test]
     fn test_poetry_conjunctive_english_name() {
         // Conjunctives: indices 12-22, all should be None
