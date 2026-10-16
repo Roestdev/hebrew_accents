@@ -899,7 +899,11 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "it doesn't carry any theological or interpretive meaning beyond marking a boundary",
+        "Function: Primarily denotes the end of a verse or sentence, analogous to a period, 
+        but not always.
+        However, its application is not absolute; certain scholarly traditions equate its 
+        disjunctive weight to that of Silluq, while other sholars treat them as as equal as the Silluq (a disjuntive).
+        It doesn't carry any theological or interpretive meaning beyond marking a boundary"
     ),
     kind: None,
     category: None,
@@ -918,8 +922,11 @@ pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "Can link two (or more) short words together after which 
-    they function as a single compound word bearing a single Hebrew accent.",
+        "Function: Serves as a hyphenation or binding agent that connects words 
+        into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
+        It does have the function of binding words together, just like the conjunctives.
+        Can link two (or more) short words together after which they function as 
+        a single compound word bearing a single primary Hebrew accent."
     ),
     kind: None,
     category: None,
@@ -938,7 +945,11 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "It's indicating that someone or something is stopping temporarily or creating a pause.",
+        "Function: Acts as a separator or divider. 
+        It may appear in conjunction with a Hebrew accent to modify its function but does 
+        not operate as an independent accent mark. 
+        It can be part of a Hebrew Accent, but not as an individual accent.
+        It's indicating that someone or something is stopping temporarily or creating a pause.",
     ),
     kind: None,
     category: None,

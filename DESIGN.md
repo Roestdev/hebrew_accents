@@ -36,48 +36,18 @@ Given that the scholars themselves do not have a unified view and that I myself 
 
 - I chose to utilize the layout as outlined in the `Biblia Hebraica Stuttgartensia` (BHS) which is a cornerstone of biblical scholarship,  providing essential resources for the study of the Hebrew Bible and its interpretation.
 
-- On top of the above a correction of the errors regarding the Unicode characters `HEBREW ACCENT ZARQA` and `HEBREW ACCENT ZINOR`, as mentioned by Helmut Richter will be added.
-
-- Accent names will be according `BHS`, but alternate names will be provided if applicable.
-
-- The Latin adjectives referenced in the `BHS` will be translated into Hebrew and subsequently transliterated into English.
+- Accent names will be according `BHS`, but alternate names will be provided if mentioned in the `BHS`.
 
 - The accent `Meteg`, which is not mentioned BHS will be added to the list of both (prose and poetry) conjunctives. The Meteg is just as the Meayla a **secondary accent**.
+
+- On top of that the groups of disjunctive accents as mentioned in the boek [Basics of Hebrew Accents](<https:://zondervanacademic.com/products/basics-of-hebrew-accents>) wil be added.
 
 - A new classification, `PseudoAccents`, will be introduced to accommodate specific Hebrew punctuation CantillationSymbol that are closely related to the accents but do not conform to the standard Prose or Poetry accent taxonomies. 
 These pseudo accents require distinct handling. The following CantillationSymbol are now categorized under PseudoAccents:
 
   - `SophPasuq`
-   
-      Function: Primarily denotes the end of a verse or sentence, analogous to a period. However, its application is not absolute; certain scholarly traditions equate its disjunctive weight to that of Silluq.
-      CantillationSymbol the end of a sentence (like the period), but not always. Some sholars treat them as as equal as the Silluq (a disjuntive).
-
-   - `Maqqaph`
-
-      Function: Serves as a hyphenation or binding agent that connects words into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
-      it does have the function of binding words together, just like the conjunctives.
-
-   -  `Paseq`
-
-      Function: Acts as a separator or divider. It may appear in conjunction with a Hebrew accent to modify its function but does not operate as an independent accent mark. Can be part of a Hebrew Accent, but not as an individual accent
-
-
-
-
-### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
-
-- The representation of Hebrew accents in UTF-8 is not without its challenges. One major issue is the inconsistent definition of two accent CantillationSymbol in the Tanach, which has led to confusion and potential errors. These CantillationSymbol are:
-
-   -  The Yetiv mark
-   -  The Tevir mark
-
-  In various sources, the Yetiv mark is classified as a conjunctive accent, while the Tevir mark is considered a disjunctive accent. However, the Unicode tables seem to reverse this definition, treating the Yetiv mark as a disjunctive accent and the Tevir mark as a conjunctive accent.
-
-- Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
-
-- AccentMetadataly, the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
-
-For more information see [Unicode Problems](https://mechon-mamre.org/c/hr/unicode.htm).
+  - `Maqqaph`
+  - `Paseq`
 
 ## Accent Mapping to Unicode code-points
 
@@ -222,3 +192,21 @@ Accepted input must strictly adhere to the following criteria:
    - **Layout Controls for Meteg**: CGJ, ZWNJ and  ZWJ. See [Section 9.1 of the Unicode Standard, Version 15.0.0](https://www.unicode.org/versions/Unicode15.0.0/ch09.pdf) for more information.
      
    - **Whitespace**: Space characters as defined by the Rust standard library (char::is_whitespace) **Status**: Below consideration for final implementation.
+
+   ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
+
+- Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
+
+- Also the mapping of Unicode code-points to Hebrew accents is not always one-to-one, meaning that a single code-point can potentially correspond to multiple Hebrew accents, depending of the context.
+
+- There are some Hebrew accents that are somehow related to the wrong Unicode code-point.
+
+   | Hebrew Accent | code-point           | Name   | Note                         |
+   | --------------| -------------------- | ------ | ---------------------------- |
+   | ZARQA         | HEBREW ACCENT ZINOR  | U+05AE | Prose, disjuntive - Tier 3   |
+   | TSINNOR       | HEBREW ACCENT ZINOR  | U+05AE | Poetry, disjunctive - Tier 2 |
+   | TSINNORIT     | HEBREW ACCENT ZARQA  | U+0598 | Poetry, conjunctive          |
+
+For more information see [mechon-mamre.org](https://mechon-mamre.org/c/hr/unicode.htm) and [Unicode-Appendix A](https://www.unicode.org/notes/tn27/#Appendix_A)
+
+

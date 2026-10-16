@@ -75,15 +75,15 @@ use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent, Acce
 
 // Prose accents (used in narrative texts like Genesis, Exodus)
 let prose = HebrewAccent::Prose(ProseAccent::Silluq);
-println!("Prose accent: {}", prose.english_name());
+// println!("Prose accent: {}", prose.english_name());
 
 // Poetry accents (used in Psalms, Job, Proverbs)
 let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
-println!("Poetry accent: {}", poetry.is_compound());
+// println!("Poetry accent: {}", poetry.is_compound());
 
 // Pseudo-accents (accent-related markers)
 let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
-println!("Is compound: {}", pseudo.english_name());
+// println!("Is compound: {}", pseudo.english_name());
 ```
 
 ### Context
@@ -115,7 +115,7 @@ fn main(){
     println!("Hebrew name: {}", accent.hebrew_name());
     println!("English name: {}", accent.english_name());
     println!("Concept: {}", accent.hebrew_concept());
-    println!("Is compound: {}", accent.is_compound());
+    //println!("Is compound: {}", accent.is_compound());
     println!("Relative strength: {:?}", accent.relative_strength());
 }
 ```
