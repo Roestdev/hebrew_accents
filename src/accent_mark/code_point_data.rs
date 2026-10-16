@@ -120,7 +120,7 @@ pub(crate) const CODEPOINT_REVIA: Utf8CodePoint = utf8_cp_constructor(
 
 pub(crate) const CODEPOINT_ZARQA: Utf8CodePoint = utf8_cp_constructor(
     '֘',
-    CodePointPosition::AboveLeft,
+    CodePointPosition::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ZARQA",
     "U+0598",
@@ -391,7 +391,7 @@ pub(crate) const CODEPOINT_DEHI: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 pub(crate) const CODEPOINT_ZINOR: Utf8CodePoint = utf8_cp_constructor(
     '֮',
-    CodePointPosition::AboveCenter,
+    CodePointPosition::AboveLeft,
     StressPosition::Postpositive,
     "HEBREW ACCENT ZINOR",
     "U+05AE",

@@ -1353,51 +1353,39 @@ The alternate BHS naming is fabricated"#,
     #[test]
     fn test_poetry_disjunctive_cantillation_symbol() {
         // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::OlehWeYored.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "// TODO");
-        assert_eq!(
-            PoetryAccent::ShalsheletGadol.cantillation_symbol(),
-            "// TODO"
-        );
-        assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "// TODO");
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),
-            "// TODO"
-        );
-        assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "// TODO");
+        assert_eq!(PoetryAccent::Silluq.cantillation_symbol(), "אםֽת");
+        assert_eq!(PoetryAccent::OlehWeYored.cantillation_symbol(), "אם֫ת אם֥ת");
+        assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "אם֑ת");
+        assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "אם֗ת");
+        assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֜ם֗ת");
+        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(),"אם֓ת ׀");
+        assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "אםת֮");
+        assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "אם֗ת");
+        assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "אם֭ת");
+        assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "אם֡ת");
+        assert_eq!(PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),"אם֤ת ׀");
+        assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "אם֨ת ׀");
     }
-
-    /// Test all poetry conjunctive accents (should return None)
-    /// // TODO common: munach,merkha,galgal,azla,meteg
     #[test]
     fn test_poetry_conjunctive_cantillation_symbol() {
         // Conjunctives: indices 12-22, all should be None
-        assert_eq!(PoetryAccent::Munach.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Merkha.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Illuy.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Tarcha.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Galgal.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Mehuppakh.cantillation_symbol(), "// TODO");
-        assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "// TODO");
+        assert_eq!(PoetryAccent::Munach.cantillation_symbol(), "אם֣ת");
+        assert_eq!(PoetryAccent::Merkha.cantillation_symbol(), "אם֥ת");
+        assert_eq!(PoetryAccent::Illuy.cantillation_symbol(), "אם֬ת");
+        assert_eq!(PoetryAccent::Tarcha.cantillation_symbol(), "אם֖ת");
+        assert_eq!(PoetryAccent::Galgal.cantillation_symbol(), "אם֪ת");
+        assert_eq!(PoetryAccent::Mehuppakh.cantillation_symbol(), "אם֤ת");
+        assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "אם֨ת");
         assert_eq!(
             PoetryAccent::ShalsheletQetannah.cantillation_symbol(),
-            "// TODO"
-        );
+            "אם֓ת");
         assert_eq!(
             PoetryAccent::TsinnoritMerkha.cantillation_symbol(),
-            "// TODO"
-        );
+            "אם֘ת אם֥ת");
         assert_eq!(
             PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
-            "// TODO"
-        );
-        assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "// TODO");
+            "אם֘ת אם֤ת");
+        assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "אםֽת");
     }
     #[test]
     fn test_poetry_disjunctive_alternate_names() {

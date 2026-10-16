@@ -398,13 +398,6 @@ mod test_accent_trait {
         assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
     }
     #[test]
-    fn test_pseudo_accent_cantillation_symbol() {
-        // Pseudo accents never have strength hierarchy
-        assert_eq!(PseudoAccent::SophPasuq.cantillation_symbol(), "// TODO");
-        assert_eq!(PseudoAccent::Maqqaph.cantillation_symbol(), "// TODO");
-        assert_eq!(PseudoAccent::Paseq.cantillation_symbol(), "// TODO");
-    }
-    #[test]
     fn test_pseudo_accent_group_level() {
         // Pseudo accents never have strength hierarchy
         assert_eq!(PseudoAccent::SophPasuq.group_level(), None);
@@ -412,6 +405,12 @@ mod test_accent_trait {
         assert_eq!(PseudoAccent::Paseq.group_level(), None);
     }
     // TODO Cantillation Symbol
+    #[test]
+    fn test_pseudo_accent_cantillation_symbol() {
+        assert_eq!(PseudoAccent::SophPasuq.cantillation_symbol(), "אםת ׃");
+        assert_eq!(PseudoAccent::Maqqaph.cantillation_symbol(), "אםת־אםת");
+        assert_eq!(PseudoAccent::Paseq.cantillation_symbol(), "אםת ׀");
+    }
     #[test]
     fn test_pseudo_accent_alternate_names() {
         // Pseudo accents never have strength hierarchy

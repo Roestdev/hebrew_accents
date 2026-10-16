@@ -1,9 +1,11 @@
 use crate::accent_mark::Utf8CodePoint;
-use crate::api::{Accent, CompoundType, HebrewAccent};
-use crate::CantillationMarkStressPosition;
+use crate::api::{Accent, CompoundType, HebrewAccent, CantillationMarkPlacement};
 
-const DOTTED_CIRCLE: char = '\u{25CC}';
 const SPACE: char = '\u{0020}';
+const ALEPH: char = 'א';
+const MEM: char = 'ם';
+const TAV: char = 'ת';
+const PASEQ: char = '\u{05C0}';
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct CantillationSymbol {
@@ -13,7 +15,8 @@ pub(crate) struct CantillationSymbol {
     pub(crate) secondary_mark: Option<&'static Utf8CodePoint>,
 }
 
-/// Displays cantillation symbol with dotted circles indicating syllable positions.
+// TODO text
+/// Displays cantillation symbol
 ///
 /// Pattern conventions:
 /// - Single accent: `{char}◌` (1 circle)
@@ -21,30 +24,45 @@ pub(crate) struct CantillationSymbol {
 /// - Compound + paseq: `{sec} ◌{primary_symbol}◌◌` (3 circles)  
 /// - Compound + nopaseq: `{sec}◌{primary_symbol}◌◌` (3 circles)
 ///
-
 pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
     //get primary cantillationmark info
     let primary_symbol = accent.primary_cantillation_mark().symbol;
-    let primary_stress_pos = accent.primary_cantillation_mark().stress_position.unwrap();
+    let primary_placement = accent.primary_cantillation_mark().placement;
     if accent.compound_type().is_none() {
         // Non-compound: single mark - most common one!
-        match primary_stress_pos {
-            CantillationMarkStressPosition::Postpositive => {
+        match primary_placement {
+            CantillationMarkPlacement::AboveLeft => {
+                // always on the last letter
                 return format!(
                     "{}{}{}{}",
-                    primary_symbol, DOTTED_CIRCLE, DOTTED_CIRCLE, DOTTED_CIRCLE
-                );
+                    ALEPH, MEM, TAV, primary_symbol );
             }
-            CantillationMarkStressPosition::Impositive => {
+            CantillationMarkPlacement::AboveCenter |
+            CantillationMarkPlacement::BelowCenter => {
                 return format!(
                     "{}{}{}{}",
-                    DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE, DOTTED_CIRCLE
-                );
+                    ALEPH, MEM, primary_symbol,TAV );
             }
-            CantillationMarkStressPosition::Prepositive => {
+            CantillationMarkPlacement::AboveRight |
+            CantillationMarkPlacement::BelowRight => {
+                //always on the first letter
                 return format!(
                     "{}{}{}{}",
-                    DOTTED_CIRCLE, DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE
+                    ALEPH, primary_symbol, MEM, TAV );
+            }
+            CantillationMarkPlacement::SofPasuq |
+            CantillationMarkPlacement::Paseq => {
+                return format!(
+                    "{}{}{}{}{}",
+                    ALEPH, MEM, TAV, SPACE, primary_symbol
+                );           
+             }
+            CantillationMarkPlacement::Maqqaph => {
+             return format!(
+                    "{}{}{}{}{}{}{}",
+                    ALEPH, MEM, TAV, 
+                    primary_symbol,
+                    ALEPH, MEM, TAV
                 );
             }
         }
@@ -60,7 +78,7 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
                 // three dotted circles
                 format!(
                     "{}{}{}{}{}",
-                    DOTTED_CIRCLE, secondary_symbol, DOTTED_CIRCLE, primary_symbol, DOTTED_CIRCLE
+                    ALEPH, primary_symbol, MEM, secondary_symbol, TAV
                 )
             }
             CompoundType::ContainsPaseq => {
@@ -69,61 +87,22 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
                 // Position of the secondary mark (=Paseq) is always after the word
                 return format!(
                     "{}{}{}{}{}{}",
-                    secondary_symbol,
-                    SPACE,
-                    DOTTED_CIRCLE,
-                    primary_symbol,
-                    DOTTED_CIRCLE,
-                    DOTTED_CIRCLE
+                    ALEPH, MEM, primary_symbol, TAV, SPACE, PASEQ
                 );
             }
             CompoundType::CanSpanTwoWords => {
                 // all applicable marks are 'Impositive'
                 return format!(
                     "{}{}{}{}{}{}{}{}{}",
-                    DOTTED_CIRCLE,
-                    secondary_symbol,
-                    DOTTED_CIRCLE,
-                    DOTTED_CIRCLE,
+                    ALEPH, MEM, primary_symbol, TAV, 
                     SPACE,
-                    DOTTED_CIRCLE,
-                    primary_symbol,
-                    DOTTED_CIRCLE,
-                    DOTTED_CIRCLE
+                    ALEPH, MEM, secondary_symbol, TAV
                 );
             }
         }
-    }
+    } 
 }
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::{HebrewAccent, PoetryAccent, ProseAccent};
 
-    #[test]
-    fn test_twowords_has_four_circles_and_space() {
-        let accent = HebrewAccent::Poetry(PoetryAccent::OlehWeYored);
-        let result = display_cantillation_symbol(accent);
-
-        assert_eq!(result.matches(DOTTED_CIRCLE).count(), 4);
-        assert!(result.contains(SPACE));
-    }
-
-    #[test]
-    fn test_paseq_has_three_circles_with_space() {
-        let accent = HebrewAccent::Prose(ProseAccent::Shalshelet);
-        let result = display_cantillation_symbol(accent);
-
-        assert_eq!(result.matches(DOTTED_CIRCLE).count(), 2);
-        assert!(result.contains(SPACE));
-    }
-
-    #[test]
-    fn test_single_accent_has_one_circle() {
-        let accent = HebrewAccent::Prose(ProseAccent::Silluq);
-        let result = display_cantillation_symbol(accent);
-
-        assert_eq!(result.matches(DOTTED_CIRCLE).count(), 1);
-        assert!(!result.contains(SPACE));
-    }
 }
