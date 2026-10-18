@@ -5,7 +5,7 @@
 // External crates
 
 // Crate‑internal (local modules)
-// use crate::accent_data::{POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE};
+// use crate::accent::{POETRY_ACCENT_TABLE, PROSE_ACCENT_TABLE, PSEUDO_ACCENT_TABLE};
 // use crate::AccentMetaData;
 
 // Print every accent in the *prose* table.

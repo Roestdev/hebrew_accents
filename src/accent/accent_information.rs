@@ -6,13 +6,11 @@ use crate::accent::{
 };
 
 use crate::mark::{
-    CODEPOINT_DARGA, CODEPOINT_DEHI, CODEPOINT_ETNAHTA, CODEPOINT_GERESH, CODEPOINT_GERSHAYIM,
-    CODEPOINT_ILUY, CODEPOINT_MAHAPAKH, CODEPOINT_MAQAF, CODEPOINT_MERKHA, CODEPOINT_MERKHA_KEFULA,
-    CODEPOINT_METEG, CODEPOINT_MUNAH, CODEPOINT_OLE, CODEPOINT_PASEQ, CODEPOINT_PASHTA,
-    CODEPOINT_PAZER, CODEPOINT_QADMA, CODEPOINT_QARNEY_PARA, CODEPOINT_REVIA, CODEPOINT_SEGOL,
-    CODEPOINT_SHALSHELET, CODEPOINT_SOPH_PASUQ, CODEPOINT_TELISHA_GEDOLA, CODEPOINT_TELISHA_QETANA,
-    CODEPOINT_TEVIR, CODEPOINT_TIPEHA, CODEPOINT_YERAH_BEN_YOMO, CODEPOINT_YETIV,
-    CODEPOINT_ZAQEF_GADOL, CODEPOINT_ZAQEF_QATAN, CODEPOINT_ZARQA, CODEPOINT_ZINOR,
+    MARK_DARGA, MARK_DEHI, MARK_ETNAHTA, MARK_GERESH, MARK_GERSHAYIM, MARK_ILUY, MARK_MAHAPAKH,
+    MARK_MAQAF, MARK_MERKHA, MARK_MERKHA_KEFULA, MARK_METEG, MARK_MUNAH, MARK_OLE, MARK_PASEQ,
+    MARK_PASHTA, MARK_PAZER, MARK_QADMA, MARK_QARNEY_PARA, MARK_REVIA, MARK_SEGOL, MARK_SHALSHELET,
+    MARK_SOPH_PASUQ, MARK_TELISHA_GEDOLA, MARK_TELISHA_QETANA, MARK_TEVIR, MARK_TIPEHA,
+    MARK_YERAH_BEN_YOMO, MARK_YETIV, MARK_ZAQEF_GADOL, MARK_ZAQEF_QATAN, MARK_ZARQA, MARK_ZINOR,
     TRADITION_NAMES_AZLA_LEGARMEH, TRADITION_NAMES_DARGA, TRADITION_NAMES_DEHI,
     TRADITION_NAMES_ETNAHTA, TRADITION_NAMES_GERESH, TRADITION_NAMES_GERSHAYIM,
     TRADITION_NAMES_ILUY, TRADITION_NAMES_LEGARMEH, TRADITION_NAMES_MAHAPAKH,
@@ -34,7 +32,7 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "close, cessation",
     sbl_academic: "sillûq",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_METEG,
+        primary_mark: &MARK_METEG,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -57,7 +55,7 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "a causing to rest",
     sbl_academic: "ʾatnaḥ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ETNAHTA,
+        primary_mark: &MARK_ETNAHTA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -77,7 +75,7 @@ pub(crate) const SEGOLTA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "a little grape-bunch",
     sbl_academic: "səgôlətāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SEGOL,
+        primary_mark: &MARK_SEGOL,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -94,8 +92,8 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "chain or link",
     sbl_academic: "šalšelet",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SHALSHELET,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
@@ -112,7 +110,7 @@ pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "small upright or small standing one",
     sbl_academic: "zāqēp qāṭôn",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZAQEF_QATAN,
+        primary_mark: &MARK_ZAQEF_QATAN,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -129,7 +127,7 @@ pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "large upright",
     sbl_academic: "zāqēp gādôl",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZAQEF_GADOL,
+        primary_mark: &MARK_ZAQEF_GADOL,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -146,7 +144,7 @@ pub(crate) const REVIA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "fourth [in a sequence]",
     sbl_academic: "rəbîaʿ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_REVIA,
+        primary_mark: &MARK_REVIA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -163,7 +161,7 @@ pub(crate) const TIPHCHA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "handbreadth or diagonal",
     sbl_academic: "ṭipḥāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TIPEHA,
+        primary_mark: &MARK_TIPEHA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -180,7 +178,7 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "to sprinkle, to scatter",
     sbl_academic: "zarqāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZINOR,
+        primary_mark: &MARK_ZINOR,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -197,7 +195,7 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "extending, stretching out in length",
     sbl_academic: "pašṭāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_PASHTA,
+        primary_mark: &MARK_PASHTA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -214,7 +212,7 @@ pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "resting or sitting",
     sbl_academic: "yətîb",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_YETIV,
+        primary_mark: &MARK_YETIV,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -231,7 +229,7 @@ pub(crate) const TEVIR_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "broken, downward tumble",
     sbl_academic: "təbîr",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TEVIR,
+        primary_mark: &MARK_TEVIR,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -248,7 +246,7 @@ pub(crate) const GERESH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "expulsion, driving out, divorce",
     sbl_academic: "gērêš",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_GERESH,
+        primary_mark: &MARK_GERESH,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -270,7 +268,7 @@ pub(crate) const GERSHAYIM_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "double of expulsion, driving out, divorce",
     sbl_academic: "gērəšayīm",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_GERSHAYIM,
+        primary_mark: &MARK_GERSHAYIM,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -287,7 +285,7 @@ pub(crate) const PAZER_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "lavish or scatter",
     sbl_academic: "pāzer",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_PAZER,
+        primary_mark: &MARK_PAZER,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -306,7 +304,7 @@ pub(crate) const PAZER_GADOL_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "large lavish or scatter",
     sbl_academic: "pāzer gdôl",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_QARNEY_PARA,
+        primary_mark: &MARK_QARNEY_PARA,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -328,7 +326,7 @@ pub(crate) const TELISHA_GEDOLAH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "great (long) detached",
     sbl_academic: "təlîšāʾ gədôlâ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TELISHA_GEDOLA,
+        primary_mark: &MARK_TELISHA_GEDOLA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -345,8 +343,8 @@ pub(crate) const LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "for or by itself, independent",
     sbl_academic: "ləgarmeh",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MUNAH,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_MUNAH,
+        secondary_mark: Some(&MARK_PASEQ),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
@@ -363,7 +361,7 @@ pub(crate) const MUNACH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "resting or placed",
     sbl_academic: "mûnaḥ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MUNAH,
+        primary_mark: &MARK_MUNAH,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -380,7 +378,7 @@ pub(crate) const MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "turning round",
     sbl_academic: "mahpak",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MAHAPAKH,
+        primary_mark: &MARK_MAHAPAKH,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -402,7 +400,7 @@ pub(crate) const MERKHA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "lengthener, prolonging",
     sbl_academic: "mērəkāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MERKHA,
+        primary_mark: &MARK_MERKHA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -419,7 +417,7 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "double lengthener",
     sbl_academic: "mērəkāʾ kəpûlâ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MERKHA_KEFULA,
+        primary_mark: &MARK_MERKHA_KEFULA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -436,7 +434,7 @@ pub(crate) const DARGA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "step, stair-step",
     sbl_academic: "dargāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_DARGA,
+        primary_mark: &MARK_DARGA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -453,7 +451,7 @@ pub(crate) const AZLA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "going on (not pausing), depart",
     sbl_academic: "ʾazlāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_QADMA,
+        primary_mark: &MARK_QADMA,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -475,7 +473,7 @@ pub(crate) const TELISHA_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "small (short) detached",
     sbl_academic: "təlîšāʾ qəṭannâ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TELISHA_QETANA,
+        primary_mark: &MARK_TELISHA_QETANA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -492,7 +490,7 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "wheel, circle",
     sbl_academic: "galgal",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_YERAH_BEN_YOMO,
+        primary_mark: &MARK_YERAH_BEN_YOMO,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -514,7 +512,7 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "upper, above, higher",
     sbl_academic: "məʾaylāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TIPEHA,
+        primary_mark: &MARK_TIPEHA,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -542,7 +540,7 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "to bridle, check, control",
     sbl_academic: "meteg",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_METEG,
+        primary_mark: &MARK_METEG,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -582,8 +580,8 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "ascending and descending",
     sbl_academic: "ʿōleh wəyōrēd",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_OLE,
-        secondary_mark: Some(&CODEPOINT_MERKHA),
+        primary_mark: &MARK_OLE,
+        secondary_mark: Some(&MARK_MERKHA),
     },
     alternate_names: Some(InternalAlternateNames {
         english_name: "Mahpakh and Merkha",
@@ -611,7 +609,7 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "big fourth",
     sbl_academic: "rəbîaʿ gādôl",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_REVIA,
+        primary_mark: &MARK_REVIA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -628,8 +626,8 @@ pub(crate) const REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "exiled fourth",
     sbl_academic: "rəbîaʿ mugrāš",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_GERESH,
-        secondary_mark: Some(&CODEPOINT_REVIA),
+        primary_mark: &MARK_GERESH,
+        secondary_mark: Some(&MARK_REVIA),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::Standard),
@@ -645,8 +643,8 @@ pub(crate) const SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "large chain or link",
     sbl_academic: "šalšelet gādôl",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SHALSHELET,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
@@ -662,7 +660,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "pipe or tube",
     sbl_academic: "ṣinnôr",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZINOR,
+        primary_mark: &MARK_ZINOR,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -684,7 +682,7 @@ pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "small fourth",
     sbl_academic: "rəbîaʿ qāṭôn",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_REVIA,
+        primary_mark: &MARK_REVIA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -701,7 +699,7 @@ pub(crate) const DECHI_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "to push or drive away",
     sbl_academic: "deḥî",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_DEHI,
+        primary_mark: &MARK_DEHI,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -726,8 +724,8 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "reversed to its own",
     sbl_academic: "məhuppāk ləgarmēh",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MAHAPAKH,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_MAHAPAKH,
+        secondary_mark: Some(&MARK_PASEQ),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
@@ -752,8 +750,8 @@ pub(crate) const AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "goes to its own",
     sbl_academic: "ʾazlāʾ ləgarmēh",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_QADMA,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_QADMA,
+        secondary_mark: Some(&MARK_PASEQ),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
@@ -773,7 +771,7 @@ pub(crate) const ILLUY_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "elevation or raising",
     sbl_academic: "ʿillûy",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ILUY,
+        primary_mark: &MARK_ILUY,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -790,7 +788,7 @@ pub(crate) const TARCHA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "trouble, difficulty, hardship, toil",
     sbl_academic: "ṭarḥāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_TIPEHA,
+        primary_mark: &MARK_TIPEHA,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -811,7 +809,7 @@ pub(crate) const MEHUPPAKH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "reversed",
     sbl_academic: "məhuppāk",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MAHAPAKH,
+        primary_mark: &MARK_MAHAPAKH,
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
@@ -835,7 +833,7 @@ pub(crate) const SHALSHELET_QETANNAH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "small chain",
     sbl_academic: "šalšelet qəṭannâ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SHALSHELET,
+        primary_mark: &MARK_SHALSHELET,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -853,8 +851,8 @@ pub(crate) const TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "pipe of continuation",
     sbl_academic: "ṣinnôrīt mērəkāʾ",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZARQA,
-        secondary_mark: Some(&CODEPOINT_MERKHA),
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MERKHA),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::CanSpanTwoWords),
@@ -871,8 +869,8 @@ pub(crate) const TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "pipe of reversal",
     sbl_academic: "ṣinnôrīt mahpak",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZARQA,
-        secondary_mark: Some(&CODEPOINT_MAHAPAKH),
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MAHAPAKH),
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::CanSpanTwoWords),
@@ -893,7 +891,7 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "end of verse",
     sbl_academic: "sôp pāsûq",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SOPH_PASUQ,
+        primary_mark: &MARK_SOPH_PASUQ,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -916,7 +914,7 @@ pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "binder",
     sbl_academic: "maqqēp",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MAQAF,
+        primary_mark: &MARK_MAQAF,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -939,7 +937,7 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
     hebrew_concept: "to pause, to stop or to interrupt",
     sbl_academic: "pāsēq",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_PASEQ,
+        primary_mark: &MARK_PASEQ,
         secondary_mark: None,
     },
     alternate_names: None,

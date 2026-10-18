@@ -1,11 +1,17 @@
-//! accent helper functions
+//! accent internals
 mod accent_category;
 mod accent_compound_type;
+mod accent_information;
 mod accent_kind;
 mod alternate_names;
 mod cantillation_symbol;
 pub(crate) mod disjunctive_groups;
+mod display;
 mod meta_data;
+mod poetry_table;
+mod prose_table;
+mod pseudo_table;
+mod rank_maps;
 mod relative_strength;
 
 pub(crate) use accent_category::InternalAccentCategory;
@@ -16,4 +22,10 @@ pub(crate) use cantillation_symbol::display_cantillation_symbol;
 pub(crate) use cantillation_symbol::CantillationSymbol;
 pub(crate) use disjunctive_groups::resolve_disjunctive_group;
 pub(crate) use meta_data::AccentMetaData;
+pub(crate) use poetry_table::POETRY_ACCENT_TABLE;
+pub(crate) use prose_table::PROSE_ACCENT_TABLE;
+pub(crate) use pseudo_table::PSEUDO_ACCENT_TABLE;
+pub(crate) use rank_maps::BHS_POETRY_RANK_MAP;
+pub(crate) use rank_maps::BHS_PROSE_RANK_MAP;
+pub(crate) use rank_maps::STRENGTH_NONE;
 pub(crate) use relative_strength::resolve_relative_strength;

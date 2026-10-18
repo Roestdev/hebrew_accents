@@ -26,7 +26,7 @@
 //! println!("{}", mark); // "Maqqaph (מַקָּף), meaning: hyphen"
 //! ```
 
-use crate::accent_data::PSEUDO_ACCENT_TABLE;
+use crate::accent::PSEUDO_ACCENT_TABLE;
 use crate::api::CompoundType;
 use crate::{
     display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,

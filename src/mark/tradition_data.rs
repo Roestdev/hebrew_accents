@@ -41,8 +41,8 @@ SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "שַׁלְשֶׁלֶת",
     hebrew_concept: "chain or link",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SHALSHELET,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
 */
 
 // ============================================================================
@@ -73,8 +73,8 @@ OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "עוֹלֶה וְיוֹרֵד",
     hebrew_concept: "ascending and descending",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_OLE,
-        secondary_mark: Some(&CODEPOINT_MERKHA),
+        primary_mark: &MARK_OLE,
+        secondary_mark: Some(&MARK_MERKHA),
 */
 pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
     TraditionNames::uniform("עֹלֶה וְיֹרֵד", "ʿôleh wəyôrēd", "ascending and descending");
@@ -85,8 +85,8 @@ pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
     hebrew_name: "רְבִיעַ מֻגְרָשׁ",
     hebrew_concept: "exiled fourth",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_GERESH,
-        secondary_mark: Some(&CODEPOINT_REVIA),
+        primary_mark: &MARK_GERESH,
+        secondary_mark: Some(&MARK_REVIA),
 */
 
 /*
@@ -96,8 +96,8 @@ SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
     hebrew_concept: "large chain or link",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_SHALSHELET,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
  */
 pub(crate) const TRADITION_NAMES_SHALSHELET_GADOL: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
@@ -125,8 +125,8 @@ MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
     hebrew_concept: "reversed to its own",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_MAHAPAKH,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_MAHAPAKH,
+        secondary_mark: Some(&MARK_PASEQ),
 */
 pub(crate) const TRADITION_NAMES_MEHUPPAKH_LEGARMEH: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
@@ -158,8 +158,8 @@ AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "אַזְלָא לְגַרְמֶהּ",
     hebrew_concept: "goes to its own",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_QADMA,
-        secondary_mark: Some(&CODEPOINT_PASEQ),
+        primary_mark: &MARK_QADMA,
+        secondary_mark: Some(&MARK_PASEQ),
 */
 pub(crate) const TRADITION_NAMES_AZLA_LEGARMEH: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
@@ -187,8 +187,8 @@ TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "צִנּוֹרִת מֵרְכָא",
     hebrew_concept: "pipe of continuation",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZARQA,
-        secondary_mark: Some(&CODEPOINT_MERKHA),
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MERKHA),
  */
 pub(crate) const TRADITION_NAMES_TSINNORIT_MERKHA: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
@@ -216,8 +216,8 @@ TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
     hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
     hebrew_concept: "pipe of reversal",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &CODEPOINT_ZARQA,
-        secondary_mark: Some(&CODEPOINT_MAHAPAKH),
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MAHAPAKH),
 
 */
 pub(crate) const TRADITION_NAMES_TSINNORIT_MAHPACH: TraditionNames = TraditionNames {

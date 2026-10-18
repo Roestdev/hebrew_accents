@@ -1,6 +1,6 @@
 use crate::{
     accent::AccentMetaData,
-    accent_data::accent_information::{MAQQAPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO},
+    accent::accent_information::{MAQQAPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO},
     PseudoAccent,
 };
 

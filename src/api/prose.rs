@@ -43,7 +43,7 @@
 //! ```
 
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
-use crate::accent_data::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
+use crate::accent::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
 use crate::{
     display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,

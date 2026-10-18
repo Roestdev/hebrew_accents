@@ -29,7 +29,7 @@
 //! ```
 
 use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
-use crate::accent_data::{BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE};
+use crate::accent::{BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE};
 use crate::api::CompoundType;
 use crate::{
     display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,

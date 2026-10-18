@@ -1,11 +1,11 @@
-use crate::accent::AccentMetaData;
-use crate::accent_data::accent_information::{
+use crate::accent::accent_information::{
     ATNACH_INFO, AZLA_INFO, DARGA_INFO, GALGAL_INFO, GERESH_INFO, GERSHAYIM_INFO, LEGARMEH_INFO,
     MAHPAKH_INFO, MEAYLA_INFO, MERKHA_INFO, MERKHA_KEPHULAH_INFO, METEG_INFO, MUNACH_INFO,
     PASHTA_INFO, PAZER_GADOL_INFO, PAZER_INFO, REVIA_INFO, SEGOLTA_INFO, SHALSHELET_INFO,
     SILLUQ_INFO, TELISHA_GEDOLAH_INFO, TELISHA_QETANNAH_INFO, TEVIR_INFO, TIPHCHA_INFO, YETIV_INFO,
     ZAQEPH_GADOL_INFO, ZAQEPH_QATAN_INFO, ZARQA_INFO,
 };
+use crate::accent::AccentMetaData;
 use crate::ProseAccent;
 
 /// Static lookup table for prose cantillation metadata.

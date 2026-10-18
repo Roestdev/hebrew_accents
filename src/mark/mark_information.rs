@@ -32,7 +32,7 @@ const fn mark_meta_data_constructor(
 // ============================================================================
 // ETNAHTA (U+0591)
 // ============================================================================
-pub(crate) const CODEPOINT_ETNAHTA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ETNAHTA: MarkMetaData = mark_meta_data_constructor(
     '֑',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -44,7 +44,7 @@ pub(crate) const CODEPOINT_ETNAHTA: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // SEGOL (U+0592)
 // ============================================================================
-pub(crate) const CODEPOINT_SEGOL: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_SEGOL: MarkMetaData = mark_meta_data_constructor(
     '֒',
     MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
@@ -56,7 +56,7 @@ pub(crate) const CODEPOINT_SEGOL: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // SHALSHELET (U+0593)
 // ============================================================================
-pub(crate) const CODEPOINT_SHALSHELET: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_SHALSHELET: MarkMetaData = mark_meta_data_constructor(
     '֓',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -68,7 +68,7 @@ pub(crate) const CODEPOINT_SHALSHELET: MarkMetaData = mark_meta_data_constructor
 // ============================================================================
 // ZAQEF QATAN (U+0594)
 // ============================================================================
-pub(crate) const CODEPOINT_ZAQEF_QATAN: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ZAQEF_QATAN: MarkMetaData = mark_meta_data_constructor(
     '֔',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -80,7 +80,7 @@ pub(crate) const CODEPOINT_ZAQEF_QATAN: MarkMetaData = mark_meta_data_constructo
 // ============================================================================
 // ZAQEF GADOL (U+0595) (use uniform!)
 // ============================================================================
-pub(crate) const CODEPOINT_ZAQEF_GADOL: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ZAQEF_GADOL: MarkMetaData = mark_meta_data_constructor(
     '֕',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -92,7 +92,7 @@ pub(crate) const CODEPOINT_ZAQEF_GADOL: MarkMetaData = mark_meta_data_constructo
 // ============================================================================
 // TIPEHA (U+0596)
 // ============================================================================
-pub(crate) const CODEPOINT_TIPEHA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_TIPEHA: MarkMetaData = mark_meta_data_constructor(
     '֖',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -105,7 +105,7 @@ pub(crate) const CODEPOINT_TIPEHA: MarkMetaData = mark_meta_data_constructor(
 // REVIA (U+0597) - Ashkenazi differs slightly
 // ============================================================================
 
-pub(crate) const CODEPOINT_REVIA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_REVIA: MarkMetaData = mark_meta_data_constructor(
     '֗',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -118,7 +118,7 @@ pub(crate) const CODEPOINT_REVIA: MarkMetaData = mark_meta_data_constructor(
 // ZARQA (U+0598)
 // ============================================================================
 
-pub(crate) const CODEPOINT_ZARQA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ZARQA: MarkMetaData = mark_meta_data_constructor(
     '֘',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -131,7 +131,7 @@ pub(crate) const CODEPOINT_ZARQA: MarkMetaData = mark_meta_data_constructor(
 // PASHTA (U+0599)
 // ============================================================================
 
-pub(crate) const CODEPOINT_PASHTA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_PASHTA: MarkMetaData = mark_meta_data_constructor(
     '֙',
     MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
@@ -144,7 +144,7 @@ pub(crate) const CODEPOINT_PASHTA: MarkMetaData = mark_meta_data_constructor(
 // YETIV (U+059A)
 // ============================================================================
 
-pub(crate) const CODEPOINT_YETIV: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_YETIV: MarkMetaData = mark_meta_data_constructor(
     '֚',
     MarkPlacement::BelowRight,
     StressPosition::Prepositive,
@@ -157,7 +157,7 @@ pub(crate) const CODEPOINT_YETIV: MarkMetaData = mark_meta_data_constructor(
 // TEVIR (U+059B)
 // ============================================================================
 
-pub(crate) const CODEPOINT_TEVIR: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_TEVIR: MarkMetaData = mark_meta_data_constructor(
     '֛',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -170,7 +170,7 @@ pub(crate) const CODEPOINT_TEVIR: MarkMetaData = mark_meta_data_constructor(
 // GERESH (U+059C)
 // ============================================================================
 
-pub(crate) const CODEPOINT_GERESH: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_GERESH: MarkMetaData = mark_meta_data_constructor(
     '֜',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -183,7 +183,7 @@ pub(crate) const CODEPOINT_GERESH: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 //  GERESH MUQDAM (U+059D)
 // ============================================================================
-// pub(crate) const CODEPOINT_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
+// pub(crate) const MARK_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
 //     '֜',?
 //     MarkPlacement::AboveCenter,?
 //     StressPosition::Impositive,?
@@ -195,7 +195,7 @@ pub(crate) const CODEPOINT_GERESH: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // GERSHAYIM (U+059E)
 // ============================================================================
-pub(crate) const CODEPOINT_GERSHAYIM: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_GERSHAYIM: MarkMetaData = mark_meta_data_constructor(
     '֞',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -207,7 +207,7 @@ pub(crate) const CODEPOINT_GERSHAYIM: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // QARNEY PARA (U+059F)
 // ============================================================================
-pub(crate) const CODEPOINT_QARNEY_PARA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_QARNEY_PARA: MarkMetaData = mark_meta_data_constructor(
     '֟',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -219,7 +219,7 @@ pub(crate) const CODEPOINT_QARNEY_PARA: MarkMetaData = mark_meta_data_constructo
 // ============================================================================
 // TELISHA GEDOLA (U+05A0)
 // ============================================================================
-pub(crate) const CODEPOINT_TELISHA_GEDOLA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_TELISHA_GEDOLA: MarkMetaData = mark_meta_data_constructor(
     '֠',
     MarkPlacement::AboveRight,
     StressPosition::Prepositive,
@@ -231,7 +231,7 @@ pub(crate) const CODEPOINT_TELISHA_GEDOLA: MarkMetaData = mark_meta_data_constru
 // ============================================================================
 // PAZER (U+05A1)
 // ============================================================================
-pub(crate) const CODEPOINT_PAZER: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_PAZER: MarkMetaData = mark_meta_data_constructor(
     '֡',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -244,7 +244,7 @@ pub(crate) const CODEPOINT_PAZER: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // ATNAH HAFUKH (U+05A2)
 // ============================================================================
-// pub(crate) const CODEPOINT_ATNAH_HAFUKH: MarkMetaData = mark_meta_data_constructor(
+// pub(crate) const MARK_ATNAH_HAFUKH: MarkMetaData = mark_meta_data_constructor(
 //     '֡',?
 //     MarkPlacement::AboveCenter,?
 //     StressPosition::Impositive, ?
@@ -256,7 +256,7 @@ pub(crate) const CODEPOINT_PAZER: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // MUNAH (U+05A3)
 // ============================================================================
-pub(crate) const CODEPOINT_MUNAH: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_MUNAH: MarkMetaData = mark_meta_data_constructor(
     '֣',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -268,7 +268,7 @@ pub(crate) const CODEPOINT_MUNAH: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // MAHAPAKH (U+05A4)
 // ============================================================================
-pub(crate) const CODEPOINT_MAHAPAKH: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_MAHAPAKH: MarkMetaData = mark_meta_data_constructor(
     '֤',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -280,7 +280,7 @@ pub(crate) const CODEPOINT_MAHAPAKH: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // MERKHA (U+05A5)
 // ============================================================================
-pub(crate) const CODEPOINT_MERKHA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_MERKHA: MarkMetaData = mark_meta_data_constructor(
     '֥',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -292,7 +292,7 @@ pub(crate) const CODEPOINT_MERKHA: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // MERKHA KEFULA (U+05A6)
 // ============================================================================
-pub(crate) const CODEPOINT_MERKHA_KEFULA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_MERKHA_KEFULA: MarkMetaData = mark_meta_data_constructor(
     '֦',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -304,7 +304,7 @@ pub(crate) const CODEPOINT_MERKHA_KEFULA: MarkMetaData = mark_meta_data_construc
 // ============================================================================
 // DARGA (U+05A7)
 // ============================================================================
-pub(crate) const CODEPOINT_DARGA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_DARGA: MarkMetaData = mark_meta_data_constructor(
     '֧',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -316,7 +316,7 @@ pub(crate) const CODEPOINT_DARGA: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // QADMA (U+05A8)
 // ============================================================================
-pub(crate) const CODEPOINT_QADMA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_QADMA: MarkMetaData = mark_meta_data_constructor(
     '֨',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -328,7 +328,7 @@ pub(crate) const CODEPOINT_QADMA: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // TELISHA QETANA (U+05A9)
 // ============================================================================
-pub(crate) const CODEPOINT_TELISHA_QETANA: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_TELISHA_QETANA: MarkMetaData = mark_meta_data_constructor(
     '֩',
     MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
@@ -340,7 +340,7 @@ pub(crate) const CODEPOINT_TELISHA_QETANA: MarkMetaData = mark_meta_data_constru
 // ============================================================================
 // YERAH BEN YOMO (U+05AA)
 // ============================================================================
-pub(crate) const CODEPOINT_YERAH_BEN_YOMO: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_YERAH_BEN_YOMO: MarkMetaData = mark_meta_data_constructor(
     '֪',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -353,7 +353,7 @@ pub(crate) const CODEPOINT_YERAH_BEN_YOMO: MarkMetaData = mark_meta_data_constru
 // OLE (U+05AB)
 // ============================================================================
 
-pub(crate) const CODEPOINT_OLE: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_OLE: MarkMetaData = mark_meta_data_constructor(
     '֫',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -365,7 +365,7 @@ pub(crate) const CODEPOINT_OLE: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // ILUY (U+05AC)
 // ============================================================================
-pub(crate) const CODEPOINT_ILUY: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ILUY: MarkMetaData = mark_meta_data_constructor(
     '֬',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -377,7 +377,7 @@ pub(crate) const CODEPOINT_ILUY: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // DEHI (U+05AD)
 // ============================================================================
-pub(crate) const CODEPOINT_DEHI: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_DEHI: MarkMetaData = mark_meta_data_constructor(
     '֭',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -389,7 +389,7 @@ pub(crate) const CODEPOINT_DEHI: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // ZINOR (U+05AE)
 // ============================================================================
-pub(crate) const CODEPOINT_ZINOR: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ZINOR: MarkMetaData = mark_meta_data_constructor(
     '֮',
     MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
@@ -403,7 +403,7 @@ pub(crate) const CODEPOINT_ZINOR: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // METEG (U+05BD) (shares codepoint with Silluq)
 // ============================================================================
-pub(crate) const CODEPOINT_METEG: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_METEG: MarkMetaData = mark_meta_data_constructor(
     'ֽ',
     MarkPlacement::BelowCenter,
     StressPosition::Impositive,
@@ -415,7 +415,7 @@ pub(crate) const CODEPOINT_METEG: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // MAQAF (U+05BE)
 // ============================================================================
-pub(crate) const CODEPOINT_MAQAF: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_MAQAF: MarkMetaData = mark_meta_data_constructor(
     '־',
     MarkPlacement::Maqqaph,
     StressPosition::NotApplicable,
@@ -427,7 +427,7 @@ pub(crate) const CODEPOINT_MAQAF: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // PASEQ (U+05C0)
 // ============================================================================
-pub(crate) const CODEPOINT_PASEQ: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_PASEQ: MarkMetaData = mark_meta_data_constructor(
     '׀',
     MarkPlacement::Paseq,
     StressPosition::NotApplicable,
@@ -439,7 +439,7 @@ pub(crate) const CODEPOINT_PASEQ: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // SOPH PASUQ (U+05C3)
 // ============================================================================
-pub(crate) const CODEPOINT_SOPH_PASUQ: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_SOPH_PASUQ: MarkMetaData = mark_meta_data_constructor(
     '׃',
     MarkPlacement::SofPasuq,
     StressPosition::NotApplicable,

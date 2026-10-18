@@ -1,4 +1,4 @@
-use crate::accent_data::STRENGTH_NONE;
+use crate::accent::STRENGTH_NONE;
 
 /// Converts an internal raw strength value into a user-facing `Option<u8>`.
 ///
