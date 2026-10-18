@@ -34,9 +34,7 @@ mod prose_cantillation_symbol {
         assert_eq!(ProseAccent::MerkhaKephulah.cantillation_symbol(), "אם֦ת");
         assert_eq!(ProseAccent::Darga.cantillation_symbol(), "אם֧ת");
         assert_eq!(ProseAccent::Azla.cantillation_symbol(), "אם֨ת");
-        assert_eq!(
-            ProseAccent::TelishaQetannah.cantillation_symbol(),
-            "אםת֩");
+        assert_eq!(ProseAccent::TelishaQetannah.cantillation_symbol(), "אםת֩");
         assert_eq!(ProseAccent::Galgal.cantillation_symbol(), "אם֪ת");
         assert_eq!(ProseAccent::Meayla.cantillation_symbol(), "אם֖ת");
         assert_eq!(ProseAccent::Meteg.cantillation_symbol(), "אםֽת");
@@ -52,12 +50,15 @@ mod poetry_cantillation_symbol {
         assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "אם֑ת");
         assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "אם֗ת");
         assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֜ם֗ת");
-        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(),"אם֓ת ׀");
+        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(), "אם֓ת ׀");
         assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "אםת֮");
         assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "אם֗ת");
         assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "אם֭ת");
         assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "אם֡ת");
-        assert_eq!(PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),"אם֤ת ׀");
+        assert_eq!(
+            PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),
+            "אם֤ת ׀"
+        );
         assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "אם֨ת ׀");
     }
 
@@ -74,13 +75,16 @@ mod poetry_cantillation_symbol {
         assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "אם֨ת");
         assert_eq!(
             PoetryAccent::ShalsheletQetannah.cantillation_symbol(),
-            "אם֓ת");
+            "אם֓ת"
+        );
         assert_eq!(
             PoetryAccent::TsinnoritMerkha.cantillation_symbol(),
-            "אם֘ת אם֥ת");
+            "אם֘ת אם֥ת"
+        );
         assert_eq!(
             PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
-            "אם֘ת אם֤ת");
+            "אם֘ת אם֤ת"
+        );
         assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "אםֽת");
     }
 }
