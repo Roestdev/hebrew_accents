@@ -1479,9 +1479,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::MerkhaKephulah.cantillation_symbol(), "אם֦ת");
         assert_eq!(ProseAccent::Darga.cantillation_symbol(), "אם֧ת");
         assert_eq!(ProseAccent::Azla.cantillation_symbol(), "אם֨ת");
-        assert_eq!(
-            ProseAccent::TelishaQetannah.cantillation_symbol(),
-            "אםת֩");
+        assert_eq!(ProseAccent::TelishaQetannah.cantillation_symbol(), "אםת֩");
         assert_eq!(ProseAccent::Galgal.cantillation_symbol(), "אם֪ת");
         assert_eq!(ProseAccent::Meayla.cantillation_symbol(), "אם֖ת");
         assert_eq!(ProseAccent::Meteg.cantillation_symbol(), "אםֽת");

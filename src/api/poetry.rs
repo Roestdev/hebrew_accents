@@ -18,17 +18,6 @@
 //! | Conjunctive | 11 | Connect words within a phrase |
 //! | **Total** | **23** | |
 //!
-//! ## Hierarchy
-//!
-//! Disjunctive accents form a nested hierarchy from the verse-level down:
-//!
-//! ```text
-//! Verse (Silluq)
-//!  └─ Half-verse (Atnach / Oleh WeYored)
-//!     └─ Phrase levels (Revia Gadol, Revia Mugrash, ...)
-//!        └─ Sub-phrase (Dechi, Pazer, ...)
-//! ```
-//!
 //! ## Usage
 //!
 //! ```rust
@@ -1358,12 +1347,15 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "אם֑ת");
         assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "אם֗ת");
         assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֜ם֗ת");
-        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(),"אם֓ת ׀");
+        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(), "אם֓ת ׀");
         assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "אםת֮");
         assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "אם֗ת");
         assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "אם֭ת");
         assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "אם֡ת");
-        assert_eq!(PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),"אם֤ת ׀");
+        assert_eq!(
+            PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),
+            "אם֤ת ׀"
+        );
         assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "אם֨ת ׀");
     }
     #[test]
@@ -1378,13 +1370,16 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "אם֨ת");
         assert_eq!(
             PoetryAccent::ShalsheletQetannah.cantillation_symbol(),
-            "אם֓ת");
+            "אם֓ת"
+        );
         assert_eq!(
             PoetryAccent::TsinnoritMerkha.cantillation_symbol(),
-            "אם֘ת אם֥ת");
+            "אם֘ת אם֥ת"
+        );
         assert_eq!(
             PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
-            "אם֘ת אם֤ת");
+            "אם֘ת אם֤ת"
+        );
         assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "אםֽת");
     }
     #[test]

@@ -926,7 +926,7 @@ pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
         into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
         It does have the function of binding words together, just like the conjunctives.
         Can link two (or more) short words together after which they function as 
-        a single compound word bearing a single primary Hebrew accent."
+        a single compound word bearing a single primary Hebrew accent.",
     ),
     kind: None,
     category: None,

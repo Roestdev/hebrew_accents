@@ -1,5 +1,5 @@
 use crate::accent_mark::Utf8CodePoint;
-use crate::api::{Accent, CompoundType, HebrewAccent, CantillationMarkPlacement};
+use crate::api::{Accent, CantillationMarkPlacement, CompoundType, HebrewAccent};
 
 const SPACE: char = '\u{0020}';
 const ALEPH: char = 'א';
@@ -33,36 +33,22 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
         match primary_placement {
             CantillationMarkPlacement::AboveLeft => {
                 // always on the last letter
-                return format!(
-                    "{}{}{}{}",
-                    ALEPH, MEM, TAV, primary_symbol );
+                return format!("{}{}{}{}", ALEPH, MEM, TAV, primary_symbol);
             }
-            CantillationMarkPlacement::AboveCenter |
-            CantillationMarkPlacement::BelowCenter => {
-                return format!(
-                    "{}{}{}{}",
-                    ALEPH, MEM, primary_symbol,TAV );
+            CantillationMarkPlacement::AboveCenter | CantillationMarkPlacement::BelowCenter => {
+                return format!("{}{}{}{}", ALEPH, MEM, primary_symbol, TAV);
             }
-            CantillationMarkPlacement::AboveRight |
-            CantillationMarkPlacement::BelowRight => {
+            CantillationMarkPlacement::AboveRight | CantillationMarkPlacement::BelowRight => {
                 //always on the first letter
-                return format!(
-                    "{}{}{}{}",
-                    ALEPH, primary_symbol, MEM, TAV );
+                return format!("{}{}{}{}", ALEPH, primary_symbol, MEM, TAV);
             }
-            CantillationMarkPlacement::SofPasuq |
-            CantillationMarkPlacement::Paseq => {
-                return format!(
-                    "{}{}{}{}{}",
-                    ALEPH, MEM, TAV, SPACE, primary_symbol
-                );           
-             }
+            CantillationMarkPlacement::SofPasuq | CantillationMarkPlacement::Paseq => {
+                return format!("{}{}{}{}{}", ALEPH, MEM, TAV, SPACE, primary_symbol);
+            }
             CantillationMarkPlacement::Maqqaph => {
-             return format!(
+                return format!(
                     "{}{}{}{}{}{}{}",
-                    ALEPH, MEM, TAV, 
-                    primary_symbol,
-                    ALEPH, MEM, TAV
+                    ALEPH, MEM, TAV, primary_symbol, ALEPH, MEM, TAV
                 );
             }
         }
@@ -94,15 +80,11 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
                 // all applicable marks are 'Impositive'
                 return format!(
                     "{}{}{}{}{}{}{}{}{}",
-                    ALEPH, MEM, primary_symbol, TAV, 
-                    SPACE,
-                    ALEPH, MEM, secondary_symbol, TAV
+                    ALEPH, MEM, primary_symbol, TAV, SPACE, ALEPH, MEM, secondary_symbol, TAV
                 );
             }
         }
-    } 
+    }
 }
 #[cfg(test)]
-mod tests {
-
-}
+mod tests {}

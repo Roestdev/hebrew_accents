@@ -262,21 +262,21 @@ pub trait Accent {
 
     /// Returns the cantillation symbol
     ///
-    /// Dummy words of three consonants are used to show where the accent is 
+    /// Dummy words of three consonants are used to show where the accent is
     /// positioned.
-    /// 
+    ///
     /// For accents (single/compound) that fit exactly on one word,
     /// are shown with three dotted circles.
-    /// 
-    /// For accents that can span two words two sets ('words') of dotted circles 
+    ///
+    /// For accents that can span two words two sets ('words') of dotted circles
     /// will be shown, where each set contains only one mark.
-    /// 
+    ///
     /// # Note:
     ///  - These representaions are a simplified version of reality, in order
     ///    to give an idea of how these accents might show up in real texts.
-    ///  - For non-compound accents the stress position of the accents are 
+    ///  - For non-compound accents the stress position of the accents are
     ///    accounted for.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use hebrew_accents::{Accent, HebrewAccent, ProseAccent};

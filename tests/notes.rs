@@ -1,4 +1,3 @@
-
 mod prose_notes {
     use hebrew_accents::{Accent, ProseAccent};
 

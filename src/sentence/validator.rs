@@ -103,8 +103,10 @@ fn validate_first_non_white_char(c: char) -> Result<(), SentenceContextError> {
 fn is_valid_hebrew_char(c: char) -> bool {
     is_hbr_block(c)
         || is_space_like_char(c)
-        || is_paseq_alternative_char(c)
         || is_meteg_layout_char(c)
+        || is_paseq_alternative_char(c)
+        || is_sof_pasuq_alternative_char(c)
+        || is_maqqaph_alternative_char(c)
 }
 
 /// Space-like characters (whitespace or bidirectional control marks)
@@ -113,6 +115,7 @@ fn is_space_like_char(c: char) -> bool {
         c,
         '\u{0020}' |  // SPACE
         '\u{00A0}' |  // NO-BREAK SPACE
+        '\u{200B}' |  // ZERO WIDTH SPACE (accidental web copy)
         '\u{200E}' |  // LEFT-TO-RIGHT MARK
         '\u{200F}' |  // RIGHT-TO-LEFT MARK
         '\u{2009}' |  // THIN SPACE
@@ -124,6 +127,15 @@ fn is_space_like_char(c: char) -> bool {
 /// Alternative paseq character (ASCII vertical bar)
 fn is_paseq_alternative_char(c: char) -> bool {
     c == '|'
+}
+
+/// Alternative sof pasuq character (ASCII semicolon)
+fn is_sof_pasuq_alternative_char(c: char) -> bool {
+    c == ':'
+}
+/// Alternative sof pasuq character (ASCII semicolon)
+fn is_maqqaph_alternative_char(c: char) -> bool {
+    c == '-'
 }
 
 /// Layout control characters for meteg positioning

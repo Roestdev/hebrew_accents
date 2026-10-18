@@ -1,11 +1,12 @@
-/// Optional alternate representations for an accent.
+/// Optional alternate naming for an accent.
 ///
 /// For some accents the `Biblia Hebraica Stuttgartensia` (BHS)
 /// indicates an alternate spelling or name variant.
 ///
-/// The following accents have alternatives documented:
-/// | listed | alternative
-/// | ----- | ------|
+/// The following accents have alternatives documented in the BHS:
+///
+/// | listed | alternative |
+/// | -------| ----------- |
 /// | Geresh | Teres |
 /// | Pazer Gadol | Qarne Pharah |
 /// | Mahpakh | Mehuppakh |

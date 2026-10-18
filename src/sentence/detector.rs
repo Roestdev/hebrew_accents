@@ -15,18 +15,18 @@ pub(crate) fn detect_context_from_sentence(
         // Check if this char is a prose-exclusive accent
         if matches!(
             c,
-            '\u{0592}'
-                | '\u{0594}'
-                | '\u{0595}'
-                | '\u{0599}'
-                | '\u{059B}'
-                | '\u{059A}'
-                | '\u{059E}'
-                | '\u{059F}'
-                | '\u{05A0}'
-                | '\u{05A6}'
-                | '\u{05A7}'
-                | '\u{05A9}'
+            '\u{0592}' // Segol
+                | '\u{0594}' // Zaqeph Qatan
+                | '\u{0595}' // Zaqef Gadol
+                | '\u{0599}' // Pashta
+                | '\u{059B}' // Tevir
+                | '\u{059A}' // Yetiv
+                | '\u{059E}' // Gershayim
+                | '\u{059F}' // Qarney Para
+                | '\u{05A0}' // Telisha Gedolah
+                | '\u{05A6}' // Merkha Khfula
+                | '\u{05A7}' // Darga
+                | '\u{05A9}' // Qadma
         ) {
             could_be_prose = true;
         }
@@ -34,7 +34,12 @@ pub(crate) fn detect_context_from_sentence(
         // Check if this char is a poetry-exclusive accent
         if matches!(
             c,
-            '\u{05AB}' | '\u{0597}' | '\u{05AD}' | '\u{05AC}' | '\u{0598}'
+            '\u{0598}' | // Tsinnorit
+            '\u{059D}' | // Geresh Muqdam
+            '\u{05A2}' | // Atnach Hafukh 
+            '\u{05AB}' | // Ole
+            '\u{05AC}' | // Illuy
+            '\u{05AD}' // Dechi
         ) {
             could_be_poetry = true;
         }
