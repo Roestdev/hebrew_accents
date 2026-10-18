@@ -7,7 +7,7 @@
 //!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
 //! - the position of the accent relative to the related consonant
 
-use crate::accent_mark::tradition::{AccentName, TraditionNames};
+use crate::mark::tradition::{AccentName, TraditionNames};
 
 // ============================================================================
 // COMPOUND ACCENT NOT YET IMPLEMENTED

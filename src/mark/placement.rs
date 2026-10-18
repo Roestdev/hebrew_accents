@@ -12,7 +12,7 @@
 /// No heap allocation or runtime construction required.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
 #[repr(u8)]
-pub(crate) enum CodePointPosition {
+pub(crate) enum MarkPlacement {
     /// Above the baseline, left of the consonant
     AboveLeft = 0,
     /// Above the baseline, centered on the consonant

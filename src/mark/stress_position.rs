@@ -1,4 +1,4 @@
-use crate::accent_mark::CodePointPosition;
+use crate::mark::MarkPlacement;
 use crate::api::{CantillationMarkPlacement, CantillationMarkStressPosition};
 
 /// Tonic/stress relation — linguistic/metrical concept.
@@ -32,10 +32,10 @@ impl StressPosition {
 }
 
 // Conversion from internal to public type
-impl From<CodePointPosition> for CantillationMarkPlacement {
-    fn from(pos: CodePointPosition) -> Self {
+impl From<MarkPlacement> for CantillationMarkPlacement {
+    fn from(pos: MarkPlacement) -> Self {
         use CantillationMarkPlacement as Public;
-        use CodePointPosition as Internal;
+        use MarkPlacement as Internal;
 
         match pos {
             Internal::AboveLeft => Public::AboveLeft,

@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::accent_mark::StressPosition;
+use crate::mark::StressPosition;
 
 /// Hebrew Accent kind — (absence is expressed via `Option<T>`)
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -599,45 +599,45 @@ mod tests {
 
     #[test]
     fn test_from_codepoint_position_to_placement() {
-        use crate::accent_mark::CodePointPosition;
+        use crate::mark::MarkPlacement;
 
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::AboveLeft),
+            CantillationMarkPlacement::from(MarkPlacement::AboveLeft),
             CantillationMarkPlacement::AboveLeft
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::AboveCenter),
+            CantillationMarkPlacement::from(MarkPlacement::AboveCenter),
             CantillationMarkPlacement::AboveCenter
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::AboveRight),
+            CantillationMarkPlacement::from(MarkPlacement::AboveRight),
             CantillationMarkPlacement::AboveRight
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::BelowCenter),
+            CantillationMarkPlacement::from(MarkPlacement::BelowCenter),
             CantillationMarkPlacement::BelowCenter
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::BelowRight),
+            CantillationMarkPlacement::from(MarkPlacement::BelowRight),
             CantillationMarkPlacement::BelowRight
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::SofPasuq),
+            CantillationMarkPlacement::from(MarkPlacement::SofPasuq),
             CantillationMarkPlacement::SofPasuq
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::Maqqaph),
+            CantillationMarkPlacement::from(MarkPlacement::Maqqaph),
             CantillationMarkPlacement::Maqqaph
         );
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::Paseq),
+            CantillationMarkPlacement::from(MarkPlacement::Paseq),
             CantillationMarkPlacement::Paseq
         );
     }
 
     #[test]
     fn test_from_stress_position_to_option_stress_position() {
-        use crate::accent_mark::StressPosition;
+        use crate::mark::StressPosition;
 
         assert_eq!(
             Option::<CantillationMarkStressPosition>::from(StressPosition::Impositive),
@@ -727,28 +727,28 @@ mod additional_function_coverage_tests {
 
     #[test]
     fn test_from_codepoint_position_all_variants() {
-        use crate::accent_mark::CodePointPosition;
+        use crate::mark::MarkPlacement;
 
         // Test every match arm including the one that's currently commented
-        let _above_left = CantillationMarkPlacement::from(CodePointPosition::AboveLeft);
-        let _above_center = CantillationMarkPlacement::from(CodePointPosition::AboveCenter);
-        let _above_right = CantillationMarkPlacement::from(CodePointPosition::AboveRight);
-        let _below_center = CantillationMarkPlacement::from(CodePointPosition::BelowCenter);
-        let _below_right = CantillationMarkPlacement::from(CodePointPosition::BelowRight);
-        let _sof_pasuq = CantillationMarkPlacement::from(CodePointPosition::SofPasuq);
-        let _maqaph = CantillationMarkPlacement::from(CodePointPosition::Maqqaph);
-        let _paseq = CantillationMarkPlacement::from(CodePointPosition::Paseq);
+        let _above_left = CantillationMarkPlacement::from(MarkPlacement::AboveLeft);
+        let _above_center = CantillationMarkPlacement::from(MarkPlacement::AboveCenter);
+        let _above_right = CantillationMarkPlacement::from(MarkPlacement::AboveRight);
+        let _below_center = CantillationMarkPlacement::from(MarkPlacement::BelowCenter);
+        let _below_right = CantillationMarkPlacement::from(MarkPlacement::BelowRight);
+        let _sof_pasuq = CantillationMarkPlacement::from(MarkPlacement::SofPasuq);
+        let _maqaph = CantillationMarkPlacement::from(MarkPlacement::Maqqaph);
+        let _paseq = CantillationMarkPlacement::from(MarkPlacement::Paseq);
 
         // Verify they convert correctly
         assert_eq!(
-            CantillationMarkPlacement::from(CodePointPosition::AboveLeft),
+            CantillationMarkPlacement::from(MarkPlacement::AboveLeft),
             CantillationMarkPlacement::AboveLeft
         );
     }
 
     #[test]
     fn test_from_stress_position_all_variants() {
-        use crate::accent_mark::StressPosition;
+        use crate::mark::StressPosition;
 
         // Test Impositive
         let impositive: Option<CantillationMarkStressPosition> = StressPosition::Impositive.into();
@@ -778,7 +778,7 @@ mod additional_function_coverage_tests {
 
     #[test]
     fn test_from_stress_position_explicit_type_annotation() {
-        use crate::accent_mark::StressPosition;
+        use crate::mark::StressPosition;
 
         // Ensure compiler knows we're converting to Option<CantillationMarkStressPosition>
         let result: Option<CantillationMarkStressPosition> = StressPosition::NotApplicable.into();

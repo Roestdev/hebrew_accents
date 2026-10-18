@@ -1,4 +1,4 @@
-use crate::accent_mark::Utf8CodePoint;
+use crate::mark::MarkMetaData;
 use crate::api::{Accent, CantillationMarkPlacement, CompoundType, HebrewAccent};
 
 const SPACE: char = '\u{0020}';
@@ -10,9 +10,9 @@ const PASEQ: char = '\u{05C0}';
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub(crate) struct CantillationSymbol {
     /// Primary UTF-8 code point, the one that is encountered first
-    pub(crate) primary_mark: &'static Utf8CodePoint,
+    pub(crate) primary_mark: &'static MarkMetaData,
     /// Secondary UTF-8 code point, if applicable
-    pub(crate) secondary_mark: Option<&'static Utf8CodePoint>,
+    pub(crate) secondary_mark: Option<&'static MarkMetaData>,
 }
 
 // TODO text

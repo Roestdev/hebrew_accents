@@ -122,7 +122,7 @@
 /// #![doc = include_str!("../README.md")]
 mod accent;
 mod accent_data;
-mod accent_mark;
+mod mark;
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod api;
 mod error;

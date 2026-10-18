@@ -7,19 +7,19 @@
 //!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
 //! - the position of the accent relative to the related consonant
 
-use crate::accent_mark::CodePointPosition;
-use crate::accent_mark::StressPosition;
-use crate::accent_mark::Utf8CodePoint;
+use crate::mark::MarkMetaData;
+use crate::mark::MarkPlacement;
+use crate::mark::StressPosition;
 
-const fn utf8_cp_constructor(
+const fn mark_meta_data_constructor(
     symbol: char,
-    position: CodePointPosition,
+    position: MarkPlacement,
     stress_position: StressPosition,
     unicode_name: &'static str,
     code_point_value: &'static str,
     hex_bytes: &'static str,
-) -> Utf8CodePoint {
-    Utf8CodePoint {
+) -> MarkMetaData {
+    MarkMetaData {
         symbol,
         position,
         stress_position,
@@ -32,9 +32,9 @@ const fn utf8_cp_constructor(
 // ============================================================================
 // ETNAHTA (U+0591)
 // ============================================================================
-pub(crate) const CODEPOINT_ETNAHTA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ETNAHTA: MarkMetaData = mark_meta_data_constructor(
     '֑',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ETNAHTA",
     "U+0591",
@@ -44,9 +44,9 @@ pub(crate) const CODEPOINT_ETNAHTA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // SEGOL (U+0592)
 // ============================================================================
-pub(crate) const CODEPOINT_SEGOL: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_SEGOL: MarkMetaData = mark_meta_data_constructor(
     '֒',
-    CodePointPosition::AboveLeft,
+    MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
     "HEBREW ACCENT SEGOL",
     "U+0592",
@@ -56,9 +56,9 @@ pub(crate) const CODEPOINT_SEGOL: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // SHALSHELET (U+0593)
 // ============================================================================
-pub(crate) const CODEPOINT_SHALSHELET: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_SHALSHELET: MarkMetaData = mark_meta_data_constructor(
     '֓',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT SHALSHELET",
     "U+0593",
@@ -68,9 +68,9 @@ pub(crate) const CODEPOINT_SHALSHELET: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ZAQEF QATAN (U+0594)
 // ============================================================================
-pub(crate) const CODEPOINT_ZAQEF_QATAN: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ZAQEF_QATAN: MarkMetaData = mark_meta_data_constructor(
     '֔',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ZAQEF QATAN",
     "U+0594",
@@ -80,9 +80,9 @@ pub(crate) const CODEPOINT_ZAQEF_QATAN: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ZAQEF GADOL (U+0595) (use uniform!)
 // ============================================================================
-pub(crate) const CODEPOINT_ZAQEF_GADOL: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ZAQEF_GADOL: MarkMetaData = mark_meta_data_constructor(
     '֕',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ZAQEF GADOL",
     "U+0595",
@@ -92,9 +92,9 @@ pub(crate) const CODEPOINT_ZAQEF_GADOL: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // TIPEHA (U+0596)
 // ============================================================================
-pub(crate) const CODEPOINT_TIPEHA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_TIPEHA: MarkMetaData = mark_meta_data_constructor(
     '֖',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT TIPEHA",
     "U+0596",
@@ -105,9 +105,9 @@ pub(crate) const CODEPOINT_TIPEHA: Utf8CodePoint = utf8_cp_constructor(
 // REVIA (U+0597) - Ashkenazi differs slightly
 // ============================================================================
 
-pub(crate) const CODEPOINT_REVIA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_REVIA: MarkMetaData = mark_meta_data_constructor(
     '֗',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT REVIA",
     "U+0597",
@@ -118,9 +118,9 @@ pub(crate) const CODEPOINT_REVIA: Utf8CodePoint = utf8_cp_constructor(
 // ZARQA (U+0598)
 // ============================================================================
 
-pub(crate) const CODEPOINT_ZARQA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ZARQA: MarkMetaData = mark_meta_data_constructor(
     '֘',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ZARQA",
     "U+0598",
@@ -131,9 +131,9 @@ pub(crate) const CODEPOINT_ZARQA: Utf8CodePoint = utf8_cp_constructor(
 // PASHTA (U+0599)
 // ============================================================================
 
-pub(crate) const CODEPOINT_PASHTA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_PASHTA: MarkMetaData = mark_meta_data_constructor(
     '֙',
-    CodePointPosition::AboveLeft,
+    MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
     "HEBREW ACCENT PASHTA",
     "U+0599",
@@ -144,9 +144,9 @@ pub(crate) const CODEPOINT_PASHTA: Utf8CodePoint = utf8_cp_constructor(
 // YETIV (U+059A)
 // ============================================================================
 
-pub(crate) const CODEPOINT_YETIV: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_YETIV: MarkMetaData = mark_meta_data_constructor(
     '֚',
-    CodePointPosition::BelowRight,
+    MarkPlacement::BelowRight,
     StressPosition::Prepositive,
     "HEBREW ACCENT YETIV",
     "U+059A",
@@ -157,9 +157,9 @@ pub(crate) const CODEPOINT_YETIV: Utf8CodePoint = utf8_cp_constructor(
 // TEVIR (U+059B)
 // ============================================================================
 
-pub(crate) const CODEPOINT_TEVIR: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_TEVIR: MarkMetaData = mark_meta_data_constructor(
     '֛',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT TEVIR",
     "U+059B",
@@ -170,9 +170,9 @@ pub(crate) const CODEPOINT_TEVIR: Utf8CodePoint = utf8_cp_constructor(
 // GERESH (U+059C)
 // ============================================================================
 
-pub(crate) const CODEPOINT_GERESH: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_GERESH: MarkMetaData = mark_meta_data_constructor(
     '֜',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT GERESH",
     "U+059C",
@@ -183,9 +183,9 @@ pub(crate) const CODEPOINT_GERESH: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 //  GERESH MUQDAM (U+059D)
 // ============================================================================
-// pub(crate) const CODEPOINT_GERESH_MUQDAM: Utf8CodePoint = utf8_cp_constructor(
+// pub(crate) const CODEPOINT_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
 //     '֜',?
-//     CodePointPosition::AboveCenter,?
+//     MarkPlacement::AboveCenter,?
 //     StressPosition::Impositive,?
 //     "HEBREW ACCENT GERESH MUQDAM",
 //     "U+059D",
@@ -195,9 +195,9 @@ pub(crate) const CODEPOINT_GERESH: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // GERSHAYIM (U+059E)
 // ============================================================================
-pub(crate) const CODEPOINT_GERSHAYIM: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_GERSHAYIM: MarkMetaData = mark_meta_data_constructor(
     '֞',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT GERSHAYIM",
     "U+059E",
@@ -207,9 +207,9 @@ pub(crate) const CODEPOINT_GERSHAYIM: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // QARNEY PARA (U+059F)
 // ============================================================================
-pub(crate) const CODEPOINT_QARNEY_PARA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_QARNEY_PARA: MarkMetaData = mark_meta_data_constructor(
     '֟',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT QARNEY PARA",
     "U+059F",
@@ -219,9 +219,9 @@ pub(crate) const CODEPOINT_QARNEY_PARA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // TELISHA GEDOLA (U+05A0)
 // ============================================================================
-pub(crate) const CODEPOINT_TELISHA_GEDOLA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_TELISHA_GEDOLA: MarkMetaData = mark_meta_data_constructor(
     '֠',
-    CodePointPosition::AboveRight,
+    MarkPlacement::AboveRight,
     StressPosition::Prepositive,
     "HEBREW ACCENT TELISHA GEDOLA",
     "U+05A0",
@@ -231,9 +231,9 @@ pub(crate) const CODEPOINT_TELISHA_GEDOLA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // PAZER (U+05A1)
 // ============================================================================
-pub(crate) const CODEPOINT_PAZER: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_PAZER: MarkMetaData = mark_meta_data_constructor(
     '֡',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT PAZER",
     "U+05A1",
@@ -244,9 +244,9 @@ pub(crate) const CODEPOINT_PAZER: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ATNAH HAFUKH (U+05A2)
 // ============================================================================
-// pub(crate) const CODEPOINT_ATNAH_HAFUKH: Utf8CodePoint = utf8_cp_constructor(
+// pub(crate) const CODEPOINT_ATNAH_HAFUKH: MarkMetaData = mark_meta_data_constructor(
 //     '֡',?
-//     CodePointPosition::AboveCenter,?
+//     MarkPlacement::AboveCenter,?
 //     StressPosition::Impositive, ?
 //     "HEBREW ACCENT ATNAH HAFUKH",
 //     "U+05A2",
@@ -256,9 +256,9 @@ pub(crate) const CODEPOINT_PAZER: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // MUNAH (U+05A3)
 // ============================================================================
-pub(crate) const CODEPOINT_MUNAH: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_MUNAH: MarkMetaData = mark_meta_data_constructor(
     '֣',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT MUNAH",
     "U+05A3",
@@ -268,9 +268,9 @@ pub(crate) const CODEPOINT_MUNAH: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // MAHAPAKH (U+05A4)
 // ============================================================================
-pub(crate) const CODEPOINT_MAHAPAKH: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_MAHAPAKH: MarkMetaData = mark_meta_data_constructor(
     '֤',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT MAHAPAKH",
     "U+05A4",
@@ -280,9 +280,9 @@ pub(crate) const CODEPOINT_MAHAPAKH: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // MERKHA (U+05A5)
 // ============================================================================
-pub(crate) const CODEPOINT_MERKHA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_MERKHA: MarkMetaData = mark_meta_data_constructor(
     '֥',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT MERKHA",
     "U+05A5",
@@ -292,9 +292,9 @@ pub(crate) const CODEPOINT_MERKHA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // MERKHA KEFULA (U+05A6)
 // ============================================================================
-pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_MERKHA_KEFULA: MarkMetaData = mark_meta_data_constructor(
     '֦',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT MERKHA KEFULA",
     "U+05A6",
@@ -304,9 +304,9 @@ pub(crate) const CODEPOINT_MERKHA_KEFULA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // DARGA (U+05A7)
 // ============================================================================
-pub(crate) const CODEPOINT_DARGA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_DARGA: MarkMetaData = mark_meta_data_constructor(
     '֧',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT DARGA",
     "U+05A7",
@@ -316,9 +316,9 @@ pub(crate) const CODEPOINT_DARGA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // QADMA (U+05A8)
 // ============================================================================
-pub(crate) const CODEPOINT_QADMA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_QADMA: MarkMetaData = mark_meta_data_constructor(
     '֨',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT QADMA",
     "U+05A8",
@@ -328,9 +328,9 @@ pub(crate) const CODEPOINT_QADMA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // TELISHA QETANA (U+05A9)
 // ============================================================================
-pub(crate) const CODEPOINT_TELISHA_QETANA: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_TELISHA_QETANA: MarkMetaData = mark_meta_data_constructor(
     '֩',
-    CodePointPosition::AboveLeft,
+    MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
     "HEBREW ACCENT TELISHA QETANA",
     "U+05A9",
@@ -340,9 +340,9 @@ pub(crate) const CODEPOINT_TELISHA_QETANA: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // YERAH BEN YOMO (U+05AA)
 // ============================================================================
-pub(crate) const CODEPOINT_YERAH_BEN_YOMO: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_YERAH_BEN_YOMO: MarkMetaData = mark_meta_data_constructor(
     '֪',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT YERAH BEN YOMO",
     "U+05AA",
@@ -353,9 +353,9 @@ pub(crate) const CODEPOINT_YERAH_BEN_YOMO: Utf8CodePoint = utf8_cp_constructor(
 // OLE (U+05AB)
 // ============================================================================
 
-pub(crate) const CODEPOINT_OLE: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_OLE: MarkMetaData = mark_meta_data_constructor(
     '֫',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT OLE",
     "U+05AB",
@@ -365,9 +365,9 @@ pub(crate) const CODEPOINT_OLE: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ILUY (U+05AC)
 // ============================================================================
-pub(crate) const CODEPOINT_ILUY: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ILUY: MarkMetaData = mark_meta_data_constructor(
     '֬',
-    CodePointPosition::AboveCenter,
+    MarkPlacement::AboveCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT ILUY",
     "U+05AC",
@@ -377,9 +377,9 @@ pub(crate) const CODEPOINT_ILUY: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // DEHI (U+05AD)
 // ============================================================================
-pub(crate) const CODEPOINT_DEHI: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_DEHI: MarkMetaData = mark_meta_data_constructor(
     '֭',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW ACCENT DEHI",
     "U+05AD",
@@ -389,9 +389,9 @@ pub(crate) const CODEPOINT_DEHI: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // ZINOR (U+05AE)
 // ============================================================================
-pub(crate) const CODEPOINT_ZINOR: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_ZINOR: MarkMetaData = mark_meta_data_constructor(
     '֮',
-    CodePointPosition::AboveLeft,
+    MarkPlacement::AboveLeft,
     StressPosition::Postpositive,
     "HEBREW ACCENT ZINOR",
     "U+05AE",
@@ -403,9 +403,9 @@ pub(crate) const CODEPOINT_ZINOR: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // METEG (U+05BD) (shares codepoint with Silluq)
 // ============================================================================
-pub(crate) const CODEPOINT_METEG: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_METEG: MarkMetaData = mark_meta_data_constructor(
     'ֽ',
-    CodePointPosition::BelowCenter,
+    MarkPlacement::BelowCenter,
     StressPosition::Impositive,
     "HEBREW POINT METEG",
     "U+05BD",
@@ -415,9 +415,9 @@ pub(crate) const CODEPOINT_METEG: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // MAQAF (U+05BE)
 // ============================================================================
-pub(crate) const CODEPOINT_MAQAF: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_MAQAF: MarkMetaData = mark_meta_data_constructor(
     '־',
-    CodePointPosition::Maqqaph,
+    MarkPlacement::Maqqaph,
     StressPosition::NotApplicable,
     "HEBREW PUNCTUATION MAQAF",
     "U+05BE",
@@ -427,9 +427,9 @@ pub(crate) const CODEPOINT_MAQAF: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // PASEQ (U+05C0)
 // ============================================================================
-pub(crate) const CODEPOINT_PASEQ: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_PASEQ: MarkMetaData = mark_meta_data_constructor(
     '׀',
-    CodePointPosition::Paseq,
+    MarkPlacement::Paseq,
     StressPosition::NotApplicable,
     "HEBREW PUNCTUATION PASEQ",
     "U+05C0",
@@ -439,9 +439,9 @@ pub(crate) const CODEPOINT_PASEQ: Utf8CodePoint = utf8_cp_constructor(
 // ============================================================================
 // SOPH PASUQ (U+05C3)
 // ============================================================================
-pub(crate) const CODEPOINT_SOPH_PASUQ: Utf8CodePoint = utf8_cp_constructor(
+pub(crate) const CODEPOINT_SOPH_PASUQ: MarkMetaData = mark_meta_data_constructor(
     '׃',
-    CodePointPosition::SofPasuq,
+    MarkPlacement::SofPasuq,
     StressPosition::NotApplicable,
     "HEBREW PUNCTUATION SOF PASUQ",
     "U+05C3",
@@ -455,10 +455,10 @@ mod tests {
     // ===== BASIC CONSTRUCTION TESTS =====
 
     #[test]
-    fn test_utf8_cp_constructor_creates_valid_instance() {
-        let cp = utf8_cp_constructor(
+    fn test_mark_meta_data_constructor_creates_valid_instance() {
+        let cp = mark_meta_data_constructor(
             '֑', // symbol
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT ETNAHTA",
             "U+0591",
@@ -466,7 +466,7 @@ mod tests {
         );
 
         assert_eq!(cp.symbol, '֑');
-        assert_eq!(cp.position, CodePointPosition::BelowCenter);
+        assert_eq!(cp.position, MarkPlacement::BelowCenter);
         assert_eq!(cp.stress_position, StressPosition::Impositive);
         assert_eq!(cp.unicode_name, "HEBREW ACCENT ETNAHTA");
         assert_eq!(cp.code_point_value, "U+0591");
@@ -475,9 +475,9 @@ mod tests {
 
     #[test]
     fn test_constructor_sets_all_fields() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "PAISEQ",
             "U+05C0",
@@ -486,7 +486,7 @@ mod tests {
 
         // Verify each field individually
         assert_eq!(cp.symbol, '׀');
-        assert_eq!(cp.position, CodePointPosition::Paseq);
+        assert_eq!(cp.position, MarkPlacement::Paseq);
         assert_eq!(cp.stress_position, StressPosition::NotApplicable);
         assert_eq!(cp.unicode_name, "PAISEQ");
         assert_eq!(cp.code_point_value, "U+05C0");
@@ -495,9 +495,9 @@ mod tests {
 
     #[test]
     fn test_constructor_with_silluq_character() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑', // Silluq
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT SILLUQ",
             "U+0591",
@@ -511,9 +511,9 @@ mod tests {
 
     #[test]
     fn test_constructor_with_maqqaph() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '־', // Maqqaph (hyphen)
-            CodePointPosition::Maqqaph,
+            MarkPlacement::Maqqaph,
             StressPosition::NotApplicable,
             "HEBREW PUNCTUATION MAQQAPH",
             "U+05BE",
@@ -521,16 +521,16 @@ mod tests {
         );
 
         assert_eq!(cp.symbol, '־');
-        assert_eq!(cp.position, CodePointPosition::Maqqaph);
+        assert_eq!(cp.position, MarkPlacement::Maqqaph);
         assert_eq!(cp.stress_position, StressPosition::NotApplicable);
         assert_eq!(cp.code_point_value, "U+05BE");
     }
 
     #[test]
     fn test_constructor_with_pashta() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֗', // Pashta
-            CodePointPosition::BelowRight,
+            MarkPlacement::BelowRight,
             StressPosition::Postpositive,
             "HEBREW ACCENT PASHTA",
             "U+05A8",
@@ -538,7 +538,7 @@ mod tests {
         );
 
         assert_eq!(cp.symbol, '֗');
-        assert_eq!(cp.position, CodePointPosition::BelowRight);
+        assert_eq!(cp.position, MarkPlacement::BelowRight);
         assert_eq!(cp.stress_position, StressPosition::Postpositive);
     }
 
@@ -546,9 +546,9 @@ mod tests {
 
     #[test]
     fn test_const_constructor_at_compile_time() {
-        const CP: Utf8CodePoint = utf8_cp_constructor(
+        const CP: MarkMetaData = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT ETNAHTA",
             "U+0591",
@@ -562,18 +562,18 @@ mod tests {
 
     #[test]
     fn test_const_constructor_multiple_instances() {
-        const CP1: Utf8CodePoint = utf8_cp_constructor(
+        const CP1: MarkMetaData = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "ETNAHTA",
             "U+0591",
             "D6 91",
         );
 
-        const CP2: Utf8CodePoint = utf8_cp_constructor(
+        const CP2: MarkMetaData = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "PAISEQ",
             "U+05C0",
@@ -587,9 +587,9 @@ mod tests {
 
     #[test]
     fn test_const_constructor_can_be_used_in_static() {
-        static CP: Utf8CodePoint = utf8_cp_constructor(
+        static CP: MarkMetaData = mark_meta_data_constructor(
             '֗',
-            CodePointPosition::BelowRight,
+            MarkPlacement::BelowRight,
             StressPosition::Postpositive,
             "PASHTA",
             "U+05A8",
@@ -604,9 +604,9 @@ mod tests {
 
     #[test]
     fn test_symbol_field_is_accessible() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             'א',
-            CodePointPosition::AboveLeft,
+            MarkPlacement::AboveLeft,
             StressPosition::Prepositive,
             "ALEF",
             "U+05D0",
@@ -620,9 +620,9 @@ mod tests {
     #[test]
     fn test_code_point_value_field_format() {
         // Test various code point value formats
-        let cp1 = utf8_cp_constructor(
+        let cp1 = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
@@ -635,9 +635,9 @@ mod tests {
 
     #[test]
     fn test_hex_bytes_field_format() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "TEST",
             "U+05C0",
@@ -656,123 +656,123 @@ mod tests {
 
     #[test]
     fn test_constructor_with_above_center() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֓',
-            CodePointPosition::AboveCenter,
+            MarkPlacement::AboveCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0593",
             "D6 93",
         );
 
-        assert_eq!(cp.position, CodePointPosition::AboveCenter);
+        assert_eq!(cp.position, MarkPlacement::AboveCenter);
     }
 
     #[test]
     fn test_constructor_with_above_left() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֕',
-            CodePointPosition::AboveLeft,
+            MarkPlacement::AboveLeft,
             StressPosition::Prepositive,
             "TEST",
             "U+0595",
             "D6 95",
         );
 
-        assert_eq!(cp.position, CodePointPosition::AboveLeft);
+        assert_eq!(cp.position, MarkPlacement::AboveLeft);
     }
 
     #[test]
     fn test_constructor_with_above_right() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֖',
-            CodePointPosition::AboveRight,
+            MarkPlacement::AboveRight,
             StressPosition::Postpositive,
             "TEST",
             "U+0596",
             "D6 96",
         );
 
-        assert_eq!(cp.position, CodePointPosition::AboveRight);
+        assert_eq!(cp.position, MarkPlacement::AboveRight);
     }
 
     #[test]
     fn test_constructor_with_below_center() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
             "D6 91",
         );
 
-        assert_eq!(cp.position, CodePointPosition::BelowCenter);
+        assert_eq!(cp.position, MarkPlacement::BelowCenter);
     }
 
     #[test]
     fn test_constructor_with_below_right() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֗',
-            CodePointPosition::BelowRight,
+            MarkPlacement::BelowRight,
             StressPosition::Postpositive,
             "TEST",
             "U+05A8",
             "D6 A8",
         );
 
-        assert_eq!(cp.position, CodePointPosition::BelowRight);
+        assert_eq!(cp.position, MarkPlacement::BelowRight);
     }
 
     #[test]
     fn test_constructor_with_sof_pasuq() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '׃',
-            CodePointPosition::SofPasuq,
+            MarkPlacement::SofPasuq,
             StressPosition::NotApplicable,
             "SOF PASUQ",
             "U+05C3",
             "D7 83",
         );
 
-        assert_eq!(cp.position, CodePointPosition::SofPasuq);
+        assert_eq!(cp.position, MarkPlacement::SofPasuq);
     }
 
     #[test]
     fn test_constructor_with_maqqaph_position() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '־',
-            CodePointPosition::Maqqaph,
+            MarkPlacement::Maqqaph,
             StressPosition::NotApplicable,
             "MAQQAPH",
             "U+05BE",
             "D6 BE",
         );
 
-        assert_eq!(cp.position, CodePointPosition::Maqqaph);
+        assert_eq!(cp.position, MarkPlacement::Maqqaph);
     }
 
     #[test]
     fn test_constructor_with_paseq_position() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "PAISEQ",
             "U+05C0",
             "D7 80",
         );
 
-        assert_eq!(cp.position, CodePointPosition::Paseq);
+        assert_eq!(cp.position, MarkPlacement::Paseq);
     }
 
     // ===== STRESS POSITION VARIANTS =====
 
     #[test]
     fn test_constructor_with_impositive_stress() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
@@ -788,9 +788,9 @@ mod tests {
 
     #[test]
     fn test_constructor_with_prepositive_stress() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֕',
-            CodePointPosition::AboveLeft,
+            MarkPlacement::AboveLeft,
             StressPosition::Prepositive,
             "TEST",
             "U+0595",
@@ -806,9 +806,9 @@ mod tests {
 
     #[test]
     fn test_constructor_with_postpositive_stress() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֗',
-            CodePointPosition::BelowRight,
+            MarkPlacement::BelowRight,
             StressPosition::Postpositive,
             "TEST",
             "U+05A8",
@@ -824,9 +824,9 @@ mod tests {
 
     #[test]
     fn test_constructor_with_not_applicable_stress() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "PAISEQ",
             "U+05C0",
@@ -841,9 +841,9 @@ mod tests {
 
     #[test]
     fn test_unicode_name_is_static_lifetime() {
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT ETNAHTA",
             "U+0591",
@@ -863,9 +863,9 @@ mod tests {
             "HEBREW ACCENT SILLUQ",
             "",
         ] {
-            let cp = utf8_cp_constructor(
+            let cp = mark_meta_data_constructor(
                 '֑',
-                CodePointPosition::BelowCenter,
+                MarkPlacement::BelowCenter,
                 StressPosition::Impositive,
                 accent_name,
                 "U+0591",
@@ -883,18 +883,18 @@ mod tests {
     #[test]
     fn test_unicode_name_consistency() {
         // Same name should produce same result across multiple calls
-        let cp1 = utf8_cp_constructor(
+        let cp1 = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "CONSISTENCY_TEST",
             "U+0591",
             "D6 91",
         );
 
-        let cp2 = utf8_cp_constructor(
+        let cp2 = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "CONSISTENCY_TEST",
             "U+0591",
@@ -909,9 +909,9 @@ mod tests {
     #[test]
     fn test_hex_bytes_two_bytes() {
         // Most Hebrew combining marks are 2-byte UTF-8 sequences
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
@@ -926,18 +926,18 @@ mod tests {
     #[test]
     fn test_hex_bytes_case_insensitive() {
         // Both uppercase and lowercase hex should be accepted
-        let cp_upper = utf8_cp_constructor(
+        let cp_upper = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
             "D6 91",
         );
 
-        let cp_lower = utf8_cp_constructor(
+        let cp_lower = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
@@ -954,14 +954,14 @@ mod tests {
     #[test]
     fn test_all_position_and_stress_combinations() {
         let positions = [
-            CodePointPosition::AboveCenter,
-            CodePointPosition::AboveLeft,
-            CodePointPosition::AboveRight,
-            CodePointPosition::BelowCenter,
-            CodePointPosition::BelowRight,
-            CodePointPosition::SofPasuq,
-            CodePointPosition::Maqqaph,
-            CodePointPosition::Paseq,
+            MarkPlacement::AboveCenter,
+            MarkPlacement::AboveLeft,
+            MarkPlacement::AboveRight,
+            MarkPlacement::BelowCenter,
+            MarkPlacement::BelowRight,
+            MarkPlacement::SofPasuq,
+            MarkPlacement::Maqqaph,
+            MarkPlacement::Paseq,
         ];
 
         let stresses = [
@@ -973,7 +973,7 @@ mod tests {
 
         for pos in &positions {
             for stress in &stresses {
-                let cp = utf8_cp_constructor('֑', *pos, *stress, "TEST", "U+0591", "D6 91");
+                let cp = mark_meta_data_constructor('֑', *pos, *stress, "TEST", "U+0591", "D6 91");
 
                 assert_eq!(cp.position, *pos);
                 assert_eq!(cp.stress_position, *stress);
@@ -983,18 +983,18 @@ mod tests {
 
     #[test]
     fn test_distinct_characters_produce_distinct_instances() {
-        let cp1 = utf8_cp_constructor(
+        let cp1 = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "ETNAHTA",
             "U+0591",
             "D6 91",
         );
 
-        let cp2 = utf8_cp_constructor(
+        let cp2 = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             "PAISEQ",
             "U+05C0",
@@ -1012,9 +1012,9 @@ mod tests {
     #[test]
     fn test_constructor_with_actual_accent_data() {
         // Test with real cantillation mark data
-        let silluq = utf8_cp_constructor(
+        let silluq = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT SILLUQ",
             "U+0591",
@@ -1029,9 +1029,9 @@ mod tests {
     #[test]
     fn test_constructor_compatibility_with_table_lookup() {
         // Constructor should produce compatible instances for table storage
-        const TABLE_ENTRY: Utf8CodePoint = utf8_cp_constructor(
+        const TABLE_ENTRY: MarkMetaData = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TABLE_TEST",
             "U+0591",
@@ -1039,7 +1039,7 @@ mod tests {
         );
 
         // Can be stored in const arrays
-        const TABLE: [Utf8CodePoint; 1] = [TABLE_ENTRY];
+        const TABLE: [MarkMetaData; 1] = [TABLE_ENTRY];
         assert_eq!(TABLE[0].symbol, '֑');
     }
 
@@ -1048,9 +1048,9 @@ mod tests {
     #[test]
     fn test_constructor_with_control_character_symbol() {
         // Should accept any char including control characters
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '\u{25CC}', // DOTTED CIRCLE (used for display)
-            CodePointPosition::AboveCenter,
+            MarkPlacement::AboveCenter,
             StressPosition::NotApplicable,
             "DOTTED CIRCLE",
             "U+25CC",
@@ -1064,9 +1064,9 @@ mod tests {
     #[test]
     fn test_constructor_with_empty_unicode_name() {
         // Empty unicode_name is technically allowed
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "",
             "U+0591",
@@ -1080,9 +1080,9 @@ mod tests {
     #[test]
     fn test_constructor_with_long_unicode_name() {
         // Long unicode names should work fine
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT ETNAHTA FROM BIBLICAL TEXT TRADITION",
             "U+0591",
@@ -1101,18 +1101,18 @@ mod tests {
         const STR1: &str = "CONST_STRING_1";
         const STR2: &str = "CONST_STRING_2";
 
-        const CP1: Utf8CodePoint = utf8_cp_constructor(
+        const CP1: MarkMetaData = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             STR1,
             "U+0591",
             "D6 91",
         );
 
-        const CP2: Utf8CodePoint = utf8_cp_constructor(
+        const CP2: MarkMetaData = mark_meta_data_constructor(
             '׀',
-            CodePointPosition::Paseq,
+            MarkPlacement::Paseq,
             StressPosition::NotApplicable,
             STR2,
             "U+05C0",
@@ -1128,9 +1128,9 @@ mod tests {
     #[test]
     fn doc_example_basic_usage() {
         // Simulate a documentation example
-        let etnahta = utf8_cp_constructor(
+        let etnahta = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "HEBREW ACCENT ETNAHTA",
             "U+0591",
@@ -1147,9 +1147,9 @@ mod tests {
     #[test]
     fn test_no_heap_allocation() {
         // Verify all fields are stack-allocated or static refs
-        let cp = utf8_cp_constructor(
+        let cp = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "NO_HEAP",
             "U+0591",
@@ -1163,9 +1163,9 @@ mod tests {
     #[test]
     fn test_const_evaluation_cost_zero() {
         // Constructor runs at compile time - no runtime cost
-        const CP: Utf8CodePoint = utf8_cp_constructor(
+        const CP: MarkMetaData = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "COMPILE_TIME",
             "U+0591",
@@ -1181,18 +1181,18 @@ mod tests {
 
     #[test]
     fn test_constructor_equivalent_to_struct_literal() {
-        let via_func = utf8_cp_constructor(
+        let via_func = mark_meta_data_constructor(
             '֑',
-            CodePointPosition::BelowCenter,
+            MarkPlacement::BelowCenter,
             StressPosition::Impositive,
             "TEST",
             "U+0591",
             "D6 91",
         );
 
-        let via_literal = Utf8CodePoint {
+        let via_literal = MarkMetaData {
             symbol: '֑',
-            position: CodePointPosition::BelowCenter,
+            position: MarkPlacement::BelowCenter,
             stress_position: StressPosition::Impositive,
             unicode_name: "TEST",
             code_point_value: "U+0591",
