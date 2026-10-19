@@ -38,7 +38,7 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// `PseudoAccent` values are structural symbols that influence accent placement
 /// and word grouping without carrying independent melodic contour. They govern
-/// phrase boundaries, word joining, and disambiguation within the Masoretic
+/// phrase boundaries, word joining,MAQQAPH_INFO and disambiguation within the Masoretic
 /// text tradition.
 ///
 /// # Distinction from True Accents

@@ -1,6 +1,6 @@
 use crate::{
+    accent::accent_information::{MAQQAPH_META_DATA, PASEQ_META_DATA, SOPH_PASUQ_META_DATA},
     accent::AccentMetaData,
-    accent::accent_information::{MAQQAPH_INFO, PASEQ_INFO, SOPH_PASUQ_INFO},
     PseudoAccent,
 };
 
@@ -9,9 +9,9 @@ use crate::{
 /// **Index Mapping:**
 /// | Index | Variant   | Entry             |
 /// |-------|-----------|-------------------|
-/// | 0 | [`SophPasuq`](crate::PseudoAccent::SophPasuq) | `SOPH_PASUQ_INFO` |
-/// | 1 | [`Maqqaph`](crate::PseudoAccent::Maqqaph)   | `MAQQAPH_INFO`    |
-/// | 2 | [`Paseq`](crate::PseudoAccent::Paseq)     | `PASEQ_INFO`      |
+/// | 0 | [`SophPasuq`](crate::PseudoAccent::SophPasuq) | `SOPH_PASUQ_META_DATA` |
+/// | 1 | [`Maqqaph`](crate::PseudoAccent::Maqqaph)   | `MAQQAPH_META_DATA`    |
+/// | 2 | [`Paseq`](crate::PseudoAccent::Paseq)     | `PASEQ_META_DATA`      |
 ///
 /// **Safety Requirements:**
 /// - `PseudoAccent::LEN` must always equal table length (validated via compile-time guard)
@@ -19,7 +19,7 @@ use crate::{
 /// - All name fields populated
 ///
 pub(crate) static PSEUDO_ACCENT_TABLE: [AccentMetaData; PseudoAccent::LEN] =
-    [SOPH_PASUQ_INFO, MAQQAPH_INFO, PASEQ_INFO];
+    [SOPH_PASUQ_META_DATA, MAQQAPH_META_DATA, PASEQ_META_DATA];
 
 // ── Compile-time guards ────────────────────────────────────────────────
 

@@ -3,7 +3,6 @@ use crate::accent::{
     CantillationSymbol, InternalAccentCategory, InternalAccentKind, InternalAlternateNames,
     InternalCompoundType,
 };
-use crate::mark::TraditionNames;
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
@@ -25,12 +24,8 @@ pub(crate) struct AccentMetaData {
     pub(crate) kind: Option<InternalAccentKind>,
     /// Indicates the accent category (Disjunctive, Conjunctive)
     pub(crate) category: Option<InternalAccentCategory>,
-    /// Tradition-specific naming information
-    pub(crate) traditions: TraditionNames,
     /// Contextual notes or scholarly commentary
     pub(crate) notes: Option<&'static str>,
     /// Compound Type of the accent
     pub(crate) compound_type: Option<InternalCompoundType>,
 }
-
-// TODO traditionnames behoren bij een mark

@@ -121,10 +121,10 @@
 #![cfg_attr(doctest, doc = include_str!("../README.md"))]
 /// #![doc = include_str!("../README.md")]
 mod accent;
-mod mark;
 /// Public API for accent types, including the `Accent` trait, accent enums, and metadata models
 mod api;
 mod error;
+mod mark;
 mod sentence;
 mod version;
 

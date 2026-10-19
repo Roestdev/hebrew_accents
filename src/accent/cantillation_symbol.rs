@@ -1,5 +1,5 @@
-use crate::mark::MarkMetaData;
 use crate::api::{Accent, CantillationMarkPlacement, CompoundType, HebrewAccent};
+use crate::mark::MarkMetaData;
 
 const SPACE: char = '\u{0020}';
 const ALEPH: char = 'א';

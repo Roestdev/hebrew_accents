@@ -1476,7 +1476,7 @@ The alternate BHS naming is fabricated"#,
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::accent::disjunctive_groups::DisjunctiveGroup;
+    use crate::accent::disjunctive_group::DisjunctiveGroup;
     use crate::Accent;
     use strum::IntoEnumIterator;
     // ===== BASIC VARIANT COUNT TESTS =====

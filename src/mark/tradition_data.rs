@@ -10,240 +10,6 @@
 use crate::mark::tradition::{AccentName, TraditionNames};
 
 // ============================================================================
-// COMPOUND ACCENT NOT YET IMPLEMENTED
-// ============================================================================
-pub(crate) const TRADITION_NAMES_SHENE_PASHTIN: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "שְׁנֵי פַּשְׁטִין",
-        sbl_academic: "šənê pašṭîn",
-        english_name: "Shene Pashtin / Pashtayim",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "תְּרֵי קַדְמִין",
-        sbl_academic: "Tərê Qadmîn",
-        english_name: "Tere Qadmin",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "(שְׁנֵי) פַּשְׁטִין",
-        sbl_academic: "(šənê) pašṭîn",
-        english_name: "(Shene) Pashtin",
-    }),
-    yemenite: None,
-};
-
-// ============================================================================
-// COMPOUND ACCENTS
-// ============================================================================
-/*
-SHALSHELET_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "šalšelet",
-    english_name: "Shalshelet",
-    hebrew_name: "שַׁלְשֶׁלֶת",
-    hebrew_concept: "chain or link",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_SHALSHELET,
-        secondary_mark: Some(&MARK_PASEQ),
-*/
-
-// ============================================================================
-// TRADITION_NAMES_LEGARMEH: MUNAH + PASEQ
-// ============================================================================
-pub(crate) const TRADITION_NAMES_LEGARMEH: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "מֻנַּח לְגַרְמֵה",
-        sbl_academic: "munnaḥ ləgarmēh",
-        english_name: "munach legarmeh",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "פָּסֵק",
-        sbl_academic: "pāsēq",
-        english_name: "paseq",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "לְגַרְמֵה",
-        sbl_academic: "ləgarmēh",
-        english_name: "legarmeh",
-    }),
-    yemenite: None, // "Not available from accessible sources",
-};
-/*
-OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "ʿôleh wəyôrēd",
-    english_name: "Oleh Weyored",
-    hebrew_name: "עוֹלֶה וְיוֹרֵד",
-    hebrew_concept: "ascending and descending",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_OLE,
-        secondary_mark: Some(&MARK_MERKHA),
-*/
-pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
-    TraditionNames::uniform("עֹלֶה וְיֹרֵד", "ʿôleh wəyôrēd", "ascending and descending");
-
-/* REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "rəbîaʿ mugrāš",
-    english_name: "Revia Mugrash",
-    hebrew_name: "רְבִיעַ מֻגְרָשׁ",
-    hebrew_concept: "exiled fourth",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_GERESH,
-        secondary_mark: Some(&MARK_REVIA),
-*/
-
-/*
-SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "šalšelet gādôl",
-    english_name: "Shalshelet Gadol",
-    hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
-    hebrew_concept: "large chain or link",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_SHALSHELET,
-        secondary_mark: Some(&MARK_PASEQ),
- */
-pub(crate) const TRADITION_NAMES_SHALSHELET_GADOL: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "סְגוֹל֒",
-        sbl_academic: "səgôl",
-        english_name: "segol",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "סְגוֹלְתָּא֒",
-        sbl_academic: "səgôlətāʾ",
-        english_name: "segolta",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "שְׁרֵי֒",
-        sbl_academic: "šərê",
-        english_name: "shere",
-    }),
-    yemenite: None, // Not available from accessible sources
-};
-
-/*
-MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "məhuppāk ləgarmēh",
-        english_name: "Mehuppakh Legarmeh",
-    hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
-    hebrew_concept: "reversed to its own",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_MAHAPAKH,
-        secondary_mark: Some(&MARK_PASEQ),
-*/
-pub(crate) const TRADITION_NAMES_MEHUPPAKH_LEGARMEH: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "סְמַהְפָּךְ לְגַרְמֵהּ / מֶהוּפָּךְ",
-        sbl_academic: "səmahpāk ləgarmēh / mehûppāk",
-        english_name: "Mahpach Legarmeh / Mehuppakh",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "מַהְפָּךְ",
-        sbl_academic: "mahpāk",
-        english_name: "Mahpakh (Legarmeh implied)",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "מַהְפָּךְ",
-        sbl_academic: "mahpāk",
-        english_name: "Mahpakh (Legarmeh implied)",
-    }),
-    yemenite: Some(AccentName {
-        hebrew_name: "מַהְפָּךְ / מֶהוּפָּךְ",
-        sbl_academic: "mahpāk / mehûppāk",
-        english_name: "Mahpakh / Mehuppakh",
-    }),
-};
-
-/*
-AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "ʾazlāʾ ləgarmeh",
-    english_name: "Azla Legarmeh",
-    hebrew_name: "אַזְלָא לְגַרְמֶהּ",
-    hebrew_concept: "goes to its own",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_QADMA,
-        secondary_mark: Some(&MARK_PASEQ),
-*/
-pub(crate) const TRADITION_NAMES_AZLA_LEGARMEH: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "אַזְלָא לְגַרְמֵה",
-        sbl_academic: "ʾazlāʾ ləgarmēh",
-        english_name: "Azla Legarmeh",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    yemenite: None, // Not available from accessible sources
-};
-
-/*
-TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "ṣinnôrīt mērəkāʾ",
-    english_name: "Tsinnorit Merkha",
-    hebrew_name: "צִנּוֹרִת מֵרְכָא",
-    hebrew_concept: "pipe of continuation",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_ZARQA,
-        secondary_mark: Some(&MARK_MERKHA),
- */
-pub(crate) const TRADITION_NAMES_TSINNORIT_MERKHA: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "אַזְלָא לְגַרְמֵה",
-        sbl_academic: "ʾazlāʾ ləgarmēh",
-        english_name: "Azla Legarmeh",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    yemenite: None, // Not available from accessible sources
-};
-
-/*
-TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "ṣinnôrīt mahpak",
-    english_name: "Tsinnorit Mahpakh",
-    hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
-    hebrew_concept: "pipe of reversal",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_ZARQA,
-        secondary_mark: Some(&MARK_MAHAPAKH),
-
-*/
-pub(crate) const TRADITION_NAMES_TSINNORIT_MAHPACH: TraditionNames = TraditionNames {
-    ashkenazi: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    sephardi: Some(AccentName {
-        hebrew_name: "אַזְלָא לְגַרְמֵה",
-        sbl_academic: "ʾazlāʾ ləgarmēh",
-        english_name: "Azla Legarmeh",
-    }),
-    italian: Some(AccentName {
-        hebrew_name: "קַדְמָא לְגַרְמֵה",
-        sbl_academic: "qadmāʾ ləgarmēh",
-        english_name: "Qadma Legarmeh",
-    }),
-    yemenite: None, // Not available from accessible sources
-};
-
-// ============================================================================
-// NON-COMPOUND ACCENT
-// ============================================================================
-
-// ============================================================================
 // ETNAHTA (U+0591)
 // ============================================================================
 pub(crate) const TRADITION_NAMES_ETNAHTA: TraditionNames = TraditionNames {
@@ -503,7 +269,13 @@ pub(crate) const TRADITION_NAMES_GERESH: TraditionNames = TraditionNames {
     }),
 };
 
-// Geresh Muqdam is disabled - see ticket
+// ============================================================================
+// GERESH MUQDAM (U+059D)
+// ============================================================================
+// TODO is disabled - see ticket
+//
+//pub(crate) const TRADITION_NAMES_GERESH_MUQDAM: TraditionNames =
+//    TraditionNames::uniform("גֵרֵשׁ מוּקְדָם", "gērēš mûqədām", "geresh muqdam");
 
 // ============================================================================
 // GERSHAYIM (U+059E)
@@ -514,14 +286,34 @@ pub(crate) const TRADITION_NAMES_GERSHAYIM: TraditionNames = TraditionNames {
         sbl_academic: "gērəšayim",
         english_name: "gershayim",
     }),
-    ..TraditionNames::uniform("שְׁנֵי גְרִישִׁ֞ין", "šənê gərîšîn", "shene gerishin")
+    sephardi: Some(AccentName {
+        hebrew_name: "שְׁנֵי גְרִישִׁ֞ין",
+        sbl_academic: "šənê gərîšîn",
+        english_name: "shene gerishin",
+    }),
+    italian: Some(AccentName {
+        hebrew_name: "שְׁנֵי גְרִישִׁ֞ין",
+        sbl_academic: "šənê gərîšîn",
+        english_name: "shene gerishin",
+    }),
+    yemenite: Some(AccentName {
+        hebrew_name: "טַרְסִ֞ין",
+        sbl_academic: "ṭarsîn",
+        english_name: "tarsin",
+    }),
 };
 
 // ============================================================================
-// QARNEY PARA (U+059F) - All identical
+// QARNEY PARA (U+059F)
 // ============================================================================
-pub(crate) const TRADITION_NAMES_QARNEY_PARA: TraditionNames =
-    TraditionNames::uniform("קַרְנֵי פָרָ֟ה", "qarnê pārâ", "qarne pharah");
+pub(crate) const TRADITION_NAMES_QARNEY_PARA: TraditionNames = TraditionNames {
+    ashkenazi: Some(AccentName {
+        hebrew_name: "קַרְנֵי פָרָ֟ה",
+        sbl_academic: "qarnê pārâ",
+        english_name: "qarne pharah/ pazer gadol",
+    }),
+    ..TraditionNames::uniform("קַרְנֵי פָרָ֟ה", "qarnê pārâ", "qarne pharah")
+};
 
 // ============================================================================
 // TELISHA GEDOLA (U+05A0)
@@ -571,7 +363,12 @@ pub(crate) const TRADITION_NAMES_PAZER: TraditionNames = TraditionNames {
     yemenite: None, // Not present in Yemenite tradition
 };
 
-// At nah Hafukh disabled - see ticket
+// ============================================================================
+// ATNAH HAFUKH (U+05A2) - Only 3 traditions
+// ============================================================================
+// TODO disabled - see ticket
+//pub(crate) const TRADITION_NAMES_ATNAH_HAFUKH: TraditionNames =
+//  TraditionNames::uniform("אֶתְנָח הָפוּךְ֢", "ʾetnāḥ hāpûk", "etnach hafukh");
 
 // ============================================================================
 // MUNAH (U+05A3) - Only 3 traditions
@@ -732,7 +529,8 @@ pub(crate) const TRADITION_NAMES_YERAH_BEN_YOMO: TraditionNames =
 // ============================================================================
 // OLE (U+05AB) - All identical
 // ============================================================================
-// ///pub(crate) const TRADITION_NAMES_OLE: TraditionNames = TraditionNames::uniform("עוֹלֶה","ʿôleh", "oleh");
+pub(crate) const TRADITION_NAMES_OLE: TraditionNames =
+    TraditionNames::uniform("עוֹלֶה", "ʿôleh", "oleh");
 
 // ============================================================================
 // ILUY (U+05AC) - All identical
@@ -753,10 +551,10 @@ pub(crate) const TRADITION_NAMES_ZINOR: TraditionNames =
     TraditionNames::uniform("צנור", "ṣinnôr", "tsinor (zarqa above left)");
 
 // ============================================================================
-// SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics)
+// SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics) //TODO
 // ============================================================================
-pub(crate) const TRADITION_NAMES_SILLUQ: TraditionNames =
-    TraditionNames::uniform("סוֹף פָּסֽוּק", "sôp pāsûq", "sof pasuq");
+//pub(crate) const TRADITION_NAMES_SILLUQ: TraditionNames =
+//  TraditionNames::uniform("סוֹף פָּסֽוּק", "sôp pāsûq", "sof pasuq");
 
 // ============================================================================
 // METEG (U+05BD) - All identical (shares codepoint with Silluq)
@@ -805,3 +603,224 @@ pub(crate) const TRADITION_NAMES_SOPH_PASUQ: TraditionNames = TraditionNames {
         english_name: "Silluq",
     }),
 };
+
+// ============================================================================
+// COMPOUND ACCENT NOT YET IMPLEMENTED
+// ============================================================================
+// pub(crate) const TRADITION_NAMES_SHENE_PASHTIN: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "שְׁנֵי פַּשְׁטִין",
+//         sbl_academic: "šənê pašṭîn",
+//         english_name: "Shene Pashtin / Pashtayim",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "תְּרֵי קַדְמִין",
+//         sbl_academic: "Tərê Qadmîn",
+//         english_name: "Tere Qadmin",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "(שְׁנֵי) פַּשְׁטִין",
+//         sbl_academic: "(šənê) pašṭîn",
+//         english_name: "(Shene) Pashtin",
+//     }),
+//     yemenite: None,
+// };
+
+// ============================================================================
+// COMPOUND ACCENTS
+// ============================================================================
+/*
+SHALSHELET_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "šalšelet",
+    english_name: "Shalshelet",
+    hebrew_name: "שַׁלְשֶׁלֶת",
+    hebrew_concept: "chain or link",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
+*/
+
+// ============================================================================
+// TRADITION_NAMES_LEGARMEH: MUNAH + PASEQ
+// ============================================================================
+// pub(crate) const TRADITION_NAMES_LEGARMEH: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "מֻנַּח לְגַרְמֵה",
+//         sbl_academic: "munnaḥ ləgarmēh",
+//         english_name: "munach legarmeh",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "פָּסֵק",
+//         sbl_academic: "pāsēq",
+//         english_name: "paseq",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "לְגַרְמֵה",
+//         sbl_academic: "ləgarmēh",
+//         english_name: "legarmeh",
+//     }),
+//     yemenite: None, // "Not available from accessible sources",
+// };
+
+//pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
+//   TraditionNames::uniform("עֹלֶה וְיֹרֵד", "ʿôleh wəyôrēd", "ascending and descending");
+
+/* REVIA_MUGRASH_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "rəbîaʿ mugrāš",
+    english_name: "Revia Mugrash",
+    hebrew_name: "רְבִיעַ מֻגְרָשׁ",
+    hebrew_concept: "exiled fourth",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_GERESH,
+        secondary_mark: Some(&MARK_REVIA),
+*/
+
+/*
+SHALSHELET_GADOL_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "šalšelet gādôl",
+    english_name: "Shalshelet Gadol",
+    hebrew_name: "שַׁלְשֶׁלֶת גָּדוֹל",
+    hebrew_concept: "large chain or link",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_SHALSHELET,
+        secondary_mark: Some(&MARK_PASEQ),
+ */
+// pub(crate) const TRADITION_NAMES_SHALSHELET_GADOL: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "סְגוֹל֒",
+//         sbl_academic: "səgôl",
+//         english_name: "segol",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "סְגוֹלְתָּא֒",
+//         sbl_academic: "səgôlətāʾ",
+//         english_name: "segolta",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "שְׁרֵי֒",
+//         sbl_academic: "šərê",
+//         english_name: "shere",
+//     }),
+//     yemenite: None, // Not available from accessible sources
+//};
+
+/*
+MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "məhuppāk ləgarmēh",
+        english_name: "Mehuppakh Legarmeh",
+    hebrew_name: "מְהֻפָּךְ לְגַרְמֵהּ",
+    hebrew_concept: "reversed to its own",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_MAHAPAKH,
+        secondary_mark: Some(&MARK_PASEQ),
+*/
+// pub(crate) const TRADITION_NAMES_MEHUPPAKH_LEGARMEH: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "סְמַהְפָּךְ לְגַרְמֵהּ / מֶהוּפָּךְ",
+//         sbl_academic: "səmahpāk ləgarmēh / mehûppāk",
+//         english_name: "Mahpach Legarmeh / Mehuppakh",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "מַהְפָּךְ",
+//         sbl_academic: "mahpāk",
+//         english_name: "Mahpakh (Legarmeh implied)",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "מַהְפָּךְ",
+//         sbl_academic: "mahpāk",
+//         english_name: "Mahpakh (Legarmeh implied)",
+//     }),
+//     yemenite: Some(AccentName {
+//         hebrew_name: "מַהְפָּךְ / מֶהוּפָּךְ",
+//         sbl_academic: "mahpāk / mehûppāk",
+//         english_name: "Mahpakh / Mehuppakh",
+//     }),
+//};
+
+/*
+AZLA_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "ʾazlāʾ ləgarmeh",
+    english_name: "Azla Legarmeh",
+    hebrew_name: "אַזְלָא לְגַרְמֶהּ",
+    hebrew_concept: "goes to its own",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_QADMA,
+        secondary_mark: Some(&MARK_PASEQ),
+*/
+// pub(crate) const TRADITION_NAMES_AZLA_LEGARMEH: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "אַזְלָא לְגַרְמֵה",
+//         sbl_academic: "ʾazlāʾ ləgarmēh",
+//         english_name: "Azla Legarmeh",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     yemenite: None, // Not available from accessible sources
+// };
+
+/*
+TSINNORIT_MERKHA_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "ṣinnôrīt mērəkāʾ",
+    english_name: "Tsinnorit Merkha",
+    hebrew_name: "צִנּוֹרִת מֵרְכָא",
+    hebrew_concept: "pipe of continuation",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MERKHA),
+ */
+// pub(crate) const TRADITION_NAMES_TSINNORIT_MERKHA: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "אַזְלָא לְגַרְמֵה",
+//         sbl_academic: "ʾazlāʾ ləgarmēh",
+//         english_name: "Azla Legarmeh",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     yemenite: None, // Not available from accessible sources
+// };
+
+/*
+TSINNORIT_MAHPAKH_INFO: AccentMetaData = AccentMetaData {
+    sbl_academic: "ṣinnôrīt mahpak",
+    english_name: "Tsinnorit Mahpakh",
+    hebrew_name: "צִנּוֹרִת מַהְפַּךְ",
+    hebrew_concept: "pipe of reversal",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_ZARQA,
+        secondary_mark: Some(&MARK_MAHAPAKH),
+
+*/
+// pub(crate) const TRADITION_NAMES_TSINNORIT_MAHPACH: TraditionNames = TraditionNames {
+//     ashkenazi: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     sephardi: Some(AccentName {
+//         hebrew_name: "אַזְלָא לְגַרְמֵה",
+//         sbl_academic: "ʾazlāʾ ləgarmēh",
+//         english_name: "Azla Legarmeh",
+//     }),
+//     italian: Some(AccentName {
+//         hebrew_name: "קַדְמָא לְגַרְמֵה",
+//         sbl_academic: "qadmāʾ ləgarmēh",
+//         english_name: "Qadma Legarmeh",
+//     }),
+//     yemenite: None, // Not available from accessible sources
+// };
