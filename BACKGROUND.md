@@ -55,21 +55,23 @@ For a deeper dive into the history, theory, and practical use of these accents, 
    Note: This list is definitly incompleet.
    ```
 
+  - [Tabula Accentum](<https:://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf>) of the "Biblia Hebraica Stuttgartensia".
+
+  - [Simplified guide to BHS](<https://elearning.jcu.cz/mod/resource/view.php?id=453857>) (chapter 5. The Accents)
+
+  - [Gesenius Hebrew Grammar](<https:://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents>) (§15. The Accents.)
+
   - [Unicode Block Hebrew](<https:://www.unicode.org/charts/PDF/U0590.pdf>) (chapter 9.1 - section: Meteg).
   
   - [Basics of Hebrew Accents](<https:://zondervanacademic.com/products/basics-of-hebrew-accents>), written by Mark D. Futato, Sr.
 
   - [Hebrew Cantillation CantillationSymbol And Their Encoding](<https:://mechon-mamre.org/c/hr/index.htm>) by Helmut Richter.
   
-  - [Gesenius Hebrew Grammar - §15. The Accents.](<https:://en.wikisource.org/wiki/Gesenius%27_Hebrew_Grammar/15._The_Accents>)
-
   - [A treatise on the accentuation of the twenty-one so-called prose books of the Old Testament](<https:://archive.org/details/treatiseonaccent00wickuoft>) by Wickes
 
   - [A treatise on the accentuation of the three so-called poetical books of the Old Testament](<https:://archive.org/details/treatiseonaccent0000wick>) by Wickes
 
   - [The Syntax of Masoretic Accents in the Hebrew Bible](<https:://jamesdprice.com/images/21_Syntax_of_Accents_rev._ed..pdf>) by James D. Price, Ph.D.
-
-  - [Tabula Accentum](<https:://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf>) of the "Biblia Hebraica Stuttgartensia".
 
   - [Introduction to Tiberian Hebrew Accents](<https:://assets.cambridge.org/97811084/79936/excerpt/9781108479936_excerpt.pdf>) an excerpt by Sung Jin Park.
  

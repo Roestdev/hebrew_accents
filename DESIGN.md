@@ -193,6 +193,28 @@ Accepted input must strictly adhere to the following criteria:
      
    - **Whitespace**: Space characters as defined by the Rust standard library (char::is_whitespace) **Status**: Below consideration for final implementation.
 
+   ### TODO ==== Space like characters one can acounter in hebrew texts
+
+   sources:
+
+   - XXX [Hebrew Typography and Spacing Best Practices](<https://typography.guru/article/hebrew-spacing-characters"},{"description":"Common spacing characters in Hebrew digital text:\n\n1.>).
+
+   - xxx [Hebrew Unicode Typography Guide](<https://w3.org/TR/i18n-hebrew/>)
+
+   - xxx [Hebrew Word Boundaries and Maqaf Usage](<https://www.sbl-site.org/hebrew-bibliography/maqaf-spaces>).
+
+   - xxx [Biblical Hebrew Text Processing Guidelines](<https://bible.academy/hebrew-text-processing>).
+
+   - [Hebrew Document Digitization Challenges](<https://dl.acm.org/hebrew-digitization>).
+
+   - xxx [Hebrew Cantillation and Word Division](<https://www.jewishencyclopedia.com/hebrew-cantillation>).
+
+   - [Zero-Width Characters in Semitic Languages](<https://unicode.org/reports/tr39-semitic/>).
+
+   - [Hebrew Digital Text Corpus Analysis](<https://github.com/hebrew-corpus/spatial-analysis>).
+
+
+
    ### UTF-8 and Hebrew Accents: Challenges and Inconsistencies
 
 - Furthermore, the encoding of Hebrew accents in UTF-8 is complex, as a single accent can be represented by either one or two Unicode code-points. 
