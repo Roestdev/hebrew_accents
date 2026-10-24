@@ -1,5 +1,5 @@
-use crate::mark::MarkMetaData;
 use crate::api::{Accent, CantillationMarkPlacement, CompoundType, HebrewAccent};
+use crate::mark::MarkMetaData;
 
 const SPACE: char = '\u{0020}';
 const ALEPH: char = 'א';
@@ -33,23 +33,23 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
         match primary_placement {
             CantillationMarkPlacement::AboveLeft => {
                 // always on the last letter
-                return format!("{}{}{}{}", ALEPH, MEM, TAV, primary_symbol);
+                format!("{}{}{}{}", ALEPH, MEM, TAV, primary_symbol)
             }
             CantillationMarkPlacement::AboveCenter | CantillationMarkPlacement::BelowCenter => {
-                return format!("{}{}{}{}", ALEPH, MEM, primary_symbol, TAV);
+                format!("{}{}{}{}", ALEPH, MEM, primary_symbol, TAV)
             }
             CantillationMarkPlacement::AboveRight | CantillationMarkPlacement::BelowRight => {
                 //always on the first letter
-                return format!("{}{}{}{}", ALEPH, primary_symbol, MEM, TAV);
+                format!("{}{}{}{}", ALEPH, primary_symbol, MEM, TAV)
             }
             CantillationMarkPlacement::SofPasuq | CantillationMarkPlacement::Paseq => {
-                return format!("{}{}{}{}{}", ALEPH, MEM, TAV, SPACE, primary_symbol);
+                format!("{}{}{}{}{}", ALEPH, MEM, TAV, SPACE, primary_symbol)
             }
             CantillationMarkPlacement::Maqqaph => {
-                return format!(
+                format!(
                     "{}{}{}{}{}{}{}",
                     ALEPH, MEM, TAV, primary_symbol, ALEPH, MEM, TAV
-                );
+                )
             }
         }
     } else {
@@ -71,17 +71,17 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
                 // Position of the primary mark dependant of its stress-position
                 // All applicable primary marks are 'Impositive'
                 // Position of the secondary mark (=Paseq) is always after the word
-                return format!(
+                format!(
                     "{}{}{}{}{}{}",
                     ALEPH, MEM, primary_symbol, TAV, SPACE, PASEQ
-                );
+                )
             }
             CompoundType::CanSpanTwoWords => {
                 // all applicable marks are 'Impositive'
-                return format!(
+                format!(
                     "{}{}{}{}{}{}{}{}{}",
                     ALEPH, MEM, primary_symbol, TAV, SPACE, ALEPH, MEM, secondary_symbol, TAV
-                );
+                )
             }
         }
     }

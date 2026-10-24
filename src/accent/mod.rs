@@ -13,6 +13,8 @@ mod prose_table;
 mod pseudo_table;
 mod rank_maps;
 mod relative_strength;
+mod tradition;
+mod tradition_data;
 
 pub(crate) use accent_category::InternalAccentCategory;
 pub(crate) use accent_compound_type::InternalCompoundType;
@@ -29,3 +31,5 @@ pub(crate) use rank_maps::BHS_POETRY_RANK_MAP;
 pub(crate) use rank_maps::BHS_PROSE_RANK_MAP;
 pub(crate) use rank_maps::STRENGTH_NONE;
 pub(crate) use relative_strength::resolve_relative_strength;
+pub(crate) use tradition::TraditionNames;
+pub(crate) use tradition_data::*;

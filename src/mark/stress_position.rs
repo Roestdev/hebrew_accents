@@ -1,5 +1,5 @@
-use crate::mark::MarkPlacement;
 use crate::api::{CantillationMarkPlacement, CantillationMarkStressPosition};
+use crate::mark::MarkPlacement;
 
 /// Tonic/stress relation — linguistic/metrical concept.
 ///

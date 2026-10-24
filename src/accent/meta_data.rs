@@ -1,9 +1,9 @@
 //! Main entry point for Hebrew Accent information
+use crate::accent::TraditionNames;
 use crate::accent::{
     CantillationSymbol, InternalAccentCategory, InternalAccentKind, InternalAlternateNames,
     InternalCompoundType,
 };
-use crate::mark::TraditionNames;
 
 /// Contains (non)technical details of a Hebrew Accent
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]

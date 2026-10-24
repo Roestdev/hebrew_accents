@@ -2,7 +2,20 @@
 
 use crate::accent::{
     AccentMetaData, CantillationSymbol, InternalAccentCategory, InternalAccentKind,
-    InternalAlternateNames, InternalCompoundType,
+    InternalAlternateNames, InternalCompoundType, TRADITION_NAMES_AZLA_LEGARMEH,
+    TRADITION_NAMES_DARGA, TRADITION_NAMES_DEHI, TRADITION_NAMES_ETNAHTA, TRADITION_NAMES_GERESH,
+    TRADITION_NAMES_GERSHAYIM, TRADITION_NAMES_ILUY, TRADITION_NAMES_LEGARMEH,
+    TRADITION_NAMES_MAHAPAKH, TRADITION_NAMES_MAQAF, TRADITION_NAMES_MEHUPPAKH_LEGARMEH,
+    TRADITION_NAMES_MERKHA, TRADITION_NAMES_MERKHA_KEFULA, TRADITION_NAMES_METEG,
+    TRADITION_NAMES_MUNAH, TRADITION_NAMES_OLEH_WEYORED, TRADITION_NAMES_PASEQ,
+    TRADITION_NAMES_PASHTA, TRADITION_NAMES_PAZER, TRADITION_NAMES_QADMA,
+    TRADITION_NAMES_QARNEY_PARA, TRADITION_NAMES_REVIA, TRADITION_NAMES_SEGOL,
+    TRADITION_NAMES_SHALSHELET, TRADITION_NAMES_SHALSHELET_GADOL, TRADITION_NAMES_SHENE_PASHTIN,
+    TRADITION_NAMES_SILLUQ, TRADITION_NAMES_SOPH_PASUQ, TRADITION_NAMES_TELISHA_GEDOLA,
+    TRADITION_NAMES_TELISHA_QETANA, TRADITION_NAMES_TEVIR, TRADITION_NAMES_TIPEHA,
+    TRADITION_NAMES_TSINNORIT_MAHPACH, TRADITION_NAMES_TSINNORIT_MERKHA,
+    TRADITION_NAMES_YERAH_BEN_YOMO, TRADITION_NAMES_YETIV, TRADITION_NAMES_ZAQEF_GADOL,
+    TRADITION_NAMES_ZAQEF_QATAN, TRADITION_NAMES_ZARQA,
 };
 
 use crate::mark::{
@@ -11,19 +24,6 @@ use crate::mark::{
     MARK_PASHTA, MARK_PAZER, MARK_QADMA, MARK_QARNEY_PARA, MARK_REVIA, MARK_SEGOL, MARK_SHALSHELET,
     MARK_SOPH_PASUQ, MARK_TELISHA_GEDOLA, MARK_TELISHA_QETANA, MARK_TEVIR, MARK_TIPEHA,
     MARK_YERAH_BEN_YOMO, MARK_YETIV, MARK_ZAQEF_GADOL, MARK_ZAQEF_QATAN, MARK_ZARQA, MARK_ZINOR,
-    TRADITION_NAMES_AZLA_LEGARMEH, TRADITION_NAMES_DARGA, TRADITION_NAMES_DEHI,
-    TRADITION_NAMES_ETNAHTA, TRADITION_NAMES_GERESH, TRADITION_NAMES_GERSHAYIM,
-    TRADITION_NAMES_ILUY, TRADITION_NAMES_LEGARMEH, TRADITION_NAMES_MAHAPAKH,
-    TRADITION_NAMES_MAQAF, TRADITION_NAMES_MEHUPPAKH_LEGARMEH, TRADITION_NAMES_MERKHA,
-    TRADITION_NAMES_MERKHA_KEFULA, TRADITION_NAMES_METEG, TRADITION_NAMES_MUNAH,
-    TRADITION_NAMES_OLEH_WEYORED, TRADITION_NAMES_PASEQ, TRADITION_NAMES_PASHTA,
-    TRADITION_NAMES_PAZER, TRADITION_NAMES_QADMA, TRADITION_NAMES_QARNEY_PARA,
-    TRADITION_NAMES_REVIA, TRADITION_NAMES_SEGOL, TRADITION_NAMES_SHALSHELET,
-    TRADITION_NAMES_SHALSHELET_GADOL, TRADITION_NAMES_SILLUQ, TRADITION_NAMES_SOPH_PASUQ,
-    TRADITION_NAMES_TELISHA_GEDOLA, TRADITION_NAMES_TELISHA_QETANA, TRADITION_NAMES_TEVIR,
-    TRADITION_NAMES_TIPEHA, TRADITION_NAMES_TSINNORIT_MAHPACH, TRADITION_NAMES_TSINNORIT_MERKHA,
-    TRADITION_NAMES_YERAH_BEN_YOMO, TRADITION_NAMES_YETIV, TRADITION_NAMES_ZAQEF_GADOL,
-    TRADITION_NAMES_ZAQEF_QATAN, TRADITION_NAMES_ZINOR,
 };
 
 pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
@@ -186,7 +186,7 @@ pub(crate) const ZARQA_INFO: AccentMetaData = AccentMetaData {
     notes: Some(r#"before Segolta"#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
-    traditions: TRADITION_NAMES_ZINOR,
+    traditions: TRADITION_NAMES_ZARQA,
 };
 
 pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
@@ -204,6 +204,23 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_PASHTA,
+};
+
+pub(crate) const SHENE_PASTIN_INFO: AccentMetaData = AccentMetaData {
+    english_name: "Shene Pashtin",
+    hebrew_name: "šənê pašṭîn",
+    hebrew_concept: "double pashta",
+    sbl_academic: "šənê pašṭîn",
+    cantillation_symbol: CantillationSymbol {
+        primary_mark: &MARK_QADMA,
+        secondary_mark: Some(&MARK_PASHTA),
+    },
+    alternate_names: None,
+    compound_type: Some(InternalCompoundType::Standard),
+    notes: Some(r#""#),
+    kind: Some(InternalAccentKind::Primary),
+    category: Some(InternalAccentCategory::Disjunctive),
+    traditions: TRADITION_NAMES_SHENE_PASHTIN,
 };
 
 pub(crate) const YETIV_INFO: AccentMetaData = AccentMetaData {
@@ -673,7 +690,7 @@ pub(crate) const TSINNOR_INFO: AccentMetaData = AccentMetaData {
     notes: Some(r#"Poetry equivalent of Zarqa; appears in poetic books."#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
-    traditions: TRADITION_NAMES_ZINOR,
+    traditions: TRADITION_NAMES_ZARQA,
 };
 
 pub(crate) const REVIA_QATON_INFO: AccentMetaData = AccentMetaData {
@@ -947,9 +964,70 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
         It may appear in conjunction with a Hebrew accent to modify its function but does 
         not operate as an independent accent mark. 
         It can be part of a Hebrew Accent, but not as an individual accent.
-        It's indicating that someone or something is stopping temporarily or creating a pause.",
+        It's indicating that someone or something is stopping temporarily or creating a pause.
+         the paseq appears in the Tanakh as a standalone mark that is not part of a compound accent.
+        GEMMA
+        In Masoretic punctuation, the paseq serves as a \"minor pause\" or a separator, 
+        similar to a comma or a semicolon in English. 
+        While it often appears in conjunction with accents (such as the munah legarmeh, 
+        where it signals a specific melodic pause), it also occurs independently to 
+        separate phrases or words within a verse to clarify the reading and meaning.
+        In these instances, it acts as a structural divider rather than a musical modifier 
+        for a specific accent, indicating that the reader should make a brief pause 
+        before proceeding to the next word.
+
+        ",
     ),
     kind: None,
     category: None,
     traditions: TRADITION_NAMES_PASEQ,
 };
+
+/*
+does the paseq appear in the tanach, but not part of a compound accent like munah legarmeh?
+
+MISTRALL SMALL 4
+---------------------
+Yes, the **paseq** (ֽ) does appear in the Tanakh (Hebrew Bible), but it is relatively rare compared to other cantillation marks. The paseq is a vertical line that serves as a **separating accent**, often marking a pause or break in the reading of the text. It is distinct from compound accents like the **munah legarmeh** (֣ ֚), which combine two marks to indicate a more complex melodic pattern.
+
+### Key Points About the Paseq:
+1. **Function**: The paseq is used to indicate a pause or separation between words or phrases, often where the logical or syntactic flow of the sentence might otherwise suggest a connection.
+2. **Appearance**: It is a single vertical line (ֽ) placed above the word it modifies.
+3. **Distribution**: While it appears in the Tanakh, it is not as common as other cantillation marks like the *etnaḥta* (֑) or *sof pasuk* (׃). It is more frequently found in poetic sections (e.g., Psalms, Proverbs, Job) or in places where the text requires a clear pause for clarity.
+4. **Comparison to Compound Accents**: Unlike compound accents (e.g., *munah legarmeh*, *dehi*, *azla legarmeh*), the paseq is a standalone mark and does not combine with other accents to form a compound melody.
+
+### Example in the Tanakh:
+One well-known example of the paseq is in **Psalm 119:161** (שָׁרְשַׁי כַּעֲפַר־אָֽרֶץ׃), where it appears before the word "אָֽרֶץ" (earth) to indicate a pause. This helps clarify the structure of the verse.
+
+### Summary:
+- The paseq does appear in the Tanakh.
+- It is not part of a compound accent like the *munah legarmeh*.
+- Its primary role is to mark a pause or separation in the text.
+
+claude haiku:
+-------------
+I need to search for information about the Paseq accent in the Tanach and whether it appears independently or only in compound forms like Munah Legarmeh.
+Based on my search results, I can provide you with a clear answer about the Paseq in the Tanach.
+
+## The Paseq in Independent and Compound Forms
+
+**Yes, the Paseq does appear independently in the Tanach, and it also appears as part of compound accent patterns like Munah Legarmeh.** However, it's important to clarify what the Paseq actually is.
+
+The **Paseq (׀) is technically not a cantillation accent** but rather a punctuation mark or separator. Its name means "separator" in Hebrew, though this name was a medieval innovation. The Paseq functions as a vertical stroke that appears in the Westminster Leningrad Codex over **500 times**, and its purpose is to separate or highlight elements in the text for clarity.
+
+### Paseq Standalone vs. in Compounds
+
+According to the sources, the Paseq appears:
+
+- **Independently**: as a separator between words in various contexts, such as between words ending and beginning with the same letters, or between contradictory terms
+
+- **In compound patterns**: The Paseq is a key component of **Munah Legarmeh** (מֻנַּח לְגַרְמֵ֣הּ). In this pattern, when there are two Munachs before a Revia, **a vertical line (Paseq) is drawn between the words** to indicate this special sequence. Munah Legarmeh occurs **283 times in the Torah** and **337 times in the Prophetic Books**, compared to regular Munach which is far more common (8,777 times in the Torah alone).
+
+So the Paseq serves a dual role: it operates as an independent punctuation mark for separation and emphasis, and it also functions as a distinguishing element within the Munah Legarmeh compound accent pattern.
+
+GTP-6-LUNA
+----------
+Yes. The paseq (׀) appears in the Tanach on its own, not only as part of munach legarmeh. For example, Genesis 1:5 has אֱלֹהִ֤ים׀ לָאוֹר֙: the paseq follows Elohim and is not paired with munach as munach legarmeh. Wikipedia
+
+One caution: the mark itself doesn’t tell you whether it is an independent paseq or part of a legarmeh accent; you have to consider the accent and the words’ role in the verse. m
+*/

@@ -7,11 +7,12 @@
 //!   - <http://textus-receptus.com/wiki/Cantillation#Names_and_shapes_of_the_ta.27amim>
 //! - the position of the accent relative to the related consonant
 
-use crate::mark::tradition::{AccentName, TraditionNames};
+use crate::accent::tradition::{AccentName, TraditionNames};
 
 // ============================================================================
 // COMPOUND ACCENT NOT YET IMPLEMENTED
 // ============================================================================
+// TODO
 pub(crate) const TRADITION_NAMES_SHENE_PASHTIN: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
         hebrew_name: "שְׁנֵי פַּשְׁטִין",
@@ -749,8 +750,8 @@ pub(crate) const TRADITION_NAMES_DEHI: TraditionNames =
 // ============================================================================
 // ZINOR (U+05AE) - All identical
 // ============================================================================
-pub(crate) const TRADITION_NAMES_ZINOR: TraditionNames =
-    TraditionNames::uniform("צנור", "ṣinnôr", "tsinor (zarqa above left)");
+// pub(crate) const TRADITION_NAMES_ZINOR: TraditionNames =
+//     TraditionNames::uniform("צנור", "ṣinnôr", "tsinor (zarqa above left)");
 
 // ============================================================================
 // SILLUQ (U+05BD) - All identical (same codepoint as Meteg, different semantics)
