@@ -15,6 +15,7 @@ mod prose_sbl_academic_name {
         assert_eq!(ProseAccent::Tiphcha.sbl_academic_name(), "ṭipḥāʾ");
         assert_eq!(ProseAccent::Zarqa.sbl_academic_name(), "zarqāʾ");
         assert_eq!(ProseAccent::Pashta.sbl_academic_name(), "pašṭāʾ");
+        assert_eq!(ProseAccent::ShenePastin.sbl_academic_name(), "šənê pašṭîn");
         assert_eq!(ProseAccent::Yetiv.sbl_academic_name(), "yətîb");
         assert_eq!(ProseAccent::Tevir.sbl_academic_name(), "təbîr");
         assert_eq!(ProseAccent::Geresh.sbl_academic_name(), "gērêš");

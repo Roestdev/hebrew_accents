@@ -15,6 +15,7 @@ mod prose_accents_relative_strength {
         assert_eq!(ProseAccent::Tiphcha.relative_strength(), Some(8));
         assert_eq!(ProseAccent::Zarqa.relative_strength(), Some(9));
         assert_eq!(ProseAccent::Pashta.relative_strength(), Some(10));
+        assert_eq!(ProseAccent::ShenePastin.relative_strength(), Some(10));
         assert_eq!(ProseAccent::Yetiv.relative_strength(), Some(11));
         assert_eq!(ProseAccent::Tevir.relative_strength(), Some(12));
         assert_eq!(ProseAccent::Geresh.relative_strength(), Some(13));

@@ -52,6 +52,10 @@ mod prose_notes {
             Some(r#"appears on the last syllable of the word, extending rightward."#)
         );
         assert_eq!(
+            ProseAccent::ShenePastin.notes(), // TODO add ShenePastin
+            Some(r#"// TODO add note ShenePastin"#)
+        );
+        assert_eq!(
             ProseAccent::Yetiv.notes(),
             Some(r#"occasionally substitutes for a Pashta"#)
         );

@@ -33,6 +33,10 @@ mod prose_hebrew_concept {
             ProseAccent::Pashta.hebrew_concept(),
             "extending, stretching out in length"
         );
+        assert_eq!(
+            ProseAccent::ShenePastin.hebrew_concept(),
+            "double pashta"
+        );
         assert_eq!(ProseAccent::Yetiv.hebrew_concept(), "resting or sitting");
         assert_eq!(
             ProseAccent::Tevir.hebrew_concept(),

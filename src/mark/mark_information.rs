@@ -391,8 +391,8 @@ pub(crate) const MARK_DEHI: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 pub(crate) const MARK_ZINOR: MarkMetaData = mark_meta_data_constructor(
     '֮',
-    MarkPlacement::AboveLeft,
-    StressPosition::Postpositive,
+    MarkPlacement::AboveCenter,
+    StressPosition::Impositive,
     "HEBREW ACCENT ZINOR",
     "U+05AE",
     "0xd6 0xae",

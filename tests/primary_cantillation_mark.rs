@@ -72,12 +72,14 @@ mod prose_primary_cantillation_mark {
                 stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
+        // TODO ZArqa
         assert_eq!(
             ProseAccent::Zarqa.primary_cantillation_mark(),
+            // encoding HEBREW ACCENT ZINOR
             CantillationMark {
-                symbol: '\u{5ae}',
+                symbol: '\u{05AE}', 
                 placement: CantillationMarkPlacement::AboveCenter,
-                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
         assert_eq!(
@@ -86,6 +88,14 @@ mod prose_primary_cantillation_mark {
                 symbol: '\u{599}',
                 placement: CantillationMarkPlacement::AboveLeft,
                 stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::ShenePastin.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a8}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
         assert_eq!(
@@ -303,7 +313,7 @@ mod poetry_primary_cantillation_mark {
             CantillationMark {
                 symbol: '\u{5ae}',
                 placement: CantillationMarkPlacement::AboveCenter,
-                stress_position: Some(CantillationMarkStressPosition::Postpositive)
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
         assert_eq!(
@@ -420,7 +430,7 @@ mod poetry_primary_cantillation_mark {
             PoetryAccent::TsinnoritMerkha.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{598}',
-                placement: CantillationMarkPlacement::AboveLeft,
+                placement: CantillationMarkPlacement::AboveCenter,
                 stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
@@ -428,7 +438,7 @@ mod poetry_primary_cantillation_mark {
             PoetryAccent::TsinnoritMahpakh.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{598}',
-                placement: CantillationMarkPlacement::AboveLeft,
+                placement: CantillationMarkPlacement::AboveCenter,
                 stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );

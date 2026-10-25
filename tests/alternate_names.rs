@@ -15,6 +15,7 @@ mod prose_alternate_names {
         assert_eq!(ProseAccent::Tiphcha.alternate_names(), None);
         assert_eq!(ProseAccent::Zarqa.alternate_names(), None);
         assert_eq!(ProseAccent::Pashta.alternate_names(), None);
+        assert_eq!(ProseAccent::ShenePastin.alternate_names(), None);
         assert_eq!(ProseAccent::Yetiv.alternate_names(), None);
         assert_eq!(ProseAccent::Tevir.alternate_names(), None);
         assert_eq!(
@@ -49,28 +50,49 @@ mod prose_alternate_names {
         assert_eq!(
             ProseAccent::Mahpakh.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Mehuppakh",
+        hebrew_name: "מְהֻפָּ֤ךְ",
+        hebrew_concept: "reversed",
+        sbl_academic: "məhuppāk",
             })
         );
         assert_eq!(ProseAccent::Merkha.alternate_names(), None);
         assert_eq!(ProseAccent::MerkhaKephulah.alternate_names(), None);
         assert_eq!(ProseAccent::Darga.alternate_names(), None);
-        assert_eq!(ProseAccent::Azla.alternate_names(), None);
+        assert_eq!(
+            ProseAccent::Azla.alternate_names(),
+            Some(AlternateNames {
+                english_name: "Qadma",
+                hebrew_name: "קַדְמָ֨א",
+                hebrew_concept: "antiquity or a former state",
+                sbl_academic: "qadmāʾ",
+            }));
         assert_eq!(ProseAccent::TelishaQetannah.alternate_names(), None);
         assert_eq!(
             ProseAccent::Galgal.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Yerach Ben Yomo",
+        hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+        hebrew_concept: "moon one day old",
+        sbl_academic: "yēreḥ ben yômô",
             })
         );
-        assert_eq!(ProseAccent::Meayla.alternate_names(), None);
-        assert_eq!(ProseAccent::Meteg.alternate_names(), None);
+        assert_eq!(ProseAccent::Meayla.alternate_names(),
+         Some(AlternateNames {
+                  english_name: "Mayla",
+        hebrew_name: "מַיְלָא",
+        hebrew_concept: "that which is above or elevated position",
+        sbl_academic: "maylāʾ",
+    })
+        );
+        assert_eq!(ProseAccent::Meteg.alternate_names(), 
+        Some(AlternateNames {
+                   english_name: "Gayah",
+        hebrew_name: "גַּעְיָה",
+        hebrew_concept: "a lowing",
+        sbl_academic: "gaʿyâ",
+    })
+    );
     }
 }
 mod poetry_alternate_names {
@@ -83,11 +105,11 @@ mod poetry_alternate_names {
         assert_eq!(
             PoetryAccent::OlehWeYored.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
-            })
+                   english_name: "Mahpakh and Merkha",
+        hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
+        hebrew_concept: "turning round and prolonging",
+        sbl_academic: "mahpak ûmērəkāʾ",
+    })
         );
         assert_eq!(PoetryAccent::Atnach.alternate_names(), None);
         assert_eq!(PoetryAccent::ReviaGadol.alternate_names(), None);
@@ -96,20 +118,20 @@ mod poetry_alternate_names {
         assert_eq!(
             PoetryAccent::Tsinnor.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Zarqa",
+        hebrew_name: "זַרְקָא",
+        hebrew_concept: "to sprinkle, scatter",
+        sbl_academic: "zarqāʾ",
             })
         );
         assert_eq!(PoetryAccent::ReviaQaton.alternate_names(), None);
         assert_eq!(
             PoetryAccent::Dechi.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Tiphcha",
+        hebrew_name: "טִפְחָא",
+        hebrew_concept: "handbreadth or diagonal",
+        sbl_academic: "ṭipḥāʾ",
             })
         );
         assert_eq!(PoetryAccent::Pazer.alternate_names(), None);
@@ -128,34 +150,47 @@ mod poetry_alternate_names {
         assert_eq!(
             PoetryAccent::Galgal.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Yerach Ben Yomo",
+        hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+        hebrew_concept: "moon one day old",
+        sbl_academic: "yēreḥ ben yômô",
             })
         );
         assert_eq!(
             PoetryAccent::Mehuppakh.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Mahpakh",
+        hebrew_name: "מַהְפַּךְ",
+        hebrew_concept: "turning round",
+        sbl_academic: "mahpak",
             })
         );
         assert_eq!(
             PoetryAccent::Azla.alternate_names(),
             Some(AlternateNames {
-                hebrew_name: "",
-                hebrew_concept: "",
-                sbl_academic: "",
-                english_name: "",
+                english_name: "Qadma",
+        hebrew_name: "קַדְמָ֨א",
+        hebrew_concept: "antiquity or a former state",
+        sbl_academic: "qadmāʾ",
             })
         );
         assert_eq!(PoetryAccent::ShalsheletQetannah.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMerkha.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.alternate_names(), None);
-        assert_eq!(PoetryAccent::Meteg.alternate_names(), None);
+        assert_eq!(
+            PoetryAccent::Meteg.alternate_names(), 
+            Some(AlternateNames {
+                english_name: "Gayah",
+        hebrew_name: "גַּעְיָה",
+        hebrew_concept: "a lowing",
+        sbl_academic: "gaʿyâ",
+            })
+        );
+
+
+
+
+
     }
 }
 mod pseudo_alternate_names {

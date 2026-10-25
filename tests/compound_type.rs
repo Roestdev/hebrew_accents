@@ -17,6 +17,7 @@ mod prose_compound_type {
         assert_eq!(ProseAccent::Tiphcha.compound_type(), None);
         assert_eq!(ProseAccent::Zarqa.compound_type(), None);
         assert_eq!(ProseAccent::Pashta.compound_type(), None);
+        assert_eq!(ProseAccent::ShenePastin.compound_type(), Some(CompoundType::Standard));
         assert_eq!(ProseAccent::Yetiv.compound_type(), None);
         assert_eq!(ProseAccent::Tevir.compound_type(), None);
         assert_eq!(ProseAccent::Geresh.compound_type(), None);

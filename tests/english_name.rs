@@ -15,6 +15,7 @@ mod prose_english_name {
         assert_eq!(ProseAccent::Tiphcha.english_name(), "Tiphcha");
         assert_eq!(ProseAccent::Zarqa.english_name(), "Zarqa");
         assert_eq!(ProseAccent::Pashta.english_name(), "Pashta");
+        assert_eq!(ProseAccent::ShenePastin.english_name(), "Shene Pashtin");
         assert_eq!(ProseAccent::Yetiv.english_name(), "Yetiv");
         assert_eq!(ProseAccent::Tevir.english_name(), "Tevir");
         assert_eq!(ProseAccent::Geresh.english_name(), "Geresh");

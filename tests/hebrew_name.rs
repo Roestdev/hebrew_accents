@@ -15,6 +15,7 @@ mod prose_hebrew_name {
         assert_eq!(ProseAccent::Tiphcha.hebrew_name(), "טִפְחָא");
         assert_eq!(ProseAccent::Zarqa.hebrew_name(), "זַרְקָא");
         assert_eq!(ProseAccent::Pashta.hebrew_name(), "פַּשְׁטָא");
+        assert_eq!(ProseAccent::ShenePastin.hebrew_name(), "שְׁנֵ֨י פַּשְׁטִין֙");
         assert_eq!(ProseAccent::Yetiv.hebrew_name(), "יְתִיב");
         assert_eq!(ProseAccent::Tevir.hebrew_name(), "תְּבִיר");
         assert_eq!(ProseAccent::Geresh.hebrew_name(), "גֵּרֵישׁ");

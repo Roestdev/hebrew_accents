@@ -14,6 +14,7 @@ mod prose_kind {
         assert_eq!(ProseAccent::Tiphcha.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Zarqa.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Pashta.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ShenePastin.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Yetiv.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Tevir.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Geresh.kind(), Some(AccentKind::Primary));
