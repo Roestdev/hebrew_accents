@@ -231,7 +231,7 @@ impl fmt::Display for CantillationMarkPlacement {
 /// | **Tevir** | `Impositive` | On stressed syllable |
 /// | **Munach** | `Postpositive` | On pre-tonic syllable |
 ///
-/// # How This Handles Shnei Pashtin (Double Pashta)
+/// # How This Handles Shene Pashtin (Double Pashta)
 ///
 /// When a word has **non-final stress** (stress not on the last syllable)
 /// AND requires a Pashta mark, the system creates a **compound accent**:

@@ -44,6 +44,7 @@ pub(crate) fn resolve_disjunctive_group(accent: HebrewAccent) -> Option<Disjunct
         HebrewAccent::Prose(ProseAccent::Revia)
         | HebrewAccent::Prose(ProseAccent::Zarqa)
         | HebrewAccent::Prose(ProseAccent::Pashta)
+        | HebrewAccent::Prose(ProseAccent::ShenePastin)
         | HebrewAccent::Prose(ProseAccent::Tevir)
         | HebrewAccent::Prose(ProseAccent::Yetiv) => Some(DisjunctiveGroup::ProseTier3),
 

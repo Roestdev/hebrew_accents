@@ -211,7 +211,7 @@ pub enum SentenceContextError {
     ///
     /// | Context | Exclusive Accents |
     /// |---------|-------------------|
-    /// | Prosaic | Segolta, Zaqeph Qatan/Gadol, Pashta, Tevir, Yetiv, Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga |
+    /// | Prosaic | Segolta, Zaqeph Qatan/Gadol, Pashta, ShenePastin, Tevir, Yetiv, Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga |
     /// | Poetic | Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh |
     ///
     /// # Example

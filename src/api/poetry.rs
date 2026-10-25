@@ -82,10 +82,6 @@ pub enum PoetryAccent {
     /// The strongest disjunctive accent in the poetic system. Marks the end
     /// of a complete verse, functioning as the terminal accent. Every verse
     /// in the poetic books concludes with Silluq.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Verse
-    /// - **Strength**: 1 (strongest)
     #[default]
     Silluq = 0,
 
@@ -94,19 +90,12 @@ pub enum PoetryAccent {
     /// A poetry-exclusive disjunctive accent that divides the verse into two
     /// halves. It serves the same structural role as Atnach in the prose system
     /// but is unique to the poetic books.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Half-verse
-    /// - **Exclusivity**: Poetry only — presence confirms poetic context
     OlehWeYored = 1,
 
     /// **Atnach** (אַתְנָח) — "rest, pause"
     ///
     /// A major disjunctive that divides the verse into two halves. Also appears
     /// in the prose system but may carry a different melodic contour in poetry.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Half-verse
     Atnach = 2,
 
     /// **Revia Gadol** (רְבִיעַ גָּדוֹל) — "great quarter"
@@ -114,55 +103,36 @@ pub enum PoetryAccent {
     /// A primary disjunctive marking a phrase boundary within a half-verse.
     /// The "Gadol" (great) designation distinguishes it from the smaller
     /// Revia Qaton.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Phrase
     ReviaGadol = 3,
 
     /// **Revia Mugrash** (רְבִיעַ מֻגְרָשׁ) — "quartered with Garesh"
     ///
     /// A disjunctive accent that combines the Revia mark with a preceding
     /// Garesh-like element. Occurs in specific poetic phrase structures.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Phrase
     ReviaMugrash = 4,
 
     /// **Shalshelet Gadol** (שַׁלְשֶׁלֶת גָּדוֹל) — "great chain"
     ///
     /// A rare disjunctive accent appearing in distinctive poetic constructions.
     /// The "Gadol" form is specific to the poetic system.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Phrase
     ShalsheletGadol = 5,
 
     /// **Tsinnor** (צִנּוֹר) — "channel, pipe"
     ///
     /// A disjunctive accent unique to the poetic system. Appears as a
     /// prepositive mark on the accented syllable.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Phrase
     Tsinnor = 6,
 
     /// **Revia Qaton** (רְבִיעַ קָטָן) — "small quarter"
     ///
     /// A subordinate disjunctive marking a sub-phrase boundary. The "Qaton"
     /// (small) designation indicates a weaker pause than Revia Gadol.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
     ReviaQaton = 7,
 
     /// **Dechi** (דְּחִי) — "pushed away"
     ///
     /// A poetry-exclusive disjunctive accent marking a minor phrase division.
     /// Its presence is a strong indicator of poetic context.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
-    /// - **Exclusivity**: Poetry only
     Dechi = 8,
 
     /// **Pazer** (פָּזֵר) — "scatter, disperse"
@@ -178,101 +148,72 @@ pub enum PoetryAccent {
     ///
     /// A disjunctive accent that combines the Mehuppakh mark with a legarmeh
     /// separator. Functions as an independent phrase boundary in poetic text.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
     MehuppakhLegarmeh = 10,
 
     /// **Azla Legarmeh** (אַזְלָא לְגַרְמֵהּ) — "going forth, alone"
     ///
     /// A disjunctive accent combining Azla with a legarmeh separator, marking
     /// an independent phrase division.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
     AzlaLegarmeh = 11,
 
     /// **Munach** (מֻנָּח) — "resting, placed"
     ///
     /// The most common conjunctive accent in both systems. Connects a word to
     /// the following disjunctive accent without introducing a pause.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Munach = 12,
 
     /// **Merkha** (מֵרכָּא) — "lengthener, drawn out"
     ///
     /// A conjunctive accent that links a word to the following accent with a
     /// forward-leaning melodic motion.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Merkha = 13,
 
     /// **Illuy** (עִלּוּי) — "elevation, rising"
     ///
     /// A poetry-exclusive conjunctive accent. Its presence is a strong
     /// indicator of poetic context.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    /// - **Exclusivity**: Poetry only
     Illuy = 14,
 
     /// **Tarcha** (תַּרְחָא) — "delay, lingering"
     ///
     /// A conjunctive accent connecting words within a poetic phrase. Known
     /// in some traditions as Tipcha in the prose system.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Tarcha = 15,
 
     /// **Galgal** (גַּלְגַּל) — "wheel, rolling"
     ///
     /// A conjunctive accent with a rolling melodic motion. Appears in both
     /// poetic and prose systems.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Galgal = 16,
 
     /// **Mehuppakh** (מְהֻפָּךְ) — "inverted, overturned"
     ///
     /// A conjunctive accent linking words within a phrase. The name refers to
     /// the inverted form of the mark compared to its disjunctive counterpart.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Mehuppakh = 17,
 
     /// **Azla** (אַזְלָא) — "going forth, departure"
     ///
     /// A conjunctive accent that connects a word to the next. Also known as
     /// Qadma in some scholarly traditions.
-    ///
-    /// - **Category**: Conjunctive (primary)
     Azla = 18,
 
     /// **Shalshelet Qetannah** (שַׁלְשֶׁלֶת קְטַנָּה) — "small chain"
     ///
     /// A conjunctive counterpart to Shalshelet Gadol, connecting words rather
     /// than dividing phrases.
-    ///
-    /// - **Category**: Conjunctive (primary)
     ShalsheletQetannah = 19,
 
     /// **Tsinnorit Merkha** (צִנּוֹרִית מֵרכָּא) — "channel-like Merkha"
     ///
     /// A poetry-exclusive conjunctive accent. Combines Tsinnorit with Merkha,
     /// serving as a strong poetic-context indicator.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    /// - **Exclusivity**: Poetry only
     TsinnoritMerkha = 20,
 
     /// **Tsinnorit Mahpakh** (צִנּוֹרִית מַהְפָּךְ) — "channel-like Mahpakh"
     ///
     /// A poetry-exclusive conjunctive accent. Combines Tsinnorit with Mahpakh,
     /// serving as a strong poetic-context indicator.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    /// - **Exclusivity**: Poetry only
     TsinnoritMahpakh = 21,
 
     /// **Meteg** (מֶתֶג) — "bridle, restraint"
@@ -280,8 +221,6 @@ pub enum PoetryAccent {
     /// A secondary conjunctive mark that clarifies vowel length and prevents
     /// misreading of sheva. Does not carry independent melodic function in the
     /// primary cantillation hierarchy.
-    ///
-    /// - **Category**: Conjunctive (secondary)
     Meteg = 22,
 }
 

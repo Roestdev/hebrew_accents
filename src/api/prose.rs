@@ -94,41 +94,26 @@ pub enum ProseAccent {
     /// **Silluq** (סִלּוּק) — "cessation, ending"
     ///
     /// The strongest disjunctive accent. Marks the end of a complete verse.
-    /// Every verse in the prose books concludes with Silluq.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Verse
-    /// - **Strength**: 1 (strongest)
+    /// Every verse in the prose books concludes with a Silluq.
     #[default]
     Silluq = 0,
 
     /// **Atnach** (אַתְנָח) — "rest, pause"
     ///
-    /// The second-strongest disjunctive. Divides the verse into two halves
-    /// (atarah/imtarah). Acts as the primary midpoint marker.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Half-verse
-    /// - **Strength**: 2
+    /// The second-strongest disjunctive. Divides the verse into two halves.
+    /// Acts as the primary midpoint marker.
     Atnach = 1,
 
     /// **Segolta** (סְגוֹלְתָּא) — "bunch, cluster (of grapes)"
     ///
     /// A prose-exclusive disjunctive that appears near the beginning of a verse,
     /// marking a major phrase boundary. Its presence confirms prose context.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Major phrase
-    /// - **Exclusivity**: Prose only
     Segolta = 2,
 
     /// **Shalshelet** (שַׁלְשֶׁלֶת) — "chain, link"
     ///
     /// A rare disjunctive accent occurring at key narrative moments. Appears
     /// only a handful of times in the Torah.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Major phrase
     Shalshelet = 3,
 
     /// **Zaqeph Qatan** (זָקֵף קָטֹן) — "small raiser"
@@ -136,10 +121,6 @@ pub enum ProseAccent {
     /// A prose-exclusive disjunctive marking a phrase boundary. The "Qatan"
     /// (small) form occurs when the accented word is followed by additional
     /// words before the next disjunctive.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Major phrase
-    /// - **Exclusivity**: Prose only
     ZaqephQatan = 4,
 
     /// **Zaqeph Gadol** (זָקֵף גָּדוֹל) — "great raiser"
@@ -147,208 +128,146 @@ pub enum ProseAccent {
     /// A prose-exclusive disjunctive marking a phrase boundary. The "Gadol"
     /// (great) form occurs when the accented word immediately precedes the
     /// next disjunctive accent.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Major phrase
-    /// - **Exclusivity**: Prose only
     ZaqephGadol = 5,
 
     /// **Revia** (רְבִיעַ) — "quarter, fourth"
     ///
     /// A disjunctive accent marking a minor phrase boundary. Divides segments
     /// created by higher-level disjunctives.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Minor phrase
     Revia = 6,
 
     /// **Tiphcha** (טִפְחָא) — "handbreadth, palm"
     ///
     /// A disjunctive accent marking a sub-phrase boundary. Often appears near
     /// the end of a verse before Silluq.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
     Tiphcha = 7,
 
     /// **Zarqa** (זַרְקָא) — "throwing, scattering"
     ///
     /// A prose-exclusive disjunctive that marks a sub-phrase boundary. Appears
     /// as a prepositive mark.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
     Zarqa = 8,
 
     /// **Pashta** (פַּשְׁטָא) — "extension, stretching out"
     ///
     /// A prose-exclusive disjunctive marking a sub-phrase division. Appears
     /// as a postpositive mark on the final consonant.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
-    /// - **Exclusivity**: Prose only
     Pashta = 9,
+
+    /// **Shene Pastin** (פַּשְׁטָא) — "two pashtas"
+    ///
+    /// A prose-exclusive disjunctive marking a sub-phrase division. Appears
+    /// as a postpositive mark on the final consonant.
+    ShenePastin = 10, // TODO
 
     /// **Yetiv** (יְתִיב) — "sitting, resting"
     ///
     /// A prose-exclusive disjunctive marking a sub-phrase boundary. Appears as
     /// a prepositive mark on the initial consonant.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
-    /// - **Exclusivity**: Prose only
-    Yetiv = 10,
+    Yetiv = 11,
 
     /// **Tevir** (תְּבִיר) — "break, fracture"
     ///
     /// A prose-exclusive disjunctive that marks a sub-phrase boundary, often
     /// indicating a break in the melodic line.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Sub-phrase
-    /// - **Exclusivity**: Prose only
-    Tevir = 11,
+    Tevir = 12,
 
     /// **Geresh** (גֵּרֶשׁ) — "expulsion, driving out"
     ///
     /// A disjunctive accent marking a micro-phrase boundary. Appears as a
     /// postpositive mark.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    Geresh = 12,
+    Geresh = 13,
 
     /// **Gershayim** (גֵּרְשַׁיִם) — "double expulsion"
     ///
     /// A prose-exclusive disjunctive accent, the doubled form of Geresh.
     /// Marks a micro-phrase boundary with a stronger pause.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    /// - **Exclusivity**: Prose only
-    Gershayim = 13,
+    Gershayim = 14,
 
     /// **Pazer** (פָּזֵר) — "scatter, disperse"
     ///
     /// A disjunctive accent marking a micro-phrase boundary. Indicates a
     /// light pause within a sub-phrase.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    Pazer = 14,
+    Pazer = 15,
 
     /// **Pazer Gadol** (פָּזֵר גָּדוֹל) — "great scatter"
     ///
     /// A prose-exclusive disjunctive, the strengthened form of Pazer. Marks a
     /// micro-phrase boundary with longer melismatic elaboration.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    /// - **Exclusivity**: Prose only
-    PazerGadol = 15,
+    PazerGadol = 16,
 
     /// **Telisha Gedolah** (טְלִישָׁה גְּדוֹלָה) — "great magnification"
     ///
     /// A prose-exclusive disjunctive marking a micro-phrase boundary. Appears
     /// as a prepositive mark.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    /// - **Exclusivity**: Prose only
-    TelishaGedolah = 16,
+    TelishaGedolah = 17,
 
     /// **Legarmeh** (לְגַרְמֵהּ) — "by itself, independently"
     ///
     /// A disjunctive accent that stands alone as an independent phrase marker.
     /// Often appears as a suffix indicating self-standing status.
-    ///
-    /// - **Category**: Disjunctive (primary)
-    /// - **Hierarchy Level**: Micro-phrase
-    Legarmeh = 17,
+    Legarmeh = 18,
 
     /// **Munach** (מֻנָּח) — "resting, placed"
     ///
     /// The most common conjunctive accent. Connects a word to the following
     /// disjunctive, carrying the melody forward without a pause.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    Munach = 18,
+    Munach = 19,
 
     /// **Mahpakh** (מַהְפָּךְ) — "overturning, transformation"
     ///
     /// A conjunctive accent linking words within a phrase. The mark is the
     /// inverted form of its disjunctive counterpart.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    Mahpakh = 19,
+    Mahpakh = 20,
 
     /// **Merkha** (מֵרכָּא) — "lengthener, drawn out"
     ///
     /// A conjunctive accent with a forward-leaning melodic motion, connecting
     /// a word to the next accented word.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    Merkha = 20,
+    Merkha = 21,
 
     /// **Merkha Kephulah** (מֵרכָּא כְּפוּלָּה) — "doubled Merkha"
     ///
     /// A prose-exclusive conjunctive accent — the doubled form of Merkha.
     /// Its presence is a strong indicator of prose context.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    /// - **Exclusivity**: Prose only
-    MerkhaKephulah = 21,
+    MerkhaKephulah = 22,
 
     /// **Darga** (דַּרְגָּא) — "step, grade, stair"
     ///
     /// A prose-exclusive conjunctive accent marking a stepping melodic motion.
     /// Its presence is a strong indicator of prose context.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    /// - **Exclusivity**: Prose only
-    Darga = 22,
+    Darga = 23,
 
     /// **Azla** (אַזְלָא) — "going forth, departure"
     ///
     /// A conjunctive accent connecting a word to the following disjunctive.
     /// Also known as Qadma in some scholarly traditions.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    Azla = 23,
+    Azla = 24,
 
     /// **Telisha Qetannah** (טְלִישָׁה קְטַנָּה) — "small magnification"
     ///
     /// A conjunctive counterpart to Telisha Gedolah, connecting words rather
     /// than dividing phrases. Appears as a postpositive mark.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    TelishaQetannah = 24,
+    TelishaQetannah = 25,
 
     /// **Galgal** (גַּלְגַּל) — "wheel, rolling"
     ///
     /// A conjunctive accent with a rolling melodic motion. Appears in both
     /// poetic and prose systems.
-    ///
-    /// - **Category**: Conjunctive (primary)
-    Galgal = 25,
+    Galgal = 26,
 
     /// **Meayla** (מֵעֲיָא) — "from a heap, abundance"
     ///
     /// A secondary conjunctive accent with a supportive melodic function.
     /// Less frequent than primary conjunctives.
-    ///
-    /// - **Category**: Conjunctive (secondary)
-    Meayla = 26,
+    Meayla = 27,
 
     /// **Meteg** (מֶתֶג) — "bridle, restraint"
     ///
     /// A secondary conjunctive mark that clarifies vowel length and prevents
     /// ambiguous sheva readings. Does not carry independent melodic function
     /// in the primary cantillation hierarchy.
-    ///
-    /// - **Category**: Conjunctive (secondary)
-    Meteg = 27,
+    Meteg = 28,
 }
 
 impl ProseAccent {

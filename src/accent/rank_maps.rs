@@ -20,6 +20,7 @@ pub(crate) const BHS_PROSE_RANK_MAP: [u8; ProseAccent::LEN] = [
     8,  // 7:  Tiphcha
     9,  // 8:  Zarqa
     10, // 9:  Pashta
+    10, // 10  ShenePastin
     11, // 10: Yetiv
     12, // 11: Tevir
     13, // 12: Geresh

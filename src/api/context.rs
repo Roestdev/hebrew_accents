@@ -15,7 +15,7 @@
 /// | Feature | [`Prosaic`](Context::Prosaic) | [`Poetic`](Context::Poetic) |
 /// |---------|-------------------------------|----------------------------|
 /// | Books | Torah, Prophets, most Writings | Psalms, Proverbs, Job |
-/// | Exclusive Accents | Segolta, Zaqeph Qatan/Gadol, Pashta, Tevir, Yetiv, Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga | Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh |
+/// | Exclusive Accents | Segolta, Zaqeph Qatan/Gadol, Pashta, ShenePastin, Tevir, Yetiv, Gershayim, Pazer Gadol, Telisha Gedolah/Qetannah, Merkha Kephulah, Darga | Oleh WeYored, Dechi, Illuy, Tsinnorit Merkha/Mahpakh |
 /// | Shared Accents | Silluq, Atnach, Munach, Mahpakh, etc. | Same as prose (shared accents don't determine context) |
 /// | Default Status | ✅ Used when context is unknown | ❌ Must be explicitly specified |
 ///
