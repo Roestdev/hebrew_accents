@@ -41,7 +41,7 @@ mod prose_primary_cantillation_mark {
             }
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.primary_cantillation_mark(),
+            ProseAccent::ZaqephQaton.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{594}',
                 placement: CantillationMarkPlacement::AboveCenter,
@@ -72,14 +72,13 @@ mod prose_primary_cantillation_mark {
                 stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
-        // TODO ZArqa
         assert_eq!(
             ProseAccent::Zarqa.primary_cantillation_mark(),
             // encoding HEBREW ACCENT ZINOR
             CantillationMark {
-                symbol: '\u{05AE}', 
-                placement: CantillationMarkPlacement::AboveCenter,
-                stress_position: Some(CantillationMarkStressPosition::Impositive)
+                symbol: '\u{05AE}',
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
             }
         );
         assert_eq!(
@@ -312,8 +311,8 @@ mod poetry_primary_cantillation_mark {
             PoetryAccent::Tsinnor.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{5ae}',
-                placement: CantillationMarkPlacement::AboveCenter,
-                stress_position: Some(CantillationMarkStressPosition::Impositive)
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(CantillationMarkStressPosition::Postpositive)
             }
         );
         assert_eq!(

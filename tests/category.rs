@@ -21,7 +21,7 @@ mod prose_category {
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.category(),
+            ProseAccent::ZaqephQaton.category(),
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
@@ -41,11 +41,11 @@ mod prose_category {
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
-            ProseAccent::Pashta.category(), // TODO add ShenePastin
+            ProseAccent::Pashta.category(),
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
-            ProseAccent::ShenePastin.category(), // TODO add ShenePastin
+            ProseAccent::ShenePastin.category(),
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(

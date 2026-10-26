@@ -117,7 +117,7 @@ impl<'a> SentenceContext {
                     absolute_inner_end,
                 ))
             }
-            HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => self
+            HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(ZAQEF_QATAN)
                 .map(|index| Match::new(&self.sentence, index, index + ZAQEF_QATAN.len())),
@@ -138,7 +138,7 @@ impl<'a> SentenceContext {
                 .find(ZARQA)
                 .map(|index| Match::new(&self.sentence, index, index + ZARQA.len())),
             HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => self
-                .sentence
+                .sentence // TODO add ShenePastin
                 .find(PASHTA)
                 .map(|index| Match::new(&self.sentence, index, index + PASHTA.len())),
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => self
@@ -1188,13 +1188,13 @@ mod unit_tests {
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         let expected = Match::new(sentence, 63, 65);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::ZaqephQatan.into()),
+            sc.unwrap().find_accent(ProseAccent::ZaqephQaton.into()),
             Some(expected)
         );
         let sentence = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::ZaqephQatan.into()),
+            sc.unwrap().find_accent(ProseAccent::ZaqephQaton.into()),
             None
         );
     }
@@ -2519,7 +2519,7 @@ mod unit_tests_cross_context {
         // try find ZaqephQatan in poetic context
         let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", poetic);
         assert_eq!(
-            sc.unwrap().find_accent(ProseAccent::ZaqephQatan.into()),
+            sc.unwrap().find_accent(ProseAccent::ZaqephQaton.into()),
             None
         );
         // try find ZaqephGadol in poetic context
@@ -2913,7 +2913,7 @@ mod accent_metadata_function_coverage_tests {
         let _: HebrewAccent = ProseAccent::Atnach.into();
         let _: HebrewAccent = ProseAccent::Segolta.into();
         let _: HebrewAccent = ProseAccent::Shalshelet.into();
-        let _: HebrewAccent = ProseAccent::ZaqephQatan.into();
+        let _: HebrewAccent = ProseAccent::ZaqephQaton.into();
         let _: HebrewAccent = ProseAccent::ZaqephGadol.into();
         let _: HebrewAccent = ProseAccent::Revia.into();
         let _: HebrewAccent = ProseAccent::Tiphcha.into();

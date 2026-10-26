@@ -68,7 +68,7 @@ pub(crate) const MARK_SHALSHELET: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 // ZAQEF QATAN (U+0594)
 // ============================================================================
-pub(crate) const MARK_ZAQEF_QATAN: MarkMetaData = mark_meta_data_constructor(
+pub(crate) const MARK_ZAQEF_QATON: MarkMetaData = mark_meta_data_constructor(
     '֔',
     MarkPlacement::AboveCenter,
     StressPosition::Impositive,
@@ -391,8 +391,8 @@ pub(crate) const MARK_DEHI: MarkMetaData = mark_meta_data_constructor(
 // ============================================================================
 pub(crate) const MARK_ZINOR: MarkMetaData = mark_meta_data_constructor(
     '֮',
-    MarkPlacement::AboveCenter,
-    StressPosition::Impositive,
+    MarkPlacement::AboveLeft,
+    StressPosition::Postpositive,
     "HEBREW ACCENT ZINOR",
     "U+05AE",
     "0xd6 0xae",

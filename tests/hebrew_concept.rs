@@ -13,7 +13,7 @@ mod prose_hebrew_concept {
         );
         assert_eq!(ProseAccent::Shalshelet.hebrew_concept(), "chain or link");
         assert_eq!(
-            ProseAccent::ZaqephQatan.hebrew_concept(),
+            ProseAccent::ZaqephQaton.hebrew_concept(),
             "small upright or small standing one"
         );
         assert_eq!(ProseAccent::ZaqephGadol.hebrew_concept(), "large upright");
@@ -33,10 +33,7 @@ mod prose_hebrew_concept {
             ProseAccent::Pashta.hebrew_concept(),
             "extending, stretching out in length"
         );
-        assert_eq!(
-            ProseAccent::ShenePastin.hebrew_concept(),
-            "double pashta"
-        );
+        assert_eq!(ProseAccent::ShenePastin.hebrew_concept(), "double pashta");
         assert_eq!(ProseAccent::Yetiv.hebrew_concept(), "resting or sitting");
         assert_eq!(
             ProseAccent::Tevir.hebrew_concept(),

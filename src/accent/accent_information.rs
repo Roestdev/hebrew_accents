@@ -15,7 +15,7 @@ use crate::accent::{
     TRADITION_NAMES_TELISHA_QETANA, TRADITION_NAMES_TEVIR, TRADITION_NAMES_TIPEHA,
     TRADITION_NAMES_TSINNORIT_MAHPACH, TRADITION_NAMES_TSINNORIT_MERKHA,
     TRADITION_NAMES_YERAH_BEN_YOMO, TRADITION_NAMES_YETIV, TRADITION_NAMES_ZAQEF_GADOL,
-    TRADITION_NAMES_ZAQEF_QATAN, TRADITION_NAMES_ZARQA,
+    TRADITION_NAMES_ZAQEF_QATON, TRADITION_NAMES_ZARQA,
 };
 
 use crate::mark::{
@@ -23,7 +23,7 @@ use crate::mark::{
     MARK_MAQAF, MARK_MERKHA, MARK_MERKHA_KEFULA, MARK_METEG, MARK_MUNAH, MARK_OLE, MARK_PASEQ,
     MARK_PASHTA, MARK_PAZER, MARK_QADMA, MARK_QARNEY_PARA, MARK_REVIA, MARK_SEGOL, MARK_SHALSHELET,
     MARK_SOPH_PASUQ, MARK_TELISHA_GEDOLA, MARK_TELISHA_QETANA, MARK_TEVIR, MARK_TIPEHA,
-    MARK_YERAH_BEN_YOMO, MARK_YETIV, MARK_ZAQEF_GADOL, MARK_ZAQEF_QATAN, MARK_ZARQA, MARK_ZINOR,
+    MARK_YERAH_BEN_YOMO, MARK_YETIV, MARK_ZAQEF_GADOL, MARK_ZAQEF_QATON, MARK_ZARQA, MARK_ZINOR,
 };
 
 pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
@@ -103,14 +103,14 @@ pub(crate) const SHALSHELET_INFO: AccentMetaData = AccentMetaData {
     traditions: TRADITION_NAMES_SHALSHELET,
 };
 
-pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
+pub(crate) const ZAQEPH_QATON_INFO: AccentMetaData = AccentMetaData {
     // TODO QATAN QATON
     english_name: "Zaqeph Qaton",
     hebrew_name: "זָקֵף קָטוֹן",
     hebrew_concept: "small upright or small standing one",
     sbl_academic: "zāqēp qāṭôn",
     cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_ZAQEF_QATAN,
+        primary_mark: &MARK_ZAQEF_QATON,
         secondary_mark: None,
     },
     alternate_names: None,
@@ -118,7 +118,7 @@ pub(crate) const ZAQEPH_QATAN_INFO: AccentMetaData = AccentMetaData {
     notes: Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
-    traditions: TRADITION_NAMES_ZAQEF_QATAN,
+    traditions: TRADITION_NAMES_ZAQEF_QATON,
 };
 
 pub(crate) const ZAQEPH_GADOL_INFO: AccentMetaData = AccentMetaData {
@@ -208,7 +208,7 @@ pub(crate) const PASHTA_INFO: AccentMetaData = AccentMetaData {
 
 pub(crate) const SHENE_PASTIN_INFO: AccentMetaData = AccentMetaData {
     english_name: "Shene Pashtin",
-    hebrew_name: "šənê pašṭîn",
+    hebrew_name: "שְׁנֵ֨י פַּשְׁטִין֙",
     hebrew_concept: "double pashta",
     sbl_academic: "šənê pašṭîn",
     cantillation_symbol: CantillationSymbol {
@@ -511,10 +511,10 @@ pub(crate) const GALGAL_INFO: AccentMetaData = AccentMetaData {
         secondary_mark: None,
     },
     alternate_names: Some(InternalAlternateNames {
-        english_name: "yēreḥ ben yômô",
+        english_name: "Yerach Ben Yomo",
         hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
         hebrew_concept: "moon one day old",
-        sbl_academic: "Yerach Ben Yomo",
+        sbl_academic: "yēreḥ ben yômô",
     }),
     compound_type: None,
     notes: Some(r#"Conjunctive accent; also known as Yerach Ben Yomo."#),

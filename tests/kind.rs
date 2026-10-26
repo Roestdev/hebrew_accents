@@ -8,7 +8,7 @@ mod prose_kind {
         assert_eq!(ProseAccent::Atnach.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Segolta.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Shalshelet.kind(), Some(AccentKind::Primary));
-        assert_eq!(ProseAccent::ZaqephQatan.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ZaqephQaton.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::ZaqephGadol.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Revia.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Tiphcha.kind(), Some(AccentKind::Primary));

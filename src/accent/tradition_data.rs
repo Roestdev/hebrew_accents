@@ -321,7 +321,7 @@ pub(crate) const TRADITION_NAMES_SHALSHELET: TraditionNames = TraditionNames {
 // ============================================================================
 // ZAQEF QATAN (U+0594)
 // ============================================================================
-pub(crate) const TRADITION_NAMES_ZAQEF_QATAN: TraditionNames = TraditionNames {
+pub(crate) const TRADITION_NAMES_ZAQEF_QATON: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
         hebrew_name: "זָקֵף קָטָ֔ן",
         sbl_academic: "zāqēp qāṭān",

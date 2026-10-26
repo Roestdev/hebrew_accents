@@ -121,7 +121,7 @@ pub enum ProseAccent {
     /// A prose-exclusive disjunctive marking a phrase boundary. The "Qatan"
     /// (small) form occurs when the accented word is followed by additional
     /// words before the next disjunctive.
-    ZaqephQatan = 4,
+    ZaqephQaton = 4,
 
     /// **Zaqeph Gadol** (זָקֵף גָּדוֹל) — "great raiser"
     ///
@@ -410,7 +410,6 @@ mod test_accent_trait {
         CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, GroupLevel,
         ProseAccent,
     };
-    // TODO  // cantillation_symbol
     #[test]
     fn test_prose_disjunctive_hebrew_name() {
         // Primary disjunctives: indices 0-17, strengths 1-18
@@ -418,7 +417,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.hebrew_name(), "אַתְנַח");
         assert_eq!(ProseAccent::Segolta.hebrew_name(), "סְגֹולְתָּא");
         assert_eq!(ProseAccent::Shalshelet.hebrew_name(), "שַׁלְשֶׁלֶת");
-        assert_eq!(ProseAccent::ZaqephQatan.hebrew_name(), "זָקֵף קָטוֹן");
+        assert_eq!(ProseAccent::ZaqephQaton.hebrew_name(), "זָקֵף קָטוֹן");
         assert_eq!(ProseAccent::ZaqephGadol.hebrew_name(), "זָקֵף גָּדוֹל");
         assert_eq!(ProseAccent::Revia.hebrew_name(), "רְבִיעַ");
         assert_eq!(ProseAccent::Tiphcha.hebrew_name(), "טִפְחָא");
@@ -459,7 +458,7 @@ mod test_accent_trait {
         );
         assert_eq!(ProseAccent::Shalshelet.hebrew_concept(), "chain or link");
         assert_eq!(
-            ProseAccent::ZaqephQatan.hebrew_concept(),
+            ProseAccent::ZaqephQaton.hebrew_concept(),
             "small upright or small standing one"
         );
         assert_eq!(ProseAccent::ZaqephGadol.hebrew_concept(), "large upright");
@@ -543,7 +542,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.english_name(), "Atnach");
         assert_eq!(ProseAccent::Segolta.english_name(), "Segolta");
         assert_eq!(ProseAccent::Shalshelet.english_name(), "Shalshelet");
-        // TODO assert_eq!(ProseAccent::ZaqephQatan.english_name(), "Zaqeph Qatan");
+        // TODO assert_eq!(ProseAccent::ZaqephQaton.english_name(), "Zaqeph Qatan");
         assert_eq!(ProseAccent::ZaqephGadol.english_name(), "Zaqeph Gadol");
         assert_eq!(ProseAccent::Revia.english_name(), "Revia");
         assert_eq!(ProseAccent::Tiphcha.english_name(), "Tiphcha");
@@ -589,7 +588,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.sbl_academic_name(), "ʾatnaḥ");
         assert_eq!(ProseAccent::Segolta.sbl_academic_name(), "səgôlətāʾ");
         assert_eq!(ProseAccent::Shalshelet.sbl_academic_name(), "šalšelet");
-        assert_eq!(ProseAccent::ZaqephQatan.sbl_academic_name(), "zāqēp qāṭôn");
+        assert_eq!(ProseAccent::ZaqephQaton.sbl_academic_name(), "zāqēp qāṭôn");
         assert_eq!(ProseAccent::ZaqephGadol.sbl_academic_name(), "zāqēp gādôl");
         assert_eq!(ProseAccent::Revia.sbl_academic_name(), "rəbîaʿ");
         assert_eq!(ProseAccent::Tiphcha.sbl_academic_name(), "ṭipḥāʾ");
@@ -634,7 +633,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Segolta.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Shalshelet.kind(), Some(AccentKind::Primary));
-        assert_eq!(ProseAccent::ZaqephQatan.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ZaqephQaton.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::ZaqephGadol.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Revia.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Tiphcha.kind(), Some(AccentKind::Primary));
@@ -693,7 +692,7 @@ mod test_accent_trait {
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.category(),
+            ProseAccent::ZaqephQaton.category(),
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
@@ -803,7 +802,7 @@ mod test_accent_trait {
             ProseAccent::Shalshelet.compound_type(),
             Some(CompoundType::ContainsPaseq)
         );
-        assert_eq!(ProseAccent::ZaqephQatan.compound_type(), None);
+        assert_eq!(ProseAccent::ZaqephQaton.compound_type(), None);
         assert_eq!(ProseAccent::ZaqephGadol.compound_type(), None);
         assert_eq!(ProseAccent::Revia.compound_type(), None);
         assert_eq!(ProseAccent::Tiphcha.compound_type(), None);
@@ -872,7 +871,7 @@ mod test_accent_trait {
             }
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.primary_cantillation_mark(),
+            ProseAccent::ZaqephQaton.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{594}',
                 placement: CantillationMarkPlacement::AboveCenter,
@@ -1084,7 +1083,7 @@ mod test_accent_trait {
                 stress_position: None
             })
         );
-        assert_eq!(ProseAccent::ZaqephQatan.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::ZaqephQaton.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::ZaqephGadol.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Revia.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Tiphcha.secondary_cantillation_mark(), None);
@@ -1159,7 +1158,7 @@ mod test_accent_trait {
             Some(r#"Rare accent occurring only four times in the Torah."#)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.notes(),
+            ProseAccent::ZaqephQaton.notes(),
             Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#)
         );
         assert_eq!(
@@ -1279,7 +1278,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.relative_strength(), Some(2));
         assert_eq!(ProseAccent::Segolta.relative_strength(), Some(3));
         assert_eq!(ProseAccent::Shalshelet.relative_strength(), Some(4));
-        assert_eq!(ProseAccent::ZaqephQatan.relative_strength(), Some(5));
+        assert_eq!(ProseAccent::ZaqephQaton.relative_strength(), Some(5));
         assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), Some(6));
         assert_eq!(ProseAccent::Revia.relative_strength(), Some(7));
         assert_eq!(ProseAccent::Tiphcha.relative_strength(), Some(8));
@@ -1321,7 +1320,7 @@ mod test_accent_trait {
             Some(GroupLevel::Tier2)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.group_level(),
+            ProseAccent::ZaqephQaton.group_level(),
             Some(GroupLevel::Tier2)
         );
         assert_eq!(
@@ -1373,7 +1372,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.cantillation_symbol(), "אם֑ת");
         assert_eq!(ProseAccent::Segolta.cantillation_symbol(), "אםת֒");
         assert_eq!(ProseAccent::Shalshelet.cantillation_symbol(), "אם֓ת ׀");
-        assert_eq!(ProseAccent::ZaqephQatan.cantillation_symbol(), "אם֔ת");
+        assert_eq!(ProseAccent::ZaqephQaton.cantillation_symbol(), "אם֔ת");
         assert_eq!(ProseAccent::ZaqephGadol.cantillation_symbol(), "אם֕ת");
         assert_eq!(ProseAccent::Revia.cantillation_symbol(), "אם֗ת");
         assert_eq!(ProseAccent::Tiphcha.cantillation_symbol(), "אם֖ת");
@@ -1410,7 +1409,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.alternate_names(), None);
         assert_eq!(ProseAccent::Segolta.alternate_names(), None);
         assert_eq!(ProseAccent::Shalshelet.alternate_names(), None);
-        assert_eq!(ProseAccent::ZaqephQatan.alternate_names(), None);
+        assert_eq!(ProseAccent::ZaqephQaton.alternate_names(), None);
         assert_eq!(ProseAccent::ZaqephGadol.alternate_names(), None);
         assert_eq!(ProseAccent::Revia.alternate_names(), None);
         assert_eq!(ProseAccent::Tiphcha.alternate_names(), None);
@@ -1557,7 +1556,7 @@ mod tests {
         assert_eq!(ProseAccent::Atnach.as_index(), 1);
         assert_eq!(ProseAccent::Segolta.as_index(), 2);
         assert_eq!(ProseAccent::Shalshelet.as_index(), 3);
-        assert_eq!(ProseAccent::ZaqephQatan.as_index(), 4);
+        assert_eq!(ProseAccent::ZaqephQaton.as_index(), 4);
         assert_eq!(ProseAccent::ZaqephGadol.as_index(), 5);
         assert_eq!(ProseAccent::Revia.as_index(), 6);
         assert_eq!(ProseAccent::Tiphcha.as_index(), 7);

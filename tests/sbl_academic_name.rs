@@ -9,7 +9,7 @@ mod prose_sbl_academic_name {
         assert_eq!(ProseAccent::Atnach.sbl_academic_name(), "ʾatnaḥ");
         assert_eq!(ProseAccent::Segolta.sbl_academic_name(), "səgôlətāʾ");
         assert_eq!(ProseAccent::Shalshelet.sbl_academic_name(), "šalšelet");
-        assert_eq!(ProseAccent::ZaqephQatan.sbl_academic_name(), "zāqēp qāṭôn");
+        assert_eq!(ProseAccent::ZaqephQaton.sbl_academic_name(), "zāqēp qāṭôn");
         assert_eq!(ProseAccent::ZaqephGadol.sbl_academic_name(), "zāqēp gādôl");
         assert_eq!(ProseAccent::Revia.sbl_academic_name(), "rəbîaʿ");
         assert_eq!(ProseAccent::Tiphcha.sbl_academic_name(), "ṭipḥāʾ");

@@ -774,7 +774,7 @@ mod tests {
 
     #[test]
     fn prose_accents_fail_poetry_extraction() {
-        let prose = HebrewAccent::Prose(ProseAccent::ZaqephQatan);
+        let prose = HebrewAccent::Prose(ProseAccent::ZaqephQaton);
         let poetry_result = prose.as_poetry();
         let pseudo_result = prose.as_pseudo();
 
@@ -972,7 +972,7 @@ mod tests {
 
     #[test]
     fn test_sbl_academic_name_prose_variant() {
-        let accent = HebrewAccent::Prose(ProseAccent::ZaqephQatan);
+        let accent = HebrewAccent::Prose(ProseAccent::ZaqephQaton);
         let name = accent.sbl_academic_name();
 
         assert!(!name.is_empty());
@@ -1450,7 +1450,7 @@ mod test_accent_trait {
                 "שַׁלְשֶׁלֶת"
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).hebrew_name(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).hebrew_name(),
                 "זָקֵף קָטוֹן"
             );
             assert_eq!(
@@ -1687,7 +1687,7 @@ mod test_accent_trait {
                 "chain or link"
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).hebrew_concept(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).hebrew_concept(),
                 "small upright or small standing one"
             );
             assert_eq!(
@@ -1933,7 +1933,7 @@ mod test_accent_trait {
                 HebrewAccent::Prose(ProseAccent::Shalshelet).english_name(),
                 "Shalshelet"
             );
-            // TODO assert_eq!(HebrewAccent::Prose(ProseAccent::ZaqephQatan).english_name(), "Zaqeph Qatan");
+            // TODO assert_eq!(HebrewAccent::Prose(ProseAccent::ZaqephQaton).english_name(), "Zaqeph Qatan");
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephGadol).english_name(),
                 "Zaqeph Gadol"
@@ -2180,7 +2180,7 @@ mod test_accent_trait {
                 "šalšelet"
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).sbl_academic_name(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).sbl_academic_name(),
                 "zāqēp qāṭôn"
             );
             assert_eq!(
@@ -2425,7 +2425,7 @@ mod test_accent_trait {
                 Some(AccentKind::Primary)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).kind(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).kind(),
                 Some(AccentKind::Primary)
             );
             assert_eq!(
@@ -2660,7 +2660,7 @@ mod test_accent_trait {
                 Some(AccentCategory::Disjunctive)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).category(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).category(),
                 Some(AccentCategory::Disjunctive)
             );
             assert_eq!(
@@ -2901,7 +2901,7 @@ mod test_accent_trait {
                 Some(CompoundType::ContainsPaseq)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).compound_type(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).compound_type(),
                 None
             );
             assert_eq!(
@@ -3160,7 +3160,7 @@ mod test_accent_trait {
                 }
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).primary_cantillation_mark(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).primary_cantillation_mark(),
                 CantillationMark {
                     symbol: '\u{594}',
                     placement: CantillationMarkPlacement::AboveCenter,
@@ -3614,7 +3614,7 @@ mod test_accent_trait {
                 })
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).secondary_cantillation_mark(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).secondary_cantillation_mark(),
                 None
             );
             assert_eq!(
@@ -3902,7 +3902,7 @@ mod test_accent_trait {
                 Some(r#"Rare accent occurring only four times in the Torah."#)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).notes(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).notes(),
                 Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#)
             );
             assert_eq!(
@@ -4200,7 +4200,7 @@ The alternate BHS naming is fabricated"#,
                 Some(4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).relative_strength(),
                 Some(5)
             );
             assert_eq!(
@@ -4445,7 +4445,7 @@ The alternate BHS naming is fabricated"#,
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).group_level(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).group_level(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
@@ -4666,7 +4666,7 @@ The alternate BHS naming is fabricated"#,
                 "// TODO"
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).cantillation_symbol(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).cantillation_symbol(),
                 "// TODO"
             );
             assert_eq!(
@@ -4911,7 +4911,7 @@ The alternate BHS naming is fabricated"#,
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQatan).alternate_names(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).alternate_names(),
                 None
             );
             assert_eq!(

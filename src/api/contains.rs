@@ -59,7 +59,7 @@ impl SentenceContext {
             HebrewAccent::Prose(ProseAccent::Shalshelet) if self.ctx == Context::Prosaic => {
                 RE_OUTER_COMMON_SHALSHELET.is_match(&self.sentence)
             }
-            HebrewAccent::Prose(ProseAccent::ZaqephQatan) if self.ctx == Context::Prosaic => {
+            HebrewAccent::Prose(ProseAccent::ZaqephQaton) if self.ctx == Context::Prosaic => {
                 self.sentence.contains(ZAQEF_QATAN)
             }
             HebrewAccent::Prose(ProseAccent::ZaqephGadol) if self.ctx == Context::Prosaic => {
@@ -74,7 +74,7 @@ impl SentenceContext {
                 self.sentence.contains(ZARQA)
             }
             HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => {
-                self.sentence.contains(PASHTA)
+                self.sentence.contains(PASHTA) // TODO add ShenePastin
             }
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => {
                 self.sentence.contains(YETIV)
@@ -306,10 +306,10 @@ mod prose_accents {
     fn test_contains_prose_zaqeph_qaton() {
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֔ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::ZaqephQatan.into()));
+        assert!(binding.contains_accent(ProseAccent::ZaqephQaton.into()));
         let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
         let binding = sc.unwrap();
-        assert!(!binding.contains_accent(ProseAccent::ZaqephQatan.into()));
+        assert!(!binding.contains_accent(ProseAccent::ZaqephQaton.into()));
     }
     #[test]
     fn test_contains_prose_zaqeph_gadol() {

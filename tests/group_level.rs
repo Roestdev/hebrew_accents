@@ -13,7 +13,7 @@ mod prose_group_level {
             Some(GroupLevel::Tier2)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.group_level(),
+            ProseAccent::ZaqephQaton.group_level(),
             Some(GroupLevel::Tier2)
         );
         assert_eq!(

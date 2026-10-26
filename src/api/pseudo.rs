@@ -285,7 +285,6 @@ impl Accent for PseudoAccent {
 mod test_accent_trait {
     use crate::{Accent, CantillationMark, CantillationMarkPlacement, PseudoAccent};
 
-    // TODO  // cantillation_symbol
     #[test]
     fn test_pseudo_accent_hebrew_name() {
         // Pseudo accents never have strength hierarchy
@@ -404,7 +403,6 @@ mod test_accent_trait {
         assert_eq!(PseudoAccent::Maqqaph.group_level(), None);
         assert_eq!(PseudoAccent::Paseq.group_level(), None);
     }
-    // TODO Cantillation Symbol
     #[test]
     fn test_pseudo_accent_cantillation_symbol() {
         assert_eq!(PseudoAccent::SophPasuq.cantillation_symbol(), "אםת ׃");

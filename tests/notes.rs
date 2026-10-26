@@ -31,7 +31,7 @@ mod prose_notes {
             Some(r#"Rare accent occurring only four times in the Torah."#)
         );
         assert_eq!(
-            ProseAccent::ZaqephQatan.notes(),
+            ProseAccent::ZaqephQaton.notes(),
             Some(r#"Common disjunctive, often appearing before Zaqeph Gadol or Atnach."#)
         );
         assert_eq!(
@@ -52,7 +52,7 @@ mod prose_notes {
             Some(r#"appears on the last syllable of the word, extending rightward."#)
         );
         assert_eq!(
-            ProseAccent::ShenePastin.notes(), // TODO add ShenePastin
+            ProseAccent::ShenePastin.notes(),
             Some(r#"// TODO add note ShenePastin"#)
         );
         assert_eq!(

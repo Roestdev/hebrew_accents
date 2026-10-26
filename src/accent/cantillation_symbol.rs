@@ -53,19 +53,26 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
             }
         }
     } else {
-        // found compound accent - only 11 present
-        // get secondary cantillationmark info
+        // found compound accent, get secondary cantillationmark info
         let secondary_symbol = accent.secondary_cantillation_mark().expect("//TODO").symbol;
-
+        let secondary_placement = accent
+            .secondary_cantillation_mark()
+            .expect("//TODO")
+            .placement;
         let compound_type = accent.compound_type().unwrap();
         match compound_type {
             CompoundType::Standard => {
                 // Compound (two marks, one word, no Paseq)
-                // three dotted circles
-                format!(
-                    "{}{}{}{}{}",
-                    ALEPH, primary_symbol, MEM, secondary_symbol, TAV
-                )
+                match secondary_placement {
+                    CantillationMarkPlacement::AboveLeft => format!(
+                        "{}{}{}{}{}",
+                        ALEPH, primary_symbol, MEM, TAV, secondary_symbol
+                    ),
+                    _ => format!(
+                        "{}{}{}{}{}",
+                        ALEPH, primary_symbol, MEM, secondary_symbol, TAV
+                    ),
+                }
             }
             CompoundType::ContainsPaseq => {
                 // Position of the primary mark dependant of its stress-position
@@ -86,5 +93,6 @@ pub(crate) fn display_cantillation_symbol(accent: HebrewAccent) -> String {
         }
     }
 }
+
 #[cfg(test)]
 mod tests {}

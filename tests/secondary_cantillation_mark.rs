@@ -16,19 +16,20 @@ mod prose_secondary_cantillation_mark {
                 stress_position: None
             })
         );
-        assert_eq!(ProseAccent::ZaqephQatan.secondary_cantillation_mark(), None);
+        assert_eq!(ProseAccent::ZaqephQaton.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::ZaqephGadol.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Revia.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Tiphcha.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Zarqa.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Pashta.secondary_cantillation_mark(), None);
-        assert_eq!(ProseAccent::ShenePastin.secondary_cantillation_mark(), 
-        Some(CantillationMark {
+        assert_eq!(
+            ProseAccent::ShenePastin.secondary_cantillation_mark(),
+            Some(CantillationMark {
                 symbol: '֙',
                 placement: CantillationMarkPlacement::AboveLeft,
                 stress_position: Some(hebrew_accents::CantillationMarkStressPosition::Postpositive)
             })
-    );
+        );
 
         assert_eq!(ProseAccent::Yetiv.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Tevir.secondary_cantillation_mark(), None);

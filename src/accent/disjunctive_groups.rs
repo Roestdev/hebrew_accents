@@ -37,7 +37,7 @@ pub(crate) fn resolve_disjunctive_group(accent: HebrewAccent) -> Option<Disjunct
 
         HebrewAccent::Prose(ProseAccent::Segolta)
         | HebrewAccent::Prose(ProseAccent::Shalshelet)
-        | HebrewAccent::Prose(ProseAccent::ZaqephQatan)
+        | HebrewAccent::Prose(ProseAccent::ZaqephQaton)
         | HebrewAccent::Prose(ProseAccent::ZaqephGadol)
         | HebrewAccent::Prose(ProseAccent::Tiphcha) => Some(DisjunctiveGroup::ProseTier2),
 
@@ -209,7 +209,7 @@ mod disjunctive_group_tests {
 
     #[test]
     fn test_resolve_prose_zaqeph_qatan_returns_tier2() {
-        let accent = HebrewAccent::Prose(ProseAccent::ZaqephQatan);
+        let accent = HebrewAccent::Prose(ProseAccent::ZaqephQaton);
         let result = resolve_disjunctive_group(accent);
         assert_eq!(result, Some(DisjunctiveGroup::ProseTier2));
     }
@@ -610,7 +610,7 @@ mod disjunctive_group_tests {
             ProseAccent::Atnach,
             ProseAccent::Segolta,
             ProseAccent::Shalshelet,
-            ProseAccent::ZaqephQatan,
+            ProseAccent::ZaqephQaton,
             ProseAccent::ZaqephGadol,
             ProseAccent::Tiphcha,
             ProseAccent::Revia,
