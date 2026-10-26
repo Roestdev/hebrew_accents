@@ -376,18 +376,42 @@ mod test_accent_trait {
     fn test_pseudo_accent_notes() {
         // Pseudo accents never have strength hierarchy
         assert_eq!(PseudoAccent::SophPasuq.notes(), Some(
-        "it doesn't carry any theological or interpretive meaning beyond marking a boundary",
+        "Function: Primarily denotes the end of a verse or sentence, analogous to a period, 
+        but not always.
+        However, its application is not absolute; certain scholarly traditions equate its 
+        disjunctive weight to that of Silluq, while other sholars treat them as as equal as the Silluq (a disjuntive).
+        It doesn't carry any theological or interpretive meaning beyond marking a boundary",
     ));
         assert_eq!(
             PseudoAccent::Maqqaph.notes(),
             Some(
-                "Can link two (or more) short words together after which 
-    they function as a single compound word bearing a single Hebrew accent.",
+                "Function: Serves as a hyphenation or binding agent that connects words 
+        into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
+        It does have the function of binding words together, just like the conjunctives.
+        Can link two (or more) short words together after which they function as 
+        a single compound word bearing a single primary Hebrew accent."
             )
         );
-        assert_eq!(PseudoAccent::Paseq.notes(), Some(
-        "It's indicating that someone or something is stopping temporarily or creating a pause.",
-    ));
+        assert_eq!(
+            PseudoAccent::Paseq.notes(),
+            Some(
+                "Function: Acts as a separator or divider. 
+        It may appear in conjunction with a Hebrew accent to modify its function but does 
+        not operate as an independent accent mark. 
+        It can be part of a Hebrew Accent, but not as an individual accent.
+        It's indicating that someone or something is stopping temporarily or creating a pause.
+         the paseq appears in the Tanakh as a standalone mark that is not part of a compound accent.
+        GEMMA
+        In Masoretic punctuation, the paseq serves as a \"minor pause\" or a separator, 
+        similar to a comma or a semicolon in English. 
+        While it often appears in conjunction with accents (such as the munah legarmeh, 
+        where it signals a specific melodic pause), it also occurs independently to 
+        separate phrases or words within a verse to clarify the reading and meaning.
+        In these instances, it acts as a structural divider rather than a musical modifier 
+        for a specific accent, indicating that the reader should make a brief pause 
+        before proceeding to the next word."
+            )
+        );
     }
     #[test]
     fn test_pseudo_accent_strength() {

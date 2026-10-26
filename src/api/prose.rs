@@ -423,6 +423,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.hebrew_name(), "טִפְחָא");
         assert_eq!(ProseAccent::Zarqa.hebrew_name(), "זַרְקָא");
         assert_eq!(ProseAccent::Pashta.hebrew_name(), "פַּשְׁטָא");
+        assert_eq!(ProseAccent::ShenePastin.hebrew_name(), "שְׁנֵ֨י פַּשְׁטִין֙");
         assert_eq!(ProseAccent::Yetiv.hebrew_name(), "יְתִיב");
         assert_eq!(ProseAccent::Tevir.hebrew_name(), "תְּבִיר");
         assert_eq!(ProseAccent::Geresh.hebrew_name(), "גֵּרֵישׁ");
@@ -478,6 +479,7 @@ mod test_accent_trait {
             ProseAccent::Pashta.hebrew_concept(),
             "extending, stretching out in length"
         );
+        assert_eq!(ProseAccent::ShenePastin.hebrew_concept(), "double pashta");
         assert_eq!(ProseAccent::Yetiv.hebrew_concept(), "resting or sitting");
         assert_eq!(
             ProseAccent::Tevir.hebrew_concept(),
@@ -542,12 +544,13 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Atnach.english_name(), "Atnach");
         assert_eq!(ProseAccent::Segolta.english_name(), "Segolta");
         assert_eq!(ProseAccent::Shalshelet.english_name(), "Shalshelet");
-        // TODO assert_eq!(ProseAccent::ZaqephQaton.english_name(), "Zaqeph Qatan");
+        assert_eq!(ProseAccent::ZaqephQaton.english_name(), "Zaqeph Qaton");
         assert_eq!(ProseAccent::ZaqephGadol.english_name(), "Zaqeph Gadol");
         assert_eq!(ProseAccent::Revia.english_name(), "Revia");
         assert_eq!(ProseAccent::Tiphcha.english_name(), "Tiphcha");
         assert_eq!(ProseAccent::Zarqa.english_name(), "Zarqa");
         assert_eq!(ProseAccent::Pashta.english_name(), "Pashta");
+        assert_eq!(ProseAccent::ShenePastin.english_name(), "Shene Pashtin");
         assert_eq!(ProseAccent::Yetiv.english_name(), "Yetiv");
         assert_eq!(ProseAccent::Tevir.english_name(), "Tevir");
         assert_eq!(ProseAccent::Geresh.english_name(), "Geresh");
@@ -594,6 +597,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.sbl_academic_name(), "ṭipḥāʾ");
         assert_eq!(ProseAccent::Zarqa.sbl_academic_name(), "zarqāʾ");
         assert_eq!(ProseAccent::Pashta.sbl_academic_name(), "pašṭāʾ");
+        assert_eq!(ProseAccent::ShenePastin.sbl_academic_name(), "šənê pašṭîn");
         assert_eq!(ProseAccent::Yetiv.sbl_academic_name(), "yətîb");
         assert_eq!(ProseAccent::Tevir.sbl_academic_name(), "təbîr");
         assert_eq!(ProseAccent::Geresh.sbl_academic_name(), "gērêš");
@@ -639,6 +643,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Zarqa.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Pashta.kind(), Some(AccentKind::Primary));
+        assert_eq!(ProseAccent::ShenePastin.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Yetiv.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Tevir.kind(), Some(AccentKind::Primary));
         assert_eq!(ProseAccent::Geresh.kind(), Some(AccentKind::Primary));
@@ -713,6 +718,10 @@ mod test_accent_trait {
         );
         assert_eq!(
             ProseAccent::Pashta.category(),
+            Some(AccentCategory::Disjunctive)
+        );
+        assert_eq!(
+            ProseAccent::ShenePastin.category(),
             Some(AccentCategory::Disjunctive)
         );
         assert_eq!(
@@ -808,6 +817,10 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.compound_type(), None);
         assert_eq!(ProseAccent::Zarqa.compound_type(), None);
         assert_eq!(ProseAccent::Pashta.compound_type(), None);
+        assert_eq!(
+            ProseAccent::ShenePastin.compound_type(),
+            Some(CompoundType::Standard)
+        );
         assert_eq!(ProseAccent::Yetiv.compound_type(), None);
         assert_eq!(ProseAccent::Tevir.compound_type(), None);
         assert_eq!(ProseAccent::Geresh.compound_type(), None);
@@ -906,7 +919,7 @@ mod test_accent_trait {
             ProseAccent::Zarqa.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{5ae}',
-                placement: CantillationMarkPlacement::AboveCenter,
+                placement: CantillationMarkPlacement::AboveLeft,
                 stress_position: Some(CantillationMarkStressPosition::Postpositive)
             }
         );
@@ -916,6 +929,14 @@ mod test_accent_trait {
                 symbol: '\u{599}',
                 placement: CantillationMarkPlacement::AboveLeft,
                 stress_position: Some(CantillationMarkStressPosition::Postpositive)
+            }
+        );
+        assert_eq!(
+            ProseAccent::ShenePastin.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a8}',
+                placement: CantillationMarkPlacement::AboveCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
             }
         );
         assert_eq!(
@@ -1089,6 +1110,14 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Zarqa.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Pashta.secondary_cantillation_mark(), None);
+        assert_eq!(
+            ProseAccent::ShenePastin.secondary_cantillation_mark(),
+            Some(CantillationMark {
+                symbol: '֙',
+                placement: CantillationMarkPlacement::AboveLeft,
+                stress_position: Some(crate::CantillationMarkStressPosition::Postpositive)
+            })
+        );
         assert_eq!(ProseAccent::Yetiv.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Tevir.secondary_cantillation_mark(), None);
         assert_eq!(ProseAccent::Geresh.secondary_cantillation_mark(), None);
@@ -1177,6 +1206,10 @@ mod test_accent_trait {
         assert_eq!(
             ProseAccent::Pashta.notes(),
             Some(r#"appears on the last syllable of the word, extending rightward."#)
+        );
+        assert_eq!(
+            ProseAccent::ShenePastin.notes(),
+            Some(r#"// TODO add note ShenePastin"#)
         );
         assert_eq!(
             ProseAccent::Yetiv.notes(),
@@ -1284,6 +1317,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.relative_strength(), Some(8));
         assert_eq!(ProseAccent::Zarqa.relative_strength(), Some(9));
         assert_eq!(ProseAccent::Pashta.relative_strength(), Some(10));
+        assert_eq!(ProseAccent::ShenePastin.relative_strength(), Some(10));
         assert_eq!(ProseAccent::Yetiv.relative_strength(), Some(11));
         assert_eq!(ProseAccent::Tevir.relative_strength(), Some(12));
         assert_eq!(ProseAccent::Geresh.relative_strength(), Some(13));
@@ -1331,6 +1365,10 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.group_level(), Some(GroupLevel::Tier2));
         assert_eq!(ProseAccent::Zarqa.group_level(), Some(GroupLevel::Tier3));
         assert_eq!(ProseAccent::Pashta.group_level(), Some(GroupLevel::Tier3));
+        assert_eq!(
+            ProseAccent::ShenePastin.group_level(),
+            Some(GroupLevel::Tier3)
+        );
         assert_eq!(ProseAccent::Yetiv.group_level(), Some(GroupLevel::Tier3));
         assert_eq!(ProseAccent::Tevir.group_level(), Some(GroupLevel::Tier3));
         assert_eq!(ProseAccent::Geresh.group_level(), Some(GroupLevel::Tier4));
@@ -1378,6 +1416,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.cantillation_symbol(), "אם֖ת");
         assert_eq!(ProseAccent::Zarqa.cantillation_symbol(), "אםת֮");
         assert_eq!(ProseAccent::Pashta.cantillation_symbol(), "אםת֙");
+        assert_eq!(ProseAccent::ShenePastin.cantillation_symbol(), "א֨םת֙");
         assert_eq!(ProseAccent::Yetiv.cantillation_symbol(), "א֚םת");
         assert_eq!(ProseAccent::Tevir.cantillation_symbol(), "אם֛ת");
         assert_eq!(ProseAccent::Geresh.cantillation_symbol(), "אם֜ת");
@@ -1415,6 +1454,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Tiphcha.alternate_names(), None);
         assert_eq!(ProseAccent::Zarqa.alternate_names(), None);
         assert_eq!(ProseAccent::Pashta.alternate_names(), None);
+        assert_eq!(ProseAccent::ShenePastin.alternate_names(), None);
         assert_eq!(ProseAccent::Yetiv.alternate_names(), None);
         assert_eq!(ProseAccent::Tevir.alternate_names(), None);
         assert_eq!(
@@ -1507,8 +1547,8 @@ mod tests {
 
     #[test]
     fn test_prose_accent_total_count() {
-        assert_eq!(ProseAccent::LEN, 28);
-        assert_eq!(ProseAccent::iter().count(), 28);
+        assert_eq!(ProseAccent::LEN, 29);
+        assert_eq!(ProseAccent::iter().count(), 29);
     }
 
     #[test]
@@ -1523,7 +1563,7 @@ mod tests {
             .filter(|a| matches!(a.category(), Some(crate::AccentCategory::Conjunctive)))
             .count();
 
-        assert_eq!(disjunctives, 18);
+        assert_eq!(disjunctives, 19);
         assert_eq!(conjunctives, 10);
     }
 
@@ -1562,24 +1602,25 @@ mod tests {
         assert_eq!(ProseAccent::Tiphcha.as_index(), 7);
         assert_eq!(ProseAccent::Zarqa.as_index(), 8);
         assert_eq!(ProseAccent::Pashta.as_index(), 9);
-        assert_eq!(ProseAccent::Yetiv.as_index(), 10);
-        assert_eq!(ProseAccent::Tevir.as_index(), 11);
-        assert_eq!(ProseAccent::Geresh.as_index(), 12);
-        assert_eq!(ProseAccent::Gershayim.as_index(), 13);
-        assert_eq!(ProseAccent::Pazer.as_index(), 14);
-        assert_eq!(ProseAccent::PazerGadol.as_index(), 15);
-        assert_eq!(ProseAccent::TelishaGedolah.as_index(), 16);
-        assert_eq!(ProseAccent::Legarmeh.as_index(), 17);
-        assert_eq!(ProseAccent::Munach.as_index(), 18);
-        assert_eq!(ProseAccent::Mahpakh.as_index(), 19);
-        assert_eq!(ProseAccent::Merkha.as_index(), 20);
-        assert_eq!(ProseAccent::MerkhaKephulah.as_index(), 21);
-        assert_eq!(ProseAccent::Darga.as_index(), 22);
-        assert_eq!(ProseAccent::Azla.as_index(), 23);
-        assert_eq!(ProseAccent::TelishaQetannah.as_index(), 24);
-        assert_eq!(ProseAccent::Galgal.as_index(), 25);
-        assert_eq!(ProseAccent::Meayla.as_index(), 26);
-        assert_eq!(ProseAccent::Meteg.as_index(), 27);
+        assert_eq!(ProseAccent::ShenePastin.as_index(), 10);
+        assert_eq!(ProseAccent::Yetiv.as_index(), 11);
+        assert_eq!(ProseAccent::Tevir.as_index(), 12);
+        assert_eq!(ProseAccent::Geresh.as_index(), 13);
+        assert_eq!(ProseAccent::Gershayim.as_index(), 14);
+        assert_eq!(ProseAccent::Pazer.as_index(), 15);
+        assert_eq!(ProseAccent::PazerGadol.as_index(), 16);
+        assert_eq!(ProseAccent::TelishaGedolah.as_index(), 17);
+        assert_eq!(ProseAccent::Legarmeh.as_index(), 18);
+        assert_eq!(ProseAccent::Munach.as_index(), 19);
+        assert_eq!(ProseAccent::Mahpakh.as_index(), 20);
+        assert_eq!(ProseAccent::Merkha.as_index(), 21);
+        assert_eq!(ProseAccent::MerkhaKephulah.as_index(), 22);
+        assert_eq!(ProseAccent::Darga.as_index(), 23);
+        assert_eq!(ProseAccent::Azla.as_index(), 24);
+        assert_eq!(ProseAccent::TelishaQetannah.as_index(), 25);
+        assert_eq!(ProseAccent::Galgal.as_index(), 26);
+        assert_eq!(ProseAccent::Meayla.as_index(), 27);
+        assert_eq!(ProseAccent::Meteg.as_index(), 28);
     }
 
     // ===== ITERATION TESTS =====
@@ -1587,7 +1628,7 @@ mod tests {
     #[test]
     fn test_enum_iter_all_variants() {
         let all_variants: Vec<ProseAccent> = ProseAccent::iter().collect();
-        assert_eq!(all_variants.len(), 28);
+        assert_eq!(all_variants.len(), 29);
         assert!(all_variants.contains(&ProseAccent::Silluq));
         assert!(all_variants.contains(&ProseAccent::Meteg));
         assert!(all_variants.contains(&ProseAccent::Segolta));
@@ -1641,7 +1682,7 @@ mod tests {
             }
         }
 
-        assert_eq!(disjunctive_count, 18);
+        assert_eq!(disjunctive_count, 19);
         assert_eq!(conjunctive_count, 10);
     }
 
@@ -1812,7 +1853,7 @@ mod tests {
         assert_eq!(all.first(), Some(&ProseAccent::Silluq));
         assert_eq!(all.last(), Some(&ProseAccent::Meteg));
         assert_eq!(all[0], ProseAccent::Silluq);
-        assert_eq!(all[27], ProseAccent::Meteg);
+        assert_eq!(all[28], ProseAccent::Meteg);
     }
 
     #[test]

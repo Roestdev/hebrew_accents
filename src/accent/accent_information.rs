@@ -974,9 +974,7 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
         separate phrases or words within a verse to clarify the reading and meaning.
         In these instances, it acts as a structural divider rather than a musical modifier 
         for a specific accent, indicating that the reader should make a brief pause 
-        before proceeding to the next word.
-
-        ",
+        before proceeding to the next word.",
     ),
     kind: None,
     category: None,
