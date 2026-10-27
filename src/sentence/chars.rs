@@ -54,6 +54,7 @@ pub(crate) const MERKHA_AS_CHAR: char = '\u{05A5}';
 pub(crate) const OLEH_AS_CHAR: char = '\u{05AB}';
 pub(crate) const MAQAF_AS_CHAR: char = '\u{05BE}';
 pub(crate) const PASEQ_AS_CHAR: char = '\u{05C0}';
+pub(crate) const QADMA_AS_CHAR: char = '\u{05A8}';
 pub(crate) const VERTICAL_LINE_AS_CHAR: char = '\u{007C}';
 
 /// alias for ZARQA

@@ -5,12 +5,12 @@ use crate::{Context, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, Sent
 
 use crate::api::find::{
     find_poetry_mehuppakh, find_poetry_merkha, find_poetry_revia_gadol, find_poetry_revia_qaton,
-    find_silluq,
+    find_prose_pashta, find_silluq,
 };
 use crate::sentence::{
     DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH, MERKHA, MERKHA_KEFULA, MUNAH,
-    PASHTA, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR,
-    TIPEHA, YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
+    PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPEHA,
+    YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
 use crate::sentence::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_POETRY_AZLA, FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH,
@@ -18,6 +18,7 @@ use crate::sentence::{
     RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH, RE_OUTER_POETRY_OLEH_WEYORED,
     RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
+    RE_PROSE_SHENE_PASHTIN,
 };
 
 impl SentenceContext {
@@ -74,7 +75,10 @@ impl SentenceContext {
                 self.sentence.contains(ZARQA)
             }
             HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => {
-                self.sentence.contains(PASHTA) // TODO add ShenePastin
+                find_prose_pashta(&self.sentence).is_some()
+            }
+            HebrewAccent::Prose(ProseAccent::ShenePastin) if self.ctx == Context::Prosaic => {
+                RE_PROSE_SHENE_PASHTIN.is_match(&self.sentence)
             }
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => {
                 self.sentence.contains(YETIV)
@@ -352,12 +356,71 @@ mod prose_accents {
     }
     #[test]
     fn test_contains_prose_pashta() {
-        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱ֙לֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
+        // sentence contains Pasta (Gen 1:5)
+        let sc = SentenceContext::new(
+            "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ",
+            Context::Prosaic,
+        );
         let binding = sc.unwrap();
         assert!(binding.contains_accent(ProseAccent::Pashta.into()));
-        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
+
+        // sentence contains Pasta (Gen 1:5) - wrong context
+        let sc = SentenceContext::new(
+            "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ",
+            Context::Poetic,
+        );
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(ProseAccent::Pashta.into()));
+
+        // sentence contains ShenePastin (Gen 1:22)
+        let sc = SentenceContext::new(
+            "ויב֧רך את֛ם אלה֖ים לאמ֑ר פּר֣וּ וּרב֗וּ וּמלא֤וּ את־המּ֨ים֙ בּיּמּ֔ים והע֖וף י֥רב בּאֽרץ׃",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::Pashta.into()));
+    }
+    #[test]
+    fn test_contains_prose_shene_pashtin() {
+        // Find a match in Hebrew text gen 1:22
+        let sc = SentenceContext::new(
+            "ויב֧רך את֛ם אלה֖ים לאמ֑ר פּר֣וּ וּרב֗וּ וּמלא֤וּ את־המּ֨ים֙ בּיּמּ֔ים והע֖וף י֥רב בּאֽרץ׃",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(ProseAccent::ShenePastin.into()));
+
+        // Wrong context
+        let sc = SentenceContext::new(
+            "ויב֧רך את֛ם אלה֖ים לאמ֑ר פּר֣וּ וּרב֗וּ וּמלא֤וּ את־המּ֨ים֙ בּיּמּ֔ים והע֖וף י֥רב בּאֽרץ׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::ShenePastin.into()));
+
+        // Alleen PASHTA
+        let sc = SentenceContext::new(
+            "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::ShenePastin.into()));
+
+        // Alleen QADMA
+        let sc = SentenceContext::new(
+            "ויּ֣אמר אלה֗ים יקּו֨וּ המּ֜ים מתּ֤חת השּׁמ֨ים אל־מק֣ום אח֔ד ותרא֖ה היּבּשׁ֑ה וֽיהי־כֽן׃",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::ShenePastin.into()));
+
+        // Geen PASHTA en QADMA
+        let sc = SentenceContext::new(
+            "ויּ֣אמר אלה֗ים יקּו֨וּ המּ֜ים מתּ֤חת השּׁמים אל־מק֣ום אח֔ד ותרא֖ה היּבּשׁ֑ה וֽיהי־כֽן׃",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::ShenePastin.into()));
     }
     #[test]
     fn test_contains_prose_yetiv() {

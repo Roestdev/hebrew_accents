@@ -4,8 +4,8 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 
 use crate::sentence::{
-    ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, REVIA, SHALSHELET, SILLUQ,
-    TSINNORIT, YORED,
+    ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, PASHTA, QADMA, REVIA,
+    SHALSHELET, SILLUQ, TSINNORIT, YORED,
 };
 
 // Pattern builders, validators
@@ -76,6 +76,15 @@ pub(crate) mod prose_patterns {
         let pattern = format!("{MUNAH}{NOT_FOLLOWED_BY_PASEQ_OR_VERTICAL_LINE}");
         FancyRegex::new(&pattern)
             .unwrap_or_else(|_| panic!("Invalid regex FA_RE_OUTER_PROSE_MUNACH: {}", pattern))
+    });
+
+    // ShenePashtin
+    // a QADMA followed by a PASHTA
+    // \u{05A8}\p{Hebrew}+\u{0599}
+    pub(crate) static RE_PROSE_SHENE_PASHTIN: Lazy<Regex> = Lazy::new(|| {
+        let pattern = format!("{QADMA}{HEBREW}+{PASHTA}");
+        Regex::new(&pattern)
+            .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_PROSE_MEAYLA: {}", pattern))
     });
 
     // A Meayla is a Tiphcha before Silluq or Atnach in the same word

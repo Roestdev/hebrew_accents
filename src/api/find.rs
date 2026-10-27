@@ -5,9 +5,9 @@ use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::sentence::{
     ATNACH, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH,
     MAQQAPH_AS_CHAR, MERKHA, MERKHA_KEFULA, MUNAH, OLEH_AS_CHAR, PASEQ, PASEQ_AS_CHAR, PASHTA,
-    PAZER, PAZER_GADOL, QADMA, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA, TELISHA_GEDOLAH,
-    TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR, YETIV, YORED_AS_CHAR,
-    ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
+    PAZER, PAZER_GADOL, QADMA, QADMA_AS_CHAR, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA,
+    TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR,
+    YETIV, YORED_AS_CHAR, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
 
 use crate::sentence::{
@@ -17,6 +17,7 @@ use crate::sentence::{
     RE_OUTER_POETRY_AZLA_LEGARMEH, RE_OUTER_POETRY_MEHUPPAKH_LEGARMEH,
     RE_OUTER_POETRY_OLEH_WEYORED, RE_OUTER_POETRY_REVIA_MUGRASH, RE_OUTER_POETRY_TSINNORIT_MAHPAKH,
     RE_OUTER_POETRY_TSINNORIT_MERKHA, RE_OUTER_PROSE_LEGARMEH, RE_OUTER_PROSE_MEAYLA,
+    RE_PROSE_SHENE_PASHTIN,
 };
 use crate::{Context, Match, SentenceContext};
 
@@ -137,10 +138,39 @@ impl<'a> SentenceContext {
                 .sentence
                 .find(ZARQA)
                 .map(|index| Match::new(&self.sentence, index, index + ZARQA.len())),
-            HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => self
-                .sentence // TODO add ShenePastin
-                .find(PASHTA)
-                .map(|index| Match::new(&self.sentence, index, index + PASHTA.len())),
+            HebrewAccent::Prose(ProseAccent::Pashta) if self.ctx == Context::Prosaic => {
+                // .sentence
+                // .find(PASHTA)
+                // .map(|index| Match::new(&self.sentence, index, index + PASHTA.len())),
+                if let Some((start, end)) = find_prose_pashta(&self.sentence) {
+                    Some(Match::new(&self.sentence, start, end))
+                } else {
+                    None
+                }
+            }
+            HebrewAccent::Prose(ProseAccent::ShenePastin) if self.ctx == Context::Prosaic => {
+                let outer_match = match RE_PROSE_SHENE_PASHTIN.find(&self.sentence) {
+                    Some(m) => {
+                        println!("\n==> RE_OUTER_PROSE_SHENE_PASHTIN: FOUND!");
+                        print!(
+                            "\touter match :: start:{} ; end:{} ; str:{}",
+                            m.start(),
+                            m.end(),
+                            m.as_str()
+                        );
+                        m
+                    }
+                    None => {
+                        println!("\n==> ProseAccent::ShenePastin is not found (outer match).");
+                        return None;
+                    }
+                };
+                Some(Match::new(
+                    &self.sentence,
+                    outer_match.start(),
+                    outer_match.end(),
+                ))
+            }
             HebrewAccent::Prose(ProseAccent::Yetiv) if self.ctx == Context::Prosaic => self
                 .sentence
                 .find(YETIV)
@@ -656,11 +686,45 @@ impl<'a> SentenceContext {
     }
 }
 
+pub(crate) fn find_prose_pashta(sentence: &str) -> Option<(usize, usize)> {
+    // Pashta (as a prose accent) is
+    //   not part of Shene Pastin (needs: variable Negative Lookbehind)
+    let target_char = PASHTA;
+    // define possible combinations
+    let possible_combinations_lookbehind = [QADMA_AS_CHAR];
+
+    // Check for the existence of the target character in the sentence
+    if !&sentence.contains(target_char) {
+        return None;
+    }
+    // Convert the sentence into a Vec<char> for character indexing
+    let char_vec: Vec<char> = as_char_slice(sentence);
+    // Find the indices of the target character within the sentence
+    let indices = indexes_target_char(target_char, &char_vec);
+    // loop over all character positions
+    for &index in &indices {
+        let is_part_of = is_part_of_two_code_point_accent_look_behind(
+            &char_vec,
+            target_char,
+            index,
+            &possible_combinations_lookbehind,
+            2,
+        );
+        if !is_part_of {
+            // println!(
+            //     "Found at least one target char, not part of another aaccent:: BREAK the loop"
+            // );
+            return Some((index, index + PASHTA.len()));
+        }
+    }
+    None
+}
+
 pub(crate) fn find_poetry_merkha(sentence: &str) -> Option<(usize, usize)> {
     // Merkha (as a poetry accent) is
-    //   not part of Oleh Weyored (needs Negative Lookbehind)
+    //   not part of Oleh Weyored (needs: variable Negative Lookbehind)
     //   AND
-    //   not part of Tsinnorit Merkha (needs Negative Lookbehind)
+    //   not part of Tsinnorit Merkha (needs: variable Negative Lookbehind)
     let target_char = MERKHA;
     // define possible combinations
     let possible_combinations_lookbehind = [TSINNORIT_AS_CHAR, OLEH_AS_CHAR];
@@ -696,7 +760,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<(usize, usize)> {
     // Mehupppakh (as a poetry accent)
     //   not part of Mehuppakh Legarmeh (needs Negative Lookahead)
     //   AND
-    //   not part of Tsinnorit Mahpakh (needs Negative Lookbehind)
+    //   not part of Tsinnorit Mahpakh (needs: variable Negative Lookbehind)
     let target_char = MAHPAKH;
     // define possible combinations
     let possible_combinations_lookbehind = [ZARQA_AS_CHAR];
@@ -737,7 +801,7 @@ pub(crate) fn find_poetry_mehuppakh(sentence: &str) -> Option<(usize, usize)> {
 
 pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<(usize, usize)> {
     // Revia Gadol is
-    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    //   not part of Revia Mugrash (needs: variable Negative Lookbehind)
     //   AND
     //   not followed by an Oleh Weyored (needs Negative Lookahead)
     let target_char = REVIA;
@@ -778,7 +842,7 @@ pub(crate) fn find_poetry_revia_gadol(sentence: &str) -> Option<(usize, usize)> 
 
 pub(crate) fn find_poetry_revia_qaton(sentence: &str) -> Option<(usize, usize)> {
     // Revia Qaton is
-    //   not part of Revia Mugrash (needs Negative Lookbehind)
+    //   not part of Revia Mugrash (needs: variable Negative Lookbehind)
     //   AND
     //   followed by an Oleh Weyored (needs Positive LookAhead)
     let target_char = REVIA;
@@ -1263,18 +1327,67 @@ mod unit_tests {
     }
     #[test]
     fn test_find_prose_pashta() {
-        // Pashta present
-        let sentence = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱ֙לֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
+        // sentence contains Pasta (Gen 1:5)
+        let sentence = "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
-        let expected = Match::new(sentence, 44, 46);
+        let expected = Match::new(sentence, 19, 21);
         assert_eq!(
             sc.unwrap().find_accent(ProseAccent::Pashta.into()),
             Some(expected)
         );
+
+        // sentence contains Pasta (Gen 1:5) - wrong context
+        let sentence = "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ";
+        let sc = SentenceContext::new(sentence, Context::Poetic);
+        assert_eq!(sc.unwrap().find_accent(ProseAccent::Pashta.into()), None);
+
         // No Pashta present
         let sentence = "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃";
         let sc = SentenceContext::new(sentence, Context::Prosaic);
         assert_eq!(sc.unwrap().find_accent(ProseAccent::Pashta.into()), None);
+    }
+    #[test]
+    fn test_find_prose_shene_pashtin() {
+        // Find a match in Hebrew text gen 1:22
+        let sentence = "ויב֧רך את֛ם אלה֖ים לאמ֑ר פּר֣וּ וּרב֗וּ וּמלא֤וּ את־המּ֨ים֙ בּיּמּ֔ים והע֖וף י֥רב בּאֽרץ׃";
+        let sc = SentenceContext::new(sentence, Context::Prosaic);
+        let expected = Match::new(sentence, 103, 111);
+        assert_eq!(
+            sc.unwrap().find_accent(ProseAccent::ShenePastin.into()),
+            Some(expected)
+        );
+
+        // Wrong context
+        let sentence = "ויב֧רך את֛ם אלה֖ים לאמ֑ר פּר֣וּ וּרב֗וּ וּמלא֤וּ את־המּ֨ים֙ בּיּמּ֔ים והע֖וף י֥רב בּאֽרץ׃";
+        let sc = SentenceContext::new(sentence, Context::Poetic);
+        assert_eq!(
+            sc.unwrap().find_accent(ProseAccent::ShenePastin.into()),
+            None
+        );
+
+        // Alleen PASHTA
+        let sentence = "ויּקר֨א אלה֤ים לאור֙ י֔ום ולח֖שׁך ק֣רא ל֑ילה וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום אחֽד׃ פ";
+        let sc = SentenceContext::new(sentence, Context::Prosaic);
+        assert_eq!(
+            sc.unwrap().find_accent(ProseAccent::ShenePastin.into()),
+            None
+        );
+
+        // Alleen QADMA
+        let sentence = "ויּ֣אמר אלה֗ים יקּו֨וּ המּ֜ים מתּ֤חת השּׁמ֨ים אל־מק֣ום אח֔ד ותרא֖ה היּבּשׁ֑ה וֽיהי־כֽן׃";
+        let sc = SentenceContext::new(sentence, Context::Prosaic);
+        assert_eq!(
+            sc.unwrap().find_accent(ProseAccent::ShenePastin.into()),
+            None
+        );
+
+        // Geen PASHTA en QADMA
+        let sentence = "ויּ֣אמר אלה֗ים יקּו֨וּ המּ֜ים מתּ֤חת השּׁמים אל־מק֣ום אח֔ד ותרא֖ה היּבּשׁ֑ה וֽיהי־כֽן׃";
+        let sc = SentenceContext::new(sentence, Context::Prosaic);
+        assert_eq!(
+            sc.unwrap().find_accent(ProseAccent::ShenePastin.into()),
+            None
+        );
     }
     #[test]
     fn test_find_prose_yetiv() {
