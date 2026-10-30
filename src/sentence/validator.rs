@@ -6,22 +6,29 @@ const MAX_SENTENCE_LENGTH: usize = 7_000;
 
 /// Validates a Hebrew sentence for proper character composition and structure.
 ///
-/// # Leading Whitespace
+/// # First character
 ///
-/// The following leading spaces are permitted:
-/// - Regular space (U+0020)
-/// - No-break space (U+00A0)
-/// - Thin space (U+2009)
+/// All sentences **MUST** start with normal consonant, and not a final consonant.
 ///
 /// Bidirectional control marks (LRM, RLM) and zero-width joiners (ZWJ, ZWNJ)
 /// are **NOT** permitted at the beginning of a sentence. Place them
 /// between words only.
 ///
+/// # Result
+///
 /// Returns `Ok(())` if the sentence:
-/// - Has a valid starting consonant (after skipping leading whitespace)
-/// - Contains only Hebrew Unicode block characters, valid spacing, and layout marks
+/// - Has a valid starting consonant
+/// - Contains only:
+///   - Hebrew Unicode block characters,
+///   - valid spacing,
+///   - Meteg layout marks
+///   - Alternative Paseq (ASCII Vertical bar)
+///   - Alternative SofPasuq (ASCII Colon)
+///   - Alternative Maqqaph (ASCII Hyphen-minus)
 /// - Doesn't exceed the maximum length
 /// - Contains only a single line (no newlines)
+///
+/// Returns an Error if the conditions are not met
 pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     // Check for empty sentence
     if s.is_empty() {
@@ -53,19 +60,19 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
         return Err(SentenceContextError::MultipleLines);
     }
 
-    // Find first non-whitespace character
-    let Some(first_non_ws) = s
-        .char_indices()
-        .find_map(|(idx, c)| (!c.is_whitespace()).then_some((idx, c)))
-    else {
-        return Err(SentenceContextError::EmptySentence);
-    };
+    let mut rest = s.char_indices();
+    let (_, first_char) = rest.next().expect("emptiness checked above");
 
-    // Validate first non-whitespace character
-    validate_first_non_white_char(first_non_ws.1)?;
-
-    // Validate remaining characters (including first)
-    for (idx, c) in s.char_indices().skip(first_non_ws.0) {
+    // First character is final form
+    if is_hbr_consonant_final(first_char) {
+        return Err(SentenceContextError::StartsWithFinalForm(first_char));
+    }
+    // First character is not a consonant
+    if !is_hbr_consonant_normal(first_char) {
+        return Err(SentenceContextError::StartsWithNonConsonant(first_char));
+    }
+    // Validate all other characters in the sentence
+    for (idx, c) in rest {
         if !is_valid_hebrew_char(c) {
             return Err(SentenceContextError::InvalidCharacter(c, idx));
         }
@@ -74,35 +81,22 @@ pub(crate) fn validate_sentence(s: &str) -> Result<(), SentenceContextError> {
     Ok(())
 }
 
-/// Validates the first non-whitespace character of a sentence.
-fn validate_first_non_white_char(c: char) -> Result<(), SentenceContextError> {
-    if !is_valid_hebrew_char(c) {
-        // Defensive: unreachable given the consonant checks above
-        return Err(SentenceContextError::InvalidCharacter(c, 0));
-    }
-
-    if is_hbr_consonant_final(c) {
-        return Err(SentenceContextError::StartsWithFinalForm(c));
-    }
-
-    if !is_hbr_consonant_normal(c) {
-        // TODO check if prepositive can be first char
-        return Err(SentenceContextError::StartsWithNonConsonant(c));
-    }
-
-    Ok(())
-}
-
 /// Checks if a character is valid within Hebrew text.
 ///
 /// Accepts:
-/// - Hebrew Unicode block (U+0590–U+05FF)
-/// - Whitespace characters (various space types)
-/// - Paseq alternatives (ASCII pipe)
+/// - Hebrew Unicode block (U+0590–U+05FF), **except** the ones marked as 'NOT USED'
+/// - A selection of whitespace like characters
+/// - A selection of bidi
+/// - A selection of whitespace like characters
+/// - A selection of whitespace like characters
 /// - Meteg layout control characters
+/// - Alternative Paseq (ASCII pipe)
+/// - Alternative SofPasuq (ASCII Colon)
+/// - Alternative Maqqaph (ASCII ASCII Hyphen-minus)
 fn is_valid_hebrew_char(c: char) -> bool {
     is_hbr_block(c)
-        || is_space_like_char(c)
+        || is_permitted_space_char(c)
+        || is_permitted_bidi_char(c)
         || is_meteg_layout_char(c)
         || is_paseq_alternative_char(c)
         || is_sof_pasuq_alternative_char(c)
@@ -110,32 +104,25 @@ fn is_valid_hebrew_char(c: char) -> bool {
 }
 
 /// Space-like characters (whitespace or bidirectional control marks)
-fn is_space_like_char(c: char) -> bool {
+/// the list is deliberate and closed
+fn is_permitted_space_char(c: char) -> bool {
     matches!(
         c,
         '\u{0020}' |  // SPACE
         '\u{00A0}' |  // NO-BREAK SPACE
         '\u{200B}' |  // ZERO WIDTH SPACE (accidental web copy)
-        '\u{200E}' |  // LEFT-TO-RIGHT MARK
-        '\u{200F}' |  // RIGHT-TO-LEFT MARK
         '\u{2009}' |  // THIN SPACE
         '\u{205F}' |  // MEDIUM MATHEMATICAL SPACE
         '\u{3000}' // IDEOGRAPHIC SPACE
     )
 }
 
-/// Alternative paseq character (ASCII vertical bar)
-fn is_paseq_alternative_char(c: char) -> bool {
-    c == '|'
-}
-
-/// Alternative sof pasuq character (ASCII semicolon)
-fn is_sof_pasuq_alternative_char(c: char) -> bool {
-    c == ':'
-}
-/// Alternative sof pasuq character (ASCII semicolon)
-fn is_maqqaph_alternative_char(c: char) -> bool {
-    c == '-'
+fn is_permitted_bidi_char(c: char) -> bool {
+    matches!(
+        c,
+        '\u{200E}' |  // LEFT-TO-RIGHT MARK
+        '\u{200F}' // RIGHT-TO-LEFT MARK
+    )
 }
 
 /// Layout control characters for meteg positioning
@@ -148,6 +135,19 @@ fn is_meteg_layout_char(c: char) -> bool {
     )
 }
 
-#[cfg(test)]
-mod tests {
+/// Alternative Paseq character (ASCII Vertical bar)
+fn is_paseq_alternative_char(c: char) -> bool {
+    c == '|' // U+007C
 }
+
+/// Alternative Sof Pasuq character (ASCII Colon)
+fn is_sof_pasuq_alternative_char(c: char) -> bool {
+    c == ':' // U+003A
+}
+/// Alternative maqqaph character (ASCII Hyphen-minus)
+fn is_maqqaph_alternative_char(c: char) -> bool {
+    c == '-' // U+002D
+}
+
+#[cfg(test)]
+mod tests {}

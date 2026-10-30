@@ -1,4 +1,8 @@
-use crate::{api::context::Context, sentence::detect_context_from_sentence, SentenceContextError};
+use crate::{
+    api::context::Context,
+    sentence::{detect_context_from_sentence, validate_sentence},
+    SentenceContextError,
+};
 
 /// This is a convenience function for trying to detect the context without creating a
 /// [`crate::SentenceContext`] instance first.
@@ -16,6 +20,7 @@ use crate::{api::context::Context, sentence::detect_context_from_sentence, Sente
 /// }
 /// ```
 pub fn try_derive_context(sentence: &str) -> Result<Context, SentenceContextError> {
+    validate_sentence(&sentence)?;
     detect_context_from_sentence(sentence)
 }
 

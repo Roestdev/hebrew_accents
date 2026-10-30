@@ -1,4 +1,22 @@
+use crate::sentence::PASHTA_AS_CHAR;
 use crate::sentence::validator::validate_sentence;
+use crate::sentence::ATNAH_HAFUKH_AS_CHAR;
+use crate::sentence::DARGA_AS_CHAR;
+use crate::sentence::DECHI_AS_CHAR;
+use crate::sentence::GERESH_MUQDAM_AS_CHAR;
+use crate::sentence::GERSHAYIM_AS_CHAR;
+use crate::sentence::ILUY_AS_CHAR;
+use crate::sentence::MERKHA_KEFULA_AS_CHAR;
+use crate::sentence::OLEH_AS_CHAR;
+use crate::sentence::QARNEY_PARA_AS_CHAR;
+use crate::sentence::SEGOL_AS_CHAR;
+use crate::sentence::TELISHA_GEDOLAH_AS_CHAR;
+use crate::sentence::TELISHA_QETANA_AS_CHAR;
+use crate::sentence::TEVIR_AS_CHAR;
+use crate::sentence::TSINNORIT_AS_CHAR;
+use crate::sentence::YETIV_AS_CHAR;
+use crate::sentence::ZAQEF_GADOL_AS_CHAR;
+use crate::sentence::ZAQEF_QATAN_AS_CHAR;
 use crate::Context;
 use crate::SentenceContextError;
 
@@ -15,18 +33,18 @@ pub(crate) fn detect_context_from_sentence(
         // Check if this char is a prose-exclusive accent
         if matches!(
             c,
-            '\u{0592}' // Segol
-                | '\u{0594}' // Zaqeph Qatan
-                | '\u{0595}' // Zaqef Gadol
-                | '\u{0599}' // Pashta
-                | '\u{059B}' // Tevir
-                | '\u{059A}' // Yetiv
-                | '\u{059E}' // Gershayim
-                | '\u{059F}' // Qarney Para
-                | '\u{05A0}' // Telisha Gedolah
-                | '\u{05A6}' // Merkha Khfula
-                | '\u{05A7}' // Darga
-                | '\u{05A9}' // Qadma
+            SEGOL_AS_CHAR // Segol
+                | ZAQEF_QATAN_AS_CHAR // Zaqeph Qatan
+                | ZAQEF_GADOL_AS_CHAR // Zaqef Gadol
+                | PASHTA_AS_CHAR // Pashta
+                | TEVIR_AS_CHAR // Tevir
+                | YETIV_AS_CHAR // Yetiv
+                | GERSHAYIM_AS_CHAR // Gershayim
+                | QARNEY_PARA_AS_CHAR // Qarney Para
+                | TELISHA_GEDOLAH_AS_CHAR // Telisha Gedolah
+                | MERKHA_KEFULA_AS_CHAR
+                | DARGA_AS_CHAR // Darga
+                | TELISHA_QETANA_AS_CHAR
         ) {
             could_be_prose = true;
         }
@@ -34,39 +52,28 @@ pub(crate) fn detect_context_from_sentence(
         // Check if this char is a poetry-exclusive accent
         if matches!(
             c,
-            '\u{0598}' | // Tsinnorit
-            '\u{059D}' | // Geresh Muqdam
-            '\u{05A2}' | // Atnach Hafukh 
-            '\u{05AB}' | // Ole
-            '\u{05AC}' | // Illuy
-            '\u{05AD}' // Dechi
+            TSINNORIT_AS_CHAR  // \u{0598}
+            | GERESH_MUQDAM_AS_CHAR // Geresh Muqdam
+            | ATNAH_HAFUKH_AS_CHAR  // Atnach Hafukh 
+            | OLEH_AS_CHAR  // \u{05AB}
+            | ILUY_AS_CHAR  // \u{05AC}
+            | DECHI_AS_CHAR // \u{05AD};
         ) {
             could_be_poetry = true;
-        }
-
-        // ⭐ EARLY EXIT HERE ⭐
-        // If both flags are true, we can STOP immediately
-        if could_be_prose && could_be_poetry {
-            return Err(SentenceContextError::DerivationFailed(
-                "Unique prose and poetry accent markers identified",
-            ));
         }
     }
 
     match (could_be_prose, could_be_poetry) {
-        (true, false) => Ok(Context::Prosaic),
+        (false, false) => Err(SentenceContextError::InsufficientData("// TODO")),
         (false, true) => Ok(Context::Poetic),
-        (false, false) => Err(SentenceContextError::DerivationFailed(
-            "No unique prose or poetry accent markers identified",
-        )),
-        // Unreachable due to early exit above
-        _ => unreachable!(),
+        (true, false) => Ok(Context::Prosaic),
+        (true, true) => Err(SentenceContextError::Ambiguous("// TODO")),
     }
 }
 
 #[cfg(test)]
 mod prose_only_detection {
-    
+
     // ============================================================
     // PROSE-ONLY DETECTION PATHS
     // ============================================================
@@ -74,31 +81,27 @@ mod prose_only_detection {
 
 #[cfg(test)]
 mod poetry_only_detection {
-     // ============================================================
+    // ============================================================
     // POETRY-ONLY DETECTION PATHS
     // ============================================================
-
 }
-
 
 #[cfg(test)]
 mod prose_and_poetry_detection {
     // ============================================================
-    // BOTH DETECTED (EARLY EXIT) 
+    // BOTH DETECTED (EARLY EXIT)
     // ============================================================
-
 }
- #[cfg(test)]
-mod no_ganrantee_detection {
-   // ============================================================
+#[cfg(test)]
+mod no_signal_detection {
+    // ============================================================
     // VALIDATION ERROR PROPAGATION
     // ============================================================
-
 }
 
- #[cfg(test)]
+#[cfg(test)]
 mod edge_cases {
-   // ============================================================
+    // ============================================================
     // EDGE CASES AND BOUNDARIES
     // ============================================================
 }
