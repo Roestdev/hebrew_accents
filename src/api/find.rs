@@ -1843,31 +1843,30 @@ mod unit_tests {
     }
     #[test]
     fn test_find_poetry_revia_mugrash() {
-        // Revia and Geresh (Ps 32:3)
-        let sentence = "בְּ֝שַׁאֲגָתִ֗י";
+        // Geresh Muqdam and Revia
+        let sentence = "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        let expected = Match::new(sentence, 6, 28);
+        let expected = Match::new(sentence, 77, 83);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaMugrash.into()),
             Some(expected)
         );
-        // Revia and Geresh (Ps 110:6) - accent on a single character
-        let sentence = "יָדִ֣ין בַּ֭גּוֹיִם מָלֵ֣א גְוִיּ֑וֹת מָ֥חַץ רֹ֝֗אשׁ עַל־אֶ֥רֶץ רַבָּֽה׃";
+        // Geresh and Revia
+        let sentence = "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֜א֗ין יב֥א עזרֽי׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
-        let expected = Match::new(sentence, 89, 93);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaMugrash.into()),
-            Some(expected)
+            None
         );
         // Only Revia
-        let sentence = " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃";
+        let sentence = "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaMugrash.into()),
             None
         );
         // Only Geresh
-        let sentence = " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝אין יב֥א עזרֽי׃";
+        let sentence = "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝אין יב֥א עזרֽי׃";
         let sc = SentenceContext::new(sentence, Context::Poetic);
         assert_eq!(
             sc.unwrap().find_accent(PoetryAccent::ReviaMugrash.into()),

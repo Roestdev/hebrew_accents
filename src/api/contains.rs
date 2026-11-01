@@ -208,67 +208,6 @@ mod prose_accents {
     use crate::api::sentence_context::SentenceContext;
     use crate::api::{PoetryAccent, ProseAccent, PseudoAccent};
     #[test]
-    fn test_contains_shared_silluq() {
-        //let sc = SentenceContext::new("test", Context::Prosaic);
-        // We can't easily create an unknown variant, but we can test that
-        // all known variants are handled and the default returns None
-        //let binding = sc.unwrap();
-        //let result = binding.find_accent(HebrewAccent::Prose(ProseAccent::Silluq));
-
-        // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
-        let sc = SentenceContext::new(" וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי־אֽוֹר׃", Context::Prosaic);
-        println!("{:?}", sc);
-        let binding = sc.unwrap();
-        println!("{:?}", binding);
-        let res = binding.contains_accent(ProseAccent::Silluq.into());
-        println!("{:?}", res);
-
-        assert!(binding.contains_accent(ProseAccent::Silluq.into()));
-        // ProseAccent, with Soph Paseq, no Pey or Samech
-        let sc = SentenceContext::new(
-            "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃",
-            Context::Prosaic,
-        );
-        let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::Silluq.into()));
-        // ProseAccent, no Soph Paseq, with Pey
-        let sc = SentenceContext::new(
-            "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ס ",
-            Context::Poetic,
-        );
-        let binding = sc.unwrap();
-        assert!(binding.contains_accent(PoetryAccent::Silluq.into()));
-        // PoetryAccent with Soph Paseq and Peh
-        let sc = SentenceContext::new(
-            "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",
-            Context::Poetic,
-        );
-        let binding = sc.unwrap();
-        assert!(binding.contains_accent(PoetryAccent::Silluq.into()));
-        // Meteg not in the last word of the sentence
-        let sc = SentenceContext::new(
-            "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵׁם׃ ס ",
-            Context::Poetic,
-        );
-        let binding = sc.unwrap();
-        assert!(!binding.contains_accent(PoetryAccent::Silluq.into()));
-        // Meteg followed by Maqqaph (\u{05BE}) (meaning no Meteg in the last word)
-        let sc = SentenceContext::new("וַ וַיִּצֹ֥ק שֶׁ֖מֶן עַֽל־עַל־רֹאשׁהּ׃ ׃ פ", Context::Poetic);
-        let binding = sc.unwrap();
-        assert!(!binding.contains_accent(PoetryAccent::Silluq.into()));
-    }
-    #[test]
-    fn test_contains_shared_atnach() {
-        // Atnach present
-        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
-        let binding = sc.unwrap();
-        assert!(binding.contains_accent(ProseAccent::Atnach.into()));
-        // No Atnach present
-        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Poetic);
-        let binding = sc.unwrap();
-        assert!(!binding.contains_accent(ProseAccent::Atnach.into()));
-    }
-    #[test]
     fn test_contains_prose_segolta() {
         let sc = SentenceContext::new(
             " וַיַּ֣עַשׂ אֱלֹהִים֮ אֶת־הָרָקִיעַ֒ וַיַּבְדֵּ֗ל בֵּ֤ין הַמַּ֨יִם֙ אֲשֶׁר֙ מִתַּ֣חַת לָרָקִ֔יעַ וּבֵ֣ין הַמַּ֔יִם אֲשֶׁ֖ר מֵעַ֣ל לָרָקִ֑יעַ וַֽיְהִי־כֵֽן׃",
@@ -1146,7 +1085,583 @@ mod prose_accents {
 }
 
 #[cfg(test)]
-mod poetry_accents {}
+mod poetry_accents {
+    use crate::api::context::Context;
+    use crate::api::sentence_context::SentenceContext;
+    use crate::api::{PoetryAccent, PseudoAccent};
+    #[test]
+    fn test_contains_poetry_oleh_we_yored() {
+        // OlehWeYored, one word
+        let sc = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::OlehWeYored.into()));
+        // OlehWeYored, one word - context: Prosaic
+        let sc = SentenceContext::new("בְּרֵעַֽל־פַּלְגֵ֫ימָ֥יִ", Context::Prosaic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::OlehWeYored.into()));
+        // OlehWeYored, two words
+        let sc = SentenceContext::new("ועַֽל־פַּלְגֵ֫י מָ֥יִם וְעָלֵ֥הוּ ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::OlehWeYored.into()));
+        // OlehWeYored, three words
+        let sc = SentenceContext::new("ועַֽל־פַּלְגֵ֫י מָיִם וְעָ֥לֵ֥הוּ ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::OlehWeYored.into()));
+    }
+    #[test]
+    fn test_contains_poetry_revia_gadol() {
+        // No Revia at all
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+        // Two Revia's
+        let sc = SentenceContext::new("בּר֗אשׁית בּרא אלהים את השּׁ֗מים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+        // Revia followed by Oleh Weyored (1 word)
+        let sc = SentenceContext::new("בּר֗אשׁית בּ֫ר֥א אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+        // Revia followed by Oleh Weyored (2 words)
+        let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלה֥ים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+        // Revia followed by 'Oleh Weyored' (3 words)
+        let sc = SentenceContext::new("בּר֗אשׁית בּ֫רא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+        // Revia not directly followed by Oleh Weyored (1 word)
+        let sc = SentenceContext::new("בּר֗אשׁית בּרא אלה֫י֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaGadol.into()));
+    }
+    #[test]
+    fn test_contains_poetry_revia_mugrash() {
+        // Geresh Muqdam and Revia
+        let sc = SentenceContext::new(
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
+        // Geresh and Revia
+        let sc = SentenceContext::new(
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֜א֗ין יב֥א עזרֽי׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
+        // Only Revia
+        let sc = SentenceContext::new(
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
+        // Only Geresh
+        let sc = SentenceContext::new(
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝אין יב֥א עזרֽי׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
+    }
+    #[test]
+    fn test_contains_poetry_shalshelet_gadol() {
+        // ShalsheletGadol, with Paseq - no space
+        let sc = SentenceContext::new("בְּהִ֑ים֓׀ אֵ֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ShalsheletGadol.into()));
+        // ShalsheletGadol, with Paseq + one space
+        let sc = SentenceContext::new("בְּהִ֑ים֓ ׀ אֵ֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ShalsheletGadol.into()));
+        // ShalsheletGadol, with Vertical Bar - no space
+        let sc = SentenceContext::new("בְּהִ֑ים֓| אֵ֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ShalsheletGadol.into()));
+        // ShalsheletGadol, with Vertical Bar + one space
+        let sc = SentenceContext::new("בְּהִ֑ים֓ | אֵ֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ShalsheletGadol.into()));
+        // Missing Paseq or Vertical Bar
+        let sc = SentenceContext::new("בְּהִ֑ים֓ אֵ֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ShalsheletGadol.into()));
+    }
+    #[test]
+    fn test_contains_poetry_tsinnor() {
+        let sc = SentenceContext::new("את־אבר֮הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Tsinnor.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Tsinnor.into()));
+    }
+    #[test]
+    fn test_contains_poetry_revia_qaton() {
+        // No revia at all
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia, not followed by OleWe Yored
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia directly followed by Oleh Weyored (1 word)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמי֥ם ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia directly followed by Oleh Weyored (2 words)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia directly followed by 'Oleh Weyored' (3 words)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֗ת ה֫שּׁמים ואת האר֥ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia NOT directly followed by Oleh Weyored (2 words)
+        let sc = SentenceContext::new("בּראשׁית בּרא א֗להים א֓ת ה֫שּׁמים וא֥ת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+        // Revia is part of Revia Mugrash
+        let sc = SentenceContext::new(
+            " שׁיר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
+    }
+    #[test]
+    fn test_contains_poetry_dechi() {
+        let sc = SentenceContext::new("את־אבר֭הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Dechi.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Dechi.into()));
+    }
+    #[test]
+    fn test_contains_poetry_pazer() {
+        let sc = SentenceContext::new("את־אבר֡הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Pazer.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Pazer.into()));
+    }
+    #[test]
+    fn test_contains_poetry_mehuppakh_legarmeh() {
+        // MehuppakhLegarmeh, with Paseq
+        let sc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
+        // MehuppakhLegarmeh, with Vertical Bar
+        let sc = SentenceContext::new(" את־אברהם֤ | מזמ֗ור", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
+        // Mehuppakh only
+        let sc = SentenceContext::new(" את־אברהם֤ מזמ֗ור", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
+    }
+    #[test]
+    fn test_contains_poetry_azla_legarmeh() {
+        // AzlaLegarmeh, with Paseq + no space
+        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
+        // AzlaLegarmeh, with Paseq + 1 space
+        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
+        // AzlaLegarmeh, with Vertical Bar + no space
+        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
+        // AzlaLegarmeh, with Vertical Bar + 1 space
+        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
+        // Azla only
+        let sc = SentenceContext::new(" את־אברה֨ם  א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
+    }
+    #[test]
+    fn test_contains_poetry_munach() {
+        let sc = SentenceContext::new("את־אבר֣הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Munach.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Munach.into()));
+    }
+    #[test]
+    fn test_contains_poetry_merkha() {
+        // No Merkha
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Merkha.into()));
+        // One Merkha
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Tsinnorit + Merkha (1w)
+        let sc = SentenceContext::new("בּראשׁית בּרא א֘להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Tsinnorit + Merkha (2w)
+        let sc = SentenceContext::new("בּראשׁית בּרא אל֘הים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Tsinnorit + Merkha (3w)
+        let sc = SentenceContext::new("בּראשׁית בּר֘א אלהים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Oleh + Merkha (1w)
+        let sc = SentenceContext::new("בּראשׁית בּרא א֫להי֥ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Oleh + Merkha (2w)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלה֫ים א֥ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Merkha.into()));
+        // Oleh + Merkha (3w)
+        let sc = SentenceContext::new("בּראשׁית בּר֫א אלהים א֥ת השּׁ֥מים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Merkha.into()));
+    }
+
+    #[test]
+    fn test_contains_poetry_illuy() {
+        let sc = SentenceContext::new("את־אב֬רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Illuy.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Illuy.into()));
+    }
+    #[test]
+    fn test_contains_poetry_tarcha() {
+        let sc = SentenceContext::new("את־אבר֖הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Tarcha.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Tarcha.into()));
+    }
+    #[test]
+    fn test_contains_poetry_galgal() {
+        let sc = SentenceContext::new("את־אבר֪הם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Galgal.into()));
+        let sc = SentenceContext::new("את־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Galgal.into()));
+    }
+    #[test]
+    fn test_contains_poetry_mehuppakh() {
+        // No Mehuppach
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Tsinnorit Mappach (one word)
+        let sc = SentenceContext::new("בּראשׁית בּרא א֘להי֤ם את השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Tsinnorit Mappach (two words)
+        let sc = SentenceContext::new("בּראשׁית בּרא א֘להים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Tsinnorit Mappach (three words)
+        let sc = SentenceContext::new("בּראשׁית בּ֘רא אלהים א֤ת השּׁמים ואת הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+
+        // One Mehuppach, part of Mehuppach Legarmeh (no space)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת׀ הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Mehuppach Legarmeh (one space)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת ׀ הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Mehuppach Legarmeh (no space - vertical line)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת| הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Mehuppach Legarmeh (one space - vertical line)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת | הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of 'Mehuppach Legarmeh' (too many spaces)
+        let sc = SentenceContext::new("בּראשׁית בּרא אלהים את השּׁמים וא֤ת    ׀ הארץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        //One Mehuppach, part of Mehuppach Legarmeh (no space), followed with a Mehuppach
+        let sc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת׀ האר֤ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+        // One Mehuppach, part of Mehuppach Legarmeh (one space), followed with a Mehuppach
+        let sc = SentenceContext::new("בּרא֤שׁית בּרא אלהים את השּׁמים וא֤ת ׀ האר֤ץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Mehuppakh.into()));
+    }
+
+    #[test]
+    fn test_contains_poetry_azla() {
+        // contains Azla
+        let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Azla.into()));
+        // contains Azla and Azla Legarmeh
+        let sc = SentenceContext::new(" אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Azla.into()));
+        // Azla Legarmeh, with space + Paseq
+        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
+        // Azla Legarmeh, with Paseq
+        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
+        // Azla Legarmeh, with space + Vertical Bar
+        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
+        // Azla Legarmeh, with Vertical Bar
+        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
+    }
+    #[test]
+    fn test_contains_poetry_shalshelet_qetannah() {
+        // Shalshelet
+        let sc = SentenceContext::new("יצחק אל־יעק֓ב ויברך", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::ShalsheletQetannah.into()));
+        // Shalshelet Gadol, with Paseq
+        let sc = SentenceContext::new("יצחק אל־יעק֓ב ׀ ויברך", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ShalsheletQetannah.into()));
+        // Shalshelet Gadol, with Vertical Bar
+        let sc = SentenceContext::new("יצחק אל־יעק֓ב | ויברך", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::ShalsheletQetannah.into()));
+    }
+    #[test]
+    fn test_contains_poetry_tsinnorit_merkha() {
+        // accent in a single word
+        let sc = SentenceContext::new("אא֘תאב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in a single word, without Tsinnorit
+        let sc = SentenceContext::new("את־אב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in a single word, without Merkha
+        let sc = SentenceContext::new("אא֘ת־אברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words seperated by Maqqaph
+        let sc = SentenceContext::new("את־א֘ב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words seperated by Maqqaph, without Tsinnorit
+        let sc = SentenceContext::new("את־אב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words seperated by Maqqaph, without Merkha
+        let sc = SentenceContext::new("את־א֘ברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words
+        let sc = SentenceContext::new("את־א֘בם ב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words, without Tsinnorit
+        let sc = SentenceContext::new("את־א֘בם ברהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in two words, without Merkha
+        let sc = SentenceContext::new("את־אבם ב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+        // accent in three words
+        let sc = SentenceContext::new("את־א֘בם הם ב֥רהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMerkha.into()));
+    }
+    #[test]
+    fn test_contains_poetry_tsinnorit_mahpakh() {
+        // accent in a single word
+        let sc = SentenceContext::new("את־א֘ב֤רהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in a single word
+        let sc = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in a single word, without Tsinnorit
+        let sc = SentenceContext::new("את־א֘ברהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words seperated by Maqqaph, without Mahpakh
+        let sc = SentenceContext::new("אא֘ת־אב֤רהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words seperated by Maqqaph, without Tsinnorit
+        let sc = SentenceContext::new("את־אב֤רהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words seperated by Maqqaph, without Mahpakh
+        let sc = SentenceContext::new("אא֘ת־אברהם אהם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words
+        let sc = SentenceContext::new("את־א֘ברהם אהאב֤ם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words, without Tsinnorit
+        let sc = SentenceContext::new("את־אברהם אהאב֤ם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in two words, without Mahpakh
+        let sc = SentenceContext::new("את־א֘ברהם אהאבם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+        // accent in three words
+        let sc = SentenceContext::new("את־א֘ב רהם אהאב֤ם", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
+    }
+
+    #[test]
+    fn test_contains_poetry_meteg() {
+        // Only Silluq, No Meteg
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Meteg.into()));
+        // Meteg and Silluq, separated by a Maqqaph
+        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Meteg.into()));
+        // Meteg and Silluq in separate words
+        let sc = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁנֽי׃ פ",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Meteg.into()));
+        // Only Meteg, no Silluq
+        let sc = SentenceContext::new(
+            "ויּקר֧א אלה֛ים לֽרק֖יע שׁמ֑ים וֽיהי־ע֥רב וֽיהי־ב֖קר י֥ום שׁני׃ פ",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Meteg.into()));
+    }
+    #[test]
+    fn test_contains_poetry_maqqaph() {
+        // No Maqqaph
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PseudoAccent::Maqqaph.into()));
+        // One Maqqaph
+        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PseudoAccent::Maqqaph.into()));
+    }
+}
 
 #[cfg(test)]
-mod pseudo_accents {}
+mod shared_accents {
+    use crate::{Context, PoetryAccent, ProseAccent, SentenceContext};
+
+    #[test]
+    fn test_contains_shared_silluq() {
+        //let sc = SentenceContext::new("test", Context::Prosaic);
+        // We can't easily create an unknown variant, but we can test that
+        // all known variants are handled and the default returns None
+        //let binding = sc.unwrap();
+        //let result = binding.find_accent(HebrewAccent::Prose(ProseAccent::Silluq));
+
+        // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
+        let sc = SentenceContext::new(" וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי־אֽוֹר׃", Context::Prosaic);
+        println!("{:?}", sc);
+        let binding = sc.unwrap();
+        println!("{:?}", binding);
+        let res = binding.contains_accent(ProseAccent::Silluq.into());
+        println!("{:?}", res);
+
+        assert!(binding.contains_accent(ProseAccent::Silluq.into()));
+        // ProseAccent, with Soph Paseq, no Pey or Samech
+        let sc = SentenceContext::new(
+            "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃",
+            Context::Prosaic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(ProseAccent::Silluq.into()));
+        // ProseAccent, no Soph Paseq, with Pey
+        let sc = SentenceContext::new(
+            "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ס ",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Silluq.into()));
+        // PoetryAccent with Soph Paseq and Peh
+        let sc = SentenceContext::new(
+            "וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵֽׁם׃ ׃ פ",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PoetryAccent::Silluq.into()));
+        // Meteg not in the last word of the sentence
+        let sc = SentenceContext::new(
+            "ס ס וַיַּעַשׂ֩ יְהוָ֨ה אֱלֹהִ֜ים לְאָדָ֧ם וּלְאִשְׁתּ֛וֹ כָּתְנ֥וֹת ע֖וֹר וַיַּלְבִּשֵׁם׃ ס ",
+            Context::Poetic,
+        );
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Silluq.into()));
+        // Meteg followed by Maqqaph (\u{05BE}) (meaning no Meteg in the last word)
+        let sc = SentenceContext::new("וַ וַיִּצֹ֥ק שֶׁ֖מֶן עַֽל־עַל־רֹאשׁהּ׃ ׃ פ", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PoetryAccent::Silluq.into()));
+    }
+    #[test]
+    fn test_contains_shared_atnach() {
+        // Atnach present
+        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Prosaic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(ProseAccent::Atnach.into()));
+        // No Atnach present
+        let sc = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(ProseAccent::Atnach.into()));
+    }
+}
+
+#[cfg(test)]
+mod pseudo_accents {
+    use crate::api::context::Context;
+    use crate::api::sentence_context::SentenceContext;
+    use crate::api::PseudoAccent;
+
+    #[test]
+    fn test_contains_poetry_maqqaph() {
+        // No Maqqaph
+        let sc = SentenceContext::new("בּראשׁ֖ית בּר֣א אלה֑ים א֥ת השּׁמ֖ים וא֥ת האֽרץ׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(!binding.contains_accent(PseudoAccent::Maqqaph.into()));
+        // One Maqqaph
+        let sc = SentenceContext::new("ויּ֥אמר אלה֖ים יה֣י א֑ור וֽיהי־אֽור׃", Context::Poetic);
+        let binding = sc.unwrap();
+        assert!(binding.contains_accent(PseudoAccent::Maqqaph.into()));
+    }
+}

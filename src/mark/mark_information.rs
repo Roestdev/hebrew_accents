@@ -179,18 +179,17 @@ pub(crate) const MARK_GERESH: MarkMetaData = mark_meta_data_constructor(
     "0xd6 0x9c",
 );
 
-// Geresh Muqdam is DISABLED - see ticket
 // ============================================================================
 //  GERESH MUQDAM (U+059D)
 // ============================================================================
-// pub(crate) const MARK_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
-//     '֜',?
-//     MarkPlacement::AboveCenter,?
-//     StressPosition::Impositive,?
-//     "HEBREW ACCENT GERESH MUQDAM",
-//     "U+059D",
-//     "0xd6 0x9d",
-// );
+pub(crate) const MARK_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
+    '֜',
+    MarkPlacement::AboveRight,
+    StressPosition::Prepositive,
+    "HEBREW ACCENT GERESH MUQDAM",
+    "U+059D",
+    "0xd6 0x9d",
+);
 
 // ============================================================================
 // GERSHAYIM (U+059E)

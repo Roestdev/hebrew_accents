@@ -10,7 +10,7 @@ const MAX_SENTENCE_LENGTH: usize = 7_000;
 ///
 /// All sentences **MUST** start with normal consonant, and not a final consonant.
 ///
-/// Bidirectional control marks (LRM, RLM) and zero-width joiners (ZWJ, ZWNJ)
+/// Other characters Bidirectional control marks (LRM, RLM) and zero-width joiners (ZWJ, ZWNJ)
 /// are **NOT** permitted at the beginning of a sentence. Place them
 /// between words only.
 ///
@@ -20,7 +20,7 @@ const MAX_SENTENCE_LENGTH: usize = 7_000;
 /// - Has a valid starting consonant
 /// - Contains only:
 ///   - Hebrew Unicode block characters,
-///   - valid spacing,
+///   - Valid spacing,
 ///   - Meteg layout marks
 ///   - Alternative Paseq (ASCII Vertical bar)
 ///   - Alternative SofPasuq (ASCII Colon)

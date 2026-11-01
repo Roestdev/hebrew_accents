@@ -4,8 +4,8 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 
 use crate::sentence::{
-    ATNACH, AZLA, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, PASHTA, QADMA, REVIA,
-    SHALSHELET, SILLUQ, TSINNORIT, YORED,
+    ATNACH, AZLA, GERESH_MUQDAM, MAHPAKH, MAQAF, MEAYLA, MERKHA, METEG, MUNAH, OLEH, PASHTA, QADMA,
+    REVIA, SHALSHELET, SILLUQ, TSINNORIT, YORED,
 };
 
 // Pattern builders, validators
@@ -30,9 +30,6 @@ const SPACE_OR_MAQAF: &str = r"[\s\u{05BE}]";
 
 /// A paseq (U+05C0) **or** a vertical line (U+007C).
 const PASEQ_OR_VERTICAL_LINE: &str = r"[\u{05C0}\u{007C}]";
-
-/// Geresh (U+059C) OR Geresh‑Muqdam (U+059D).
-const GERESH_OR_GERESH_MUQDAM: &str = r"[\u{059C}\u{059D}]";
 
 /// Negative LookAhead: *not* followed by Hebrew chars, optional spaces,
 /// and then a paseq or vertical line.
@@ -115,11 +112,12 @@ pub(crate) mod poetry_patterns {
         Regex::new(&pattern)
             .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_OLEH_WEYORED: {}", pattern))
     });
+
     // A 'Revia Mugrash' consists of the following two UTF-8 code-points:
-    // - Geresh (\u{059C}) followed by
+    // - Geresh Muqdam (\u{059D})
     // - Revia (\u{0597})
+    //
     // - Maqqaph (\u{05BE})
-    // - 'Geresh Muqdam' (\u{059D}) is Jiddisch?
     /*
     Geresh (גֵּרֶשׁ)
     -----------
@@ -156,7 +154,7 @@ pub(crate) mod poetry_patterns {
     // Regex::new(r"[\s\u{05BE}]\p{Hebrew}*[\u{059C}\u{059D}]\p{Hebrew}*\u{0597}").unwrap()
     pub(crate) static RE_OUTER_POETRY_REVIA_MUGRASH: Lazy<Regex> = Lazy::new(|| {
         //let pattern = format!("{SPACE_OR_MAQAF}{HEBREW}*?{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
-        let pattern = format!("{GERESH_OR_GERESH_MUQDAM}{HEBREW}*?{REVIA}");
+        let pattern = format!("{GERESH_MUQDAM}{HEBREW}*?{REVIA}");
         Regex::new(&pattern)
             .unwrap_or_else(|_| panic!("Invalid regex RE_OUTER_POETRY_REVIA_MUGRASH: {}", pattern))
     });
@@ -504,7 +502,6 @@ mod comprehensive_regex_coverage_tests {
         assert_eq!(NOT_A_SPACE_OR_MAQAF, r"[^\s\u{05BE}]");
         assert_eq!(SPACE_OR_MAQAF, r"[\s\u{05BE}]");
         assert_eq!(PASEQ_OR_VERTICAL_LINE, r"[\u{05C0}\u{007C}]");
-        assert_eq!(GERESH_OR_GERESH_MUQDAM, r"[\u{059C}\u{059D}]");
         assert_eq!(ZERO_OR_ONE_SAMECH_OR_PEY, r"[\u{05E4}\u{05E1}]?");
         assert_eq!(OR, "|");
     }

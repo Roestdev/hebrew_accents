@@ -6,20 +6,20 @@ use crate::{AccentCategory, AccentKind, AlternateNames, CantillationMark, GroupL
 /// ## Overview
 ///
 /// This trait abstracts over three distinct accent systems:
-/// - [ProseAccent](`ProseAccent`) - Used in most biblical books (prosaic texts)
-/// - [`PoetryAccent`] - Used in poetic books (Psalms, Proverbs, Job)
-/// - [`PseudoAccent`] - Non-cantillation marks treated similarly (e.g., Maqqaph, Paseq)
+/// - [`ProseAccent`](crate::ProseAccent) - Used in most biblical books (prosaic texts)
+/// - [`PoetryAccent`](crate::PoetryAccent) - Used in poetic books (Psalms, Proverbs, Job)
+/// - [`PseudoAccent`](crate::PseudoAccent) - Non-cantillation marks (e.g., Maqqaph, Paseq)///
 ///
-/// All three systems are wrapped by [`HebrewAccent`], which delegates to the
+/// All three systems are wrapped by [`HebrewAccent`](crate::HebrewAccent), which delegates to the
 /// appropriate implementation.
 ///
 /// ## Implementation Details
 ///
 /// The trait is automatically implemented for:
-/// - `HebrewAccent` - Delegates to inner variant (Prose/Poetry/Pseudo)
-/// - `ProseAccent` - Looked up via `PROSE_ACCENT_TABLE`
-/// - `PoetryAccent` - Looked up via `POETRY_ACCENT_TABLE`
-/// - `PseudoAccent` - Looked up via `PSEUDO_ACCENT_TABLE`
+/// - [`HebrewAccent`](crate::HebrewAccent) - Delegates to inner variant (Prose/Poetry/Pseudo)
+/// - [`ProseAccent`](crate::ProseAccent) - Looked up via a `PROSE_ACCENT_TABLE`
+/// - [`PoetryAccent`](crate::PoetryAccent) - Looked up via a `POETRY_ACCENT_TABLE`
+/// - [`PseudoAccent`](crate::PseudoAccent) - Looked up via a `PSEUDO_ACCENT_TABLE`
 ///
 pub trait Accent {
     /// Returns the Hebrew name of the accent.
@@ -140,7 +140,7 @@ pub trait Accent {
     ///
     /// // assert!(!silluq.is_compound());
     /// // assert!(shalshelet.is_compound());
-    fn compound_type(&self) -> Option<CompoundType>; // None = not compound
+    fn compound_type(&self) -> Option<CompoundType>;
 
     /// Returns the primary cantillation mark (always present).
     ///
@@ -186,7 +186,7 @@ pub trait Accent {
     /// let silluq = ProseAccent::Silluq;
     ///
     /// if let Some(notes) = silluq.notes() {
-    ///     println!("Scholarly notes: {}", notes);
+    ///     println!("Notes: {}", notes);
     /// } else {
     ///     println!("No additional notes available");
     /// }
@@ -221,7 +221,7 @@ pub trait Accent {
     /// let atnach = ProseAccent::Atnach;
     /// let legarmeh = ProseAccent::Legarmeh;
     ///
-    /// // Lower number = stronger accent
+    /// // Lower number means stronger accent
     /// assert_eq!(silluq.relative_strength(), Some(1));
     /// assert_eq!(atnach.relative_strength(), Some(2));
     /// assert_eq!(legarmeh.relative_strength(), Some(18));
@@ -249,26 +249,24 @@ pub trait Accent {
     /// - **Pseudo accents**: Return `None`
     ///
     /// # Example
+    ///
     /// ```rust
     /// use hebrew_accents::{Accent, ProseAccent, GroupLevel};
     ///
     /// let silluq = ProseAccent::Silluq;
     ///
     /// if let Some(level) = silluq.group_level() {
-    ///      assert_eq!(GroupLevel::Tier1, level);
-    ///   }
+    ///     assert_eq!(GroupLevel::Tier1, level);
+    /// }
     /// ```
     fn group_level(&self) -> Option<GroupLevel>;
 
-    /// Returns the cantillation symbol
+    /// Returns the cantillation symbol augmented with a
     ///
-    /// Dummy words of three consonants are used to show where the accent is
-    /// positioned.
+    /// Dummy words of three consonants without any vowels are used
+    /// to show where the accent is positioned.
     ///
-    /// For accents (single/compound) that fit exactly on one word,
-    /// are shown with three dotted circles.
-    ///
-    /// For accents that can span two words two sets ('words') of dotted circles
+    /// For accents that **can** span one or two words, two dummy words of three consonants
     /// will be shown, where each set contains only one mark.
     ///
     /// # Note:

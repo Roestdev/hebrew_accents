@@ -108,7 +108,10 @@ pub enum PoetryAccent {
     /// **Revia Mugrash** (רְבִיעַ מֻגְרָשׁ) — "quartered with Garesh"
     ///
     /// A disjunctive accent that combines the Revia mark with a preceding
-    /// Garesh-like element. Occurs in specific poetic phrase structures.
+    /// Geresh-Muqdam element. Geresh-Muqdam has the same symbol as Geresh
+    /// but at a different position(more in front of a letter)
+    ///
+    /// It occurs in specific poetic phrase structures.
     ReviaMugrash = 4,
 
     /// **Shalshelet Gadol** (שַׁלְשֶׁלֶת גָּדוֹל) — "great chain"

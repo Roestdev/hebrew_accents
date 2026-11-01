@@ -24,16 +24,18 @@ use thiserror::Error;
 /// # Error Categories
 ///
 /// ## Input Validation Errors
+///
 /// | Variant | Triggered When |
 /// |---------|----------------|
 /// | `EmptySentence` | Input is empty or contains only whitespace |
+/// | `InvalidCharacter` | Contains characters outside the allowed set |
 /// | `MultipleLines` | Input contains newline characters |
 /// | `SentenceTooLong` | Input exceeds maximum character limit |
-/// | `InvalidCharacter` | Contains characters outside allowed set |
 /// | `StartsWithNonConsonant` | First non-whitespace char is not a Hebrew consonant |
 /// | `StartsWithFinalForm` | First char is a final-form letter (ך, ם, ן, ף, ץ) |
 ///
 /// ## Context Derivation Errors
+///
 /// | Variant | Triggered When |
 /// |---------|----------------|
 /// | `AmbiguousData` | Contradictory accent evidence for context derivation |
@@ -254,19 +256,43 @@ pub enum GroupLevelError {
 }
 
 #[cfg(test)]
-mod sentence_context_error_trait_tests{
+mod sentence_context_error_trait_tests {
     use super::*;
 
     #[test]
-    fn debug_tests(){
-    assert_eq!(format!("{:?}", SentenceContextError::InvalidCharacter('a',100)), "InvalidCharacter('a', 100)");
-    assert_eq!(format!("{:?}", SentenceContextError::EmptySentence), "EmptySentence");
-    assert_eq!(format!("{:?}", SentenceContextError::SentenceTooLong(7, 6)), "SentenceTooLong(7, 6)");
-    assert_eq!(format!("{:?}", SentenceContextError::MultipleLines), "MultipleLines");
-    assert_eq!(format!("{:?}", SentenceContextError::StartsWithNonConsonant('a')), "StartsWithNonConsonant('a')");
-    assert_eq!(format!("{:?}", SentenceContextError::StartsWithFinalForm('ך')), "StartsWithFinalForm('ך')");
-    assert_eq!(format!("{:?}", SentenceContextError::AmbiguousData), "AmbiguousData");
-    assert_eq!(format!("{:?}", SentenceContextError::InsufficientData), "InsufficientData");
+    fn debug_tests() {
+        assert_eq!(
+            format!("{:?}", SentenceContextError::InvalidCharacter('a', 100)),
+            "InvalidCharacter('a', 100)"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::EmptySentence),
+            "EmptySentence"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::SentenceTooLong(7, 6)),
+            "SentenceTooLong(7, 6)"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::MultipleLines),
+            "MultipleLines"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::StartsWithNonConsonant('a')),
+            "StartsWithNonConsonant('a')"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::StartsWithFinalForm('ך')),
+            "StartsWithFinalForm('ך')"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::AmbiguousData),
+            "AmbiguousData"
+        );
+        assert_eq!(
+            format!("{:?}", SentenceContextError::InsufficientData),
+            "InsufficientData"
+        );
     }
 }
 

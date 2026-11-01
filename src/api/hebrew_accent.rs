@@ -91,7 +91,7 @@ impl HebrewAccent {
     /// if let Some(poetry) = accent.as_poetry() {
     ///     println!("English name: {}", poetry.english_name());
     ///     println!("Relative strength: {:?}", poetry).relative_strength());
-    /// }
+    /// //}
     ///
     /// // Original accent remains usable after inspection
     /// assert!(accent.as_poetry().is_some());
