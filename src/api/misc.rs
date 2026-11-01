@@ -20,7 +20,7 @@ use crate::{
 /// }
 /// ```
 pub fn try_derive_context(sentence: &str) -> Result<Context, SentenceContextError> {
-    validate_sentence(&sentence)?;
+    validate_sentence(sentence)?;
     detect_context_from_sentence(sentence)
 }
 

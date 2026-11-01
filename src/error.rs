@@ -36,13 +36,14 @@ use thiserror::Error;
 /// ## Context Derivation Errors
 /// | Variant | Triggered When |
 /// |---------|----------------|
-/// | `DerivationFailed` | Insufficient or contradictory accent evidence for context derivation |
+/// | `AmbiguousData` | Contradictory accent evidence for context derivation |
+/// | `InsufficientData` | Insufficient accent evidence for context derivation |
 ///
 /// The `DerivationFailed` error indicates that automatic context derivation could not
 /// determine whether a sentence follows prosaic or poetic accent conventions:
 ///
-/// - **Ambiguous**: Both prose-exclusive and poetry-exclusive accents found
-/// - **Insufficient**: Only shared/common accents present (e.g., Atnach, Silluq)
+/// - **AmbiguousData**: Both prose-exclusive and poetry-exclusive accents found
+/// - **InsufficientData**: Only shared/common accents present (e.g., Atnach, Silluq)
 ///
 /// (See [`crate::SentenceContext::try_derive_context()`] for implementation details.)
 ///
@@ -89,24 +90,20 @@ pub enum SentenceContextError {
     #[error("Invalid character '{}' at index {}: only Hebrew, Meteg Layout Control Characters, Vertical Bar and whitespace allowed", .0, .1)]
     InvalidCharacter(char, usize),
 
-    /// The sentence was empty or contained only whitespace(s).
-    ///
-    /// # Resolution
-    ///
-    /// Provide a non-empty sentence with at least one Hebrew consonant character.
+    /// The sentence was empty
     ///
     /// # Example
     ///
-    /// ```
+    /// ``` rust
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
-    /// let result = SentenceContext::new("   ", Context::Prosaic);
+    /// let result = SentenceContext::new("", Context::Prosaic);
     /// assert_eq!(result, Err(SentenceContextError::EmptySentence));
     ///
     /// let valid = SentenceContext::new("שלום", Context::Prosaic);
     /// assert!(valid.is_ok());
     /// ```
-    #[error("Sentence cannot be empty or contain only whitespace characters")]
+    #[error("Sentence cannot be empty")]
     EmptySentence,
 
     /// Sentence contains too many characters.
@@ -115,7 +112,7 @@ pub enum SentenceContextError {
     ///
     /// # Example
     ///
-    /// ```
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
     /// let long_text: String = "א".repeat(7_001);
@@ -197,13 +194,33 @@ pub enum SentenceContextError {
     #[error("Final-form letter '{}' cannot appear at sentence start", .0)]
     StartsWithFinalForm(char),
 
-    /// Ambiguous or insufficient Cantillation Symbol(s) found for context determination. // TODO
+    /// Ambiguous Cantillation Symbol(s) found for context determination.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
+    ///
+    /// let result = SentenceContext::new("סאלה֔ים אמ֘ר אל֥י דוּ־י֑חד", Context::Prosaic);
+    /// let stc = result.unwrap();
+    /// assert_eq!(stc.try_derive_context(), Err(SentenceContextError::AmbiguousData));
+    /// ```
     #[error("No specific prose or poetic accents were detected")]
-    Ambiguous(&'static str),
+    AmbiguousData,
 
-    /// Ambiguous or insufficient Cantillation Symbol(s) found for context determination. // TODO
+    /// Insufficient Cantillation Symbol(s) found for context determination.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
+    ///
+    /// let result = SentenceContext::new("דבר", Context::Prosaic);
+    /// let stc = result.unwrap();
+    /// assert_eq!(stc.try_derive_context(), Err(SentenceContextError::InsufficientData));
+    /// ```
     #[error("No specific prose or poetic accents were detected")]
-    InsufficientData(&'static str),
+    InsufficientData,
 }
 
 /// Error types for accent group level conversion.
@@ -234,6 +251,23 @@ pub enum GroupLevelError {
     /// | 4 | Tier4 | Does not exist in Poetry context
     #[error("Invalid GroupLevel value: {} (valid range: 1-4)", .0)]
     InvalidGroupLevel(u8),
+}
+
+#[cfg(test)]
+mod sentence_context_error_trait_tests{
+    use super::*;
+
+    #[test]
+    fn debug_tests(){
+    assert_eq!(format!("{:?}", SentenceContextError::InvalidCharacter('a',100)), "InvalidCharacter('a', 100)");
+    assert_eq!(format!("{:?}", SentenceContextError::EmptySentence), "EmptySentence");
+    assert_eq!(format!("{:?}", SentenceContextError::SentenceTooLong(7, 6)), "SentenceTooLong(7, 6)");
+    assert_eq!(format!("{:?}", SentenceContextError::MultipleLines), "MultipleLines");
+    assert_eq!(format!("{:?}", SentenceContextError::StartsWithNonConsonant('a')), "StartsWithNonConsonant('a')");
+    assert_eq!(format!("{:?}", SentenceContextError::StartsWithFinalForm('ך')), "StartsWithFinalForm('ך')");
+    assert_eq!(format!("{:?}", SentenceContextError::AmbiguousData), "AmbiguousData");
+    assert_eq!(format!("{:?}", SentenceContextError::InsufficientData), "InsufficientData");
+    }
 }
 
 #[cfg(test)]
@@ -428,8 +462,8 @@ mod sentence_tests {
             SentenceContextError::MultipleLines,
             SentenceContextError::StartsWithNonConsonant(' '),
             SentenceContextError::StartsWithFinalForm('ץ'),
-            SentenceContextError::Ambiguous("//TODO"),
-            SentenceContextError::InsufficientData("//TODO"),
+            SentenceContextError::AmbiguousData,
+            SentenceContextError::InsufficientData,
         ];
 
         for e in errors {

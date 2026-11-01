@@ -52,11 +52,11 @@ pub(crate) const MAQAF: &str = "\u{05BE}";
 pub(crate) const PASEQ: &str = "\u{05C0}";
 pub(crate) const SOF_PASUQ: &str = "\u{05C3}";
 /// pub(crate) const VERTICAL_LINE: &str = "\u{007C}";
-
+///
 /// --------------------------------------------------
 ///  HEBREW characters ; UTF-8 codepoints as 'char'
 ///  
-/// Naming according UNICODE
+///  Naming according UNICODE
 /// --------------------------------------------------
 /// accents
 //pub(crate) const ETNAHTA_AS_CHAR: char = '\u{0591}';

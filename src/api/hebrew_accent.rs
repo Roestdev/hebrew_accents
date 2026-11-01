@@ -73,7 +73,7 @@ impl HebrewAccent {
     ///
     /// Failing to extract from a Prose variant (returns `None`):
     ///
-    /// ```
+    /// ```rust
     /// use hebrew_accents::{HebrewAccent, ProseAccent};
     ///
     /// let accent = HebrewAccent::Prose(ProseAccent::Atnach);
@@ -82,7 +82,7 @@ impl HebrewAccent {
     ///
     /// Accessing methods on the borrowed inner value without consuming the wrapper:
     ///
-    /// ```
+    /// ```rust
     /// use hebrew_accents::{Accent, HebrewAccent, PoetryAccent};
     ///
     /// let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);

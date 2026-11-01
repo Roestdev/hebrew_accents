@@ -1,4 +1,3 @@
-use crate::sentence::PASHTA_AS_CHAR;
 use crate::sentence::validator::validate_sentence;
 use crate::sentence::ATNAH_HAFUKH_AS_CHAR;
 use crate::sentence::DARGA_AS_CHAR;
@@ -8,6 +7,7 @@ use crate::sentence::GERSHAYIM_AS_CHAR;
 use crate::sentence::ILUY_AS_CHAR;
 use crate::sentence::MERKHA_KEFULA_AS_CHAR;
 use crate::sentence::OLEH_AS_CHAR;
+use crate::sentence::PASHTA_AS_CHAR;
 use crate::sentence::QARNEY_PARA_AS_CHAR;
 use crate::sentence::SEGOL_AS_CHAR;
 use crate::sentence::TELISHA_GEDOLAH_AS_CHAR;
@@ -64,10 +64,10 @@ pub(crate) fn detect_context_from_sentence(
     }
 
     match (could_be_prose, could_be_poetry) {
-        (false, false) => Err(SentenceContextError::InsufficientData("// TODO")),
+        (false, false) => Err(SentenceContextError::InsufficientData),
         (false, true) => Ok(Context::Poetic),
         (true, false) => Ok(Context::Prosaic),
-        (true, true) => Err(SentenceContextError::Ambiguous("// TODO")),
+        (true, true) => Err(SentenceContextError::AmbiguousData),
     }
 }
 

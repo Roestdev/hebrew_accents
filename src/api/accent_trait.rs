@@ -6,7 +6,7 @@ use crate::{AccentCategory, AccentKind, AlternateNames, CantillationMark, GroupL
 /// ## Overview
 ///
 /// This trait abstracts over three distinct accent systems:
-/// - [`ProseAccent`] - Used in most biblical books (prosaic texts)
+/// - [ProseAccent](`ProseAccent`) - Used in most biblical books (prosaic texts)
 /// - [`PoetryAccent`] - Used in poetic books (Psalms, Proverbs, Job)
 /// - [`PseudoAccent`] - Non-cantillation marks treated similarly (e.g., Maqqaph, Paseq)
 ///
