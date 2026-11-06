@@ -67,16 +67,7 @@ pub(crate) const TRADITION_NAMES_LEGARMEH: TraditionNames = TraditionNames {
     }),
     yemenite: None, // "Not available from accessible sources",
 };
-/*
-OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
-    sbl_academic: "ʿôleh wəyôrēd",
-    english_name: "Oleh Weyored",
-    hebrew_name: "עוֹלֶה וְיוֹרֵד",
-    hebrew_concept: "ascending and descending",
-    cantillation_symbol: CantillationSymbol {
-        primary_mark: &MARK_OLE,
-        secondary_mark: Some(&MARK_MERKHA),
-*/
+
 pub(crate) const TRADITION_NAMES_OLEH_WEYORED: TraditionNames =
     TraditionNames::uniform("עֹלֶה וְיֹרֵד", "ʿôleh wəyôrēd", "ascending and descending");
 
@@ -271,7 +262,7 @@ pub(crate) const TRADITION_NAMES_ETNAHTA: TraditionNames = TraditionNames {
 };
 
 // ============================================================================
-// SEGOL (U+0592) - Only 3 traditions
+// SEGOL (U+0592)
 // ============================================================================
 pub(crate) const TRADITION_NAMES_SEGOL: TraditionNames = TraditionNames {
     ashkenazi: Some(AccentName {
@@ -572,7 +563,11 @@ pub(crate) const TRADITION_NAMES_PAZER: TraditionNames = TraditionNames {
     yemenite: None, // Not present in Yemenite tradition
 };
 
-// At nah Hafukh disabled - see ticket
+// ============================================================================
+// ATNACH HAPHUKH (U+05A2) - All identical
+// ============================================================================
+pub(crate) const TRADITION_NAMES_ATNACH_HAPHUKH: TraditionNames =
+    TraditionNames::uniform("אַתְנַח הָפוּךְ", "ʾatnaḥ hāpûk", "Atnach Haphukh");
 
 // ============================================================================
 // MUNAH (U+05A3) - Only 3 traditions

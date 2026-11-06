@@ -183,7 +183,7 @@ pub(crate) const MARK_GERESH: MarkMetaData = mark_meta_data_constructor(
 //  GERESH MUQDAM (U+059D)
 // ============================================================================
 pub(crate) const MARK_GERESH_MUQDAM: MarkMetaData = mark_meta_data_constructor(
-    '֜',
+    '֝',
     MarkPlacement::AboveRight,
     StressPosition::Prepositive,
     "HEBREW ACCENT GERESH MUQDAM",
@@ -239,18 +239,18 @@ pub(crate) const MARK_PAZER: MarkMetaData = mark_meta_data_constructor(
     "0xd6 0xa1",
 );
 
-// Atnach Hafukh DISABLED - see ticket
+// Atnach Hafukh DISABLED - see ticket // TODO
 // ============================================================================
 // ATNAH HAFUKH (U+05A2)
 // ============================================================================
-// pub(crate) const MARK_ATNAH_HAFUKH: MarkMetaData = mark_meta_data_constructor(
-//     '֡',?
-//     MarkPlacement::AboveCenter,?
-//     StressPosition::Impositive, ?
-//     "HEBREW ACCENT ATNAH HAFUKH",
-//     "U+05A2",
-//     "0xd6 0xa2",
-// );
+pub(crate) const MARK_ATNAH_HAFUKH: MarkMetaData = mark_meta_data_constructor(
+    '֢', // TODO
+    MarkPlacement::BelowCenter,
+    StressPosition::Impositive,
+    "HEBREW ACCENT ATNAH HAFUKH",
+    "U+05A2",
+    "0xd6 0xa2",
+);
 
 // ============================================================================
 // MUNAH (U+05A3)

@@ -68,7 +68,8 @@ pub(crate) const BHS_POETRY_RANK_MAP: [u8; PoetryAccent::LEN] = [
     STRENGTH_NONE, // 19: ShalsheletQetannah
     STRENGTH_NONE, // 20: TsinnoritMerkha
     STRENGTH_NONE, // 21: TsinnoritMahpakh
-    STRENGTH_NONE, // 22: Meteg
+    STRENGTH_NONE, // 22: AtnachHaphukh
+    STRENGTH_NONE, // 23: Meteg
 ];
 
 // // ── Compile-time guards ────────────────────────────────────────────────

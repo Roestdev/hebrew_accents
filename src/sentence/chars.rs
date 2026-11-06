@@ -32,7 +32,7 @@ pub(crate) const GERSHAYIM: &str = "\u{059E}";
 pub(crate) const QARNEY_PARA: &str = "\u{059F}";
 pub(crate) const TELISHA_GEDOLAH: &str = "\u{05A0}";
 pub(crate) const PAZER: &str = "\u{05A1}";
-///pub(crate) const ATNAH_HAFUKH:&str = "\u{05A2}";
+pub(crate) const ATNAH_HAFUKH: &str = "\u{05A2}";
 pub(crate) const MUNAH: &str = "\u{05A3}";
 pub(crate) const MAHPAKH: &str = "\u{05A4}";
 pub(crate) const MERKHA: &str = "\u{05A5}";
@@ -115,6 +115,8 @@ pub(crate) const MEAYLA: &str = TIPEHA;
 pub(crate) const TARCHA: &str = TIPEHA;
 /// alias for ETNAHTA
 pub(crate) const ATNACH: &str = ETNAHTA;
+pub(crate) const ATNACH_HAPHUKH: &str = ATNAH_HAFUKH;
+
 /// alias for MAQAF
 pub(crate) const MAQQAPH: &str = MAQAF;
 pub(crate) const MAQQAPH_AS_CHAR: char = MAQAF_AS_CHAR;

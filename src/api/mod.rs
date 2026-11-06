@@ -19,7 +19,7 @@ pub use compound_type::CompoundType;
 pub use context::Context;
 pub use hebrew_accent::HebrewAccent;
 pub use matcher::Match;
-pub use misc::try_derive_context;
+pub use misc::{cantillation_example, try_derive_context};
 pub use poetry::PoetryAccent;
 pub use prose::ProseAccent;
 pub use pseudo::PseudoAccent;

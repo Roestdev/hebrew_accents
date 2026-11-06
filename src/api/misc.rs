@@ -1,11 +1,11 @@
 use crate::{
     api::context::Context,
+    display_cantillation_symbol,
     sentence::{detect_context_from_sentence, validate_sentence},
-    SentenceContextError,
+    HebrewAccent, SentenceContextError,
 };
 
-/// This is a convenience function for trying to detect the context without creating a
-/// [`crate::SentenceContext`] instance first.
+/// This is a convenience function for trying to detect the context without creating a [`crate::SentenceContext`] instance first.
 ///
 /// See `try_derive_context` on `SentenceContext` for **detailed** documentation.
 ///
@@ -20,8 +20,35 @@ use crate::{
 /// }
 /// ```
 pub fn try_derive_context(sentence: &str) -> Result<Context, SentenceContextError> {
+    // first validate the given sentence
     validate_sentence(sentence)?;
+    // then detect the context from it
     detect_context_from_sentence(sentence)
+}
+
+/// Builds a sample display string showing where the accent sits on a word.
+///
+/// Dummy words of three consonants without any vowels are used
+/// to show where the accent is positioned.
+///
+/// For accents that **can** span one or two words, two dummy words of three consonants
+/// will be shown, where each set contains only one mark.
+///
+/// # Note:
+///  - These representations are a simplified version of reality, in order
+///    to give an idea of how these accents might show up in real texts.
+///  - The stress position of the accents are accounted for.
+///
+/// # Example
+/// ```rust
+/// use hebrew_accents::{cantillation_example, ProseAccent};
+///
+/// let example = cantillation_example(ProseAccent::Silluq);
+///
+/// println!("Display: {example}");  // "בָּ֫רְאַ"
+/// ```
+pub fn cantillation_example(accent: HebrewAccent) -> String {
+    display_cantillation_symbol(accent)
 }
 
 #[cfg(test)]

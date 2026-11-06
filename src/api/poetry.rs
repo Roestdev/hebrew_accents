@@ -219,12 +219,23 @@ pub enum PoetryAccent {
     /// serving as a strong poetic-context indicator.
     TsinnoritMahpakh = 21,
 
+    /// **Atnach Haphukh** (אַתְנַח הָפוּךְ) — "upside-down Atnach"
+    ///
+    /// A primary conjunctive mark that serves an Oleh WeYored.
+    /// Although it looks much like Galgal, Atnach Hafukh is
+    /// a distinct cantillation mark with its own Unicode code point.
+    ///
+    /// The two marks look alike, but Atnach Hafukh (U+05A2) and Galgal,
+    /// also called Yerach ben Yomo (U+05AA),
+    /// are separate signs with separate encodings.
+    AtnachHaphukh = 22,
+
     /// **Meteg** (מֶתֶג) — "bridle, restraint"
     ///
     /// A secondary conjunctive mark that clarifies vowel length and prevents
     /// misreading of sheva. Does not carry independent melodic function in the
     /// primary cantillation hierarchy.
-    Meteg = 22,
+    Meteg = 23,
 }
 
 impl PoetryAccent {
@@ -368,7 +379,6 @@ mod test_accent_trait {
         PoetryAccent,
     };
 
-    // TODO  // cantillation_symbol
     #[test]
     fn test_poetry_disjunctive_hebrew_name() {
         // Primary disjunctives: indices 0-11, strengths 1-12
@@ -400,6 +410,7 @@ mod test_accent_trait {
         assert_eq!(PoetryAccent::ShalsheletQetannah.hebrew_name(), "שַׁלְשֶׁלֶת קְטַנָּה");
         assert_eq!(PoetryAccent::TsinnoritMerkha.hebrew_name(), "צִנּוֹרִת מֵרְכָא");
         assert_eq!(PoetryAccent::TsinnoritMahpakh.hebrew_name(), "צִנּוֹרִת מַהְפַּךְ");
+        assert_eq!(PoetryAccent::AtnachHaphukh.hebrew_name(), "אַתְנַח הָפוּךְ");
         assert_eq!(PoetryAccent::Meteg.hebrew_name(), "מֶתֶג");
     }
     #[test]
@@ -467,6 +478,10 @@ mod test_accent_trait {
             "pipe of reversal"
         );
         assert_eq!(
+            PoetryAccent::AtnachHaphukh.hebrew_concept(),
+            "inverted/reversed atnach"
+        );
+        assert_eq!(
             PoetryAccent::Meteg.hebrew_concept(),
             "to bridle, check, control"
         );
@@ -518,6 +533,7 @@ mod test_accent_trait {
             PoetryAccent::TsinnoritMahpakh.english_name(),
             "Tsinnorit Mahpakh"
         );
+        assert_eq!(PoetryAccent::AtnachHaphukh.english_name(), "Atnach Haphukh");
         assert_eq!(PoetryAccent::Meteg.english_name(), "Meteg");
     }
     #[test]
@@ -576,6 +592,10 @@ mod test_accent_trait {
             PoetryAccent::TsinnoritMahpakh.sbl_academic_name(),
             "ṣinnôrīt mahpak"
         );
+        assert_eq!(
+            PoetryAccent::AtnachHaphukh.sbl_academic_name(),
+            "ʾatnaḥ hāpûk"
+        );
         assert_eq!(PoetryAccent::Meteg.sbl_academic_name(), "meteg");
     }
     #[test]
@@ -620,6 +640,10 @@ mod test_accent_trait {
         );
         assert_eq!(
             PoetryAccent::TsinnoritMahpakh.kind(),
+            Some(AccentKind::Primary)
+        );
+        assert_eq!(
+            PoetryAccent::AtnachHaphukh.kind(),
             Some(AccentKind::Primary)
         );
         assert_eq!(PoetryAccent::Meteg.kind(), Some(AccentKind::Secondary));
@@ -722,6 +746,10 @@ mod test_accent_trait {
             Some(AccentCategory::Conjunctive)
         );
         assert_eq!(
+            PoetryAccent::AtnachHaphukh.category(),
+            Some(AccentCategory::Conjunctive)
+        );
+        assert_eq!(
             PoetryAccent::Meteg.category(),
             Some(AccentCategory::Conjunctive)
         );
@@ -776,6 +804,7 @@ mod test_accent_trait {
             PoetryAccent::TsinnoritMahpakh.compound_type(),
             Some(CompoundType::CanSpanTwoWords)
         );
+        assert_eq!(PoetryAccent::AtnachHaphukh.compound_type(), None);
         assert_eq!(PoetryAccent::Meteg.compound_type(), None);
     }
     #[test]
@@ -816,9 +845,9 @@ mod test_accent_trait {
         assert_eq!(
             PoetryAccent::ReviaMugrash.primary_cantillation_mark(),
             CantillationMark {
-                symbol: '\u{59c}',
-                placement: CantillationMarkPlacement::AboveCenter,
-                stress_position: Some(CantillationMarkStressPosition::Impositive)
+                symbol: '\u{59d}',
+                placement: CantillationMarkPlacement::AboveRight,
+                stress_position: Some(CantillationMarkStressPosition::Prepositive)
             }
         );
         assert_eq!(
@@ -964,6 +993,14 @@ mod test_accent_trait {
             }
         );
         assert_eq!(
+            PoetryAccent::AtnachHaphukh.primary_cantillation_mark(),
+            CantillationMark {
+                symbol: '\u{5a2}',
+                placement: CantillationMarkPlacement::BelowCenter,
+                stress_position: Some(CantillationMarkStressPosition::Impositive)
+            }
+        );
+        assert_eq!(
             PoetryAccent::Meteg.primary_cantillation_mark(),
             CantillationMark {
                 symbol: '\u{5bd}',
@@ -1054,6 +1091,10 @@ mod test_accent_trait {
                 placement: CantillationMarkPlacement::BelowCenter,
                 stress_position: Some(CantillationMarkStressPosition::Impositive)
             })
+        );
+        assert_eq!(
+            PoetryAccent::AtnachHaphukh.secondary_cantillation_mark(),
+            None
         );
         assert_eq!(PoetryAccent::Meteg.secondary_cantillation_mark(), None);
     }
@@ -1178,6 +1219,10 @@ The alternate BHS naming is fabricated"#,
             Some(r#"Compound conjunctive in poetry; Tsinnor with Mahpakh secondary."#)
         );
         assert_eq!(
+            PoetryAccent::AtnachHaphukh.notes(),
+            Some(r#"Atnach Haphukh serves Oleh WeYored"#)
+        );
+        assert_eq!(
             PoetryAccent::Meteg.notes(),
             Some(
                 r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
@@ -1225,6 +1270,7 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::ShalsheletQetannah.relative_strength(), None);
         assert_eq!(PoetryAccent::TsinnoritMerkha.relative_strength(), None);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.relative_strength(), None);
+        assert_eq!(PoetryAccent::AtnachHaphukh.relative_strength(), None);
         assert_eq!(PoetryAccent::Meteg.relative_strength(), None);
     }
     #[test]
@@ -1279,6 +1325,7 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::ShalsheletQetannah.group_level(), None);
         assert_eq!(PoetryAccent::TsinnoritMerkha.group_level(), None);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.group_level(), None);
+        assert_eq!(PoetryAccent::AtnachHaphukh.group_level(), None);
         assert_eq!(PoetryAccent::Meteg.group_level(), None);
     }
     #[test]
@@ -1288,7 +1335,7 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::OlehWeYored.cantillation_symbol(), "אם֫ת אם֥ת");
         assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "אם֑ת");
         assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "אם֗ת");
-        assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֜ם֗ת");
+        assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֝ם֗ת");
         assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(), "אם֓ת ׀");
         assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "אםת֮");
         assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "אם֗ת");
@@ -1322,6 +1369,7 @@ The alternate BHS naming is fabricated"#,
             PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
             "אם֘ת אם֤ת"
         );
+        assert_eq!(PoetryAccent::AtnachHaphukh.cantillation_symbol(), "אם֢ת");
         assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "אםֽת");
     }
     #[test]
@@ -1403,6 +1451,7 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::ShalsheletQetannah.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMerkha.alternate_names(), None);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.alternate_names(), None);
+        assert_eq!(PoetryAccent::AtnachHaphukh.alternate_names(), None);
         assert_eq!(
             PoetryAccent::Meteg.alternate_names(),
             Some(AlternateNames {
@@ -1418,21 +1467,20 @@ The alternate BHS naming is fabricated"#,
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::accent::disjunctive_groups::DisjunctiveGroup;
     use crate::Accent;
     use strum::IntoEnumIterator;
     // ===== BASIC VARIANT COUNT TESTS =====
 
     #[test]
     fn test_poetry_accent_total_count() {
-        assert_eq!(PoetryAccent::LEN, 23);
-        assert_eq!(PoetryAccent::iter().count(), 23);
+        assert_eq!(PoetryAccent::LEN, 24);
+        assert_eq!(PoetryAccent::iter().count(), 24);
     }
 
     #[test]
     fn test_disjunctive_vs_conjunctive_split() {
         // Disjunctives are indices 0-11 (12 total)
-        // Conjunctives are indices 12-22 (11 total)
+        // Conjunctives are indices 12-23 (11 total)
         let disjunctives = PoetryAccent::iter()
             .filter(|a| matches!(a.category(), Some(crate::AccentCategory::Disjunctive)))
             .count();
@@ -1442,7 +1490,7 @@ mod tests {
             .count();
 
         assert_eq!(disjunctives, 12);
-        assert_eq!(conjunctives, 11);
+        assert_eq!(conjunctives, 12);
     }
 
     #[test]
@@ -1452,6 +1500,13 @@ mod tests {
         const LAST_IDX: usize = PoetryAccent::Meteg as u8 as usize;
         assert_eq!(LAST_IDX + 1, PoetryAccent::LEN);
     }
+}
+#[cfg(test)]
+mod derive_trait_tests {
+    use super::*;
+    use crate::accent::disjunctive_groups::DisjunctiveGroup;
+    use crate::Accent;
+    use strum::IntoEnumIterator;
 
     // ===== DEFAULT TRAIT TESTS =====
 
@@ -1492,7 +1547,8 @@ mod tests {
         assert_eq!(PoetryAccent::ShalsheletQetannah.as_index(), 19);
         assert_eq!(PoetryAccent::TsinnoritMerkha.as_index(), 20);
         assert_eq!(PoetryAccent::TsinnoritMahpakh.as_index(), 21);
-        assert_eq!(PoetryAccent::Meteg.as_index(), 22);
+        assert_eq!(PoetryAccent::AtnachHaphukh.as_index(), 22);
+        assert_eq!(PoetryAccent::Meteg.as_index(), 23);
     }
 
     // ===== ITERATION TESTS =====
@@ -1500,7 +1556,7 @@ mod tests {
     #[test]
     fn test_enum_iter_all_variants() {
         let all_variants: Vec<PoetryAccent> = PoetryAccent::iter().collect();
-        assert_eq!(all_variants.len(), 23);
+        assert_eq!(all_variants.len(), 24);
         assert!(all_variants.contains(&PoetryAccent::Silluq));
         assert!(all_variants.contains(&PoetryAccent::Meteg));
         assert!(all_variants.contains(&PoetryAccent::OlehWeYored));

@@ -3,9 +3,9 @@
 // Local modules / crate‑internal
 use crate::api::{HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 use crate::sentence::{
-    ATNACH, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH,
-    MAQQAPH_AS_CHAR, MERKHA, MERKHA_KEFULA, MUNAH, OLEH_AS_CHAR, PASEQ, PASEQ_AS_CHAR, PASHTA,
-    PAZER, PAZER_GADOL, QADMA, QADMA_AS_CHAR, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA,
+    ATNACH, ATNACH_HAPHUKH, DARGA, DECHI, GALGAL, GERESH, GERESH_AS_CHAR, GERSHAYIM, ILUY, MAHPAKH,
+    MAQQAPH, MAQQAPH_AS_CHAR, MERKHA, MERKHA_KEFULA, MUNAH, OLEH_AS_CHAR, PASEQ, PASEQ_AS_CHAR,
+    PASHTA, PAZER, PAZER_GADOL, QADMA, QADMA_AS_CHAR, REVIA, SEGOLTA, SILLUQ, SOF_PASUQ, TARCHA,
     TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPHCHA, TSINNORIT_AS_CHAR, VERTICAL_LINE_AS_CHAR,
     YETIV, YORED_AS_CHAR, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZARQA_AS_CHAR, ZINOR,
 };
@@ -666,6 +666,10 @@ impl<'a> SentenceContext {
                     absolute_inner_end,
                 ))
             }
+            HebrewAccent::Poetry(PoetryAccent::AtnachHaphukh) => self
+                .sentence
+                .find(ATNACH_HAPHUKH)
+                .map(|index| Match::new(&self.sentence, index, index + ATNACH_HAPHUKH.len())),
             /* **********************************************************
              *                          PSEUDO
              * *********************************************************/
@@ -686,6 +690,7 @@ impl<'a> SentenceContext {
     }
 }
 
+// find helper funcs
 pub(crate) fn find_prose_pashta(sentence: &str) -> Option<(usize, usize)> {
     // Pashta (as a prose accent) is
     //   not part of Shene Pastin (needs: variable Negative Lookbehind)

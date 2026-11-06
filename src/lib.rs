@@ -147,12 +147,12 @@ pub use crate::api::PseudoAccent;
 pub use crate::api::SentenceContext;
 
 // public functions
-pub use crate::api::try_derive_context;
-
-// used for errorhandling
-pub use crate::error::{GroupLevelError, SentenceContextError};
-
 pub(crate) use crate::accent::display_cantillation_symbol;
+pub use crate::api::cantillation_example;
+pub use crate::api::try_derive_context; // TODO remove
+
+// errorhandling
+pub use crate::error::{GroupLevelError, SentenceContextError};
 
 // Re-export unicode info for convenient access
 pub use version::{

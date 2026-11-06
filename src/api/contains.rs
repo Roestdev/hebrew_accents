@@ -8,9 +8,9 @@ use crate::api::find::{
     find_prose_pashta, find_silluq,
 };
 use crate::sentence::{
-    DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH, MERKHA, MERKHA_KEFULA, MUNAH,
-    PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA, TEVIR, TIPEHA,
-    YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
+    ATNACH_HAPHUKH, DARGA, DECHI, ETNAHTA, GERESH, GERSHAYIM, ILUY, MAHPAKH, MAQQAPH, MERKHA,
+    MERKHA_KEFULA, MUNAH, PAZER, QADMA, QARNEY_PARA, REVIA, SEGOL, TELISHA_GEDOLAH, TELISHA_QETANA,
+    TEVIR, TIPEHA, YERAH_BEN_YOMO, YETIV, ZAQEF_GADOL, ZAQEF_QATAN, ZARQA, ZINOR,
 };
 use crate::sentence::{
     FA_RE_OUTER_COMMON_METEG, FA_RE_OUTER_POETRY_AZLA, FA_RE_OUTER_POETRY_SHALSHELET_QETANNAH,
@@ -197,6 +197,10 @@ impl SentenceContext {
             HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh) if self.ctx == Context::Poetic => {
                 RE_OUTER_POETRY_TSINNORIT_MAHPAKH.is_match(&self.sentence)
             }
+            HebrewAccent::Poetry(PoetryAccent::AtnachHaphukh) if self.ctx == Context::Prosaic => {
+                self.sentence.contains(ATNACH_HAPHUKH)
+            }
+
             _ => false,
         }
     }
@@ -1541,6 +1545,8 @@ mod poetry_accents {
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::TsinnoritMahpakh.into()));
     }
+    #[test]
+    fn test_contains_poetry_atnach_haphukh() {}
 
     #[test]
     fn test_contains_poetry_meteg() {
