@@ -12,7 +12,7 @@ mod poetry_table;
 mod prose_table;
 mod pseudo_table;
 mod rank_maps;
-mod relative_strength;
+mod rank;
 mod tradition;
 mod tradition_data;
 
@@ -30,6 +30,6 @@ pub(crate) use pseudo_table::PSEUDO_ACCENT_TABLE;
 pub(crate) use rank_maps::BHS_POETRY_RANK_MAP;
 pub(crate) use rank_maps::BHS_PROSE_RANK_MAP;
 pub(crate) use rank_maps::STRENGTH_NONE;
-pub(crate) use relative_strength::resolve_relative_strength;
+pub(crate) use rank::resolve_rank;
 pub(crate) use tradition::TraditionNames;
 pub(crate) use tradition_data::*;

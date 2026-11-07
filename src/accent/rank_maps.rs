@@ -3,7 +3,7 @@ use crate::api::{PoetryAccent, ProseAccent};
 /// Sentinel value indicating "no strength hierarchy".
 ///
 /// Stored internally in the rank maps as `u8::MAX` and converted back to
-/// `None` by [`relative_strength`](crate::accent::Accent::relative_strength),
+/// `None` by [`rank`](crate::accent::Accent::rank),
 /// so users never see this value.
 pub(crate) const STRENGTH_NONE: u8 = u8::MAX;
 

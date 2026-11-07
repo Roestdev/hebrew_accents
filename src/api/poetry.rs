@@ -25,10 +25,10 @@
 //!
 //! let accent = PoetryAccent::OlehWeYored;
 //! println!("{}", accent); // "Oleh WeYored (עולה ויורד), meaning: ascending and descending"
-//! println!("Strength: {:?}", accent.relative_strength());
+//! println!("Strength: {:?}", accent.rank());
 //! ```
 
-use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
+use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE};
 use crate::api::CompoundType;
 use crate::{
@@ -348,8 +348,8 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn relative_strength(&self) -> Option<u8> {
-        resolve_relative_strength(BHS_POETRY_RANK_MAP[self.as_index()])
+    fn rank(&self) -> Option<u8> {
+        resolve_rank(BHS_POETRY_RANK_MAP[self.as_index()])
     }
 
     #[inline]
@@ -1240,38 +1240,38 @@ The alternate BHS naming is fabricated"#,
     #[test]
     fn test_poetry_disjunctive_strength() {
         // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.relative_strength(), Some(1));
-        assert_eq!(PoetryAccent::OlehWeYored.relative_strength(), Some(2));
-        assert_eq!(PoetryAccent::Atnach.relative_strength(), Some(3));
-        assert_eq!(PoetryAccent::ReviaGadol.relative_strength(), Some(4));
-        assert_eq!(PoetryAccent::ReviaMugrash.relative_strength(), Some(5));
-        assert_eq!(PoetryAccent::ShalsheletGadol.relative_strength(), Some(6));
-        assert_eq!(PoetryAccent::Tsinnor.relative_strength(), Some(7));
-        assert_eq!(PoetryAccent::ReviaQaton.relative_strength(), Some(8));
-        assert_eq!(PoetryAccent::Dechi.relative_strength(), Some(9));
-        assert_eq!(PoetryAccent::Pazer.relative_strength(), Some(10));
+        assert_eq!(PoetryAccent::Silluq.rank(), Some(1));
+        assert_eq!(PoetryAccent::OlehWeYored.rank(), Some(2));
+        assert_eq!(PoetryAccent::Atnach.rank(), Some(3));
+        assert_eq!(PoetryAccent::ReviaGadol.rank(), Some(4));
+        assert_eq!(PoetryAccent::ReviaMugrash.rank(), Some(5));
+        assert_eq!(PoetryAccent::ShalsheletGadol.rank(), Some(6));
+        assert_eq!(PoetryAccent::Tsinnor.rank(), Some(7));
+        assert_eq!(PoetryAccent::ReviaQaton.rank(), Some(8));
+        assert_eq!(PoetryAccent::Dechi.rank(), Some(9));
+        assert_eq!(PoetryAccent::Pazer.rank(), Some(10));
         assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.relative_strength(),
+            PoetryAccent::MehuppakhLegarmeh.rank(),
             Some(11)
         );
-        assert_eq!(PoetryAccent::AzlaLegarmeh.relative_strength(), Some(12));
+        assert_eq!(PoetryAccent::AzlaLegarmeh.rank(), Some(12));
     }
 
     #[test]
     fn test_poetry_conjunctive_strength() {
         // Conjunctives: indices 12-22, all should be None
-        assert_eq!(PoetryAccent::Munach.relative_strength(), None);
-        assert_eq!(PoetryAccent::Merkha.relative_strength(), None);
-        assert_eq!(PoetryAccent::Illuy.relative_strength(), None);
-        assert_eq!(PoetryAccent::Tarcha.relative_strength(), None);
-        assert_eq!(PoetryAccent::Galgal.relative_strength(), None);
-        assert_eq!(PoetryAccent::Mehuppakh.relative_strength(), None);
-        assert_eq!(PoetryAccent::Azla.relative_strength(), None);
-        assert_eq!(PoetryAccent::ShalsheletQetannah.relative_strength(), None);
-        assert_eq!(PoetryAccent::TsinnoritMerkha.relative_strength(), None);
-        assert_eq!(PoetryAccent::TsinnoritMahpakh.relative_strength(), None);
-        assert_eq!(PoetryAccent::AtnachHaphukh.relative_strength(), None);
-        assert_eq!(PoetryAccent::Meteg.relative_strength(), None);
+        assert_eq!(PoetryAccent::Munach.rank(), None);
+        assert_eq!(PoetryAccent::Merkha.rank(), None);
+        assert_eq!(PoetryAccent::Illuy.rank(), None);
+        assert_eq!(PoetryAccent::Tarcha.rank(), None);
+        assert_eq!(PoetryAccent::Galgal.rank(), None);
+        assert_eq!(PoetryAccent::Mehuppakh.rank(), None);
+        assert_eq!(PoetryAccent::Azla.rank(), None);
+        assert_eq!(PoetryAccent::ShalsheletQetannah.rank(), None);
+        assert_eq!(PoetryAccent::TsinnoritMerkha.rank(), None);
+        assert_eq!(PoetryAccent::TsinnoritMahpakh.rank(), None);
+        assert_eq!(PoetryAccent::AtnachHaphukh.rank(), None);
+        assert_eq!(PoetryAccent::Meteg.rank(), None);
     }
     #[test]
     fn test_poetry_disjunctive_group_level() {
@@ -1790,25 +1790,25 @@ mod derive_trait_tests {
     // --- Relative Strength Method ---
 
     #[test]
-    fn test_relative_strength_for_disjunctive() {
+    fn test_rank_for_disjunctive() {
         // Disjunctive accents should have strength values
-        assert!(PoetryAccent::Silluq.relative_strength().is_some());
-        assert!(PoetryAccent::Atnach.relative_strength().is_some());
-        assert!(PoetryAccent::OlehWeYored.relative_strength().is_some());
+        assert!(PoetryAccent::Silluq.rank().is_some());
+        assert!(PoetryAccent::Atnach.rank().is_some());
+        assert!(PoetryAccent::OlehWeYored.rank().is_some());
     }
 
     #[test]
-    fn test_relative_strength_for_conjunctive() {
+    fn test_rank_for_conjunctive() {
         // Conjunctive accents should return None
-        assert_eq!(PoetryAccent::Munach.relative_strength(), None);
-        assert_eq!(PoetryAccent::Merkha.relative_strength(), None);
-        assert_eq!(PoetryAccent::Meteg.relative_strength(), None);
+        assert_eq!(PoetryAccent::Munach.rank(), None);
+        assert_eq!(PoetryAccent::Merkha.rank(), None);
+        assert_eq!(PoetryAccent::Meteg.rank(), None);
     }
 
     #[test]
     fn test_strength_numbering_system() {
         // Lower numbers = stronger disjunctives
-        if let Some(s1) = PoetryAccent::Silluq.relative_strength() {
+        if let Some(s1) = PoetryAccent::Silluq.rank() {
             // Silluq should be very strong (low number)
             assert!(s1 <= 5); // Should be in top strength range
         }
@@ -2001,7 +2001,7 @@ mod derive_trait_tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
@@ -2067,7 +2067,7 @@ mod derive_trait_tests {
         // Replicate the example from module documentation
         let accent = PoetryAccent::OlehWeYored;
         let _display = format!("{}", accent); // Should print: "Oleh WeYored (עולה ויורד), meaning: ..."
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
 
         assert_eq!(accent.english_name(), "Oleh WeYored");
     }
@@ -2214,10 +2214,10 @@ mod derive_trait_tests {
     // ── Relative Strength Deep Testing ─────────────────────────────────
 
     #[test]
-    fn test_resolve_relative_strength_coverage() {
+    fn test_resolve_rank_coverage() {
         // Test both Some and None return paths
         for accent in PoetryAccent::iter() {
-            let strength = accent.relative_strength();
+            let strength = accent.rank();
 
             match strength {
                 Some(val) => {
@@ -2233,8 +2233,8 @@ mod derive_trait_tests {
     #[test]
     fn test_strength_hierarchy_ordering() {
         // Verify stronger accents have lower strength numbers
-        let silluq_strength = PoetryAccent::Silluq.relative_strength();
-        let atnach_strength = PoetryAccent::Atnach.relative_strength();
+        let silluq_strength = PoetryAccent::Silluq.rank();
+        let atnach_strength = PoetryAccent::Atnach.rank();
 
         // Both should have strengths
         assert!(silluq_strength.is_some());
@@ -2348,7 +2348,7 @@ mod derive_trait_tests {
         let _prim1 = disjunctive.primary_cantillation_mark();
         let _sec1 = disjunctive.secondary_cantillation_mark();
         let _notes1 = disjunctive.notes();
-        let _str1 = disjunctive.relative_strength();
+        let _str1 = disjunctive.rank();
         let _lev1 = disjunctive.group_level();
         let _sym1 = disjunctive.cantillation_symbol();
         let _alt1 = disjunctive.alternate_names();
@@ -2364,7 +2364,7 @@ mod derive_trait_tests {
         let _prim2 = conjunctive.primary_cantillation_mark();
         let _sec2 = conjunctive.secondary_cantillation_mark();
         let _notes2 = conjunctive.notes();
-        let _str2 = conjunctive.relative_strength();
+        let _str2 = conjunctive.rank();
         let _lev2 = conjunctive.group_level();
         let _sym2 = conjunctive.cantillation_symbol();
         let _alt2 = conjunctive.alternate_names();
@@ -2380,7 +2380,7 @@ mod derive_trait_tests {
         let _prim3 = secondary.primary_cantillation_mark();
         let _sec3 = secondary.secondary_cantillation_mark();
         let _notes3 = secondary.notes();
-        let _str3 = secondary.relative_strength();
+        let _str3 = secondary.rank();
         let _lev3 = secondary.group_level();
         let _sym3 = secondary.cantillation_symbol();
         let _alt3 = secondary.alternate_names();
@@ -2478,7 +2478,7 @@ mod derive_trait_tests {
     fn test_partition_by_strength() {
         // Partition accents by whether they have strength
         let (with_strength, without_strength): (Vec<_>, Vec<_>) =
-            PoetryAccent::iter().partition(|a| a.relative_strength().is_some());
+            PoetryAccent::iter().partition(|a| a.rank().is_some());
 
         // Disjunctives should have strength
         assert!(with_strength.len() > 0);
@@ -2603,7 +2603,7 @@ mod derive_trait_tests {
 
             // All meta methods
             let _notes = accent.notes();
-            let _strength = accent.relative_strength();
+            let _strength = accent.rank();
             let _level = accent.group_level();
             let _symbol = accent.cantillation_symbol();
             let _alts = accent.alternate_names();

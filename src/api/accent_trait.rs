@@ -21,6 +21,37 @@ use crate::{AccentCategory, AccentKind, AlternateNames, CantillationMark, GroupL
 /// - [`PoetryAccent`](crate::PoetryAccent) - Looked up via a `POETRY_ACCENT_TABLE`
 /// - [`PseudoAccent`](crate::PseudoAccent) - Looked up via a `PSEUDO_ACCENT_TABLE`
 ///
+///
+///
+/*
+Yes — `tier(&self) -> Option<GroupLevel>` is a genuine improvement: short, and it parallels what the method
+really returns (coarse tier membership, not an arbitrary "level"). It also opens the door to the clean pairing I mentioned:
+
+- `fn rank(&self) -> Option<u8>` (renamed from `rank`)
+- `fn tier(&self) -> Option<Tier>` (renamed from `group_level`)
+
+Now `rank < tier`, `rank()` is fine-grained, `tier()` is coarse — and neither collides with "hierarchy,"
+which stays as the umbrella term in prose. You're pre-1.0, so this is exactly the window for renaming.
+
+One wrinkle to resolve while you're at it: if you rename the method to `tier`,
+ the return type `GroupLevel` will feel off, but renaming it to `Tier` gives you `Tier::Tier1` — stuttery. Three workable options:
+
+1. **Keep `GroupLevel`** and just rename the method. Least churn, but the name/type mismatch will nag forever.
+2. **Rename the type to `Tier`, accept the mild stutter** (`Tier::Tier1`). Common enough in Rust that nobody blinks,
+and `use hebrew_accents::Tier` reads great at call sites.
+3. **Rename the type to `FutatoTier`** — most precise (it encodes that the classification is Futato's,
+matching your docs' attribution), variants like `FutatoTier::Tier1` are redundant though; you'd probably
+trim variants to `One`, `Two`, … `FutatoTier::One`.
+
+My pick would be **option 2** for simplicity, or **option 3** if you want the scholarly attribution baked
+into the API — that one's a judgment call about how much you want the crate to teach versus just be usable.
+
+Two consistency notes once you rename: update the doc bullet phrasing everywhere to match
+("Returns `Some(Tier)`…" / "Conjunctive accents: not tiered"), and add a cross-reference line in each doc comment pointing to its sibling
+— "See also `rank` for the fine-grained disjunctive scale" and vice versa — since after renames,
+the relationship between the two methods is only obvious if you say it.
+
+*/
 pub trait Accent {
     /// Returns the Hebrew name of the accent.
     ///
@@ -80,13 +111,37 @@ pub trait Accent {
 
     /// Returns the accent kind (primary or secondary), if applicable.
     ///
-    /// **Primary** accents carry the main stress on a word (e.g., silluq, munach, pashta).
-    /// They determine which syllable gets the prominent beat in recitation.
+    /// This is an indicates for the (primary versus secondary) stress — phonetic only: the one main ta'am per word vs. auxiliary marks like meteg/ga'ya.
     ///
-    /// **Secondary** accents like meteg (also called ga'ya) mark weaker stress or vowel lengthening,
+    ///  **Primary accents**
+    ///  - carry the main stress on a word (e.g., silluq, munach, pashta).
+    ///
+    /// They determine which syllable gets the prominent beat in recitation.
+    /// Every accentuated word has exactly one primary accent, whether disjunctive or conjunctive.
+    /// This is the main stress of the word, and it simultaneously does the syntactic work we discussed (tipcha marks a break; munach marks a join). So in Beckman's framework, "primary" doesn't rank disjunctives against each other at all — a word with a lowly conjunctive munach still has that as its primary accent.
+    /// All accents are equal candidates for the primary slot.
+    ///
+    /// **Secondary accents**
+    ///  - appear on long words with unstressed syllables at some distance from the main stress.
+    /// ( as a rule of thumb words with three or more syllables might contain a secondairy accent)
+    ///  - the core job is phonological, not the musical-syntactic layer
+    ///  - they can also clarify parsing — a classic example is marking a word as a construct noun or resolving vocal shewa vs. silent shewa ambiguities (two adjacent shewas: which one is vocal? Meteg answers).
+    ///  - is not part of the cantillation hierarchy
+    ///  - sometimes indicated as auxillary mark
+    ///
+    /// like meteg (also called ga'ya) mark weaker stress or vowel lengthening,
     /// often functioning as a "subordinate" stress marker alongside or in place of another accent.
     /// It can indicate where a secondary stress falls within a word or help resolve ambiguities
     /// like vocal sheva vs. silent sheva.
+    ///
+    /// ## Note
+    ///
+    /// In the Masoretic Text of the Tanakh, each word carries a cantillation mark (ta'am)
+    /// that fulfills two roles: most marks identify the word's stressed syllable (typically the ultima),
+    /// while simultaneously marking the word's syntactic function as either
+    /// conjunctive (connecting) or disjunctive (pausal).
+    ///
+    /// These are `distinct dimensions` — one phonological, one grammatical — and should not be conflated.
     ///
     /// # Example
     ///
@@ -108,6 +163,9 @@ pub trait Accent {
     fn kind(&self) -> Option<AccentKind>;
 
     /// Returns the accent category (disjunctive or conjunctive), if applicable.
+    ///
+    /// Indicate the word's syntactic relationship to its neighbours.
+    /// Two
     ///
     /// - **Disjunctive**: Marks pauses/breaks in the text
     /// - **Conjunctive**: Connects words together
@@ -204,6 +262,8 @@ pub trait Accent {
     /// (most dominant) accent, and higher numbers indicate progressively weaker
     /// (more subordinate) accents.
     ///
+    /// Note: The order given in the [Tabula Accentum](<https:://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf>) of the "Biblia Hebraica Stuttgartensia"
+    ///
     /// # Return Value
     ///
     /// - **Disjunctive accents** (Prose or Poetry): Returns `Some(u8)` with the
@@ -222,22 +282,22 @@ pub trait Accent {
     /// let legarmeh = ProseAccent::Legarmeh;
     ///
     /// // Lower number means stronger accent
-    /// assert_eq!(silluq.relative_strength(), Some(1));
-    /// assert_eq!(atnach.relative_strength(), Some(2));
-    /// assert_eq!(legarmeh.relative_strength(), Some(18));
+    /// assert_eq!(silluq.rank(), Some(1));
+    /// assert_eq!(atnach.rank(), Some(2));
+    /// assert_eq!(legarmeh.rank(), Some(18));
     ///
     /// // Compare strength levels programmatically
-    /// if let (Some(s1), Some(s2)) = (silluq.relative_strength(), atnach.relative_strength()) {
+    /// if let (Some(s1), Some(s2)) = (silluq.rank(), atnach.rank()) {
     ///     assert!(s1 < s2, "Lower rank means stronger pause");
     /// }
     ///
     /// // Conjunctive and pseudo accents return None (no hierarchy)
     /// let munach = ProseAccent::Munach;
     /// let paseq = PseudoAccent::Paseq;
-    /// assert_eq!(munach.relative_strength(), None);
-    /// assert_eq!(paseq.relative_strength(), None);
+    /// assert_eq!(munach.rank(), None);
+    /// assert_eq!(paseq.rank(), None);
     /// ```
-    fn relative_strength(&self) -> Option<u8>;
+    fn rank(&self) -> Option<u8>;
 
     /// Returns the hierarchical disjunctive group level (Futato classification).
     ///
@@ -272,8 +332,7 @@ pub trait Accent {
     /// # Note:
     ///  - These representaions are a simplified version of reality, in order
     ///    to give an idea of how these accents might show up in real texts.
-    ///  - For non-compound accents the stress position of the accents are
-    ///    accounted for.
+    ///  - The stress position of the accents are accounted for.
     ///
     /// # Example
     /// ```rust
@@ -283,7 +342,7 @@ pub trait Accent {
     ///
     /// println!("Display: {}", symbol);  // "֫"
     /// ```
-    fn cantillation_symbol(&self) -> String;
+    fn cantillation_symbol(&self) -> String; // TODO to public function
 
     /// Returns alternate/transvariant names for this accent, if documented.
     ///

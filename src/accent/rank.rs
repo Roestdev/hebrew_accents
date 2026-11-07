@@ -4,7 +4,7 @@ use crate::accent::STRENGTH_NONE;
 ///
 /// The sentinel `STRENGTH_NONE` becomes `None`; any real rank passes through.
 #[inline]
-pub(crate) const fn resolve_relative_strength(accent_index: u8) -> Option<u8> {
+pub(crate) const fn resolve_rank(accent_index: u8) -> Option<u8> {
     if accent_index == STRENGTH_NONE {
         None
     } else {

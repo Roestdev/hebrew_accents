@@ -90,7 +90,7 @@ impl HebrewAccent {
     /// // Can access properties through the reference
     /// if let Some(poetry) = accent.as_poetry() {
     ///     println!("English name: {}", poetry.english_name());
-    ///     println!("Relative strength: {:?}", poetry).relative_strength());
+    ///     println!("Relative strength: {:?}", poetry).rank());
     /// //}
     ///
     /// // Original accent remains usable after inspection
@@ -418,11 +418,11 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn relative_strength(&self) -> Option<u8> {
+    fn rank(&self) -> Option<u8> {
         match self {
-            HebrewAccent::Prose(p) => p.relative_strength(),
-            HebrewAccent::Poetry(p) => p.relative_strength(),
-            HebrewAccent::Pseudo(p) => p.relative_strength(),
+            HebrewAccent::Prose(p) => p.rank(),
+            HebrewAccent::Poetry(p) => p.rank(),
+            HebrewAccent::Pseudo(p) => p.rank(),
         }
     }
 
@@ -838,7 +838,7 @@ mod tests {
         let accent = HebrewAccent::Poetry(PoetryAccent::ReviaGadol);
         if let Some(poetry) = accent.as_poetry() {
             println!("English name: {}", poetry.english_name());
-            println!("Relative strength: {:?}", poetry.relative_strength());
+            println!("Relative strength: {:?}", poetry.rank());
         }
         assert!(accent.as_poetry().is_some());
     }
@@ -1174,9 +1174,9 @@ mod tests {
     // ── Accent Trait Methods - Hierarchy ─────────────────────────────
 
     #[test]
-    fn test_relative_strength_prose_disjunctive() {
+    fn test_rank_prose_disjunctive() {
         let accent = HebrewAccent::Prose(ProseAccent::Silluq);
-        let strength = accent.relative_strength();
+        let strength = accent.rank();
 
         // Disjunctive accents have strength
         assert!(strength.is_some());
@@ -1184,26 +1184,26 @@ mod tests {
     }
 
     #[test]
-    fn test_relative_strength_poetry_disjunctive() {
+    fn test_rank_poetry_disjunctive() {
         let accent = HebrewAccent::Poetry(PoetryAccent::Atnach);
-        let strength = accent.relative_strength();
+        let strength = accent.rank();
 
         assert!(strength.is_some());
     }
 
     #[test]
-    fn test_relative_strength_conjunctive_returns_none() {
+    fn test_rank_conjunctive_returns_none() {
         let accent = HebrewAccent::Prose(ProseAccent::Munach);
-        let strength = accent.relative_strength();
+        let strength = accent.rank();
 
         // Conjunctives don't have relative strength
         assert_eq!(strength, None);
     }
 
     #[test]
-    fn test_relative_strength_pseudo_returns_none() {
+    fn test_rank_pseudo_returns_none() {
         let accent = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
-        let strength = accent.relative_strength();
+        let strength = accent.rank();
 
         assert_eq!(strength, None);
     }
@@ -1298,7 +1298,7 @@ mod tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
@@ -1318,7 +1318,7 @@ mod tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
@@ -1338,7 +1338,7 @@ mod tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
@@ -4177,82 +4177,82 @@ The alternate BHS naming is fabricated"#,
         }
     }
 
-    mod relative_strength {
+    mod rank {
         // TODO relative strength
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
         #[test]
         fn test_prose_disjunctive_strength() {
             // Primary disjunctives: indices 0-17, strengths 1-18
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Silluq).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Silluq).rank(),
                 Some(1)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Atnach).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Atnach).rank(),
                 Some(2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Segolta).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Segolta).rank(),
                 Some(3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Shalshelet).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Shalshelet).rank(),
                 Some(4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQaton).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).rank(),
                 Some(5)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephGadol).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::ZaqephGadol).rank(),
                 Some(6)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Revia).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Revia).rank(),
                 Some(7)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tiphcha).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Tiphcha).rank(),
                 Some(8)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Zarqa).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Zarqa).rank(),
                 Some(9)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pashta).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Pashta).rank(),
                 Some(10)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Yetiv).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Yetiv).rank(),
                 Some(11)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tevir).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Tevir).rank(),
                 Some(12)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Geresh).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Geresh).rank(),
                 Some(13)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Gershayim).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Gershayim).rank(),
                 Some(14)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pazer).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Pazer).rank(),
                 Some(15)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::PazerGadol).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::PazerGadol).rank(),
                 Some(16)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaGedolah).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::TelishaGedolah).rank(),
                 Some(17)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Legarmeh).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Legarmeh).rank(),
                 Some(18)
             );
         }
@@ -4262,43 +4262,43 @@ The alternate BHS naming is fabricated"#,
         fn test_prose_conjunctive_strength() {
             // Conjunctives: indices 18-27, all should be None
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Munach).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Munach).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Mahpakh).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Mahpakh).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Merkha).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Merkha).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Darga).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Darga).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Azla).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Azla).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaQetannah).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::TelishaQetannah).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Galgal).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Galgal).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meayla).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Meayla).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meteg).relative_strength(),
+                HebrewAccent::Prose(ProseAccent::Meteg).rank(),
                 None
             );
         }
@@ -4306,51 +4306,51 @@ The alternate BHS naming is fabricated"#,
         fn test_poetry_disjunctive_strength() {
             // Primary disjunctives: indices 0-11, strengths 1-12
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Silluq).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Silluq).rank(),
                 Some(1)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::OlehWeYored).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::OlehWeYored).rank(),
                 Some(2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Atnach).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Atnach).rank(),
                 Some(3)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaGadol).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaGadol).rank(),
                 Some(4)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).rank(),
                 Some(5)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).rank(),
                 Some(6)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tsinnor).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Tsinnor).rank(),
                 Some(7)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaQaton).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaQaton).rank(),
                 Some(8)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Dechi).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Dechi).rank(),
                 Some(9)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Pazer).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Pazer).rank(),
                 Some(10)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).rank(),
                 Some(11)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).rank(),
                 Some(12)
             );
         }
@@ -4360,47 +4360,47 @@ The alternate BHS naming is fabricated"#,
         fn test_poetry_conjunctive_strength() {
             // Conjunctives: indices 12-22, all should be None
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Munach).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Munach).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Merkha).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Merkha).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Illuy).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Illuy).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tarcha).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Tarcha).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Galgal).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Galgal).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Mehuppakh).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Mehuppakh).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Azla).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Azla).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Meteg).relative_strength(),
+                HebrewAccent::Poetry(PoetryAccent::Meteg).rank(),
                 None
             );
         }
@@ -4408,15 +4408,15 @@ The alternate BHS naming is fabricated"#,
         fn test_pseudo_accent_strength() {
             // Pseudo accents never have strength hierarchy
             assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).relative_strength(),
+                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Maqqaph).relative_strength(),
+                HebrewAccent::Pseudo(PseudoAccent::Maqqaph).rank(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Paseq).relative_strength(),
+                HebrewAccent::Pseudo(PseudoAccent::Paseq).rank(),
                 None
             );
         }

@@ -47,7 +47,7 @@ use strum_macros::{EnumCount, EnumIter};
 /// |----------|--------------------------------------------------------------------------------------------------|----------------|
 /// | Melodic contour | Yes — each has a unique chant melody | No — structural only |
 /// | Disjunctive/conjunctive role | Yes — phrases are built around them | No — modifies accent behavior |
-/// | `relative_strength()` | Returns `Some(u8)` | Always returns `None` |
+/// | `rank()` | Returns `Some(u8)` | Always returns `None` |
 /// | `group_level()` | Returns `Some` for disjunctives | Always returns `None` |
 ///
 /// # Representation
@@ -62,7 +62,7 @@ use strum_macros::{EnumCount, EnumIter};
 /// use hebrew_accents::{PseudoAccent,Accent};
 ///
 /// let mark = PseudoAccent::SophPasuq;
-/// assert_eq!(mark.relative_strength(), None);
+/// assert_eq!(mark.rank(), None);
 /// assert_eq!(mark.group_level(), None);
 /// println!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: end of verse"
 /// ```
@@ -258,7 +258,7 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn relative_strength(&self) -> Option<u8> {
+    fn rank(&self) -> Option<u8> {
         None
     }
 
@@ -416,9 +416,9 @@ mod test_accent_trait {
     #[test]
     fn test_pseudo_accent_strength() {
         // Pseudo accents never have strength hierarchy
-        assert_eq!(PseudoAccent::SophPasuq.relative_strength(), None);
-        assert_eq!(PseudoAccent::Maqqaph.relative_strength(), None);
-        assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
+        assert_eq!(PseudoAccent::SophPasuq.rank(), None);
+        assert_eq!(PseudoAccent::Maqqaph.rank(), None);
+        assert_eq!(PseudoAccent::Paseq.rank(), None);
     }
     #[test]
     fn test_pseudo_accent_group_level() {
@@ -658,11 +658,11 @@ mod tests {
     // --- Relative Strength Method (ALWAYS NONE) ---
 
     #[test]
-    fn test_relative_strength_always_returns_none() {
+    fn test_rank_always_returns_none() {
         // Pseudo-accents have no hierarchical strength
-        assert_eq!(PseudoAccent::SophPasuq.relative_strength(), None);
-        assert_eq!(PseudoAccent::Maqqaph.relative_strength(), None);
-        assert_eq!(PseudoAccent::Paseq.relative_strength(), None);
+        assert_eq!(PseudoAccent::SophPasuq.rank(), None);
+        assert_eq!(PseudoAccent::Maqqaph.rank(), None);
+        assert_eq!(PseudoAccent::Paseq.rank(), None);
     }
 
     // --- Group Level Method (ALWAYS NONE) ---
@@ -721,8 +721,8 @@ mod tests {
         assert!(!prose.hebrew_name().is_empty());
 
         // But pseudo lacks strength/level
-        assert_eq!(pseudo.relative_strength(), None);
-        assert!(prose.relative_strength().is_some());
+        assert_eq!(pseudo.rank(), None);
+        assert!(prose.rank().is_some());
 
         assert_eq!(pseudo.group_level(), None);
         assert!(prose.group_level().is_some());
@@ -738,7 +738,7 @@ mod tests {
                 None,
                 "No disjunctive/conjunctive category"
             );
-            assert_eq!(accent.relative_strength(), None, "No relative strength");
+            assert_eq!(accent.rank(), None, "No relative strength");
             assert_eq!(accent.group_level(), None, "No group level");
         }
     }
@@ -852,7 +852,7 @@ mod tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
@@ -920,7 +920,7 @@ mod tests {
     fn doc_test_example_from_struct_docs() {
         // Replicate the example from struct documentation
         let mark = PseudoAccent::SophPasuq;
-        assert_eq!(mark.relative_strength(), None);
+        assert_eq!(mark.rank(), None);
         assert_eq!(mark.group_level(), None);
         let _display = format!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: ..."
 
@@ -936,8 +936,8 @@ mod tests {
         let prose = ProseAccent::Revia;
 
         // Verify the documented behavior difference
-        assert_eq!(pseudo.relative_strength(), None);
-        assert!(prose.relative_strength().is_some());
+        assert_eq!(pseudo.rank(), None);
+        assert!(prose.rank().is_some());
 
         assert_eq!(pseudo.group_level(), None);
         assert!(prose.group_level().is_some());
@@ -1112,10 +1112,10 @@ mod tests2 {
     }
 
     #[test]
-    fn test_relative_strength_return_type_none() {
-        // Specifically test relative_strength() returns None
+    fn test_rank_return_type_none() {
+        // Specifically test rank() returns None
         for accent in PseudoAccent::iter() {
-            let strength_opt: Option<u8> = accent.relative_strength();
+            let strength_opt: Option<u8> = accent.rank();
             assert!(strength_opt.is_none());
         }
     }
@@ -1171,7 +1171,7 @@ mod tests2 {
 
         // Meta methods
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();

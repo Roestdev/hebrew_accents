@@ -54,8 +54,8 @@ fn iterall() {
     println!("\nAll Hebrew accents ({}):", HebrewAccent::iter().count());
     for accent in HebrewAccent::iter() {
         if let Some(strength) = match &accent {
-            HebrewAccent::Prose(p) => p.relative_strength(),
-            HebrewAccent::Poetry(p) => p.relative_strength(),
+            HebrewAccent::Prose(p) => p.rank(),
+            HebrewAccent::Poetry(p) => p.rank(),
             HebrewAccent::Pseudo(_) => None,
         } {
             println!("  {:?} - strength: {}", accent, strength);
@@ -104,7 +104,7 @@ fn iterate_all_accents() {
         println!(
             "English name: {}, rank: {:?}",
             accent.english_name(),
-            accent.relative_strength()
+            accent.rank()
         );
     }
 }

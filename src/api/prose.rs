@@ -39,10 +39,10 @@
 //!
 //! let accent = ProseAccent::Atnach;
 //! println!("{}", accent); // "Atnach (אַתְנָח), meaning: rest"
-//! println!("Strength: {:?}", accent.relative_strength());
+//! println!("Strength: {:?}", accent.rank());
 //! ```
 
-use crate::accent::{resolve_disjunctive_group, resolve_relative_strength};
+use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
 use crate::{
@@ -86,7 +86,7 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// // Check the strength of Atnach
 /// let atnach = ProseAccent::Atnach;
-/// println!("{} strength: {:?}", atnach.english_name(), atnach.relative_strength());
+/// println!("{} strength: {:?}", atnach.english_name(), atnach.rank());
 /// ```
 #[repr(u8)]
 #[derive(EnumCount, EnumIter, Debug, Copy, Clone, Eq, PartialEq, Hash, Default)]
@@ -380,8 +380,8 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn relative_strength(&self) -> Option<u8> {
-        resolve_relative_strength(BHS_PROSE_RANK_MAP[self.as_index()])
+    fn rank(&self) -> Option<u8> {
+        resolve_rank(BHS_PROSE_RANK_MAP[self.as_index()])
     }
 
     #[inline]
@@ -1307,41 +1307,41 @@ mod test_accent_trait {
     #[test]
     fn test_prose_disjunctive_strength() {
         // Primary disjunctives: indices 0-17, strengths 1-18
-        assert_eq!(ProseAccent::Silluq.relative_strength(), Some(1));
-        assert_eq!(ProseAccent::Atnach.relative_strength(), Some(2));
-        assert_eq!(ProseAccent::Segolta.relative_strength(), Some(3));
-        assert_eq!(ProseAccent::Shalshelet.relative_strength(), Some(4));
-        assert_eq!(ProseAccent::ZaqephQaton.relative_strength(), Some(5));
-        assert_eq!(ProseAccent::ZaqephGadol.relative_strength(), Some(6));
-        assert_eq!(ProseAccent::Revia.relative_strength(), Some(7));
-        assert_eq!(ProseAccent::Tiphcha.relative_strength(), Some(8));
-        assert_eq!(ProseAccent::Zarqa.relative_strength(), Some(9));
-        assert_eq!(ProseAccent::Pashta.relative_strength(), Some(10));
-        assert_eq!(ProseAccent::ShenePastin.relative_strength(), Some(10));
-        assert_eq!(ProseAccent::Yetiv.relative_strength(), Some(11));
-        assert_eq!(ProseAccent::Tevir.relative_strength(), Some(12));
-        assert_eq!(ProseAccent::Geresh.relative_strength(), Some(13));
-        assert_eq!(ProseAccent::Gershayim.relative_strength(), Some(14));
-        assert_eq!(ProseAccent::Pazer.relative_strength(), Some(15));
-        assert_eq!(ProseAccent::PazerGadol.relative_strength(), Some(16));
-        assert_eq!(ProseAccent::TelishaGedolah.relative_strength(), Some(17));
-        assert_eq!(ProseAccent::Legarmeh.relative_strength(), Some(18));
+        assert_eq!(ProseAccent::Silluq.rank(), Some(1));
+        assert_eq!(ProseAccent::Atnach.rank(), Some(2));
+        assert_eq!(ProseAccent::Segolta.rank(), Some(3));
+        assert_eq!(ProseAccent::Shalshelet.rank(), Some(4));
+        assert_eq!(ProseAccent::ZaqephQaton.rank(), Some(5));
+        assert_eq!(ProseAccent::ZaqephGadol.rank(), Some(6));
+        assert_eq!(ProseAccent::Revia.rank(), Some(7));
+        assert_eq!(ProseAccent::Tiphcha.rank(), Some(8));
+        assert_eq!(ProseAccent::Zarqa.rank(), Some(9));
+        assert_eq!(ProseAccent::Pashta.rank(), Some(10));
+        assert_eq!(ProseAccent::ShenePastin.rank(), Some(10));
+        assert_eq!(ProseAccent::Yetiv.rank(), Some(11));
+        assert_eq!(ProseAccent::Tevir.rank(), Some(12));
+        assert_eq!(ProseAccent::Geresh.rank(), Some(13));
+        assert_eq!(ProseAccent::Gershayim.rank(), Some(14));
+        assert_eq!(ProseAccent::Pazer.rank(), Some(15));
+        assert_eq!(ProseAccent::PazerGadol.rank(), Some(16));
+        assert_eq!(ProseAccent::TelishaGedolah.rank(), Some(17));
+        assert_eq!(ProseAccent::Legarmeh.rank(), Some(18));
     }
 
     /// Test all prose conjunctive accents (should return None)
     #[test]
     fn test_prose_conjunctive_strength() {
         // Conjunctives: indices 18-27, all should be None
-        assert_eq!(ProseAccent::Munach.relative_strength(), None);
-        assert_eq!(ProseAccent::Mahpakh.relative_strength(), None);
-        assert_eq!(ProseAccent::Merkha.relative_strength(), None);
-        assert_eq!(ProseAccent::MerkhaKephulah.relative_strength(), None);
-        assert_eq!(ProseAccent::Darga.relative_strength(), None);
-        assert_eq!(ProseAccent::Azla.relative_strength(), None);
-        assert_eq!(ProseAccent::TelishaQetannah.relative_strength(), None);
-        assert_eq!(ProseAccent::Galgal.relative_strength(), None);
-        assert_eq!(ProseAccent::Meayla.relative_strength(), None);
-        assert_eq!(ProseAccent::Meteg.relative_strength(), None);
+        assert_eq!(ProseAccent::Munach.rank(), None);
+        assert_eq!(ProseAccent::Mahpakh.rank(), None);
+        assert_eq!(ProseAccent::Merkha.rank(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.rank(), None);
+        assert_eq!(ProseAccent::Darga.rank(), None);
+        assert_eq!(ProseAccent::Azla.rank(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.rank(), None);
+        assert_eq!(ProseAccent::Galgal.rank(), None);
+        assert_eq!(ProseAccent::Meayla.rank(), None);
+        assert_eq!(ProseAccent::Meteg.rank(), None);
     }
     #[test]
     fn test_prose_disjunctive_group_level() {
@@ -1794,11 +1794,11 @@ mod tests {
     #[test]
     fn test_highest_strength_variants() {
         // Silluq should have highest strength (lowest number)
-        if let Some(silluq_strength) = ProseAccent::Silluq.relative_strength() {
+        if let Some(silluq_strength) = ProseAccent::Silluq.rank() {
             assert_eq!(silluq_strength, 1, "Silluq should be strength 1");
         }
 
-        if let Some(atnach_strength) = ProseAccent::Atnach.relative_strength() {
+        if let Some(atnach_strength) = ProseAccent::Atnach.rank() {
             assert_eq!(atnach_strength, 2, "Atnach should be strength 2");
         }
     }
@@ -1820,7 +1820,7 @@ mod tests {
         let _primary = accent.primary_cantillation_mark();
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
-        let _strength = accent.relative_strength();
+        let _strength = accent.rank();
         let _level = accent.group_level();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
