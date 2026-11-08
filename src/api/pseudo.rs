@@ -48,7 +48,7 @@ use strum_macros::{EnumCount, EnumIter};
 /// | Melodic contour | Yes — each has a unique chant melody | No — structural only |
 /// | Disjunctive/conjunctive role | Yes — phrases are built around them | No — modifies accent behavior |
 /// | `rank()` | Returns `Some(u8)` | Always returns `None` |
-/// | `group_level()` | Returns `Some` for disjunctives | Always returns `None` |
+/// | `tier()` | Returns `Some` for disjunctives | Always returns `None` |
 ///
 /// # Representation
 ///
@@ -63,7 +63,7 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// let mark = PseudoAccent::SophPasuq;
 /// assert_eq!(mark.rank(), None);
-/// assert_eq!(mark.group_level(), None);
+/// assert_eq!(mark.tier(), None);
 /// println!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: end of verse"
 /// ```
 #[repr(u8)]
@@ -263,7 +263,7 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn group_level(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<GroupLevel> {
         None
     }
 
@@ -421,11 +421,11 @@ mod test_accent_trait {
         assert_eq!(PseudoAccent::Paseq.rank(), None);
     }
     #[test]
-    fn test_pseudo_accent_group_level() {
+    fn test_pseudo_accent_tier() {
         // Pseudo accents never have strength hierarchy
-        assert_eq!(PseudoAccent::SophPasuq.group_level(), None);
-        assert_eq!(PseudoAccent::Maqqaph.group_level(), None);
-        assert_eq!(PseudoAccent::Paseq.group_level(), None);
+        assert_eq!(PseudoAccent::SophPasuq.tier(), None);
+        assert_eq!(PseudoAccent::Maqqaph.tier(), None);
+        assert_eq!(PseudoAccent::Paseq.tier(), None);
     }
     #[test]
     fn test_pseudo_accent_cantillation_symbol() {
@@ -668,11 +668,11 @@ mod tests {
     // --- Group Level Method (ALWAYS NONE) ---
 
     #[test]
-    fn test_group_level_always_returns_none() {
+    fn test_tier_always_returns_none() {
         // Pseudo-accents have no hierarchical level
-        assert_eq!(PseudoAccent::SophPasuq.group_level(), None);
-        assert_eq!(PseudoAccent::Maqqaph.group_level(), None);
-        assert_eq!(PseudoAccent::Paseq.group_level(), None);
+        assert_eq!(PseudoAccent::SophPasuq.tier(), None);
+        assert_eq!(PseudoAccent::Maqqaph.tier(), None);
+        assert_eq!(PseudoAccent::Paseq.tier(), None);
     }
 
     // --- Cantillation Symbol Method ---
@@ -724,8 +724,8 @@ mod tests {
         assert_eq!(pseudo.rank(), None);
         assert!(prose.rank().is_some());
 
-        assert_eq!(pseudo.group_level(), None);
-        assert!(prose.group_level().is_some());
+        assert_eq!(pseudo.tier(), None);
+        assert!(prose.tier().is_some());
     }
 
     #[test]
@@ -739,7 +739,7 @@ mod tests {
                 "No disjunctive/conjunctive category"
             );
             assert_eq!(accent.rank(), None, "No relative strength");
-            assert_eq!(accent.group_level(), None, "No group level");
+            assert_eq!(accent.tier(), None, "No group level");
         }
     }
 
@@ -853,7 +853,7 @@ mod tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);
@@ -921,7 +921,7 @@ mod tests {
         // Replicate the example from struct documentation
         let mark = PseudoAccent::SophPasuq;
         assert_eq!(mark.rank(), None);
-        assert_eq!(mark.group_level(), None);
+        assert_eq!(mark.tier(), None);
         let _display = format!("{}", mark); // "Soph Pasuq (סוֹף פָּסוּק), meaning: ..."
 
         assert_eq!(mark.hebrew_name(), "סוֹף פָּסוּק");
@@ -939,8 +939,8 @@ mod tests {
         assert_eq!(pseudo.rank(), None);
         assert!(prose.rank().is_some());
 
-        assert_eq!(pseudo.group_level(), None);
-        assert!(prose.group_level().is_some());
+        assert_eq!(pseudo.tier(), None);
+        assert!(prose.tier().is_some());
     }
 
     // ===== CROSS-REFERENCING TESTS =====
@@ -1121,10 +1121,10 @@ mod tests2 {
     }
 
     #[test]
-    fn test_group_level_return_type_none() {
-        // Specifically test group_level() returns None
+    fn test_tier_return_type_none() {
+        // Specifically test tier() returns None
         for accent in PseudoAccent::iter() {
-            let level_opt: Option<GroupLevel> = accent.group_level();
+            let level_opt: Option<GroupLevel> = accent.tier();
             assert!(level_opt.is_none());
         }
     }
@@ -1172,7 +1172,7 @@ mod tests2 {
         // Meta methods
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }

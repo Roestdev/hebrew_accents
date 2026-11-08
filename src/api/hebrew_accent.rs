@@ -427,7 +427,7 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn group_level(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<GroupLevel> {
         resolve_disjunctive_group(*self).and_then(|g| g.into_public_level())
     }
 
@@ -1209,34 +1209,34 @@ mod tests {
     }
 
     #[test]
-    fn test_group_level_prose_disjunctive() {
+    fn test_tier_prose_disjunctive() {
         let accent = HebrewAccent::Prose(ProseAccent::Atnach);
-        let level = accent.group_level();
+        let level = accent.tier();
 
         // Disjunctives have group levels
         assert!(level.is_some());
     }
 
     #[test]
-    fn test_group_level_poetry_disjunctive() {
+    fn test_tier_poetry_disjunctive() {
         let accent = HebrewAccent::Poetry(PoetryAccent::Silluq);
-        let level = accent.group_level();
+        let level = accent.tier();
 
         assert!(level.is_some());
     }
 
     #[test]
-    fn test_group_level_conjunctive_returns_none() {
+    fn test_tier_conjunctive_returns_none() {
         let accent = HebrewAccent::Prose(ProseAccent::Munach);
-        let level = accent.group_level();
+        let level = accent.tier();
 
         assert_eq!(level, None);
     }
 
     #[test]
-    fn test_group_level_pseudo_returns_none() {
+    fn test_tier_pseudo_returns_none() {
         let accent = HebrewAccent::Pseudo(PseudoAccent::SophPasuq);
-        let level = accent.group_level();
+        let level = accent.tier();
 
         assert_eq!(level, None);
     }
@@ -1299,7 +1299,7 @@ mod tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
@@ -1319,7 +1319,7 @@ mod tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
@@ -1339,7 +1339,7 @@ mod tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
@@ -4183,22 +4183,10 @@ The alternate BHS naming is fabricated"#,
         #[test]
         fn test_prose_disjunctive_strength() {
             // Primary disjunctives: indices 0-17, strengths 1-18
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Silluq).rank(),
-                Some(1)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Atnach).rank(),
-                Some(2)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Segolta).rank(),
-                Some(3)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Shalshelet).rank(),
-                Some(4)
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Silluq).rank(), Some(1));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Atnach).rank(), Some(2));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Segolta).rank(), Some(3));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Shalshelet).rank(), Some(4));
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephQaton).rank(),
                 Some(5)
@@ -4207,42 +4195,15 @@ The alternate BHS naming is fabricated"#,
                 HebrewAccent::Prose(ProseAccent::ZaqephGadol).rank(),
                 Some(6)
             );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Revia).rank(),
-                Some(7)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tiphcha).rank(),
-                Some(8)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Zarqa).rank(),
-                Some(9)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pashta).rank(),
-                Some(10)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Yetiv).rank(),
-                Some(11)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tevir).rank(),
-                Some(12)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Geresh).rank(),
-                Some(13)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Gershayim).rank(),
-                Some(14)
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pazer).rank(),
-                Some(15)
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Revia).rank(), Some(7));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Tiphcha).rank(), Some(8));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Zarqa).rank(), Some(9));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Pashta).rank(), Some(10));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Yetiv).rank(), Some(11));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Tevir).rank(), Some(12));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Geresh).rank(), Some(13));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Gershayim).rank(), Some(14));
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Pazer).rank(), Some(15));
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::PazerGadol).rank(),
                 Some(16)
@@ -4251,72 +4212,39 @@ The alternate BHS naming is fabricated"#,
                 HebrewAccent::Prose(ProseAccent::TelishaGedolah).rank(),
                 Some(17)
             );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Legarmeh).rank(),
-                Some(18)
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Legarmeh).rank(), Some(18));
         }
 
         /// Test all prose conjunctive accents (should return None)
         #[test]
         fn test_prose_conjunctive_strength() {
             // Conjunctives: indices 18-27, all should be None
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Munach).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Mahpakh).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Merkha).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Munach).rank(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Mahpakh).rank(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Merkha).rank(), None);
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::MerkhaKephulah).rank(),
                 None
             );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Darga).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Azla).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Darga).rank(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Azla).rank(), None);
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::TelishaQetannah).rank(),
                 None
             );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Galgal).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meayla).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meteg).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Galgal).rank(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Meayla).rank(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Meteg).rank(), None);
         }
         #[test]
         fn test_poetry_disjunctive_strength() {
             // Primary disjunctives: indices 0-11, strengths 1-12
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Silluq).rank(),
-                Some(1)
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Silluq).rank(), Some(1));
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).rank(),
                 Some(2)
             );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Atnach).rank(),
-                Some(3)
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Atnach).rank(), Some(3));
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaGadol).rank(),
                 Some(4)
@@ -4329,22 +4257,13 @@ The alternate BHS naming is fabricated"#,
                 HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).rank(),
                 Some(6)
             );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tsinnor).rank(),
-                Some(7)
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Tsinnor).rank(), Some(7));
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaQaton).rank(),
                 Some(8)
             );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Dechi).rank(),
-                Some(9)
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Pazer).rank(),
-                Some(10)
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Dechi).rank(), Some(9));
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Pazer).rank(), Some(10));
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).rank(),
                 Some(11)
@@ -4359,34 +4278,13 @@ The alternate BHS naming is fabricated"#,
         #[test]
         fn test_poetry_conjunctive_strength() {
             // Conjunctives: indices 12-22, all should be None
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Munach).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Merkha).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Illuy).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tarcha).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Galgal).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Mehuppakh).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Azla).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Munach).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Merkha).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Illuy).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Tarcha).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Galgal).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Mehuppakh).rank(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Azla).rank(), None);
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).rank(),
                 None
@@ -4399,247 +4297,202 @@ The alternate BHS naming is fabricated"#,
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).rank(),
                 None
             );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Meteg).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Meteg).rank(), None);
         }
         #[test]
         fn test_pseudo_accent_strength() {
             // Pseudo accents never have strength hierarchy
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Maqqaph).rank(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Paseq).rank(),
-                None
-            );
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).rank(), None);
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqaph).rank(), None);
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).rank(), None);
         }
     }
 
-    mod group_level {
+    mod tier {
         // TODO group level
         use crate::{Accent, GroupLevel, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
         #[test]
-        fn test_prose_disjunctive_group_level() {
+        fn test_prose_disjunctive_tier() {
             // Primary disjunctives: indices 0-17, strengths 1-18
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Silluq).group_level(),
+                HebrewAccent::Prose(ProseAccent::Silluq).tier(),
                 Some(GroupLevel::Tier1)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Atnach).group_level(),
+                HebrewAccent::Prose(ProseAccent::Atnach).tier(),
                 Some(GroupLevel::Tier1)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Segolta).group_level(),
+                HebrewAccent::Prose(ProseAccent::Segolta).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Shalshelet).group_level(),
+                HebrewAccent::Prose(ProseAccent::Shalshelet).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQaton).group_level(),
+                HebrewAccent::Prose(ProseAccent::ZaqephQaton).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephGadol).group_level(),
+                HebrewAccent::Prose(ProseAccent::ZaqephGadol).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Revia).group_level(),
+                HebrewAccent::Prose(ProseAccent::Revia).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tiphcha).group_level(),
+                HebrewAccent::Prose(ProseAccent::Tiphcha).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Zarqa).group_level(),
+                HebrewAccent::Prose(ProseAccent::Zarqa).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pashta).group_level(),
+                HebrewAccent::Prose(ProseAccent::Pashta).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Yetiv).group_level(),
+                HebrewAccent::Prose(ProseAccent::Yetiv).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tevir).group_level(),
+                HebrewAccent::Prose(ProseAccent::Tevir).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Geresh).group_level(),
+                HebrewAccent::Prose(ProseAccent::Geresh).tier(),
                 Some(GroupLevel::Tier4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Gershayim).group_level(),
+                HebrewAccent::Prose(ProseAccent::Gershayim).tier(),
                 Some(GroupLevel::Tier4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pazer).group_level(),
+                HebrewAccent::Prose(ProseAccent::Pazer).tier(),
                 Some(GroupLevel::Tier4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::PazerGadol).group_level(),
+                HebrewAccent::Prose(ProseAccent::PazerGadol).tier(),
                 Some(GroupLevel::Tier4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaGedolah).group_level(),
+                HebrewAccent::Prose(ProseAccent::TelishaGedolah).tier(),
                 Some(GroupLevel::Tier4)
             );
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Legarmeh).group_level(),
+                HebrewAccent::Prose(ProseAccent::Legarmeh).tier(),
                 Some(GroupLevel::Tier4)
             );
         }
 
         /// Test all prose conjunctive accents (should return None)
         #[test]
-        fn test_prose_conjunctive_group_level() {
+        fn test_prose_conjunctive_tier() {
             // Conjunctives: indices 18-27, all should be None
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Munach).group_level(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Munach).tier(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Mahpakh).tier(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Merkha).tier(), None);
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Mahpakh).group_level(),
+                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).tier(),
                 None
             );
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Merkha).group_level(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Darga).tier(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Azla).tier(), None);
             assert_eq!(
-                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).group_level(),
+                HebrewAccent::Prose(ProseAccent::TelishaQetannah).tier(),
                 None
             );
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Darga).group_level(), None);
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Azla).group_level(), None);
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaQetannah).group_level(),
-                None
-            );
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Galgal).group_level(), None);
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Meayla).group_level(), None);
-            assert_eq!(HebrewAccent::Prose(ProseAccent::Meteg).group_level(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Galgal).tier(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Meayla).tier(), None);
+            assert_eq!(HebrewAccent::Prose(ProseAccent::Meteg).tier(), None);
         }
         #[test]
-        fn test_poetry_disjunctive_group_level() {
+        fn test_poetry_disjunctive_tier() {
             // Primary disjunctives: indices 0-11, strengths 1-12
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Silluq).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::Silluq).tier(),
                 Some(GroupLevel::Tier1)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::OlehWeYored).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::OlehWeYored).tier(),
                 Some(GroupLevel::Tier1)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Atnach).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::Atnach).tier(),
                 Some(GroupLevel::Tier1)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaGadol).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaGadol).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tsinnor).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::Tsinnor).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaQaton).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::ReviaQaton).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Dechi).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::Dechi).tier(),
                 Some(GroupLevel::Tier2)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Pazer).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::Pazer).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).tier(),
                 Some(GroupLevel::Tier3)
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).tier(),
                 Some(GroupLevel::Tier3)
             );
         }
 
         /// Test all poetry conjunctive accents (should return None)
         #[test]
-        fn test_poetry_conjunctive_group_level() {
+        fn test_poetry_conjunctive_tier() {
             // Conjunctives: indices 12-22, all should be None
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Munach).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Merkha).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Illuy).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Tarcha).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Galgal).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Mehuppakh).tier(), None);
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Azla).tier(), None);
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Munach).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).tier(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Merkha).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).tier(),
                 None
             );
             assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Illuy).group_level(),
+                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).tier(),
                 None
             );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tarcha).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Galgal).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Mehuppakh).group_level(),
-                None
-            );
-            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Azla).group_level(), None);
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Meteg).group_level(),
-                None
-            );
+            assert_eq!(HebrewAccent::Poetry(PoetryAccent::Meteg).tier(), None);
         }
         #[test]
-        fn test_pseudo_accent_group_level() {
+        fn test_pseudo_accent_tier() {
             // Pseudo accents never have strength hierarchy
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Maqqaph).group_level(),
-                None
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Paseq).group_level(),
-                None
-            );
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).tier(), None);
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqaph).tier(), None);
+            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).tier(), None);
         }
     }
 

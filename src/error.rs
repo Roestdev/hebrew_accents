@@ -532,7 +532,7 @@ mod sentence_tests {
     }
 
     #[test]
-    fn test_group_level_error_formatting() {
+    fn test_tier_error_formatting() {
         let err = GroupLevelError::InvalidGroupLevel(5);
         assert_eq!(
             err.to_string(),
@@ -542,7 +542,7 @@ mod sentence_tests {
     }
 
     #[test]
-    fn test_group_level_error_distinct_values() {
+    fn test_tier_error_distinct_values() {
         // Different values should produce different errors
         let err5 = GroupLevelError::InvalidGroupLevel(5);
         let err6 = GroupLevelError::InvalidGroupLevel(6);
@@ -550,7 +550,7 @@ mod sentence_tests {
     }
 
     #[test]
-    fn test_group_level_error_hash() {
+    fn test_tier_error_hash() {
         // Hash should differ based on value
         let h5 = get_hash(&GroupLevelError::InvalidGroupLevel(5));
         let h6 = get_hash(&GroupLevelError::InvalidGroupLevel(6));

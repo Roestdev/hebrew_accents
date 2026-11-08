@@ -385,7 +385,7 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn group_level(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<GroupLevel> {
         resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
     }
 
@@ -1344,64 +1344,43 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Meteg.rank(), None);
     }
     #[test]
-    fn test_prose_disjunctive_group_level() {
+    fn test_prose_disjunctive_tier() {
         // Primary disjunctives: indices 0-17, strengths 1-18
-        assert_eq!(ProseAccent::Silluq.group_level(), Some(GroupLevel::Tier1));
-        assert_eq!(ProseAccent::Atnach.group_level(), Some(GroupLevel::Tier1));
-        assert_eq!(ProseAccent::Segolta.group_level(), Some(GroupLevel::Tier2));
-        assert_eq!(
-            ProseAccent::Shalshelet.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(
-            ProseAccent::ZaqephQaton.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(
-            ProseAccent::ZaqephGadol.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(ProseAccent::Revia.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Tiphcha.group_level(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::Zarqa.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Pashta.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(
-            ProseAccent::ShenePastin.group_level(),
-            Some(GroupLevel::Tier3)
-        );
-        assert_eq!(ProseAccent::Yetiv.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Tevir.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Geresh.group_level(), Some(GroupLevel::Tier4));
-        assert_eq!(
-            ProseAccent::Gershayim.group_level(),
-            Some(GroupLevel::Tier4)
-        );
-        assert_eq!(ProseAccent::Pazer.group_level(), Some(GroupLevel::Tier4));
-        assert_eq!(
-            ProseAccent::PazerGadol.group_level(),
-            Some(GroupLevel::Tier4)
-        );
-        assert_eq!(
-            ProseAccent::TelishaGedolah.group_level(),
-            Some(GroupLevel::Tier4)
-        );
-        assert_eq!(ProseAccent::Legarmeh.group_level(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::Silluq.tier(), Some(GroupLevel::Tier1));
+        assert_eq!(ProseAccent::Atnach.tier(), Some(GroupLevel::Tier1));
+        assert_eq!(ProseAccent::Segolta.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::Shalshelet.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::ZaqephQaton.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::ZaqephGadol.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::Revia.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Tiphcha.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(ProseAccent::Zarqa.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Pashta.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::ShenePastin.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Yetiv.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Tevir.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(ProseAccent::Geresh.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::Gershayim.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::Pazer.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::PazerGadol.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::TelishaGedolah.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::Legarmeh.tier(), Some(GroupLevel::Tier4));
     }
 
     /// Test all prose conjunctive accents (should return None)
     #[test]
-    fn test_prose_conjunctive_group_level() {
+    fn test_prose_conjunctive_tier() {
         // Conjunctives: indices 18-27, all should be None
-        assert_eq!(ProseAccent::Munach.group_level(), None);
-        assert_eq!(ProseAccent::Mahpakh.group_level(), None);
-        assert_eq!(ProseAccent::Merkha.group_level(), None);
-        assert_eq!(ProseAccent::MerkhaKephulah.group_level(), None);
-        assert_eq!(ProseAccent::Darga.group_level(), None);
-        assert_eq!(ProseAccent::Azla.group_level(), None);
-        assert_eq!(ProseAccent::TelishaQetannah.group_level(), None);
-        assert_eq!(ProseAccent::Galgal.group_level(), None);
-        assert_eq!(ProseAccent::Meayla.group_level(), None);
-        assert_eq!(ProseAccent::Meteg.group_level(), None);
+        assert_eq!(ProseAccent::Munach.tier(), None);
+        assert_eq!(ProseAccent::Mahpakh.tier(), None);
+        assert_eq!(ProseAccent::Merkha.tier(), None);
+        assert_eq!(ProseAccent::MerkhaKephulah.tier(), None);
+        assert_eq!(ProseAccent::Darga.tier(), None);
+        assert_eq!(ProseAccent::Azla.tier(), None);
+        assert_eq!(ProseAccent::TelishaQetannah.tier(), None);
+        assert_eq!(ProseAccent::Galgal.tier(), None);
+        assert_eq!(ProseAccent::Meayla.tier(), None);
+        assert_eq!(ProseAccent::Meteg.tier(), None);
     }
     #[test]
     fn test_prose_disjunctive_cantillation_symbol() {
@@ -1692,7 +1671,7 @@ mod tests {
         let mut has_tier4 = false;
 
         for accent in ProseAccent::iter() {
-            if let Some(level) = accent.group_level() {
+            if let Some(level) = accent.tier() {
                 if level == crate::GroupLevel::Tier4 {
                     has_tier4 = true;
                 }
@@ -1774,7 +1753,7 @@ mod tests {
         let mut has_tier4 = false;
 
         for accent in ProseAccent::iter() {
-            if let Some(level) = accent.group_level() {
+            if let Some(level) = accent.tier() {
                 match level {
                     crate::GroupLevel::Tier1 => has_tier1 = true,
                     crate::GroupLevel::Tier2 => has_tier2 = true,
@@ -1821,7 +1800,7 @@ mod tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);

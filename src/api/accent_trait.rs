@@ -28,7 +28,7 @@ Yes — `tier(&self) -> Option<GroupLevel>` is a genuine improvement: short, and
 really returns (coarse tier membership, not an arbitrary "level"). It also opens the door to the clean pairing I mentioned:
 
 - `fn rank(&self) -> Option<u8>` (renamed from `rank`)
-- `fn tier(&self) -> Option<Tier>` (renamed from `group_level`)
+- `fn tier(&self) -> Option<Tier>` (renamed from `tier`)
 
 Now `rank < tier`, `rank()` is fine-grained, `tier()` is coarse — and neither collides with "hierarchy,"
 which stays as the umbrella term in prose. You're pre-1.0, so this is exactly the window for renaming.
@@ -251,25 +251,25 @@ pub trait Accent {
     /// ```
     fn notes(&self) -> Option<&'static str>;
 
-    /// Indicates the relative strength for disjunctive accents only.
+    /// Indicates the rank for disjunctive accents
     ///
     /// Disjunctive accents mark where pauses occur during reading. Stronger
     /// accents correspond to longer pauses; weaker accents indicate shorter
     /// pauses. This mirrors English punctuation: a period ends a sentence with
     /// a full stop, while a comma within a sentence signals a brief pause.
     ///
-    /// Strength rankings use a numeric scale where `1` represents the strongest
+    /// Ranking use a numeric scale where `1` represents the strongest
     /// (most dominant) accent, and higher numbers indicate progressively weaker
     /// (more subordinate) accents.
     ///
-    /// Note: The order given in the [Tabula Accentum](<https:://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf>) of the "Biblia Hebraica Stuttgartensia"
+    /// **Note:** The order given in the BHS (Biblia Hebraica Stuttgartensia") is used
+    /// see: [Tabula Accentum](<https:://www.oakleys.org.uk/files/blog_files/2023/05/tabula_accentuum.pdf>) of the "Biblia Hebraica Stuttgartensia"
     ///
     /// # Return Value
     ///
-    /// - **Disjunctive accents** (Prose or Poetry): Returns `Some(u8)` with the
-    ///   strength ranking
-    /// - **Conjunctive accents** (Prose or Poetry): Returns `None` (no hierarchy)
-    /// - **Pseudo accents**: Always returns `None` (no hierarchy)
+    /// - **Disjunctive accents** (Prose and Poetry): Returns `Some(u8)` with the strength ranking
+    /// - **Conjunctive accents** (Prose and Poetry): Returns `None` (no ranking)
+    /// - **Pseudo accents**: Always returns `None` (no ranking)
     ///
     /// # Example
     ///
@@ -282,9 +282,9 @@ pub trait Accent {
     /// let legarmeh = ProseAccent::Legarmeh;
     ///
     /// // Lower number means stronger accent
-    /// assert_eq!(silluq.rank(), Some(1));
+    /// assert_eq!(silluq.rank(), Some(1)); // strongest prose accent
     /// assert_eq!(atnach.rank(), Some(2));
-    /// assert_eq!(legarmeh.rank(), Some(18));
+    /// assert_eq!(legarmeh.rank(), Some(18)); // weakest prose accent
     ///
     /// // Compare strength levels programmatically
     /// if let (Some(s1), Some(s2)) = (silluq.rank(), atnach.rank()) {
@@ -315,11 +315,11 @@ pub trait Accent {
     ///
     /// let silluq = ProseAccent::Silluq;
     ///
-    /// if let Some(level) = silluq.group_level() {
+    /// if let Some(level) = silluq.tier() {
     ///     assert_eq!(GroupLevel::Tier1, level);
     /// }
     /// ```
-    fn group_level(&self) -> Option<GroupLevel>;
+    fn tier(&self) -> Option<GroupLevel>;
 
     /// Returns the cantillation symbol augmented with a
     ///
@@ -371,7 +371,7 @@ mod tests1 {
 
         let silluq = ProseAccent::Silluq;
 
-        if let Some(level) = silluq.group_level() {
+        if let Some(level) = silluq.tier() {
             assert_eq!(GroupLevel::Tier1, level);
         } else {
             panic!("BUG::wrong grouplevel");

@@ -353,7 +353,7 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn group_level(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<GroupLevel> {
         resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
     }
 
@@ -1250,10 +1250,7 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::ReviaQaton.rank(), Some(8));
         assert_eq!(PoetryAccent::Dechi.rank(), Some(9));
         assert_eq!(PoetryAccent::Pazer.rank(), Some(10));
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.rank(),
-            Some(11)
-        );
+        assert_eq!(PoetryAccent::MehuppakhLegarmeh.rank(), Some(11));
         assert_eq!(PoetryAccent::AzlaLegarmeh.rank(), Some(12));
     }
 
@@ -1274,59 +1271,44 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::Meteg.rank(), None);
     }
     #[test]
-    fn test_poetry_disjunctive_group_level() {
+    fn test_poetry_disjunctive_tier() {
         // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.group_level(), Some(GroupLevel::Tier1));
+        assert_eq!(PoetryAccent::Silluq.tier(), Some(GroupLevel::Tier1));
+        assert_eq!(PoetryAccent::OlehWeYored.tier(), Some(GroupLevel::Tier1));
+        assert_eq!(PoetryAccent::Atnach.tier(), Some(GroupLevel::Tier1));
+        assert_eq!(PoetryAccent::ReviaGadol.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(PoetryAccent::ReviaMugrash.tier(), Some(GroupLevel::Tier2));
         assert_eq!(
-            PoetryAccent::OlehWeYored.group_level(),
-            Some(GroupLevel::Tier1)
-        );
-        assert_eq!(PoetryAccent::Atnach.group_level(), Some(GroupLevel::Tier1));
-        assert_eq!(
-            PoetryAccent::ReviaGadol.group_level(),
+            PoetryAccent::ShalsheletGadol.tier(),
             Some(GroupLevel::Tier2)
         );
+        assert_eq!(PoetryAccent::Tsinnor.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(PoetryAccent::ReviaQaton.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(PoetryAccent::Dechi.tier(), Some(GroupLevel::Tier2));
+        assert_eq!(PoetryAccent::Pazer.tier(), Some(GroupLevel::Tier3));
         assert_eq!(
-            PoetryAccent::ReviaMugrash.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(
-            PoetryAccent::ShalsheletGadol.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(PoetryAccent::Tsinnor.group_level(), Some(GroupLevel::Tier2));
-        assert_eq!(
-            PoetryAccent::ReviaQaton.group_level(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(PoetryAccent::Dechi.group_level(), Some(GroupLevel::Tier2));
-        assert_eq!(PoetryAccent::Pazer.group_level(), Some(GroupLevel::Tier3));
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.group_level(),
+            PoetryAccent::MehuppakhLegarmeh.tier(),
             Some(GroupLevel::Tier3)
         );
-        assert_eq!(
-            PoetryAccent::AzlaLegarmeh.group_level(),
-            Some(GroupLevel::Tier3)
-        );
+        assert_eq!(PoetryAccent::AzlaLegarmeh.tier(), Some(GroupLevel::Tier3));
     }
 
     /// Test all poetry conjunctive accents (should return None)
     #[test]
-    fn test_poetry_conjunctive_group_level() {
+    fn test_poetry_conjunctive_tier() {
         // Conjunctives: indices 12-22, all should be None
-        assert_eq!(PoetryAccent::Munach.group_level(), None);
-        assert_eq!(PoetryAccent::Merkha.group_level(), None);
-        assert_eq!(PoetryAccent::Illuy.group_level(), None);
-        assert_eq!(PoetryAccent::Tarcha.group_level(), None);
-        assert_eq!(PoetryAccent::Galgal.group_level(), None);
-        assert_eq!(PoetryAccent::Mehuppakh.group_level(), None);
-        assert_eq!(PoetryAccent::Azla.group_level(), None);
-        assert_eq!(PoetryAccent::ShalsheletQetannah.group_level(), None);
-        assert_eq!(PoetryAccent::TsinnoritMerkha.group_level(), None);
-        assert_eq!(PoetryAccent::TsinnoritMahpakh.group_level(), None);
-        assert_eq!(PoetryAccent::AtnachHaphukh.group_level(), None);
-        assert_eq!(PoetryAccent::Meteg.group_level(), None);
+        assert_eq!(PoetryAccent::Munach.tier(), None);
+        assert_eq!(PoetryAccent::Merkha.tier(), None);
+        assert_eq!(PoetryAccent::Illuy.tier(), None);
+        assert_eq!(PoetryAccent::Tarcha.tier(), None);
+        assert_eq!(PoetryAccent::Galgal.tier(), None);
+        assert_eq!(PoetryAccent::Mehuppakh.tier(), None);
+        assert_eq!(PoetryAccent::Azla.tier(), None);
+        assert_eq!(PoetryAccent::ShalsheletQetannah.tier(), None);
+        assert_eq!(PoetryAccent::TsinnoritMerkha.tier(), None);
+        assert_eq!(PoetryAccent::TsinnoritMahpakh.tier(), None);
+        assert_eq!(PoetryAccent::AtnachHaphukh.tier(), None);
+        assert_eq!(PoetryAccent::Meteg.tier(), None);
     }
     #[test]
     fn test_poetry_disjunctive_cantillation_symbol() {
@@ -1817,25 +1799,25 @@ mod derive_trait_tests {
     // --- Group Level Method ---
 
     #[test]
-    fn test_group_level_for_disjunctive() {
+    fn test_tier_for_disjunctive() {
         // Disjunctive accents have group levels
-        assert!(PoetryAccent::Silluq.group_level().is_some());
-        assert!(PoetryAccent::Atnach.group_level().is_some());
-        assert!(PoetryAccent::OlehWeYored.group_level().is_some());
+        assert!(PoetryAccent::Silluq.tier().is_some());
+        assert!(PoetryAccent::Atnach.tier().is_some());
+        assert!(PoetryAccent::OlehWeYored.tier().is_some());
     }
 
     #[test]
-    fn test_group_level_for_conjunctive() {
+    fn test_tier_for_conjunctive() {
         // Conjunctive accents don't have hierarchy
-        assert_eq!(PoetryAccent::Munach.group_level(), None);
-        assert_eq!(PoetryAccent::Merkha.group_level(), None);
-        assert_eq!(PoetryAccent::Illuy.group_level(), None);
+        assert_eq!(PoetryAccent::Munach.tier(), None);
+        assert_eq!(PoetryAccent::Merkha.tier(), None);
+        assert_eq!(PoetryAccent::Illuy.tier(), None);
     }
 
     #[test]
     fn test_silluq_is_top_tier() {
         // Silluq should be Tier 1 (strongest)
-        if let Some(level) = PoetryAccent::Silluq.group_level() {
+        if let Some(level) = PoetryAccent::Silluq.tier() {
             assert_eq!(level, crate::GroupLevel::Tier1);
         }
     }
@@ -1968,7 +1950,7 @@ mod derive_trait_tests {
         let mut has_tier3 = false;
 
         for accent in PoetryAccent::iter() {
-            if let Some(level) = accent.group_level() {
+            if let Some(level) = accent.tier() {
                 match level {
                     crate::GroupLevel::Tier1 => has_tier1 = true,
                     crate::GroupLevel::Tier2 => has_tier2 = true,
@@ -2002,7 +1984,7 @@ mod derive_trait_tests {
         let _secondary = accent.secondary_cantillation_mark();
         let _notes = accent.notes();
         let _strength = accent.rank();
-        let _level = accent.group_level();
+        let _level = accent.tier();
         let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);
@@ -2249,10 +2231,10 @@ mod derive_trait_tests {
     // ── Group Level Deep Testing ───────────────────────────────────────
 
     #[test]
-    fn test_group_level_resolve_path() {
+    fn test_tier_resolve_path() {
         // Test the resolve_disjunctive_group → into_public_level path
         for accent in PoetryAccent::iter() {
-            let level = accent.group_level();
+            let level = accent.tier();
 
             match level {
                 Some(GroupLevel::Tier1) => {}
@@ -2267,7 +2249,7 @@ mod derive_trait_tests {
     }
 
     #[test]
-    fn test_all_group_level_variants() {
+    fn test_all_tier_variants() {
         let mut has_tier1 = false;
         let mut has_tier2 = false;
         let mut has_tier3 = false;
@@ -2275,7 +2257,7 @@ mod derive_trait_tests {
         let mut has_none = false;
 
         for accent in PoetryAccent::iter() {
-            match accent.group_level() {
+            match accent.tier() {
                 Some(GroupLevel::Tier1) => has_tier1 = true,
                 Some(GroupLevel::Tier2) => has_tier2 = true,
                 Some(GroupLevel::Tier3) => has_tier3 = true,
@@ -2349,7 +2331,7 @@ mod derive_trait_tests {
         let _sec1 = disjunctive.secondary_cantillation_mark();
         let _notes1 = disjunctive.notes();
         let _str1 = disjunctive.rank();
-        let _lev1 = disjunctive.group_level();
+        let _lev1 = disjunctive.tier();
         let _sym1 = disjunctive.cantillation_symbol();
         let _alt1 = disjunctive.alternate_names();
 
@@ -2365,7 +2347,7 @@ mod derive_trait_tests {
         let _sec2 = conjunctive.secondary_cantillation_mark();
         let _notes2 = conjunctive.notes();
         let _str2 = conjunctive.rank();
-        let _lev2 = conjunctive.group_level();
+        let _lev2 = conjunctive.tier();
         let _sym2 = conjunctive.cantillation_symbol();
         let _alt2 = conjunctive.alternate_names();
 
@@ -2381,7 +2363,7 @@ mod derive_trait_tests {
         let _sec3 = secondary.secondary_cantillation_mark();
         let _notes3 = secondary.notes();
         let _str3 = secondary.rank();
-        let _lev3 = secondary.group_level();
+        let _lev3 = secondary.tier();
         let _sym3 = secondary.cantillation_symbol();
         let _alt3 = secondary.alternate_names();
     }
@@ -2604,7 +2586,7 @@ mod derive_trait_tests {
             // All meta methods
             let _notes = accent.notes();
             let _strength = accent.rank();
-            let _level = accent.group_level();
+            let _level = accent.tier();
             let _symbol = accent.cantillation_symbol();
             let _alts = accent.alternate_names();
 
