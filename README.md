@@ -68,6 +68,23 @@ If you only need raw Unicode code points, see my other companion crate [`hebrew_
 
 ## Core Concepts
 
+### Conceptual Model
+
+There are three distinct axes in play — and the vocabularies are easy to collide:
+
+1. **Conjunctive vs. disjunctive** — the word's syntactic relationship to its
+    neighbors (i.e., whether it belongs with the following phrase-breaker or not).
+
+2. **Hierarchy of disjunctives** — expressed on the same axis in two ways:
+    - **Tier** — as described in *Basics of Biblical Hebrew Accents* by Mark D.
+      Futato, Sr. This is where earlier grammarians used "emperor/king/duke" language.
+    
+    - **Rank** — every disjunctive gets a unique consecutive number, where 1 is
+      the strongest disjunctive and higher numbers are weaker ones.
+
+3. **Primary vs. secondary (stress)** — phonetic only: the one main accent per
+    word versus auxiliary marks like meteg/ga'ya.
+
 ### Accent Types
 
 ```rust
@@ -75,20 +92,21 @@ use hebrew_accents::{HebrewAccent, ProseAccent, PoetryAccent, PseudoAccent, Acce
 
 // Prose accents (used in narrative texts like Genesis, Exodus)
 let prose = HebrewAccent::Prose(ProseAccent::Silluq);
-// println!("Prose accent: {}", prose.english_name());
+// println!("Prose accent name: {}", prose.english_name());
 
 // Poetry accents (used in Psalms, Job, Proverbs)
 let poetry = HebrewAccent::Poetry(PoetryAccent::Atnach);
-// println!("Poetry accent: {}", poetry.is_compound());
+// println!("Poetry accent name: {}", poetry.english_name());
 
 // Pseudo-accents (accent-related markers)
 let pseudo = HebrewAccent::Pseudo(PseudoAccent::Maqqaph);
-// println!("Is compound: {}", pseudo.english_name());
+// println!("Pseudo accent name: {}", pseudo.english_name());
 ```
 
 ### Context
 
 Sentences have either Prosaic or Poetic context, which affects accent interpretation:
+
 ```rust
 use hebrew_accents::{SentenceContext, Context, SentenceContextError};
 
@@ -103,29 +121,16 @@ fn main() -> Result<(), SentenceContextError> {
 }
 ```
 
-### Accent Metadata
-
-Each accent implements the Accent trait:
-```rust
-fn main(){
-    use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
-
-    let accent = HebrewAccent::Prose(ProseAccent::Silluq);
-
-    println!("Hebrew name: {}", accent.hebrew_name());
-    println!("English name: {}", accent.english_name());
-    println!("Concept: {}", accent.hebrew_concept());
-    //println!("Is compound: {}", accent.is_compound());
-    println!("Relative strength: {:?}", accent.relative_strength());
-}
-```
-
 ## API Overview
 
-### Detection
+> **Note:** All accent-taking APIs accept a `HebrewAccent` directly, or any type
+> convertible into one via `From` — e.g. `ProseAccent::Atnach.into()` is equivalent
+> to `HebrewAccent::Prose(ProseAccent::Atnach)`. Use whichever reads better in your code.
+
+### Accent Detection
 
 ```rust
-use hebrew_accents::{HebrewAccent, SentenceContext,ProseAccent,Context};
+use hebrew_accents::{HebrewAccent, SentenceContext, ProseAccent, Context};
 // Check if an accent exists in a sentence
 if let Ok(sentence_context) = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",Context::Prosaic){
     if sentence_context.contains_accent(HebrewAccent::Prose(ProseAccent::Silluq)) {
@@ -133,45 +138,63 @@ if let Ok(sentence_context) = SentenceContext::new("בְּרֵאשִׁ֖ית ב�
     }
 }
 ```
-### Finding Positions
+
+### Accent Positions
 
 ```rust
 // Get byte offset of an accent
-    use hebrew_accents::{HebrewAccent, ProseAccent, SentenceContext};
+use hebrew_accents::{HebrewAccent, ProseAccent, SentenceContext, Context};
 
-    let sentence_context_result = SentenceContext::with_valid_default();
-    if let Ok(sentence_context) = sentence_context_result {
-        println!("SC: /n/t{:?}",sentence_context.as_str());
-        if let Some(match_val) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Munach)) {
-            println!("At {}-{}: {}", match_val.start(), match_val.end(), match_val.as_str());
-        }
+let sentence_context_result = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",Context::Prosaic);
+if let Ok(sentence_context) = sentence_context_result {
+    println!("Sentence: \t{}",sentence_context.as_str());
+    if let Some(match_val) = sentence_context.find_accent(HebrewAccent::Prose(ProseAccent::Munach)) {
+        println!("At {}-{}: {}", match_val.start(), match_val.end(), match_val.as_str());
     }
+}
 ```
 
 ### Context Detection
 
+> **Note:** `Known Limitations of Context Detection`
+> Because some Hebrew accents appear in both prosaic and poetic systems, accurate classification depends on finding at least one uniquely identifying accent. If the sentence contains only shared accents or a mixture from both registers, definitive determination is not possible, and try_derive_context will return an error.
+
 ```rust
-// Automatically determine whether a sentence follows prose or poetry patterns:
-use hebrew_accents::{SentenceContext, SentenceContextError, Context};
+// Try to automatically determine whether a sentence follows prose or poetry patterns:
+use hebrew_accents::{SentenceContext, Context};
 
 fn main() {
-
-let result_sentence_context = SentenceContext::with_valid_default();
+    let result_sentence_context = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",Context::Prosaic);
     if let Ok(sentence_context) = result_sentence_context {
-        let context = sentence_context.try_derive_context();
-
-         match context {
-             Ok(Context::Poetic) => eprintln!("Poetry detected!"),
-             Ok(Context::Prosaic) => eprintln!("Prose detected!"),
-             Err(e) => eprintln!("Ambiguous or no distinctive accents: {}", e),
-         }
+        match sentence_context.try_derive_context() {
+            Ok(Context::Poetic) => eprintln!("Poetry detected!"),
+            Ok(Context::Prosaic) => eprintln!("Prose detected!"),
+            Err(e) => eprintln!("Ambiguous or no distinctive accents: {}", e),
+        }
     }
 }
-
 ```
+
+### Accent Metadata
+
+Each accent implements the Accent trait, which opens the accent metadata.
+```rust
+fn main(){
+    use hebrew_accents::{Accent, HebrewAccent, ProseAccent};
+
+    let accent = HebrewAccent::Prose(ProseAccent::Silluq);
+
+    // a few examples
+    println!("Hebrew name: {}", accent.hebrew_name());
+    println!("English name: {}", accent.english_name());
+    println!("Concept: {}", accent.hebrew_concept());
+    println!("Relative strength: {:?}", accent.rank());
+}
+```
+
 ## Goals
 
-The main goal is to write a library that can be used to learn more about the Masoretic Hebrew accents as used in the Tanach
+The main goal is to write a library that can be used to learn more about the Masoretic Hebrew accents as used in the Tanach.
 
 Sub-goals:
 
@@ -185,10 +208,6 @@ Sub-goals:
   - Detect errors in accentuation rules
   - Determine accent type based solely on identified accents
   - Achieve absolute accuracy (scholarly disputes exist)
-
-## Known Limitations
-
-Because some Hebrew accents appear in both prosaic and poetic systems, accurate classification depends on finding at least one uniquely identifying accent. If the sentence contains only shared accents or a mixture from both registers, definitive determination is not possible.
 
 ## Project Status
 
@@ -217,10 +236,8 @@ at your option.
 
 ## Contribution Notice
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this crate by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any accent_meta_data terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this crate by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 
 ## Acknowledgments
 
 Special thanks to scholars of the Masoretic tradition whose work makes this library possible. Research methodology draws heavily from the Futato classification system and BHS (Biblia Hebraica Stuttgartensia) standards.
-
-## Examples (Coming Soon)
