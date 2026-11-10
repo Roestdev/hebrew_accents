@@ -45,9 +45,7 @@
 use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::{
-    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
-};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
 use strum_macros::{EnumCount, EnumIter};
 
@@ -385,13 +383,8 @@ impl Accent for ProseAccent {
     }
 
     #[inline]
-    fn tier(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<Tier> {
         resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
-    }
-
-    #[inline]
-    fn cantillation_symbol(&self) -> String {
-        display_cantillation_symbol((*self).into())
     }
 
     #[inline]
@@ -407,8 +400,7 @@ impl Accent for ProseAccent {
 mod test_accent_trait {
     use crate::{
         Accent, AccentCategory, AccentKind, AlternateNames, CantillationMark,
-        CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, GroupLevel,
-        ProseAccent,
+        CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, ProseAccent, Tier,
     };
     #[test]
     fn test_prose_disjunctive_hebrew_name() {
@@ -1346,25 +1338,25 @@ mod test_accent_trait {
     #[test]
     fn test_prose_disjunctive_tier() {
         // Primary disjunctives: indices 0-17, strengths 1-18
-        assert_eq!(ProseAccent::Silluq.tier(), Some(GroupLevel::Tier1));
-        assert_eq!(ProseAccent::Atnach.tier(), Some(GroupLevel::Tier1));
-        assert_eq!(ProseAccent::Segolta.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::Shalshelet.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::ZaqephQaton.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::ZaqephGadol.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::Revia.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Tiphcha.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(ProseAccent::Zarqa.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Pashta.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::ShenePastin.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Yetiv.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Tevir.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(ProseAccent::Geresh.tier(), Some(GroupLevel::Tier4));
-        assert_eq!(ProseAccent::Gershayim.tier(), Some(GroupLevel::Tier4));
-        assert_eq!(ProseAccent::Pazer.tier(), Some(GroupLevel::Tier4));
-        assert_eq!(ProseAccent::PazerGadol.tier(), Some(GroupLevel::Tier4));
-        assert_eq!(ProseAccent::TelishaGedolah.tier(), Some(GroupLevel::Tier4));
-        assert_eq!(ProseAccent::Legarmeh.tier(), Some(GroupLevel::Tier4));
+        assert_eq!(ProseAccent::Silluq.tier(), Some(Tier::Tier1));
+        assert_eq!(ProseAccent::Atnach.tier(), Some(Tier::Tier1));
+        assert_eq!(ProseAccent::Segolta.tier(), Some(Tier::Tier2));
+        assert_eq!(ProseAccent::Shalshelet.tier(), Some(Tier::Tier2));
+        assert_eq!(ProseAccent::ZaqephQaton.tier(), Some(Tier::Tier2));
+        assert_eq!(ProseAccent::ZaqephGadol.tier(), Some(Tier::Tier2));
+        assert_eq!(ProseAccent::Revia.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::Tiphcha.tier(), Some(Tier::Tier2));
+        assert_eq!(ProseAccent::Zarqa.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::Pashta.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::ShenePastin.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::Yetiv.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::Tevir.tier(), Some(Tier::Tier3));
+        assert_eq!(ProseAccent::Geresh.tier(), Some(Tier::Tier4));
+        assert_eq!(ProseAccent::Gershayim.tier(), Some(Tier::Tier4));
+        assert_eq!(ProseAccent::Pazer.tier(), Some(Tier::Tier4));
+        assert_eq!(ProseAccent::PazerGadol.tier(), Some(Tier::Tier4));
+        assert_eq!(ProseAccent::TelishaGedolah.tier(), Some(Tier::Tier4));
+        assert_eq!(ProseAccent::Legarmeh.tier(), Some(Tier::Tier4));
     }
 
     /// Test all prose conjunctive accents (should return None)
@@ -1382,44 +1374,7 @@ mod test_accent_trait {
         assert_eq!(ProseAccent::Meayla.tier(), None);
         assert_eq!(ProseAccent::Meteg.tier(), None);
     }
-    #[test]
-    fn test_prose_disjunctive_cantillation_symbol() {
-        // Primary disjunctives: indices 0-17, strengths 1-18
-        assert_eq!(ProseAccent::Silluq.cantillation_symbol(), "אםֽת");
-        assert_eq!(ProseAccent::Atnach.cantillation_symbol(), "אם֑ת");
-        assert_eq!(ProseAccent::Segolta.cantillation_symbol(), "אםת֒");
-        assert_eq!(ProseAccent::Shalshelet.cantillation_symbol(), "אם֓ת ׀");
-        assert_eq!(ProseAccent::ZaqephQaton.cantillation_symbol(), "אם֔ת");
-        assert_eq!(ProseAccent::ZaqephGadol.cantillation_symbol(), "אם֕ת");
-        assert_eq!(ProseAccent::Revia.cantillation_symbol(), "אם֗ת");
-        assert_eq!(ProseAccent::Tiphcha.cantillation_symbol(), "אם֖ת");
-        assert_eq!(ProseAccent::Zarqa.cantillation_symbol(), "אםת֮");
-        assert_eq!(ProseAccent::Pashta.cantillation_symbol(), "אםת֙");
-        assert_eq!(ProseAccent::ShenePastin.cantillation_symbol(), "א֨םת֙");
-        assert_eq!(ProseAccent::Yetiv.cantillation_symbol(), "א֚םת");
-        assert_eq!(ProseAccent::Tevir.cantillation_symbol(), "אם֛ת");
-        assert_eq!(ProseAccent::Geresh.cantillation_symbol(), "אם֜ת");
-        assert_eq!(ProseAccent::Gershayim.cantillation_symbol(), "אם֞ת");
-        assert_eq!(ProseAccent::Pazer.cantillation_symbol(), "אם֡ת");
-        assert_eq!(ProseAccent::PazerGadol.cantillation_symbol(), "אם֟ת");
-        assert_eq!(ProseAccent::TelishaGedolah.cantillation_symbol(), "א֠םת");
-        assert_eq!(ProseAccent::Legarmeh.cantillation_symbol(), "אם֣ת ׀");
-    }
 
-    #[test]
-    fn test_prose_conjunctive_cantillation_symbol() {
-        // Conjunctives: indices 18-27, all should be None
-        assert_eq!(ProseAccent::Munach.cantillation_symbol(), "אם֣ת");
-        assert_eq!(ProseAccent::Mahpakh.cantillation_symbol(), "אם֤ת");
-        assert_eq!(ProseAccent::Merkha.cantillation_symbol(), "אם֥ת");
-        assert_eq!(ProseAccent::MerkhaKephulah.cantillation_symbol(), "אם֦ת");
-        assert_eq!(ProseAccent::Darga.cantillation_symbol(), "אם֧ת");
-        assert_eq!(ProseAccent::Azla.cantillation_symbol(), "אם֨ת");
-        assert_eq!(ProseAccent::TelishaQetannah.cantillation_symbol(), "אםת֩");
-        assert_eq!(ProseAccent::Galgal.cantillation_symbol(), "אם֪ת");
-        assert_eq!(ProseAccent::Meayla.cantillation_symbol(), "אם֖ת");
-        assert_eq!(ProseAccent::Meteg.cantillation_symbol(), "אםֽת");
-    }
     #[test]
     fn test_prose_disjunctive_alternate_names() {
         // Primary disjunctives: indices 0-17, strengths 1-18
@@ -1672,7 +1627,7 @@ mod tests {
 
         for accent in ProseAccent::iter() {
             if let Some(level) = accent.tier() {
-                if level == crate::GroupLevel::Tier4 {
+                if level == crate::Tier::Tier4 {
                     has_tier4 = true;
                 }
             }
@@ -1755,10 +1710,10 @@ mod tests {
         for accent in ProseAccent::iter() {
             if let Some(level) = accent.tier() {
                 match level {
-                    crate::GroupLevel::Tier1 => has_tier1 = true,
-                    crate::GroupLevel::Tier2 => has_tier2 = true,
-                    crate::GroupLevel::Tier3 => has_tier3 = true,
-                    crate::GroupLevel::Tier4 => has_tier4 = true,
+                    crate::Tier::Tier1 => has_tier1 = true,
+                    crate::Tier::Tier2 => has_tier2 = true,
+                    crate::Tier::Tier3 => has_tier3 = true,
+                    crate::Tier::Tier4 => has_tier4 = true,
                 }
             }
         }
@@ -1801,7 +1756,6 @@ mod tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);
 

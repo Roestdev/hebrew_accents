@@ -138,13 +138,13 @@ pub use crate::api::CantillationMarkPlacement;
 pub use crate::api::CantillationMarkStressPosition;
 pub use crate::api::CompoundType;
 pub use crate::api::Context;
-pub use crate::api::GroupLevel;
 pub use crate::api::HebrewAccent;
 pub use crate::api::Match;
 pub use crate::api::PoetryAccent;
 pub use crate::api::ProseAccent;
 pub use crate::api::PseudoAccent;
 pub use crate::api::SentenceContext;
+pub use crate::api::Tier;
 
 // public functions
 pub(crate) use crate::accent::display_cantillation_symbol;
@@ -152,7 +152,7 @@ pub use crate::api::cantillation_example;
 pub use crate::api::try_derive_context; // TODO remove
 
 // errorhandling
-pub use crate::error::{GroupLevelError, SentenceContextError};
+pub use crate::error::{SentenceContextError, TierError};
 
 // Re-export unicode info for convenient access
 pub use version::{

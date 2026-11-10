@@ -1,7 +1,7 @@
 use crate::accent::resolve_disjunctive_group;
 use crate::api::CompoundType;
 use crate::{Accent, AlternateNames, PoetryAccent, ProseAccent, PseudoAccent};
-use crate::{AccentCategory, AccentKind, CantillationMark, GroupLevel};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 
 /// Hebrew Accent, either a Prose or Poetry accent
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -90,8 +90,8 @@ impl HebrewAccent {
     /// // Can access properties through the reference
     /// if let Some(poetry) = accent.as_poetry() {
     ///     println!("English name: {}", poetry.english_name());
-    ///     println!("Relative strength: {:?}", poetry).rank());
-    /// //}
+    ///     println!("Relative strength: {:?}", poetry.rank());
+    /// }
     ///
     /// // Original accent remains usable after inspection
     /// assert!(accent.as_poetry().is_some());
@@ -427,17 +427,8 @@ impl Accent for HebrewAccent {
     }
 
     #[inline]
-    fn tier(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<Tier> {
         resolve_disjunctive_group(*self).and_then(|g| g.into_public_level())
-    }
-
-    #[inline]
-    fn cantillation_symbol(&self) -> String {
-        match self {
-            HebrewAccent::Prose(p) => p.cantillation_symbol(),
-            HebrewAccent::Poetry(p) => p.cantillation_symbol(),
-            HebrewAccent::Pseudo(p) => p.cantillation_symbol(),
-        }
     }
 
     #[inline]
@@ -1241,31 +1232,6 @@ mod tests {
         assert_eq!(level, None);
     }
 
-    // ── Accent Trait Methods - Symbol ────────────────────────────────
-
-    #[test]
-    fn test_cantillation_symbol_prose() {
-        let accent = HebrewAccent::Prose(ProseAccent::Zarqa);
-        let symbol = accent.cantillation_symbol();
-
-        assert!(!symbol.is_empty());
-    }
-
-    #[test]
-    fn test_cantillation_symbol_poetry() {
-        let accent = HebrewAccent::Poetry(PoetryAccent::Illuy);
-        let symbol = accent.cantillation_symbol();
-
-        assert!(!symbol.is_empty());
-    }
-
-    #[test]
-    fn test_cantillation_symbol_pseudo() {
-        let accent = HebrewAccent::Pseudo(PseudoAccent::Paseq);
-        let symbol = accent.cantillation_symbol();
-
-        assert!(!symbol.is_empty());
-    }
 
     // ── Accent Trait Methods - Alternate Names ───────────────────────
 
@@ -1300,7 +1266,6 @@ mod tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
 
@@ -1320,7 +1285,6 @@ mod tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
 
@@ -1340,7 +1304,6 @@ mod tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
 
@@ -4310,81 +4273,81 @@ The alternate BHS naming is fabricated"#,
 
     mod tier {
         // TODO group level
-        use crate::{Accent, GroupLevel, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
+        use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, Tier};
         #[test]
         fn test_prose_disjunctive_tier() {
             // Primary disjunctives: indices 0-17, strengths 1-18
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Silluq).tier(),
-                Some(GroupLevel::Tier1)
+                Some(Tier::Tier1)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Atnach).tier(),
-                Some(GroupLevel::Tier1)
+                Some(Tier::Tier1)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Segolta).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Shalshelet).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephQaton).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephGadol).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Revia).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Tiphcha).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Zarqa).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Pashta).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Yetiv).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Tevir).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Geresh).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Gershayim).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Pazer).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::PazerGadol).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::TelishaGedolah).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Legarmeh).tier(),
-                Some(GroupLevel::Tier4)
+                Some(Tier::Tier4)
             );
         }
 
@@ -4414,51 +4377,51 @@ The alternate BHS naming is fabricated"#,
             // Primary disjunctives: indices 0-11, strengths 1-12
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Silluq).tier(),
-                Some(GroupLevel::Tier1)
+                Some(Tier::Tier1)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).tier(),
-                Some(GroupLevel::Tier1)
+                Some(Tier::Tier1)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Atnach).tier(),
-                Some(GroupLevel::Tier1)
+                Some(Tier::Tier1)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaGadol).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Tsinnor).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaQaton).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Dechi).tier(),
-                Some(GroupLevel::Tier2)
+                Some(Tier::Tier2)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Pazer).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).tier(),
-                Some(GroupLevel::Tier3)
+                Some(Tier::Tier3)
             );
         }
 
@@ -4493,249 +4456,6 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).tier(), None);
             assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Maqqaph).tier(), None);
             assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).tier(), None);
-        }
-    }
-
-    mod cantillation_symbol {
-        // TODO cantillation symbol
-        use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
-        #[test]
-        fn test_prose_disjunctive_cantillation_symbol() {
-            // Primary disjunctives: indices 0-17, strengths 1-18
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Silluq).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Atnach).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Segolta).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Shalshelet).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephQaton).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::ZaqephGadol).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Revia).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tiphcha).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Zarqa).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pashta).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Yetiv).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Tevir).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Geresh).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Gershayim).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Pazer).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::PazerGadol).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaGedolah).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Legarmeh).cantillation_symbol(),
-                "// TODO"
-            );
-        }
-
-        #[test]
-        fn test_prose_conjunctive_cantillation_symbol() {
-            // Conjunctives: indices 18-27, all should be None
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Munach).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Mahpakh).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Merkha).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::MerkhaKephulah).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Darga).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Azla).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::TelishaQetannah).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Galgal).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meayla).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Prose(ProseAccent::Meteg).cantillation_symbol(),
-                "// TODO"
-            );
-        }
-        #[test]
-        fn test_poetry_disjunctive_cantillation_symbol() {
-            // Primary disjunctives: indices 0-11, strengths 1-12
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Silluq).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::OlehWeYored).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Atnach).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaGadol).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tsinnor).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ReviaQaton).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Dechi).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Pazer).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).cantillation_symbol(),
-                "// TODO"
-            );
-        }
-
-        #[test]
-        fn test_poetry_conjunctive_cantillation_symbol() {
-            // Conjunctives: indices 12-22, all should be None
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Munach).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Merkha).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Illuy).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Tarcha).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Galgal).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Mehuppakh).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Azla).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Poetry(PoetryAccent::Meteg).cantillation_symbol(),
-                "// TODO"
-            );
-        }
-        #[test]
-        fn test_pseudo_accent_cantillation_symbol() {
-            // Pseudo accents never have strength hierarchy
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Maqqaph).cantillation_symbol(),
-                "// TODO"
-            );
-            assert_eq!(
-                HebrewAccent::Pseudo(PseudoAccent::Paseq).cantillation_symbol(),
-                "// TODO"
-            );
         }
     }
 

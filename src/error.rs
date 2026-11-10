@@ -1,7 +1,7 @@
 //! This module defines all errors that can be returned by:
 //! - [`crate::SentenceContext::new()`](crate::SentenceContext::new()) - Input validation
 //! - [`crate::SentenceContext::try_derive_context()`](crate::SentenceContext::try_derive_context) - Context derivation
-//! - [`crate::GroupLevel::try_from()`](crate::GroupLevel::try_from) - Numeric conversion
+//! - [`crate::Tier::try_from()`](crate::Tier::try_from) - Numeric conversion
 //!
 
 use thiserror::Error;
@@ -227,20 +227,20 @@ pub enum SentenceContextError {
 
 /// Error types for accent group level conversion.
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum GroupLevelError {
-    /// Invalid GroupLevel value provided (must be 1-4).
+pub enum TierError {
+    /// Invalid Tier value provided (must be 1-4).
     ///
-    /// This error occurs when converting from raw numeric values to [`crate::GroupLevel`].
+    /// This error occurs when converting from raw numeric values to [`crate::Tier`].
     /// Valid range is 1-4 corresponding to Tier1-Tier4.
     ///
     /// # Example
     ///
     /// ```
-    /// use hebrew_accents::{GroupLevel, GroupLevelError};
+    /// use hebrew_accents::{Tier, TierError};
     /// use std::convert::TryFrom;
     ///
-    /// let result = GroupLevel::try_from(5u8);
-    /// assert!(matches!(result, Err(GroupLevelError::InvalidGroupLevel(v)) if v == 5));
+    /// let result = Tier::try_from(5u8);
+    /// assert!(matches!(result, Err(TierError::InvalidTier(v)) if v == 5));
     /// ```
     ///
     /// # Valid Range
@@ -251,8 +251,8 @@ pub enum GroupLevelError {
     /// | 2 | Tier2 |
     /// | 3 | Tier3 |
     /// | 4 | Tier4 | Does not exist in Poetry context
-    #[error("Invalid GroupLevel value: {} (valid range: 1-4)", .0)]
-    InvalidGroupLevel(u8),
+    #[error("Invalid Tier value: {} (valid range: 1-4)", .0)]
+    InvalidTier(u8),
 }
 
 #[cfg(test)]
@@ -533,34 +533,31 @@ mod sentence_tests {
 
     #[test]
     fn test_tier_error_formatting() {
-        let err = GroupLevelError::InvalidGroupLevel(5);
-        assert_eq!(
-            err.to_string(),
-            "Invalid GroupLevel value: 5 (valid range: 1-4)"
-        );
-        assert_eq!(err, GroupLevelError::InvalidGroupLevel(5));
+        let err = TierError::InvalidTier(5);
+        assert_eq!(err.to_string(), "Invalid Tier value: 5 (valid range: 1-4)");
+        assert_eq!(err, TierError::InvalidTier(5));
     }
 
     #[test]
     fn test_tier_error_distinct_values() {
         // Different values should produce different errors
-        let err5 = GroupLevelError::InvalidGroupLevel(5);
-        let err6 = GroupLevelError::InvalidGroupLevel(6);
+        let err5 = TierError::InvalidTier(5);
+        let err6 = TierError::InvalidTier(6);
         assert_ne!(err5, err6);
     }
 
     #[test]
     fn test_tier_error_hash() {
         // Hash should differ based on value
-        let h5 = get_hash(&GroupLevelError::InvalidGroupLevel(5));
-        let h6 = get_hash(&GroupLevelError::InvalidGroupLevel(6));
+        let h5 = get_hash(&TierError::InvalidTier(5));
+        let h6 = get_hash(&TierError::InvalidTier(6));
         assert_ne!(h5, h6);
     }
 
     #[test]
     fn test_all_invalid_values() {
         for val in [0u8, 5, 10, 255] {
-            let err = GroupLevelError::InvalidGroupLevel(val);
+            let err = TierError::InvalidTier(val);
             assert!(err.to_string().contains(&val.to_string()));
         }
     }

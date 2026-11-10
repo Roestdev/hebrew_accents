@@ -31,9 +31,7 @@
 use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::{
-    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
-};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
 use strum_macros::{EnumCount, EnumIter};
 
@@ -353,13 +351,8 @@ impl Accent for PoetryAccent {
     }
 
     #[inline]
-    fn tier(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<Tier> {
         resolve_disjunctive_group((*self).into()).and_then(|g| g.into_public_level())
-    }
-
-    #[inline]
-    fn cantillation_symbol(&self) -> String {
-        display_cantillation_symbol((*self).into())
     }
 
     #[inline]
@@ -375,8 +368,8 @@ impl Accent for PoetryAccent {
 mod test_accent_trait {
     use crate::{
         Accent, AccentCategory, AccentKind, AlternateNames, CantillationMark,
-        CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, GroupLevel,
-        PoetryAccent,
+        CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, PoetryAccent,
+        Tier,
     };
 
     #[test]
@@ -1273,24 +1266,18 @@ The alternate BHS naming is fabricated"#,
     #[test]
     fn test_poetry_disjunctive_tier() {
         // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.tier(), Some(GroupLevel::Tier1));
-        assert_eq!(PoetryAccent::OlehWeYored.tier(), Some(GroupLevel::Tier1));
-        assert_eq!(PoetryAccent::Atnach.tier(), Some(GroupLevel::Tier1));
-        assert_eq!(PoetryAccent::ReviaGadol.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(PoetryAccent::ReviaMugrash.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(
-            PoetryAccent::ShalsheletGadol.tier(),
-            Some(GroupLevel::Tier2)
-        );
-        assert_eq!(PoetryAccent::Tsinnor.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(PoetryAccent::ReviaQaton.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(PoetryAccent::Dechi.tier(), Some(GroupLevel::Tier2));
-        assert_eq!(PoetryAccent::Pazer.tier(), Some(GroupLevel::Tier3));
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.tier(),
-            Some(GroupLevel::Tier3)
-        );
-        assert_eq!(PoetryAccent::AzlaLegarmeh.tier(), Some(GroupLevel::Tier3));
+        assert_eq!(PoetryAccent::Silluq.tier(), Some(Tier::Tier1));
+        assert_eq!(PoetryAccent::OlehWeYored.tier(), Some(Tier::Tier1));
+        assert_eq!(PoetryAccent::Atnach.tier(), Some(Tier::Tier1));
+        assert_eq!(PoetryAccent::ReviaGadol.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::ReviaMugrash.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::ShalsheletGadol.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::Tsinnor.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::ReviaQaton.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::Dechi.tier(), Some(Tier::Tier2));
+        assert_eq!(PoetryAccent::Pazer.tier(), Some(Tier::Tier3));
+        assert_eq!(PoetryAccent::MehuppakhLegarmeh.tier(), Some(Tier::Tier3));
+        assert_eq!(PoetryAccent::AzlaLegarmeh.tier(), Some(Tier::Tier3));
     }
 
     /// Test all poetry conjunctive accents (should return None)
@@ -1309,90 +1296,6 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(PoetryAccent::TsinnoritMahpakh.tier(), None);
         assert_eq!(PoetryAccent::AtnachHaphukh.tier(), None);
         assert_eq!(PoetryAccent::Meteg.tier(), None);
-    }
-    #[test]
-    fn test_poetry_disjunctive_cantillation_symbol() {
-        // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.cantillation_symbol(), "אםֽת");
-        assert_eq!(PoetryAccent::OlehWeYored.cantillation_symbol(), "אם֫ת אם֥ת");
-        assert_eq!(PoetryAccent::Atnach.cantillation_symbol(), "אם֑ת");
-        assert_eq!(PoetryAccent::ReviaGadol.cantillation_symbol(), "אם֗ת");
-        assert_eq!(PoetryAccent::ReviaMugrash.cantillation_symbol(), "א֝ם֗ת");
-        assert_eq!(PoetryAccent::ShalsheletGadol.cantillation_symbol(), "אם֓ת ׀");
-        assert_eq!(PoetryAccent::Tsinnor.cantillation_symbol(), "אםת֮");
-        assert_eq!(PoetryAccent::ReviaQaton.cantillation_symbol(), "אם֗ת");
-        assert_eq!(PoetryAccent::Dechi.cantillation_symbol(), "אם֭ת");
-        assert_eq!(PoetryAccent::Pazer.cantillation_symbol(), "אם֡ת");
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.cantillation_symbol(),
-            "אם֤ת ׀"
-        );
-        assert_eq!(PoetryAccent::AzlaLegarmeh.cantillation_symbol(), "אם֨ת ׀");
-    }
-    #[test]
-    fn test_poetry_conjunctive_cantillation_symbol() {
-        // Conjunctives: indices 12-22, all should be None
-        assert_eq!(PoetryAccent::Munach.cantillation_symbol(), "אם֣ת");
-        assert_eq!(PoetryAccent::Merkha.cantillation_symbol(), "אם֥ת");
-        assert_eq!(PoetryAccent::Illuy.cantillation_symbol(), "אם֬ת");
-        assert_eq!(PoetryAccent::Tarcha.cantillation_symbol(), "אם֖ת");
-        assert_eq!(PoetryAccent::Galgal.cantillation_symbol(), "אם֪ת");
-        assert_eq!(PoetryAccent::Mehuppakh.cantillation_symbol(), "אם֤ת");
-        assert_eq!(PoetryAccent::Azla.cantillation_symbol(), "אם֨ת");
-        assert_eq!(
-            PoetryAccent::ShalsheletQetannah.cantillation_symbol(),
-            "אם֓ת"
-        );
-        assert_eq!(
-            PoetryAccent::TsinnoritMerkha.cantillation_symbol(),
-            "אם֘ת אם֥ת"
-        );
-        assert_eq!(
-            PoetryAccent::TsinnoritMahpakh.cantillation_symbol(),
-            "אם֘ת אם֤ת"
-        );
-        assert_eq!(PoetryAccent::AtnachHaphukh.cantillation_symbol(), "אם֢ת");
-        assert_eq!(PoetryAccent::Meteg.cantillation_symbol(), "אםֽת");
-    }
-    #[test]
-    fn test_poetry_disjunctive_alternate_names() {
-        // Primary disjunctives: indices 0-11, strengths 1-12
-        assert_eq!(PoetryAccent::Silluq.alternate_names(), None);
-        assert_eq!(
-            PoetryAccent::OlehWeYored.alternate_names(),
-            Some(AlternateNames {
-                hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
-                hebrew_concept: "turning round and prolonging",
-                english_name: "Mahpakh and Merkha",
-                sbl_academic: "mahpak ûmērəkāʾ",
-            })
-        );
-        assert_eq!(PoetryAccent::Atnach.alternate_names(), None);
-        assert_eq!(PoetryAccent::ReviaGadol.alternate_names(), None);
-        assert_eq!(PoetryAccent::ReviaMugrash.alternate_names(), None);
-        assert_eq!(PoetryAccent::ShalsheletGadol.alternate_names(), None);
-        assert_eq!(
-            PoetryAccent::Tsinnor.alternate_names(),
-            Some(AlternateNames {
-                english_name: "Zarqa",
-                hebrew_name: "זַרְקָא",
-                hebrew_concept: "to sprinkle, scatter",
-                sbl_academic: "zarqāʾ",
-            })
-        );
-        assert_eq!(PoetryAccent::ReviaQaton.alternate_names(), None);
-        assert_eq!(
-            PoetryAccent::Dechi.alternate_names(),
-            Some(AlternateNames {
-                english_name: "Tiphcha",
-                hebrew_name: "טִפְחָא",
-                hebrew_concept: "handbreadth or diagonal",
-                sbl_academic: "ṭipḥāʾ",
-            })
-        );
-        assert_eq!(PoetryAccent::Pazer.alternate_names(), None);
-        assert_eq!(PoetryAccent::MehuppakhLegarmeh.alternate_names(), None);
-        assert_eq!(PoetryAccent::AzlaLegarmeh.alternate_names(), None);
     }
 
     /// Test all poetry conjunctive accents (should return None)
@@ -1818,29 +1721,12 @@ mod derive_trait_tests {
     fn test_silluq_is_top_tier() {
         // Silluq should be Tier 1 (strongest)
         if let Some(level) = PoetryAccent::Silluq.tier() {
-            assert_eq!(level, crate::GroupLevel::Tier1);
+            assert_eq!(level, crate::Tier::Tier1);
         }
     }
 
     // --- Cantillation Symbol Method ---
 
-    #[test]
-    fn test_cantillation_symbol_not_empty() {
-        for accent in PoetryAccent::iter() {
-            let symbol = accent.cantillation_symbol();
-            assert!(!symbol.is_empty());
-        }
-    }
-
-    #[test]
-    fn test_cantillation_symbol_contains_dotted_circle_or_marks() {
-        for accent in PoetryAccent::iter() {
-            let symbol = accent.cantillation_symbol();
-
-            // Symbols should contain either dotted circle or actual marks
-            assert!(symbol.contains('\u{25CC}') || !symbol.chars().all(|c| c == '\u{25CC}'));
-        }
-    }
 
     // --- Alternate Names Method ---
 
@@ -1952,10 +1838,10 @@ mod derive_trait_tests {
         for accent in PoetryAccent::iter() {
             if let Some(level) = accent.tier() {
                 match level {
-                    crate::GroupLevel::Tier1 => has_tier1 = true,
-                    crate::GroupLevel::Tier2 => has_tier2 = true,
-                    crate::GroupLevel::Tier3 => has_tier3 = true,
-                    crate::GroupLevel::Tier4 => {} // Poetry doesn't use Tier4
+                    crate::Tier::Tier1 => has_tier1 = true,
+                    crate::Tier::Tier2 => has_tier2 = true,
+                    crate::Tier::Tier3 => has_tier3 = true,
+                    crate::Tier::Tier4 => {} // Poetry doesn't use Tier4
                 }
             }
         }
@@ -1985,7 +1871,6 @@ mod derive_trait_tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);
 
@@ -2061,7 +1946,6 @@ mod derive_trait_tests {
         for accent in PoetryAccent::iter() {
             let _ = accent.english_name();
             let _ = accent.hebrew_name();
-            let _ = accent.cantillation_symbol();
             count += 1;
         }
 
@@ -2237,10 +2121,10 @@ mod derive_trait_tests {
             let level = accent.tier();
 
             match level {
-                Some(GroupLevel::Tier1) => {}
-                Some(GroupLevel::Tier2) => {}
-                Some(GroupLevel::Tier3) => {}
-                Some(GroupLevel::Tier4) => {}
+                Some(Tier::Tier1) => {}
+                Some(Tier::Tier2) => {}
+                Some(Tier::Tier3) => {}
+                Some(Tier::Tier4) => {}
                 None => {
                     // Conjunctives should return None
                 }
@@ -2258,10 +2142,10 @@ mod derive_trait_tests {
 
         for accent in PoetryAccent::iter() {
             match accent.tier() {
-                Some(GroupLevel::Tier1) => has_tier1 = true,
-                Some(GroupLevel::Tier2) => has_tier2 = true,
-                Some(GroupLevel::Tier3) => has_tier3 = true,
-                Some(GroupLevel::Tier4) => has_tier4 = true,
+                Some(Tier::Tier1) => has_tier1 = true,
+                Some(Tier::Tier2) => has_tier2 = true,
+                Some(Tier::Tier3) => has_tier3 = true,
+                Some(Tier::Tier4) => has_tier4 = true,
                 None => has_none = true,
             }
         }
@@ -2295,20 +2179,6 @@ mod derive_trait_tests {
         }
     }
 
-    #[test]
-    fn test_symbol_display_function() {
-        // Test display_cantillation_symbol indirectly
-        for accent in PoetryAccent::iter() {
-            let symbol_str = accent.cantillation_symbol();
-
-            // Should not panic and should return valid string
-            assert!(!symbol_str.is_empty());
-
-            // Should be valid UTF-8
-            let _chars: Vec<char> = symbol_str.chars().collect();
-        }
-    }
-
     // ── Accent Trait Completeness Tests ────────────────────────────────
 
     #[test]
@@ -2332,7 +2202,6 @@ mod derive_trait_tests {
         let _notes1 = disjunctive.notes();
         let _str1 = disjunctive.rank();
         let _lev1 = disjunctive.tier();
-        let _sym1 = disjunctive.cantillation_symbol();
         let _alt1 = disjunctive.alternate_names();
 
         // Conjunctive accent
@@ -2348,7 +2217,6 @@ mod derive_trait_tests {
         let _notes2 = conjunctive.notes();
         let _str2 = conjunctive.rank();
         let _lev2 = conjunctive.tier();
-        let _sym2 = conjunctive.cantillation_symbol();
         let _alt2 = conjunctive.alternate_names();
 
         // Secondary accent (Meteg)
@@ -2364,7 +2232,6 @@ mod derive_trait_tests {
         let _notes3 = secondary.notes();
         let _str3 = secondary.rank();
         let _lev3 = secondary.tier();
-        let _sym3 = secondary.cantillation_symbol();
         let _alt3 = secondary.alternate_names();
     }
 
@@ -2393,12 +2260,12 @@ mod derive_trait_tests {
 
     #[test]
     fn test_into_public_level_all_mappings() {
-        // Test all DisjunctiveGroup → GroupLevel conversions
+        // Test all DisjunctiveGroup → Tier conversions
 
         let mappings = [
-            (DisjunctiveGroup::PoetryTier1, Some(GroupLevel::Tier1)),
-            (DisjunctiveGroup::PoetryTier2, Some(GroupLevel::Tier2)),
-            (DisjunctiveGroup::PoetryTier3, Some(GroupLevel::Tier3)),
+            (DisjunctiveGroup::PoetryTier1, Some(Tier::Tier1)),
+            (DisjunctiveGroup::PoetryTier2, Some(Tier::Tier2)),
+            (DisjunctiveGroup::PoetryTier3, Some(Tier::Tier3)),
         ];
 
         for (group, expected) in mappings {
@@ -2587,7 +2454,6 @@ mod derive_trait_tests {
             let _notes = accent.notes();
             let _strength = accent.rank();
             let _level = accent.tier();
-            let _symbol = accent.cantillation_symbol();
             let _alts = accent.alternate_names();
 
             // Display

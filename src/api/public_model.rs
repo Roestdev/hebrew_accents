@@ -63,17 +63,17 @@ impl fmt::Display for AccentCategory {
 ///
 /// # Example
 /// ```rust
-/// use hebrew_accents::{Accent, HebrewAccent, ProseAccent, GroupLevel};
+/// use hebrew_accents::{Accent, HebrewAccent, ProseAccent, Tier};
 ///
 /// let silluq = HebrewAccent::Prose(ProseAccent::Silluq);
-/// assert_eq!(silluq.group_level(), Some(GroupLevel::Tier1));
+/// assert_eq!(silluq.tier(), Some(Tier::Tier1));
 ///
 /// let conjunctive = HebrewAccent::Prose(ProseAccent::Munach);
-/// assert_eq!(conjunctive.group_level(), None);
+/// assert_eq!(conjunctive.tier(), None);
 /// ```
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 #[repr(u8)]
-pub enum GroupLevel {
+pub enum Tier {
     /// Primary disjunctive tier — creates major clause/phrasal breaks
     Tier1 = 1, // value represents group number for extension in future
     /// Secondary disjunctive tier — subordinate phrase boundaries
@@ -84,7 +84,7 @@ pub enum GroupLevel {
     Tier4,
 }
 
-impl GroupLevel {
+impl Tier {
     /// Raw numeric strength value (1 = strongest disjunctive)
     pub const fn value(self) -> u8 {
         self as u8
@@ -125,7 +125,7 @@ impl GroupLevel {
     }
 }
 
-impl fmt::Display for GroupLevel {
+impl fmt::Display for Tier {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Tier1 => write!(f, "Tier 1 (Primary disjunctive)"),
@@ -136,8 +136,8 @@ impl fmt::Display for GroupLevel {
     }
 }
 
-impl TryFrom<u8> for GroupLevel {
-    type Error = crate::GroupLevelError; // ← Use shared error type
+impl TryFrom<u8> for Tier {
+    type Error = crate::TierError; // ← Use shared error type
 
     fn try_from(raw_value: u8) -> Result<Self, Self::Error> {
         match raw_value {
@@ -145,7 +145,7 @@ impl TryFrom<u8> for GroupLevel {
             2 => Ok(Self::Tier2),
             3 => Ok(Self::Tier3),
             4 => Ok(Self::Tier4),
-            _ => Err(crate::GroupLevelError::InvalidGroupLevel(raw_value)),
+            _ => Err(crate::TierError::InvalidTier(raw_value)),
         }
     }
 }
@@ -348,115 +348,103 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_group_level_error_message() {
-        let err = GroupLevel::try_from(7u8).unwrap_err();
-        assert_eq!(
-            err.to_string(),
-            "Invalid GroupLevel value: 7 (valid range: 1-4)"
-        );
+    fn test_tier_error_message() {
+        let err = Tier::try_from(7u8).unwrap_err();
+        assert_eq!(err.to_string(), "Invalid Tier value: 7 (valid range: 1-4)");
     }
 
     #[test]
-    fn test_group_level_valid_conversions() {
+    fn test_tier_valid_conversions() {
         // All valid conversions should succeed
-        assert_eq!(GroupLevel::try_from(1u8), Ok(GroupLevel::Tier1));
-        assert_eq!(GroupLevel::try_from(2u8), Ok(GroupLevel::Tier2));
-        assert_eq!(GroupLevel::try_from(3u8), Ok(GroupLevel::Tier3));
-        assert_eq!(GroupLevel::try_from(4u8), Ok(GroupLevel::Tier4));
+        assert_eq!(Tier::try_from(1u8), Ok(Tier::Tier1));
+        assert_eq!(Tier::try_from(2u8), Ok(Tier::Tier2));
+        assert_eq!(Tier::try_from(3u8), Ok(Tier::Tier3));
+        assert_eq!(Tier::try_from(4u8), Ok(Tier::Tier4));
     }
 
     #[test]
-    fn test_group_level_value_method() {
-        assert_eq!(GroupLevel::Tier1.value(), 1);
-        assert_eq!(GroupLevel::Tier2.value(), 2);
-        assert_eq!(GroupLevel::Tier3.value(), 3);
-        assert_eq!(GroupLevel::Tier4.value(), 4);
+    fn test_tier_value_method() {
+        assert_eq!(Tier::Tier1.value(), 1);
+        assert_eq!(Tier::Tier2.value(), 2);
+        assert_eq!(Tier::Tier3.value(), 3);
+        assert_eq!(Tier::Tier4.value(), 4);
     }
 
     #[test]
-    fn test_group_level_description_method() {
+    fn test_tier_description_method() {
         assert_eq!(
-            GroupLevel::Tier1.description(),
+            Tier::Tier1.description(),
             "Primary disjunctive (major clause break)"
         );
         assert_eq!(
-            GroupLevel::Tier2.description(),
+            Tier::Tier2.description(),
             "Secondary disjunctive (phrase boundary)"
         );
         assert_eq!(
-            GroupLevel::Tier3.description(),
+            Tier::Tier3.description(),
             "Tertiary disjunctive (minor division)"
         );
         assert_eq!(
-            GroupLevel::Tier4.description(),
+            Tier::Tier4.description(),
             "Quaternary disjunctive (fine subdivision)"
         );
     }
 
     #[test]
-    fn test_group_level_alt_description_method() {
-        assert_eq!(GroupLevel::Tier1.alt_description(), "Emperor");
-        assert_eq!(GroupLevel::Tier2.alt_description(), "Kings");
-        assert_eq!(GroupLevel::Tier3.alt_description(), "Dukes");
-        assert_eq!(GroupLevel::Tier4.alt_description(), "Officers");
+    fn test_tier_alt_description_method() {
+        assert_eq!(Tier::Tier1.alt_description(), "Emperor");
+        assert_eq!(Tier::Tier2.alt_description(), "Kings");
+        assert_eq!(Tier::Tier3.alt_description(), "Dukes");
+        assert_eq!(Tier::Tier4.alt_description(), "Officers");
     }
 
     #[test]
-    fn test_group_level_max_methods() {
-        assert_eq!(GroupLevel::max_poetry_tier(), GroupLevel::Tier3);
-        assert_eq!(GroupLevel::max_prose_tier(), GroupLevel::Tier4);
+    fn test_tier_max_methods() {
+        assert_eq!(Tier::max_poetry_tier(), Tier::Tier3);
+        assert_eq!(Tier::max_prose_tier(), Tier::Tier4);
     }
 
     #[test]
-    fn test_group_level_is_poetry_available() {
+    fn test_tier_is_poetry_available() {
         // Poetry has tiers 1-3
-        assert!(GroupLevel::Tier1.is_poetry_available());
-        assert!(GroupLevel::Tier2.is_poetry_available());
-        assert!(GroupLevel::Tier3.is_poetry_available());
+        assert!(Tier::Tier1.is_poetry_available());
+        assert!(Tier::Tier2.is_poetry_available());
+        assert!(Tier::Tier3.is_poetry_available());
         // Tier4 is prose-only
-        assert!(!GroupLevel::Tier4.is_poetry_available());
+        assert!(!Tier::Tier4.is_poetry_available());
     }
 
     #[test]
-    fn test_group_level_display() {
+    fn test_tier_display() {
+        assert_eq!(format!("{}", Tier::Tier1), "Tier 1 (Primary disjunctive)");
+        assert_eq!(format!("{}", Tier::Tier2), "Tier 2 (Secondary disjunctive)");
+        assert_eq!(format!("{}", Tier::Tier3), "Tier 3 (Tertiary disjunctive)");
         assert_eq!(
-            format!("{}", GroupLevel::Tier1),
-            "Tier 1 (Primary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier2),
-            "Tier 2 (Secondary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier3),
-            "Tier 3 (Tertiary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier4),
+            format!("{}", Tier::Tier4),
             "Tier 4 (Quaternary disjunctive)"
         );
     }
 
     #[test]
-    fn test_group_level_debug_trait() {
-        let debug_output = format!("{:?}", GroupLevel::Tier1);
+    fn test_tier_debug_trait() {
+        let debug_output = format!("{:?}", Tier::Tier1);
         assert!(debug_output.contains("Tier1"));
     }
 
     #[test]
-    fn test_group_level_copy_clone_trait() {
-        let original = GroupLevel::Tier1;
+    fn test_tier_copy_clone_trait() {
+        let original = Tier::Tier1;
         let cloned = original.clone();
 
         assert_eq!(original, cloned);
-        assert_eq!(original, GroupLevel::Tier1);
+        assert_eq!(original, Tier::Tier1);
     }
 
     #[test]
-    fn test_group_level_eq_partial_eq_hash() {
-        let l1 = GroupLevel::Tier1;
-        let l2 = GroupLevel::Tier1;
-        let l3 = GroupLevel::Tier2;
+    fn test_tier_eq_partial_eq_hash() {
+        let l1 = Tier::Tier1;
+        let l2 = Tier::Tier1;
+        let l3 = Tier::Tier2;
 
         assert_eq!(l1, l2);
         assert_ne!(l1, l3);
@@ -792,45 +780,36 @@ mod additional_function_coverage_tests {
     #[test]
     fn test_try_from_u8_zero() {
         // Test boundary case: 0 should fail
-        let result = GroupLevel::try_from(0u8);
-        assert!(matches!(
-            result,
-            Err(crate::GroupLevelError::InvalidGroupLevel(0))
-        ));
+        let result = Tier::try_from(0u8);
+        assert!(matches!(result, Err(crate::TierError::InvalidTier(0))));
     }
 
     #[test]
     fn test_try_from_u8_boundary_min() {
         // Test minimum valid value
-        let result = GroupLevel::try_from(1u8);
-        assert_eq!(result, Ok(GroupLevel::Tier1));
+        let result = Tier::try_from(1u8);
+        assert_eq!(result, Ok(Tier::Tier1));
     }
 
     #[test]
     fn test_try_from_u8_boundary_max() {
         // Test maximum valid value
-        let result = GroupLevel::try_from(4u8);
-        assert_eq!(result, Ok(GroupLevel::Tier4));
+        let result = Tier::try_from(4u8);
+        assert_eq!(result, Ok(Tier::Tier4));
     }
 
     #[test]
     fn test_try_from_u8_above_max() {
         // Test above maximum
-        let result = GroupLevel::try_from(5u8);
-        assert!(matches!(
-            result,
-            Err(crate::GroupLevelError::InvalidGroupLevel(5))
-        ));
+        let result = Tier::try_from(5u8);
+        assert!(matches!(result, Err(crate::TierError::InvalidTier(5))));
     }
 
     #[test]
     fn test_try_from_u8_large_value() {
         // Test very large value
-        let result = GroupLevel::try_from(255u8);
-        assert!(matches!(
-            result,
-            Err(crate::GroupLevelError::InvalidGroupLevel(255))
-        ));
+        let result = Tier::try_from(255u8);
+        assert!(matches!(result, Err(crate::TierError::InvalidTier(255))));
     }
 
     // ============================================================
@@ -850,21 +829,12 @@ mod additional_function_coverage_tests {
     }
 
     #[test]
-    fn test_group_level_display_exact_output() {
+    fn test_tier_display_exact_output() {
+        assert_eq!(format!("{}", Tier::Tier1), "Tier 1 (Primary disjunctive)");
+        assert_eq!(format!("{}", Tier::Tier2), "Tier 2 (Secondary disjunctive)");
+        assert_eq!(format!("{}", Tier::Tier3), "Tier 3 (Tertiary disjunctive)");
         assert_eq!(
-            format!("{}", GroupLevel::Tier1),
-            "Tier 1 (Primary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier2),
-            "Tier 2 (Secondary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier3),
-            "Tier 3 (Tertiary disjunctive)"
-        );
-        assert_eq!(
-            format!("{}", GroupLevel::Tier4),
+            format!("{}", Tier::Tier4),
             "Tier 4 (Quaternary disjunctive)"
         );
     }
@@ -982,11 +952,11 @@ mod additional_function_coverage_tests {
     // ============================================================
 
     #[test]
-    fn test_group_level_value_const_fn() {
-        const TIER1_VAL: u8 = GroupLevel::Tier1.value();
-        const TIER2_VAL: u8 = GroupLevel::Tier2.value();
-        const TIER3_VAL: u8 = GroupLevel::Tier3.value();
-        const TIER4_VAL: u8 = GroupLevel::Tier4.value();
+    fn test_tier_value_const_fn() {
+        const TIER1_VAL: u8 = Tier::Tier1.value();
+        const TIER2_VAL: u8 = Tier::Tier2.value();
+        const TIER3_VAL: u8 = Tier::Tier3.value();
+        const TIER4_VAL: u8 = Tier::Tier4.value();
 
         assert_eq!(TIER1_VAL, 1);
         assert_eq!(TIER2_VAL, 2);
@@ -995,11 +965,11 @@ mod additional_function_coverage_tests {
     }
 
     #[test]
-    fn test_group_level_description_const_fn() {
-        const DESC1: &str = GroupLevel::Tier1.description();
-        const DESC2: &str = GroupLevel::Tier2.description();
-        const DESC3: &str = GroupLevel::Tier3.description();
-        const DESC4: &str = GroupLevel::Tier4.description();
+    fn test_tier_description_const_fn() {
+        const DESC1: &str = Tier::Tier1.description();
+        const DESC2: &str = Tier::Tier2.description();
+        const DESC3: &str = Tier::Tier3.description();
+        const DESC4: &str = Tier::Tier4.description();
 
         assert_eq!(DESC1, "Primary disjunctive (major clause break)");
         assert_eq!(DESC2, "Secondary disjunctive (phrase boundary)");
@@ -1008,11 +978,11 @@ mod additional_function_coverage_tests {
     }
 
     #[test]
-    fn test_group_level_alt_description_const_fn() {
-        const ALT1: &str = GroupLevel::Tier1.alt_description();
-        const ALT2: &str = GroupLevel::Tier2.alt_description();
-        const ALT3: &str = GroupLevel::Tier3.alt_description();
-        const ALT4: &str = GroupLevel::Tier4.alt_description();
+    fn test_tier_alt_description_const_fn() {
+        const ALT1: &str = Tier::Tier1.alt_description();
+        const ALT2: &str = Tier::Tier2.alt_description();
+        const ALT3: &str = Tier::Tier3.alt_description();
+        const ALT4: &str = Tier::Tier4.alt_description();
 
         assert_eq!(ALT1, "Emperor");
         assert_eq!(ALT2, "Kings");
@@ -1025,23 +995,23 @@ mod additional_function_coverage_tests {
     // ============================================================
 
     #[test]
-    fn test_group_level_poetry_vs_prose_distinction() {
+    fn test_tier_poetry_vs_prose_distinction() {
         // Poetry stops at Tier3
-        assert_eq!(GroupLevel::max_poetry_tier(), GroupLevel::Tier3);
-        assert!(GroupLevel::Tier1.is_poetry_available());
-        assert!(GroupLevel::Tier2.is_poetry_available());
-        assert!(GroupLevel::Tier3.is_poetry_available());
-        assert!(!GroupLevel::Tier4.is_poetry_available());
+        assert_eq!(Tier::max_poetry_tier(), Tier::Tier3);
+        assert!(Tier::Tier1.is_poetry_available());
+        assert!(Tier::Tier2.is_poetry_available());
+        assert!(Tier::Tier3.is_poetry_available());
+        assert!(!Tier::Tier4.is_poetry_available());
 
         // Prose goes to Tier4
-        assert_eq!(GroupLevel::max_prose_tier(), GroupLevel::Tier4);
+        assert_eq!(Tier::max_prose_tier(), Tier::Tier4);
     }
 
     #[test]
-    fn test_group_level_tier4_prose_only() {
+    fn test_tier_tier4_prose_only() {
         // Tier4 is specifically prose-only
-        assert!(!GroupLevel::Tier4.is_poetry_available());
-        assert_eq!(GroupLevel::max_poetry_tier(), GroupLevel::Tier3);
+        assert!(!Tier::Tier4.is_poetry_available());
+        assert_eq!(Tier::max_poetry_tier(), Tier::Tier3);
     }
 
     // ============================================================
@@ -1049,16 +1019,16 @@ mod additional_function_coverage_tests {
     // ============================================================
 
     #[test]
-    fn test_group_level_hash_consistency() {
+    fn test_tier_hash_consistency() {
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};
 
         let mut h1 = DefaultHasher::new();
-        GroupLevel::Tier1.hash(&mut h1);
+        Tier::Tier1.hash(&mut h1);
         let hash1 = h1.finish();
 
         let mut h2 = DefaultHasher::new();
-        GroupLevel::Tier1.hash(&mut h2);
+        Tier::Tier1.hash(&mut h2);
         let hash2 = h2.finish();
 
         assert_eq!(hash1, hash2);

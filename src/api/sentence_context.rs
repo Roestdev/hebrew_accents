@@ -296,9 +296,10 @@ impl SentenceContext {
     ///
     /// # Errors
     ///
-    /// Returns [`SentenceContextError::DerivationFailed`] when:
-    /// - **Ambiguity**: `"Conflicting prose and poetry accent markers identified"`
-    /// - **Insufficient data**: `"No distinguishable prose and/or poetry accents have been found"`
+    /// Returns 
+    /// 
+    /// - [`SentenceContextError::AmbiguousData`] when conflicting prose and poetry accent markers identified"`
+    /// - [`SentenceContextError::InsufficientData`] when no distinguishable prose and/or poetry accents have been found"`
     ///
     /// # Example
     ///

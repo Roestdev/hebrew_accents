@@ -28,9 +28,7 @@
 
 use crate::accent::PSEUDO_ACCENT_TABLE;
 use crate::api::CompoundType;
-use crate::{
-    display_cantillation_symbol, AccentCategory, AccentKind, CantillationMark, GroupLevel,
-};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
 use strum_macros::{EnumCount, EnumIter};
 
@@ -263,13 +261,8 @@ impl Accent for PseudoAccent {
     }
 
     #[inline]
-    fn tier(&self) -> Option<GroupLevel> {
+    fn tier(&self) -> Option<Tier> {
         None
-    }
-
-    #[inline]
-    fn cantillation_symbol(&self) -> String {
-        display_cantillation_symbol((*self).into())
     }
 
     #[inline]
@@ -426,12 +419,6 @@ mod test_accent_trait {
         assert_eq!(PseudoAccent::SophPasuq.tier(), None);
         assert_eq!(PseudoAccent::Maqqaph.tier(), None);
         assert_eq!(PseudoAccent::Paseq.tier(), None);
-    }
-    #[test]
-    fn test_pseudo_accent_cantillation_symbol() {
-        assert_eq!(PseudoAccent::SophPasuq.cantillation_symbol(), "אםת ׃");
-        assert_eq!(PseudoAccent::Maqqaph.cantillation_symbol(), "אםת־אםת");
-        assert_eq!(PseudoAccent::Paseq.cantillation_symbol(), "אםת ׀");
     }
     #[test]
     fn test_pseudo_accent_alternate_names() {
@@ -675,27 +662,6 @@ mod tests {
         assert_eq!(PseudoAccent::Paseq.tier(), None);
     }
 
-    // --- Cantillation Symbol Method ---
-
-    #[test]
-    fn test_cantillation_symbol_not_empty() {
-        for accent in PseudoAccent::iter() {
-            let symbol = accent.cantillation_symbol();
-            assert!(!symbol.is_empty());
-        }
-    }
-
-    #[test]
-    fn test_cantillation_symbol_contains_expected_characters() {
-        let soph_sym = PseudoAccent::SophPasuq.cantillation_symbol();
-        let maq_sym = PseudoAccent::Maqqaph.cantillation_symbol();
-        let pse_sym = PseudoAccent::Paseq.cantillation_symbol();
-
-        assert!(!soph_sym.is_empty());
-        assert!(!maq_sym.is_empty());
-        assert!(!pse_sym.is_empty());
-    }
-
     // --- Alternate Names Method ---
 
     #[test]
@@ -854,7 +820,6 @@ mod tests {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
         let _display = format!("{}", accent);
 
@@ -1043,18 +1008,6 @@ mod tests2 {
     }
 
     #[test]
-    fn test_cantillation_symbol_function_call() {
-        // Ensure display_cantillation_symbol is called for each variant
-        let soph_sym = PseudoAccent::SophPasuq.cantillation_symbol();
-        let maq_sym = PseudoAccent::Maqqaph.cantillation_symbol();
-        let pse_sym = PseudoAccent::Paseq.cantillation_symbol();
-
-        assert!(!soph_sym.is_empty());
-        assert!(!maq_sym.is_empty());
-        assert!(!pse_sym.is_empty());
-    }
-
-    #[test]
     fn test_hebrew_name_static_lifetime() {
         // Verify hebrew_name returns &'static str
         let name: &'static str = PseudoAccent::SophPasuq.hebrew_name();
@@ -1124,7 +1077,7 @@ mod tests2 {
     fn test_tier_return_type_none() {
         // Specifically test tier() returns None
         for accent in PseudoAccent::iter() {
-            let level_opt: Option<GroupLevel> = accent.tier();
+            let level_opt: Option<Tier> = accent.tier();
             assert!(level_opt.is_none());
         }
     }
@@ -1173,7 +1126,6 @@ mod tests2 {
         let _notes = accent.notes();
         let _strength = accent.rank();
         let _level = accent.tier();
-        let _symbol = accent.cantillation_symbol();
         let _alts = accent.alternate_names();
     }
 
@@ -1448,7 +1400,6 @@ mod tests2 {
         for (i, variant) in variants.iter().enumerate() {
             assert_eq!(variant.as_index(), i);
             let _name = variant.english_name();
-            let _sym = variant.cantillation_symbol();
         }
     }
 

@@ -28,5 +28,5 @@ pub use public_model::AccentKind;
 pub use public_model::CantillationMark;
 pub use public_model::CantillationMarkPlacement;
 pub use public_model::CantillationMarkStressPosition;
-pub use public_model::GroupLevel;
+pub use public_model::Tier;
 pub use sentence_context::SentenceContext;

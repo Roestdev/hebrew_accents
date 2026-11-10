@@ -58,10 +58,7 @@ mod poetry_accents_rank {
         assert_eq!(PoetryAccent::ReviaQaton.rank(), Some(8));
         assert_eq!(PoetryAccent::Dechi.rank(), Some(9));
         assert_eq!(PoetryAccent::Pazer.rank(), Some(10));
-        assert_eq!(
-            PoetryAccent::MehuppakhLegarmeh.rank(),
-            Some(11)
-        );
+        assert_eq!(PoetryAccent::MehuppakhLegarmeh.rank(), Some(11));
         assert_eq!(PoetryAccent::AzlaLegarmeh.rank(), Some(12));
     }
 

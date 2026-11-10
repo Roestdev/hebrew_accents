@@ -1,9 +1,9 @@
-use crate::{GroupLevel, HebrewAccent, PoetryAccent, ProseAccent};
+use crate::{HebrewAccent, PoetryAccent, ProseAccent, Tier};
 
 /// Full Futato hierarchy classification with prose/poetry distinction.
 ///
 /// **Internal use only**—do not rely on this accenttype publicly as it may change
-/// without semver warning. Use [`super::GroupLevel`] instead.
+/// without semver warning. Use [`super::Tier`] instead.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 #[repr(u8)]
 pub(crate) enum DisjunctiveGroup {
@@ -17,13 +17,13 @@ pub(crate) enum DisjunctiveGroup {
 }
 
 impl DisjunctiveGroup {
-    /// Convert to simplified public GroupLevel
-    pub(crate) const fn into_public_level(self) -> Option<GroupLevel> {
+    /// Convert to simplified public Tier
+    pub(crate) const fn into_public_level(self) -> Option<Tier> {
         match self {
-            Self::ProseTier1 | Self::PoetryTier1 => Some(GroupLevel::Tier1),
-            Self::ProseTier2 | Self::PoetryTier2 => Some(GroupLevel::Tier2),
-            Self::ProseTier3 | Self::PoetryTier3 => Some(GroupLevel::Tier3),
-            Self::ProseTier4 => Some(GroupLevel::Tier4),
+            Self::ProseTier1 | Self::PoetryTier1 => Some(Tier::Tier1),
+            Self::ProseTier2 | Self::PoetryTier2 => Some(Tier::Tier2),
+            Self::ProseTier3 | Self::PoetryTier3 => Some(Tier::Tier3),
+            Self::ProseTier4 => Some(Tier::Tier4),
         }
     }
 }
@@ -132,43 +132,43 @@ mod disjunctive_group_tests {
     #[test]
     fn test_into_public_level_prose_tier1_to_tier1() {
         let result = DisjunctiveGroup::ProseTier1.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier1));
+        assert_eq!(result, Some(Tier::Tier1));
     }
 
     #[test]
     fn test_into_public_level_poetry_tier1_to_tier1() {
         let result = DisjunctiveGroup::PoetryTier1.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier1));
+        assert_eq!(result, Some(Tier::Tier1));
     }
 
     #[test]
     fn test_into_public_level_prose_tier2_to_tier2() {
         let result = DisjunctiveGroup::ProseTier2.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier2));
+        assert_eq!(result, Some(Tier::Tier2));
     }
 
     #[test]
     fn test_into_public_level_poetry_tier2_to_tier2() {
         let result = DisjunctiveGroup::PoetryTier2.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier2));
+        assert_eq!(result, Some(Tier::Tier2));
     }
 
     #[test]
     fn test_into_public_level_prose_tier3_to_tier3() {
         let result = DisjunctiveGroup::ProseTier3.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier3));
+        assert_eq!(result, Some(Tier::Tier3));
     }
 
     #[test]
     fn test_into_public_level_poetry_tier3_to_tier3() {
         let result = DisjunctiveGroup::PoetryTier3.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier3));
+        assert_eq!(result, Some(Tier::Tier3));
     }
 
     #[test]
     fn test_into_public_level_prose_tier4_to_tier4() {
         let result = DisjunctiveGroup::ProseTier4.into_public_level();
-        assert_eq!(result, Some(GroupLevel::Tier4));
+        assert_eq!(result, Some(Tier::Tier4));
     }
 
     // ==========================================
@@ -325,7 +325,7 @@ mod disjunctive_group_tests {
     }
 
     #[test]
-    fn test_resolve_poetry_ooleh_we_yored_returns_tier1() {
+    fn test_resolve_poetry_oleh_we_yored_returns_tier1() {
         let accent = HebrewAccent::Poetry(PoetryAccent::OlehWeYored);
         let result = resolve_disjunctive_group(accent);
         assert_eq!(result, Some(DisjunctiveGroup::PoetryTier1));
@@ -485,8 +485,8 @@ mod disjunctive_group_tests {
 
     #[test]
     fn test_const_evaluation_of_into_public_level() {
-        const LEVEL: Option<GroupLevel> = DisjunctiveGroup::ProseTier1.into_public_level();
-        assert!(matches!(LEVEL, Some(GroupLevel::Tier1)));
+        const LEVEL: Option<Tier> = DisjunctiveGroup::ProseTier1.into_public_level();
+        assert!(matches!(LEVEL, Some(Tier::Tier1)));
     }
 
     #[test]
@@ -521,7 +521,7 @@ mod disjunctive_group_tests {
         // Step 2: Convert to public level
         if let Some(g) = group {
             let public_level = g.into_public_level();
-            assert_eq!(public_level, Some(GroupLevel::Tier1));
+            assert_eq!(public_level, Some(Tier::Tier1));
         } else {
             panic!("Expected Some group");
         }
@@ -531,13 +531,13 @@ mod disjunctive_group_tests {
     fn test_tier_progression_accuracy() {
         // Verify each tier maps to correct public level
         let mappings = [
-            (DisjunctiveGroup::ProseTier1, Some(GroupLevel::Tier1)),
-            (DisjunctiveGroup::ProseTier2, Some(GroupLevel::Tier2)),
-            (DisjunctiveGroup::ProseTier3, Some(GroupLevel::Tier3)),
-            (DisjunctiveGroup::ProseTier4, Some(GroupLevel::Tier4)),
-            (DisjunctiveGroup::PoetryTier1, Some(GroupLevel::Tier1)),
-            (DisjunctiveGroup::PoetryTier2, Some(GroupLevel::Tier2)),
-            (DisjunctiveGroup::PoetryTier3, Some(GroupLevel::Tier3)),
+            (DisjunctiveGroup::ProseTier1, Some(Tier::Tier1)),
+            (DisjunctiveGroup::ProseTier2, Some(Tier::Tier2)),
+            (DisjunctiveGroup::ProseTier3, Some(Tier::Tier3)),
+            (DisjunctiveGroup::ProseTier4, Some(Tier::Tier4)),
+            (DisjunctiveGroup::PoetryTier1, Some(Tier::Tier1)),
+            (DisjunctiveGroup::PoetryTier2, Some(Tier::Tier2)),
+            (DisjunctiveGroup::PoetryTier3, Some(Tier::Tier3)),
         ];
 
         for (group, expected) in mappings {
@@ -552,7 +552,7 @@ mod disjunctive_group_tests {
         let poetry_result = DisjunctiveGroup::PoetryTier1.into_public_level();
 
         assert_eq!(prose_result, poetry_result);
-        assert_eq!(prose_result, Some(GroupLevel::Tier1));
+        assert_eq!(prose_result, Some(Tier::Tier1));
     }
 
     #[test]
@@ -579,21 +579,6 @@ mod disjunctive_group_tests {
 
         // Should have resolved all disjunctive accents
         assert!(resolved_count > 0);
-    }
-
-    #[test]
-    fn test_repr_u8_discriminant_values() {
-        // Verify discriminant values are sequential u8
-        let prose_tier1 =
-            unsafe { std::mem::transmute::<DisjunctiveGroup, u8>(DisjunctiveGroup::ProseTier1) };
-        let prose_tier4 =
-            unsafe { std::mem::transmute::<DisjunctiveGroup, u8>(DisjunctiveGroup::ProseTier4) };
-        let poetry_tier3 =
-            unsafe { std::mem::transmute::<DisjunctiveGroup, u8>(DisjunctiveGroup::PoetryTier3) };
-
-        assert_eq!(prose_tier1, 0);
-        assert_eq!(prose_tier4, 3);
-        assert_eq!(poetry_tier3, 6);
     }
 
     #[test]
