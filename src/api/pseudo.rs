@@ -28,8 +28,8 @@
 
 use crate::accent::PSEUDO_ACCENT_TABLE;
 use crate::api::CompoundType;
-use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a syntactic marker associated with Hebrew cantillation.
@@ -172,14 +172,13 @@ impl std::fmt::Display for PseudoAccent {
 }
 
 // ── Compile-time discriminant guards ────────────────────────────────────
-
-/// Verifies that the last discriminant + 1 equals LEN.
-///
-/// If a variant is inserted, removed, or reordered, this const assertion
-/// will fail at compile time.
 const _: () = {
     const LAST_DISCRIMINANT: u8 = PseudoAccent::Paseq as u8;
+    // If a variant is inserted, removed, or reordered, this const assertion
+    // will fail at compile time.
     assert!((LAST_DISCRIMINANT + 1) as usize == PseudoAccent::LEN);
+    //catches a shortened/grown table at compile time
+    assert!(PSEUDO_ACCENT_TABLE.len() == PseudoAccent::LEN);
 };
 
 impl Accent for PseudoAccent {
@@ -211,10 +210,9 @@ impl Accent for PseudoAccent {
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        let table_entry = &PSEUDO_ACCENT_TABLE[self.as_index()];
-        table_entry
+        PSEUDO_ACCENT_TABLE[self.as_index()]
             .category
-            .map(|priv_category| priv_category.into())
+            .map(AccentCategory::from)
     }
 
     #[inline]
@@ -271,6 +269,23 @@ impl Accent for PseudoAccent {
         table_entry
             .alternate_names
             .map(|priv_names| priv_names.into())
+    }
+}
+
+#[cfg(test)]
+mod test_discriminant {
+    use crate::PseudoAccent;
+    use strum::IntoEnumIterator;
+
+    #[test]
+    fn discriminants_match_indices() {
+        for (i, accent) in PseudoAccent::iter().enumerate() {
+            assert_eq!(
+                accent.as_index(),
+                i,
+                "{accent:?} discriminant != its position"
+            );
+        }
     }
 }
 

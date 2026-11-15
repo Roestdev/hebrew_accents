@@ -4,6 +4,8 @@
 //!
 //! ## Design
 //!
+//! ### Overview
+//!
 //! This crate offers two complementary perspectives:
 //!
 //! 1. **Text inspection**
@@ -19,19 +21,40 @@
 //! By separating the static accent data from the dynamic text‑processing
 //! capabilities, the library remains flexible and easy to extend
 //!
-//! All `accent` related code can be found in the files starting with *`accent`*
-//! All `text inspection` related code can be found in files starting with *`sentence_ctx`*
+//! ### Crate layout
 //!
-//! ### Main accenttypes
+//! The crate is organized into four major modules, plus some supporting
+//! files such as `error.rs` and `lib.rs`:
 //!
-//! The whole crate is build around the main accenttype **`HebrewAccent`**,
-//!  with its three subaccenttypes:
-//!  - *`ProseAccent`* (all prose accents)
-//!  - *`PoetryAccent`* (all poetry accents)
-//!  - *`PseudoAccent`* (actually non-accents, but accent related)
+//!  1. **api** — the public API surface: the `Accent` trait, the accent
+//!     enums (`ProseAccent`, `PoetryAccent`, `PseudoAccent`, `HebrewAccent`),
+//!     and the metadata models they expose.
+//!
+//!  2. **accent** — implementation behind the API: static accent data
+//!     (lookup tables, symbols, display helpers).
+//!
+//!  3. **mark** — the cantillation mark itself: Unicode code points,
+//!     placement, and stress-position data.
+//!
+//!  4. **sentence** — text inspection: parsing sentences, validating
+//!     accentuation, and detecting prose vs. poetry context.
+//!
+//! ### Main accent types
+//!
+//! The whole crate is built around one central type: **`HebrewAccent`**.
+//! It is a thin wrapper that unifies the three accent families behind a
+//! single type, so that any API accepting an accent can work with all of
+//! them interchangeably:
+//!
+//! - *`ProseAccent`* — the accents of the prosaic system, used in most
+//!   biblical books (e.g. Genesis, Kings)
+//! - *`PoetryAccent`* — the accents of the poetic system, used in the
+//!   poetic books (Psalms, Proverbs, Job)
+//! - *`PseudoAccent`* — accent-related marks that are not cantillation
+//!   accents proper (e.g. Maqqaph, Paseq)
 //!
 //! ```none
-//! Definition of HebrewAccent:
+//! Illustrative definition of `HebrewAccent`:
 //!
 //! pub enum HebrewAccent {
 //!     Prose(ProseAccent),
@@ -39,6 +62,11 @@
 //!     Pseudo(PseudoAccent),
 //! }
 //! ```
+//!
+//! The wrapper exists because the prosaic and poetic systems are distinct
+//! sets with their own enums — several accents share a name across systems
+//! (e.g. Atnach) but are treated as separate types here. See
+//! [`Accent`]for the metadata available on every variant.
 //!
 //! ```none
 //! Definition of ProseAccent (partly)
@@ -108,7 +136,119 @@
 //!  - details    
 //!
 //! ## Examples
-//! // TODO
+//!
+//! ### Text inspection
+//!
+//! A [`SentenceContext`] couples a sentence with its liturgical context.
+//! Construction validates the text, so it returns a [`SentenceContextError`]
+//! for empty or malformed input:
+//!
+//! ```
+//! use hebrew_accents::{Context, SentenceContext};
+//!
+//! // Genesis 1:1 (prose)
+//! let sentence = SentenceContext::new(
+//!     "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים",
+//!     Context::Prosaic,
+//! )
+//! .unwrap();
+//!
+//! assert_eq!(sentence.context(), Context::Prosaic);
+//! assert_eq!(sentence.as_str(), "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים");
+//!
+//! // Construction is validated: empty input is rejected
+//! assert!(SentenceContext::new("", Context::Prosaic).is_err());
+//!
+//! // A known-good default sentence (Genesis 1:1, complete verse):
+//! let default = SentenceContext::with_valid_default().unwrap();
+//! assert_eq!(default.context(), Context::Prosaic);
+//! ```
+//!
+//! [`SentenceContext`]: crate::SentenceContext
+//! [`SentenceContextError`]: crate::SentenceContextError
+//!
+//! ### Detecting the context
+//!
+//! Most of the Tanakh is prose, but Psalms, Proverbs and Job use a
+//! different accent system. Detection works on the *exclusive* accents
+//! found in the text:
+//!
+//! ```
+//! use hebrew_accents::{try_derive_context, Context};
+//!
+//! // Psalm 1:1 — poetry-exclusive accents (Oleh WeYored, Dechi, ...)
+//! let psalm = "מִזְמ֥וֹר לְדָוִ֑ד יְהוָ֥ה רֹ֝עִ֗י לֹ֣א אֶחְסָֽר׃";
+//!
+//! match try_derive_context(psalm) {
+//!     Ok(context) => assert_eq!(context, Context::Poetic),
+//!     Err(e) => panic!("Detection failed: {e}"),
+//! }
+//!
+//! // The same detection is available as an instance method:
+//! use hebrew_accents::SentenceContext;
+//!
+//! let sentence = SentenceContext::new(psalm, Context::Prosaic).unwrap();
+//! assert_eq!(sentence.try_derive_context().unwrap(), Context::Poetic);
+//! ```
+//!
+//! ### Finding accents in a sentence
+//!
+//! ```
+//! use hebrew_accents::{HebrewAccent, ProseAccent, SentenceContext, Context};
+//!
+//! let sentence = SentenceContext::new(
+//!     "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים",
+//!     Context::Prosaic,
+//! )
+//! .unwrap();
+//!
+//! let atnach = HebrewAccent::Prose(ProseAccent::Atnach);
+//!
+//! if sentence.contains_accent(atnach) {
+//!     if let Some(found) = sentence.find_accent(atnach) {
+//!         println!("Found at byte range {:?}", found.range());
+//!     }
+//! }
+//! ```
+//!
+//! ### Accent metadata
+//!
+//! The [`Accent`] trait exposes metadata for every cantillation mark.
+//! `From`/`Into` conversions let you use the concrete enums directly:
+//!
+//! ```
+//! use hebrew_accents::{Accent, AccentCategory, AccentKind, ProseAccent, Tier};
+//!
+//! let atnach = ProseAccent::Atnach;
+//!
+//! // Names
+//! assert_eq!(atnach.english_name(), "Atnach");
+//! assert_eq!(atnach.hebrew_concept(), "a causing to rest");
+//!
+//! // Structural metadata
+//! assert_eq!(atnach.kind(), Some(AccentKind::Primary));
+//! assert_eq!(atnach.category(), Some(AccentCategory::Disjunctive));
+//! assert_eq!(atnach.tier(), Some(Tier::Tier1));
+//!
+//! // BHS Tabula Accentum: 1 is the strongest pause
+//! assert_eq!(atnach.rank(), Some(2));
+//! assert!(ProseAccent::Silluq.rank() < atnach.rank()); // Silluq is stronger
+//! ```
+//!
+//! [`Accent`]: crate::Accent
+//!
+//! ### Rendering a cantillation example
+//!
+//! [`cantillation_example`] shows where a mark sits on a dummy word,
+//! taking the accent's stress position into account:
+//!
+//! ```
+//! use hebrew_accents::{cantillation_example, ProseAccent};
+//!
+//! // Into<HebrewAccent> is implemented for every accent type
+//! let example = cantillation_example(ProseAccent::Silluq.into());
+//! assert!(!example.is_empty());
+//! ```
 //!
 //! ### Text inspection
 //!

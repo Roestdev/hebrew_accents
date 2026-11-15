@@ -31,8 +31,8 @@
 use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_POETRY_RANK_MAP, POETRY_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew poetry cantillation mark.
@@ -65,10 +65,9 @@ use strum_macros::{EnumCount, EnumIter};
 ///
 /// // Iterate over all poetry accents
 /// for accent in PoetryAccent::iter() {
-///     println!("{}: {} ({})",
+///     println!("{} ({})",
 ///         accent.english_name(),
 ///         accent.hebrew_name(),
-///         accent.cantillation_symbol(),
 ///     );
 /// }
 /// ```
@@ -252,6 +251,16 @@ impl PoetryAccent {
     }
 }
 
+// ── Compile-time discriminant guards ────────────────────────────────────
+const _: () = {
+    const LAST_DISCRIMINANT: u8 = PoetryAccent::Meteg as u8;
+    // If a variant is inserted, removed, or reordered, this const assertion
+    // will fail at compile time.
+    assert!((LAST_DISCRIMINANT + 1) as usize == PoetryAccent::LEN);
+    //catches a shortened/grown table at compile time
+    assert!(POETRY_ACCENT_TABLE.len() == PoetryAccent::LEN);
+};
+
 impl std::fmt::Display for PoetryAccent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
@@ -263,14 +272,6 @@ impl std::fmt::Display for PoetryAccent {
         )
     }
 }
-
-// ── Compile-time discriminant guards ────────────────────────────────────
-// If a variant is inserted, removed, or reordered, this const assertion
-// will fail at compile time.
-const _: () = {
-    const LAST_DISCRIMINANT: u8 = PoetryAccent::Meteg as u8;
-    assert!((LAST_DISCRIMINANT + 1) as usize == PoetryAccent::LEN);
-};
 
 impl Accent for PoetryAccent {
     #[inline]
@@ -301,10 +302,9 @@ impl Accent for PoetryAccent {
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        let table_entry = &POETRY_ACCENT_TABLE[self.as_index()];
-        table_entry
+        POETRY_ACCENT_TABLE[self.as_index()]
             .category
-            .map(|priv_category| priv_category.into())
+            .map(AccentCategory::from)
     }
 
     #[inline]
@@ -365,7 +365,24 @@ impl Accent for PoetryAccent {
 }
 
 #[cfg(test)]
-mod test_accent_trait {
+mod test_discriminant {
+    use crate::PoetryAccent;
+    use strum::IntoEnumIterator;
+
+    #[test]
+    fn discriminants_match_indices() {
+        for (i, accent) in PoetryAccent::iter().enumerate() {
+            assert_eq!(
+                accent.as_index(),
+                i,
+                "{accent:?} discriminant != its position"
+            );
+        }
+    }
+}
+
+#[cfg(test)]
+mod test_impl_accent_trait {
     use crate::{
         Accent, AccentCategory, AccentKind, AlternateNames, CantillationMark,
         CantillationMarkPlacement, CantillationMarkStressPosition, CompoundType, PoetryAccent,
@@ -1726,7 +1743,6 @@ mod derive_trait_tests {
     }
 
     // --- Cantillation Symbol Method ---
-
 
     // --- Alternate Names Method ---
 

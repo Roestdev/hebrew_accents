@@ -26,37 +26,35 @@ pub fn try_derive_context(sentence: &str) -> Result<Context, SentenceContextErro
     detect_context_from_sentence(sentence)
 }
 
-/// Builds a sample display string showing where the accent sits on a word.
+/// Builds a sample display string showing where the accent sits on a word(s).
 ///
-/// Dummy words of three consonants without any vowels are used
-/// to show where the accent is positioned.
+/// Three consonants are used to show where the accent is positioned.
 ///
-/// For accents that **can** span one or two words, two dummy words of three consonants
-/// will be shown, where each set contains only one mark.
+/// For accents that **can** span one or two words, two sets of words of three
+/// consonants will be shown, where each set contains only one mark.
 ///
 /// # Note:
-///  - These representations are a simplified version of reality, in order
+///  - These examples are a simplified version of reality, just in order
 ///    to give an idea of how these accents might show up in real texts.
-///  - The stress position of the accents are accounted for.
+///  - The [`stress position`](crate::CantillationMarkStressPosition) of the accents
+///    is accounted for.
 ///
 /// # Example
 /// ```rust
 /// use hebrew_accents::{cantillation_example, ProseAccent};
 ///
-/// let example = cantillation_example(ProseAccent::Silluq);
+/// let example = cantillation_example(ProseAccent::Shalshelet.into());
 ///
-/// println!("Display: {example}");  // "בָּ֫רְאַ"
+/// println!("Display: {example}");  // prints: אם֓ת ׀
 /// ```
 pub fn cantillation_example(accent: HebrewAccent) -> String {
     display_cantillation_symbol(accent)
 }
 
 #[cfg(test)]
-mod tests {
+mod test_try_derive_context {
     use super::*;
     use crate::{Context, SentenceContextError};
-
-    // ── Basic functionality tests ────────────────────────────────────
 
     // #[test]
     // fn example_from_docstring_works() {
@@ -244,7 +242,7 @@ mod tests {
 
 #[cfg(test)]
 mod prose_cantillation_symbol {
-    use crate::{ProseAccent, cantillation_example};
+    use crate::{cantillation_example, ProseAccent};
 
     /// Test all prose disjunctive accents (should return Some(strength))
     #[test]
@@ -253,7 +251,10 @@ mod prose_cantillation_symbol {
         assert_eq!(cantillation_example(ProseAccent::Silluq.into()), "אםֽת");
         assert_eq!(cantillation_example(ProseAccent::Atnach.into()), "אם֑ת");
         assert_eq!(cantillation_example(ProseAccent::Segolta.into()), "אםת֒");
-        assert_eq!(cantillation_example(ProseAccent::Shalshelet.into()), "אם֓ת ׀");
+        assert_eq!(
+            cantillation_example(ProseAccent::Shalshelet.into()),
+            "אם֓ת ׀"
+        );
         assert_eq!(cantillation_example(ProseAccent::ZaqephQaton.into()), "אם֔ת");
         assert_eq!(cantillation_example(ProseAccent::ZaqephGadol.into()), "אם֕ת");
         assert_eq!(cantillation_example(ProseAccent::Revia.into()), "אם֗ת");
@@ -267,7 +268,10 @@ mod prose_cantillation_symbol {
         assert_eq!(cantillation_example(ProseAccent::Gershayim.into()), "אם֞ת");
         assert_eq!(cantillation_example(ProseAccent::Pazer.into()), "אם֡ת");
         assert_eq!(cantillation_example(ProseAccent::PazerGadol.into()), "אם֟ת");
-        assert_eq!(cantillation_example(ProseAccent::TelishaGedolah.into()), "א֠םת");
+        assert_eq!(
+            cantillation_example(ProseAccent::TelishaGedolah.into()),
+            "א֠םת"
+        );
         assert_eq!(cantillation_example(ProseAccent::Legarmeh.into()), "אם֣ת ׀");
     }
 
@@ -277,10 +281,16 @@ mod prose_cantillation_symbol {
         assert_eq!(cantillation_example(ProseAccent::Munach.into()), "אם֣ת");
         assert_eq!(cantillation_example(ProseAccent::Mahpakh.into()), "אם֤ת");
         assert_eq!(cantillation_example(ProseAccent::Merkha.into()), "אם֥ת");
-        assert_eq!(cantillation_example(ProseAccent::MerkhaKephulah.into()), "אם֦ת");
+        assert_eq!(
+            cantillation_example(ProseAccent::MerkhaKephulah.into()),
+            "אם֦ת"
+        );
         assert_eq!(cantillation_example(ProseAccent::Darga.into()), "אם֧ת");
         assert_eq!(cantillation_example(ProseAccent::Azla.into()), "אם֨ת");
-        assert_eq!(cantillation_example(ProseAccent::TelishaQetannah.into()), "אםת֩");
+        assert_eq!(
+            cantillation_example(ProseAccent::TelishaQetannah.into()),
+            "אםת֩"
+        );
         assert_eq!(cantillation_example(ProseAccent::Galgal.into()), "אם֪ת");
         assert_eq!(cantillation_example(ProseAccent::Meayla.into()), "אם֖ת");
         assert_eq!(cantillation_example(ProseAccent::Meteg.into()), "אםֽת");
@@ -289,25 +299,37 @@ mod prose_cantillation_symbol {
 
 #[cfg(test)]
 mod poetry_cantillation_symbol {
-    use crate::{PoetryAccent, cantillation_example};
+    use crate::{cantillation_example, PoetryAccent};
     #[test]
     fn test_poetry_disjunctive_cantillation_symbol() {
         // Primary disjunctives: indices 0-11, strengths 1-12
         assert_eq!(cantillation_example(PoetryAccent::Silluq.into()), "אםֽת");
-        assert_eq!(cantillation_example(PoetryAccent::OlehWeYored.into()), "אם֫ת אם֥ת");
+        assert_eq!(
+            cantillation_example(PoetryAccent::OlehWeYored.into()),
+            "אם֫ת אם֥ת"
+        );
         assert_eq!(cantillation_example(PoetryAccent::Atnach.into()), "אם֑ת");
         assert_eq!(cantillation_example(PoetryAccent::ReviaGadol.into()), "אם֗ת");
-        assert_eq!(cantillation_example(PoetryAccent::ReviaMugrash.into()), "א֝ם֗ת");
-        assert_eq!(cantillation_example(PoetryAccent::ShalsheletGadol.into()), "אם֓ת ׀");
+        assert_eq!(
+            cantillation_example(PoetryAccent::ReviaMugrash.into()),
+            "א֝ם֗ת"
+        );
+        assert_eq!(
+            cantillation_example(PoetryAccent::ShalsheletGadol.into()),
+            "אם֓ת ׀"
+        );
         assert_eq!(cantillation_example(PoetryAccent::Tsinnor.into()), "אםת֮");
         assert_eq!(cantillation_example(PoetryAccent::ReviaQaton.into()), "אם֗ת");
         assert_eq!(cantillation_example(PoetryAccent::Dechi.into()), "אם֭ת");
         assert_eq!(cantillation_example(PoetryAccent::Pazer.into()), "אם֡ת");
-        assert_eq!(cantillation_example(
-            PoetryAccent::MehuppakhLegarmeh.into()),
+        assert_eq!(
+            cantillation_example(PoetryAccent::MehuppakhLegarmeh.into()),
             "אם֤ת ׀"
         );
-        assert_eq!(cantillation_example(PoetryAccent::AzlaLegarmeh.into()), "אם֨ת ׀");
+        assert_eq!(
+            cantillation_example(PoetryAccent::AzlaLegarmeh.into()),
+            "אם֨ת ׀"
+        );
     }
 
     /// Test all poetry conjunctive accents (should return None)
@@ -321,16 +343,16 @@ mod poetry_cantillation_symbol {
         assert_eq!(cantillation_example(PoetryAccent::Galgal.into()), "אם֪ת");
         assert_eq!(cantillation_example(PoetryAccent::Mehuppakh.into()), "אם֤ת");
         assert_eq!(cantillation_example(PoetryAccent::Azla.into()), "אם֨ת");
-        assert_eq!(cantillation_example(
-            PoetryAccent::ShalsheletQetannah.into()),
+        assert_eq!(
+            cantillation_example(PoetryAccent::ShalsheletQetannah.into()),
             "אם֓ת"
         );
-        assert_eq!(cantillation_example(
-            PoetryAccent::TsinnoritMerkha.into()),
+        assert_eq!(
+            cantillation_example(PoetryAccent::TsinnoritMerkha.into()),
             "אם֘ת אם֥ת"
         );
-        assert_eq!(cantillation_example(
-            PoetryAccent::TsinnoritMahpakh.into()),
+        assert_eq!(
+            cantillation_example(PoetryAccent::TsinnoritMahpakh.into()),
             "אם֘ת אם֤ת"
         );
         assert_eq!(cantillation_example(PoetryAccent::Meteg.into()), "אםֽת");
@@ -339,12 +361,18 @@ mod poetry_cantillation_symbol {
 
 #[cfg(test)]
 mod pseudo_cantillation_symbol {
-    use crate::{PseudoAccent, cantillation_example};
+    use crate::{cantillation_example, PseudoAccent};
     #[test]
     fn test_pseudo_accent_cantillation_symbol() {
         // Pseudo accents never have strength hierarchy
-        assert_eq!(cantillation_example(PseudoAccent::SophPasuq.into()), "אםת ׃");
-        assert_eq!(cantillation_example(PseudoAccent::Maqqaph.into()), "אםת־אםת");
+        assert_eq!(
+            cantillation_example(PseudoAccent::SophPasuq.into()),
+            "אםת ׃"
+        );
+        assert_eq!(
+            cantillation_example(PseudoAccent::Maqqaph.into()),
+            "אםת־אםת"
+        );
         assert_eq!(cantillation_example(PseudoAccent::Paseq.into()), "אםת ׀");
     }
 }

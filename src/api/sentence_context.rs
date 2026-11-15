@@ -296,8 +296,8 @@ impl SentenceContext {
     ///
     /// # Errors
     ///
-    /// Returns 
-    /// 
+    /// Returns
+    ///
     /// - [`SentenceContextError::AmbiguousData`] when conflicting prose and poetry accent markers identified"`
     /// - [`SentenceContextError::InsufficientData`] when no distinguishable prose and/or poetry accents have been found"`
     ///
@@ -309,7 +309,7 @@ impl SentenceContext {
     /// // Prose text (Genesis 1:1)
     /// if let Ok(prose) = SentenceContext::new("בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים", Context::default()){
     ///    if let Err(err) = prose.try_derive_context() {
-    ///        assert_eq!(err.to_string(),"Derivation failed: No unique prose or poetry accent markers identified");
+    ///        assert_eq!(err.to_string(),"No specific prose or poetic accents were detected");
     ///    }
     /// }
     ///

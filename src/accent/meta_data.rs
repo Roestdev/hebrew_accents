@@ -6,7 +6,7 @@ use crate::accent::{
 };
 
 /// Contains (non)technical details of a Hebrew Accent
-#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub(crate) struct AccentMetaData {
     /// Official Hebrew name of the accent according to BHS
     pub(crate) hebrew_name: &'static str,

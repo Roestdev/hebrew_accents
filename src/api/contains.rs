@@ -1599,7 +1599,7 @@ mod shared_accents {
         //let result = binding.find_accent(HebrewAccent::Prose(ProseAccent::Silluq));
 
         // ProseAccent, with Soph Pasuq and Meteg, no Pey or Samech
-        let sc = SentenceContext::new(" וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי־אֽוֹר׃", Context::Prosaic);
+        let sc = SentenceContext::new("וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי־אֽוֹר׃", Context::Prosaic);
         println!("{:?}", sc);
         let binding = sc.unwrap();
         println!("{:?}", binding);

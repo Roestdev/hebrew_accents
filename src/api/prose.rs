@@ -13,11 +13,11 @@
 //!
 //! ## Composition
 //!
-//! | Category | Count | Role |
-//! |----------|-------|------|
-//! | Disjunctive | 18 | Mark phrase boundaries and pauses |
-//! | Conjunctive | 10 | Connect words within a phrase |
-//! | **Total** | **28** | |
+//! | Category    | Count  | Role                              |
+//! |-------------|--------|-----------------------------------|
+//! | Disjunctive | 18     | Mark phrase boundaries and pauses |
+//! | Conjunctive | 10     | Connect words within a phrase     |
+//! | **Total**   | **28** |                                   |
 //!
 //! ## Hierarchy
 //!
@@ -45,8 +45,8 @@
 use crate::accent::{resolve_disjunctive_group, resolve_rank};
 use crate::accent::{BHS_PROSE_RANK_MAP, PROSE_ACCENT_TABLE};
 use crate::api::CompoundType;
-use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use crate::{Accent, AlternateNames};
+use crate::{AccentCategory, AccentKind, CantillationMark, Tier};
 use strum_macros::{EnumCount, EnumIter};
 
 /// Represents a single Hebrew prose cantillation mark.
@@ -284,6 +284,16 @@ impl ProseAccent {
     }
 }
 
+// ── Compile-time discriminant guards ────────────────────────────────────
+const _: () = {
+    const LAST_DISCRIMINANT: u8 = ProseAccent::Meteg as u8;
+    // If a variant is inserted, removed, or reordered, this const assertion
+    // will fail at compile time.
+    assert!((LAST_DISCRIMINANT + 1) as usize == ProseAccent::LEN);
+    //catches a shortened/grown table at compile time
+    assert!(PROSE_ACCENT_TABLE.len() == ProseAccent::LEN);
+};
+
 impl std::fmt::Display for ProseAccent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
@@ -295,14 +305,6 @@ impl std::fmt::Display for ProseAccent {
         )
     }
 }
-
-// ── Compile-time discriminant guards ────────────────────────────────────
-// If a variant is inserted, removed, or reordered, this const assertion
-// will fail at compile time.
-const _: () = {
-    const LAST_DISCRIMINANT: u8 = ProseAccent::Meteg as u8;
-    assert!((LAST_DISCRIMINANT + 1) as usize == ProseAccent::LEN);
-};
 
 impl Accent for ProseAccent {
     #[inline]
@@ -333,10 +335,9 @@ impl Accent for ProseAccent {
 
     #[inline]
     fn category(&self) -> Option<AccentCategory> {
-        let table_entry = &PROSE_ACCENT_TABLE[self.as_index()];
-        table_entry
+        PROSE_ACCENT_TABLE[self.as_index()]
             .category
-            .map(|priv_category| priv_category.into())
+            .map(AccentCategory::from)
     }
 
     #[inline]
@@ -393,6 +394,23 @@ impl Accent for ProseAccent {
         table_entry
             .alternate_names
             .map(|priv_names| priv_names.into())
+    }
+}
+
+#[cfg(test)]
+mod test_discriminant {
+    use crate::ProseAccent;
+    use strum::IntoEnumIterator;
+
+    #[test]
+    fn discriminants_match_indices() {
+        for (i, accent) in ProseAccent::iter().enumerate() {
+            assert_eq!(
+                accent.as_index(),
+                i,
+                "{accent:?} discriminant != its position"
+            );
+        }
     }
 }
 
@@ -1201,7 +1219,7 @@ mod test_accent_trait {
         );
         assert_eq!(
             ProseAccent::ShenePastin.notes(),
-            Some(r#"// TODO add note ShenePastin"#)
+            Some(r#""#) // TODO add note ShenePastin
         );
         assert_eq!(
             ProseAccent::Yetiv.notes(),

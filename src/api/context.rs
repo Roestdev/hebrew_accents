@@ -23,7 +23,7 @@
 ///
 /// **Why is `Prosaic` the default?**
 ///
-/// 1. Most of the Tanakh (18 of 24 books) uses prose accentuation
+/// 1. Most of the Tanakh (21 of 24 books) uses prose accentuation
 /// 2. Prose is the baseline/narrative mode; poetry is exceptional
 /// 3. When context detection is inconclusive, prose is the safer assumption
 ///
@@ -115,7 +115,8 @@
 ///
 /// - [`try_derive_context`](crate::SentenceContext::try_derive_context) — Detect context from accent patterns
 /// - [`SentenceContext`](crate::SentenceContext) — Container for text + context
-#[derive(Copy, Clone, Debug, Default, Eq, Hash, PartialEq)]
+///
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Context {
     /// The sentence follows **prosaic** (ordinary prose) conventions.
     ///
@@ -268,8 +269,6 @@ impl Context {
 
     /// Returns the canonical name for this context as a `&'static str`.
     ///
-    /// Useful for display, serialization keys, and logging.
-    ///
     /// Note: Returns capitalized values ("Poetic", "Prosaic").
     ///
     /// # Example
@@ -289,258 +288,128 @@ impl Context {
     }
 }
 
+// TEMPLATE +++++++++++++++++++++++++++++++++++++++++
+
 #[cfg(test)]
-mod tests {
+mod derive_traits_tests {
+    // TEMPLATE
     use super::*;
+    use std::{
+        collections::{HashMap, HashSet}, hash::{DefaultHasher, Hash, Hasher},
+    };
+//#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 
-    // ===== BASIC VARIANT TESTS =====
-
+    // DEFAULT
     #[test]
-    fn test_context_variants_exist() {
-        let poetic = Context::Poetic;
-        let prosaic = Context::Prosaic;
-
-        assert_eq!(poetic, Context::Poetic);
-        assert_eq!(prosaic, Context::Prosaic);
-        assert_ne!(poetic, prosaic);
+    fn default_is_active() {
+        assert_eq!(Context::default(), Context::Prosaic);
     }
 
     #[test]
-    fn test_context_default_is_prosaic() {
-        // Three ways to get default - all should equal Prosaic
-        let ctx1: Context = Default::default();
-        let ctx2 = Context::default();
-        let ctx3 = Context::Prosaic;
-
-        assert_eq!(ctx1, ctx2);
-        assert_eq!(ctx2, ctx3);
-        assert_eq!(ctx1, Context::Prosaic);
+    fn default_trait_object_usage() {
+        // Calls <Context as Default>::default through the trait, not just Context::default()
+        fn takes_default<T: Default>() -> T { T::default() }
+        assert_eq!(takes_default::<Context>(), Context::Prosaic);
     }
 
-    // ===== BOOLEAN HELPER METHOD TESTS =====
-
+    // Debug trait
     #[test]
-    fn test_is_poetic_method() {
-        assert!(Context::Poetic.is_poetic());
-        assert!(!Context::Prosaic.is_poetic());
+    fn debug_output_contains_variant() {
+        let dbg = format!("{:?}", Context::Prosaic);
+        assert!(dbg.contains("Prosaic"), "unexpected Debug output: {dbg}");
+
+        let dbg = format!("{:?}", Context::Poetic);
+        assert!(dbg.contains("Poetic"), "unexpected Debug output: {dbg}");
     }
-
     #[test]
-    fn test_is_prosaic_method() {
-        assert!(Context::Prosaic.is_prosaic());
-        assert!(!Context::Poetic.is_prosaic());
+    fn debug_via_formatter() {
+        // Exercises Debug::fmt through the trait, including with no explicit hit on both arms
+        for (ctx, expected) in [(Context::Prosaic, "Prosaic"), (Context::Poetic, "Poetic")] {
+            assert_eq!(format!("{ctx:?}"), expected);
+        }
     }
-
+    // Clone/Copy trait
     #[test]
-    fn test_as_str_method() {
-        assert_eq!(Context::Poetic.as_str(), "Poetic");
-        assert_eq!(Context::Prosaic.as_str(), "Prosaic");
-    }
-
-    // ===== DERIVED TRAIT TESTS =====
-
-    #[test]
-    fn test_context_debug_trait() {
-        let poetic_debug = format!("{:?}", Context::Poetic);
-        let prosaic_debug = format!("{:?}", Context::Prosaic);
-
-        assert!(poetic_debug.contains("Poetic"));
-        assert!(prosaic_debug.contains("Prosaic"));
-    }
-
-    #[test]
-    fn test_context_display_via_fmt() {
-        // Debug trait provides display capability
-        let _poetic = format!("{:?}", Context::Poetic);
-        let _prosaic = format!("{:?}", Context::Prosaic);
-    }
-
-    #[test]
-    fn test_context_copy_trait() {
+    fn clone_and_copy_semantics() {
         let original = Context::Poetic;
-        let copied = original; // Copy occurs automatically
-
-        assert_eq!(original, Context::Poetic);
-        assert_eq!(copied, Context::Poetic);
-        // Original is still usable after "copy"
-        assert!(original.is_poetic());
-    }
-
-    #[test]
-    fn test_context_clone_trait() {
-        let original = Context::Prosaic;
+        let copied = original; // Copy: moved AND original still valid
         let cloned = original.clone();
-
-        assert_eq!(original, cloned);
-        assert_eq!(cloned, Context::Prosaic);
+        assert_eq!(copied, original);
+        assert_eq!(cloned, original);
     }
 
+    // PartialEq / Eq
     #[test]
-    fn test_context_partial_eq_trait() {
-        let p1 = Context::Poetic;
-        let p2 = Context::Poetic;
-        let p3 = Context::Prosaic;
-
-        assert_eq!(p1, p2);
-        assert_eq!(p1.eq(&p2), true);
-        assert_ne!(p1, p3);
+    fn partial_eq_works() {
+        assert_eq!(Context::Prosaic, Context::Prosaic);
+        assert_ne!(Context::Prosaic, Context::Poetic);
     }
-
+    // Eq
     #[test]
-    fn test_context_eq_trait() {
-        let p1 = Context::Prosaic;
-        let p2 = Context::Prosaic;
-
-        assert!(p1.eq(&p2));
-        assert!(p2.eq(&p1));
+    fn implements_eq() {
+        fn assert_eq_trait<T: Eq>(_: &T) {}
+        assert_eq_trait(&Context::Poetic);
+        assert_eq_trait(&Context::Prosaic);
     }
-
+    //Hash
     #[test]
-    fn test_context_hash_trait() {
-        use std::collections::hash_map::DefaultHasher;
-        use std::collections::HashSet;
-        use std::hash::{Hash, Hasher};
-
-        // Test HashSet usage
+    fn hash_matches_equality() {
+        let hash = |e: Context| {
+            let mut h = DefaultHasher::new();
+            e.hash(&mut h);
+            h.finish()
+        };
+        assert_eq!(hash(Context::Poetic), hash(Context::Poetic));
+        assert_ne!(hash(Context::Poetic), hash(Context::Prosaic));
+    }
+    #[test]
+    fn usable_in_hashset() {
         let mut set = HashSet::new();
-        set.insert(Context::Poetic);
         set.insert(Context::Prosaic);
-
-        assert_eq!(set.len(), 2);
-        assert!(set.contains(&Context::Poetic));
+        set.insert(Context::Prosaic); // duplicate ignored
+        assert_eq!(set.len(), 1);
         assert!(set.contains(&Context::Prosaic));
-
-        // Test Hash implementation
-        let mut hasher1 = DefaultHasher::new();
-        let mut hasher2 = DefaultHasher::new();
-
-        Context::Poetic.hash(&mut hasher1);
-        Context::Poetic.hash(&mut hasher2);
-
-        assert_eq!(hasher1.finish(), hasher2.finish());
     }
-
-    // ===== PATTERN MATCHING TESTS =====
-
-    #[test]
-    fn test_pattern_matching_on_context() {
-        let result_poetic = match Context::Poetic {
-            Context::Poetic => "poetry",
-            Context::Prosaic => "prose",
-        };
-
-        let result_prosaic = match Context::Prosaic {
-            Context::Poetic => "poetry",
-            Context::Prosaic => "prose",
-        };
-
-        assert_eq!(result_poetic, "poetry");
-        assert_eq!(result_prosaic, "prose");
-    }
-
-    #[test]
-    fn test_if_let_pattern_on_context() {
-        if let Context::Poetic = Context::Poetic {
-            assert!(true);
-        }
-
-        if let Context::Prosaic = Context::Prosaic {
-            assert!(true);
-        }
-
-        assert!(!(matches!(Context::Poetic, Context::Prosaic)));
-    }
-
-    // ===== COMBINATION TESTS =====
-
-    #[test]
-    fn test_helpers_and_as_str_consistency() {
-        // Verify all methods agree on variant identity
-        assert_eq!(Context::Poetic.is_poetic(), true);
-        assert_eq!(Context::Poetic.is_prosaic(), false);
-        assert_eq!(Context::Poetic.as_str(), "Poetic");
-
-        assert_eq!(Context::Prosaic.is_poetic(), false);
-        assert_eq!(Context::Prosaic.is_prosaic(), true);
-        assert_eq!(Context::Prosaic.as_str(), "Prosaic");
-    }
-
-    #[test]
-    fn test_all_combinations_in_function_like_scenario() {
-        fn categorize(ctx: Context) -> (&'static str, bool, bool) {
-            (ctx.as_str(), ctx.is_poetic(), ctx.is_prosaic())
-        }
-
-        let (name_poetic, is_p, is_pr) = categorize(Context::Poetic);
-        assert_eq!(name_poetic, "Poetic");
-        assert!(is_p);
-        assert!(!is_pr);
-
-        let (name_prosaic, is_p, is_pr) = categorize(Context::Prosaic);
-        assert_eq!(name_prosaic, "Prosaic");
-        assert!(!is_p);
-        assert!(is_pr);
-    }
-
-    #[test]
-    fn test_context_usage_in_option_wrapping() {
-        // Context should work well with Option
-        let ctx = Some(Context::Poetic);
-
-        assert!(ctx.is_some());
-        assert_eq!(ctx.unwrap(), Context::Poetic);
-
-        let none_ctx: Option<Context> = None;
-        assert!(none_ctx.is_none());
-    }
-
-    #[test]
-    fn test_context_in_result_wrapping() {
-        // Context should work with Result
-        let ok_result: Result<Context, ()> = Ok(Context::Prosaic);
-        let err_result: Result<Context, ()> = Err(());
-
-        assert!(ok_result.is_ok());
-        assert_eq!(ok_result.unwrap(), Context::Prosaic);
-        assert!(err_result.is_err());
-    }
-
-    #[test]
-    fn test_const_context_values() {
-        // Verify context can be used in const contexts
-        const POETIC_CTX: Context = Context::Poetic;
-        const PROSAIC_CTX: Context = Context::Prosaic;
-
-        assert_eq!(POETIC_CTX.is_poetic(), true);
-        assert_eq!(PROSAIC_CTX.is_prosaic(), true);
-    }
-
-    // ===== EDGE CASE TESTS =====
-
-    #[test]
-    fn test_context_not_ordered() {
-        // Verify Ord/PartialOrd are NOT implemented
-        // This compile-time check ensures we don't accidentally sort contexts
-        let _poetic = Context::Poetic;
-        let _prosaic = Context::Prosaic;
-
-        // The following would NOT compile (commented out):
-        // assert!(_poetic < _prosaic);  // Error: Ord not implemented
-
-        // Instead use explicit helpers or pattern matching
-        assert_ne!(_poetic, _prosaic);
-    }
-
-    #[test]
-    fn test_context_immutable_after_creation() {
-        // Context is a simple enum with no mutable state
-        let ctx = Context::Poetic;
-
-        // Cannot modify (would not compile if we tried):
-        // ctx.some_field = ...
-
-        // But we can read properties
-        assert_eq!(ctx.as_str(), "Poetic");
-        assert!(ctx.is_poetic());
+        #[test]
+    fn hashmap_key_roundtrip() {
+        // Exercises Hash + Eq together in a real container
+        let mut map = HashMap::new();
+        map.insert(Context::Poetic, "poetic");
+        map.insert(Context::Poetic, "poetic"); // duplicate ignored
+        map.insert(Context::Prosaic, "prosaic");
+        assert_eq!(map.get(&Context::Poetic), Some(&"poetic"));
+        assert_eq!(map.get(&Context::Prosaic), Some(&"prosaic"));
+        assert_eq!(map.len(), 2);
     }
 }
+
+#[cfg(test)]
+mod tests_impl_context {
+    use super::*;
+    #[test]
+    fn test_is_poetic() {
+        let context = Context::Poetic;
+        assert!(context.is_poetic());
+        assert!(!context.is_prosaic());
+    }
+    #[test]
+    fn test_is_prosaic() {
+        let context = Context::Prosaic;
+        assert!(!context.is_poetic());
+        assert!(context.is_prosaic());
+    }
+    #[test]
+    fn test_as_str() {
+        let prosaic = Context::Prosaic;
+        let poetic = Context::Poetic;
+        assert_eq!(prosaic.as_str(), "Prosaic");
+        assert_eq!(poetic.as_str(), "Poetic");
+    }
+     #[test]
+    fn as_str_exhaustive_and_consistent_with_debug() {
+        for ctx in [Context::Prosaic, Context::Poetic] {
+            assert_eq!(ctx.as_str(), format!("{ctx:?}"));
+        }
+    }
+}
+

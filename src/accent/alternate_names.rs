@@ -1,7 +1,7 @@
 use crate::api::AlternateNames;
 
 /// Optional alternate naming for an accent in the BHS
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub(crate) struct InternalAlternateNames {
     /// Hebrew name of the accent
     pub(crate) hebrew_name: &'static str,

@@ -1232,7 +1232,6 @@ mod tests {
         assert_eq!(level, None);
     }
 
-
     // ── Accent Trait Methods - Alternate Names ───────────────────────
 
     #[test]
@@ -1388,8 +1387,6 @@ mod tests {
 
 #[cfg(test)]
 mod test_accent_trait {
-    // ── Accent trait for HebrewAccent ──────────────────────────────────────
-    //  TODO Hebrew name
     mod hebrew_name {
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
@@ -1627,7 +1624,6 @@ mod test_accent_trait {
     }
 
     mod hebrew_concept {
-        //  TODO Hebrew concept
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
         #[test]
@@ -1873,8 +1869,6 @@ mod test_accent_trait {
     }
 
     mod english_name {
-        // TODO English name
-
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
         #[test]
@@ -2120,7 +2114,6 @@ mod test_accent_trait {
     }
 
     mod sbl_academic_name {
-        // TODO SBL academic name
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
         #[test]
@@ -2366,7 +2359,6 @@ mod test_accent_trait {
     }
 
     mod kind {
-        // TODO kind
         use crate::{Accent, AccentKind, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
         #[test]
@@ -2599,7 +2591,6 @@ mod test_accent_trait {
     }
 
     mod category {
-        // TODO category
         use crate::{
             Accent, AccentCategory, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
         };
@@ -2841,7 +2832,6 @@ mod test_accent_trait {
     }
 
     mod compound_type {
-        // TODO compound type
         use crate::{Accent, CompoundType, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
 
         /// Test all prose disjunctive accents (should return Some(strength))
@@ -3081,7 +3071,6 @@ mod test_accent_trait {
     }
 
     mod primary_cantillation_mark {
-        // TODO primary cantillation mark
         use crate::{
             Accent, CantillationMark, CantillationMarkPlacement, CantillationMarkStressPosition,
             HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
@@ -3548,7 +3537,6 @@ mod test_accent_trait {
     }
 
     mod secondary_cantillation_mark {
-        // TODO secondary cantillation mark
         use crate::{
             Accent, CantillationMark, CantillationMarkPlacement, CantillationMarkStressPosition,
             HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
@@ -3834,7 +3822,6 @@ mod test_accent_trait {
     }
 
     mod notes {
-        // TODO notes
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
         #[test]
         fn test_prose_disjunctive_notes() {
@@ -4141,7 +4128,6 @@ The alternate BHS naming is fabricated"#,
     }
 
     mod rank {
-        // TODO relative strength
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent};
         #[test]
         fn test_prose_disjunctive_strength() {
@@ -4272,7 +4258,6 @@ The alternate BHS naming is fabricated"#,
     }
 
     mod tier {
-        // TODO group level
         use crate::{Accent, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent, Tier};
         #[test]
         fn test_prose_disjunctive_tier() {
@@ -4460,7 +4445,6 @@ The alternate BHS naming is fabricated"#,
     }
 
     mod alternate_names {
-        // TODO alternate names
         use crate::{
             Accent, AlternateNames, HebrewAccent, PoetryAccent, ProseAccent, PseudoAccent,
         };
@@ -4755,3 +4739,99 @@ The alternate BHS naming is fabricated"#,
         }
     }
 }
+
+
+#[cfg(test)]
+mod derive_traits_tests {
+    // #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+    // TEMPLATE
+    use super::*;
+    use std::{
+        collections::{HashMap, HashSet}, hash::{DefaultHasher, Hash, Hasher},
+    };
+
+    // DEFAULT
+    #[test]
+    fn default_is_active() {
+        assert_eq!(HebrewAccent::default(), HebrewAccent::Prose(ProseAccent::Silluq));
+    }
+
+    #[test]
+    fn default_trait_object_usage() {
+        // Calls <HebrewAccent as Default>::default through the trait, not just HebrewAccent::default()
+        fn takes_default<T: Default>() -> T { T::default() }
+        assert_eq!(takes_default::<HebrewAccent>(), HebrewAccent::Prose(ProseAccent::Silluq));
+    }
+
+    // Debug trait
+    #[test]
+    fn debug_output_contains_variant() {
+        let dbg = format!("{:?}", HebrewAccent::Prose(ProseAccent::Segolta));
+        assert!(dbg.contains("Prosaic"), "unexpected Debug output: {dbg}");
+
+        let dbg = format!("{:?}", HebrewAccent::Poetry(PoetryAccent::OlehWeYored));
+        assert!(dbg.contains("Poetic"), "unexpected Debug output: {dbg}");
+    }
+    #[test]
+    fn debug_via_formatter() {
+        // Exercises Debug::fmt through the trait, including with no explicit hit on both arms
+        for (ctx, expected) in [(HebrewAccent::Prose(ProseAccent::Segolta), "Prosaic"), (HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "Poetic")] {
+            assert_eq!(format!("{ctx:?}"), expected);
+        }
+    }
+    // Clone/Copy trait
+    #[test]
+    fn clone_and_copy_semantics() {
+        let original = HebrewAccent::Poetry(PoetryAccent::ReviaMugrash);
+        let copied = original; // Copy: moved AND original still valid
+        let cloned = original.clone();
+        assert_eq!(copied, original);
+        assert_eq!(cloned, original);
+    }
+
+    // PartialEq / Eq
+    #[test]
+    fn partial_eq_works() {
+        assert_eq!(HebrewAccent::Prose(ProseAccent::MerkhaKephulah), HebrewAccent::Prose(ProseAccent::MerkhaKephulah));
+        assert_ne!(HebrewAccent::Prose(ProseAccent::MerkhaKephulah), HebrewAccent::Prose(ProseAccent::Atnach));
+    }
+    // Eq
+    #[test]
+    fn implements_eq() {
+        fn assert_eq_trait<T: Eq>(_: &T) {}
+        assert_eq_trait(&HebrewAccent::Prose(ProseAccent::Segolta));
+        assert_eq_trait(&HebrewAccent::Poetry(PoetryAccent::OlehWeYored));
+    }
+    //Hash
+    #[test]
+    fn hash_matches_equality() {
+        let hash = |e: HebrewAccent| {
+            let mut h = DefaultHasher::new();
+            e.hash(&mut h);
+            h.finish()
+        };
+        assert_eq!(hash(HebrewAccent::Prose(ProseAccent::Segolta)), hash(HebrewAccent::Prose(ProseAccent::Segolta)));
+        assert_ne!(hash(HebrewAccent::Prose(ProseAccent::MerkhaKephulah)), hash(HebrewAccent::Prose(ProseAccent::Atnach)));
+    }
+    #[test]
+    fn usable_in_hashset() {
+        let mut set = HashSet::new();
+        set.insert(HebrewAccent::Prose(ProseAccent::Segolta));
+        set.insert(HebrewAccent::Prose(ProseAccent::Segolta)); // duplicate ignored
+        assert_eq!(set.len(), 1);
+        assert!(set.contains(&HebrewAccent::Prose(ProseAccent::Segolta)));
+    }
+        #[test]
+    fn hashmap_key_roundtrip() {
+        // Exercises Hash + Eq together in a real container
+        let mut map = HashMap::new();
+        map.insert(HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "poetic");
+        map.insert(HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "poetic"); // duplicate ignored
+        map.insert(HebrewAccent::Prose(ProseAccent::Segolta), "prosaic");
+        assert_eq!(map.get(&HebrewAccent::Poetry(PoetryAccent::OlehWeYored)), Some(&"poetic"));
+        assert_eq!(map.get(&HebrewAccent::Prose(ProseAccent::Segolta)), Some(&"prosaic"));
+        assert_eq!(map.len(), 2);
+    }
+}
+
+

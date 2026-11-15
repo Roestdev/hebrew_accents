@@ -70,7 +70,7 @@ use thiserror::Error;
 /// - **Punctuation**:
 ///   - Vertical Bar *(U+007C)* - Alternative Paseq representation
 ///
-#[derive(Error, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Error, Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SentenceContextError {
     /// Character outside the allowed set was encountered.
     ///
@@ -86,6 +86,8 @@ pub enum SentenceContextError {
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
     /// let result = SentenceContext::new("שלוםabc", Context::Prosaic);
+    ///
+    /// // Note: idx is a byte0index, not a character index
     /// assert!(matches!(result, Err(SentenceContextError::InvalidCharacter(c, idx))
     ///                  if c == 'a' && idx == 8));
     /// ```
@@ -96,7 +98,7 @@ pub enum SentenceContextError {
     ///
     /// # Example
     ///
-    /// ``` rust
+    /// ```rust
     /// use hebrew_accents::{SentenceContext, Context, SentenceContextError};
     ///
     /// let result = SentenceContext::new("", Context::Prosaic);
@@ -127,7 +129,7 @@ pub enum SentenceContextError {
 
     /// Input contained newline characters.
     ///
-    /// Sentences must be a single-line only. Multiple lines require separate [`crate::SentenceContext::new()`] instances.
+    /// Sentences must be a single-line only. Multiple lines require separate [new][crate::SentenceContext::new] instances.
     /// Hebrew accents are used within the context of one single verse.
     ///
     /// # Example
@@ -205,9 +207,11 @@ pub enum SentenceContextError {
     ///
     /// let result = SentenceContext::new("סאלה֔ים אמ֘ר אל֥י דוּ־י֑חד", Context::Prosaic);
     /// let stc = result.unwrap();
+    ///
+    /// // try_derive_context() on an instance  of a SentenceContext, only looks at the sentence part
     /// assert_eq!(stc.try_derive_context(), Err(SentenceContextError::AmbiguousData));
     /// ```
-    #[error("No specific prose or poetic accents were detected")]
+    #[error("Conflicting prose and poetic accents detected; context is ambiguous")]
     AmbiguousData,
 
     /// Insufficient Cantillation Symbol(s) found for context determination.
@@ -221,7 +225,7 @@ pub enum SentenceContextError {
     /// let stc = result.unwrap();
     /// assert_eq!(stc.try_derive_context(), Err(SentenceContextError::InsufficientData));
     /// ```
-    #[error("No specific prose or poetic accents were detected")]
+    #[error("No distinguishing prose or poetic accents detected; context is undetermined")]
     InsufficientData,
 }
 
@@ -240,17 +244,17 @@ pub enum TierError {
     /// use std::convert::TryFrom;
     ///
     /// let result = Tier::try_from(5u8);
-    /// assert!(matches!(result, Err(TierError::InvalidTier(v)) if v == 5));
+    /// assert!(matches!(result, Err(TierError::InvalidTier(number)) if number == 5));
     /// ```
     ///
     /// # Valid Range
     ///
-    /// | Value | Tier | Note |
-    /// |-------|------|------|
-    /// | 1 | Tier1 |
-    /// | 2 | Tier2 |
-    /// | 3 | Tier3 |
-    /// | 4 | Tier4 | Does not exist in Poetry context
+    /// | Value | Tier  | Note |
+    /// |-------|------ |------|
+    /// | 1     | Tier1 |
+    /// | 2     | Tier2 |
+    /// | 3     | Tier3 |
+    /// | 4     | Tier4 | Does not exist in Poetry context
     #[error("Invalid Tier value: {} (valid range: 1-4)", .0)]
     InvalidTier(u8),
 }
@@ -297,7 +301,7 @@ mod sentence_context_error_trait_tests {
 }
 
 #[cfg(test)]
-mod sentence_tests {
+mod sentence_error_tests {
     use super::*;
     use std::collections::hash_map::DefaultHasher;
     use std::hash::{Hash, Hasher};
@@ -560,5 +564,107 @@ mod sentence_tests {
             let err = TierError::InvalidTier(val);
             assert!(err.to_string().contains(&val.to_string()));
         }
+    }
+}
+
+// TEMPLATE +++++++++++++++++++++++++++++++++++++++++
+
+#[cfg(test)]
+mod tier_error_trait_tests {
+    use super::*;
+    use crate::Tier;
+    use std::{
+        collections::HashSet,
+        hash::{DefaultHasher, Hash, Hasher},
+    };
+
+    #[test]
+    fn error_displays_correct_messages() {
+        assert_eq!(
+            TierError::InvalidTier(8).to_string(),
+            "Invalid Tier value: 8 (valid range: 1-4)"
+        );
+    }
+
+    //Error trait
+    #[test]
+    fn implements_std_error() {
+        fn assert_error<E: std::error::Error>(_: &E) {}
+        assert_error(&TierError::InvalidTier(6));
+    }
+
+    // Debug trait
+    #[test]
+    fn debug_output_contains_variant() {
+        let dbg = format!("{:?}", TierError::InvalidTier(8));
+        assert!(
+            dbg.contains("InvalidTier"),
+            "unexpected Debug output: {dbg}"
+        );
+    }
+    // Clone/Copy trait
+    #[test]
+    fn clone_and_copy_semantics() {
+        let original = TierError::InvalidTier(3);
+        let copied = original; // Copy: moved AND original still valid
+        let cloned = original.clone();
+        assert_eq!(copied, original);
+        assert_eq!(cloned, original);
+    }
+    #[test]
+    fn copied_value_is_fully_usable() {
+        fn describe(e: TierError) -> String {
+            e.to_string()
+        }
+        let err = TierError::InvalidTier(6);
+        let copy = err; // implicit copy
+        assert_eq!(describe(copy), describe(err));
+    }
+
+    // PartialEq/Eq trait
+    #[test]
+    fn partial_eq_works() {
+        assert_eq!(TierError::InvalidTier(0), TierError::InvalidTier(0));
+        assert_ne!(TierError::InvalidTier(5), TierError::InvalidTier(255));
+        assert_ne!(TierError::InvalidTier(0), TierError::InvalidTier(255));
+    }
+    // Eq
+    #[test]
+    fn implements_eq() {
+        fn assert_eq_trait<T: Eq>(_: &T) {}
+        assert_eq_trait(&TierError::InvalidTier(1));
+    }
+    #[test]
+    fn equality_against_real_conversion_failure() {
+        let err = Tier::try_from(42u8).unwrap_err();
+        assert_eq!(err, TierError::InvalidTier(42));
+        assert_ne!(err, TierError::InvalidTier(43));
+    }
+
+    // Hash trait
+    #[test]
+    fn hash_matches_equality() {
+        let hash = |e: TierError| {
+            let mut h = DefaultHasher::new();
+            e.hash(&mut h);
+            h.finish()
+        };
+        assert_eq!(
+            hash(TierError::InvalidTier(1)),
+            hash(TierError::InvalidTier(1))
+        );
+        assert_ne!(
+            hash(TierError::InvalidTier(1)),
+            hash(TierError::InvalidTier(2))
+        );
+    }
+
+    #[test]
+    fn usable_in_hashset() {
+        let mut set = HashSet::new();
+        set.insert(TierError::InvalidTier(1));
+        set.insert(TierError::InvalidTier(1)); // duplicate ignored
+        assert_eq!(set.len(), 1);
+        assert!(set.contains(&TierError::InvalidTier(1)));
     }
 }
