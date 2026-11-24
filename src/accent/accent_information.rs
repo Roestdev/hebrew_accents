@@ -39,11 +39,9 @@ pub(crate) const SILLUQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-            It is possible to have both a Silluq and Meteg in one word,
-            where the Meteg comes before the Silluq.
-            The Silluq appears once per verse.
-"#,
+        r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of 
+the verse. It is possible to have both a Silluq and Meteg in one word,
+where the Meteg comes before the Silluq. The Silluq appears once per verse."#,
     ),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
@@ -63,7 +61,7 @@ pub(crate) const ATNACH_INFO: AccentMetaData = AccentMetaData {
     compound_type: None,
     notes: Some(
         r#"The major disjunctive accent dividing the verse in two halves.
-    It appears only once per verse"#,
+It appears only once per verse"#,
     ),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
@@ -218,7 +216,7 @@ pub(crate) const SHENE_PASTIN_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: Some(InternalCompoundType::Standard),
-    notes: Some(r#""#),
+    notes: Some(r#"// TODO"#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_SHENE_PASHTIN,
@@ -440,7 +438,7 @@ pub(crate) const MERKHA_KEPHULAH_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some("Merkha duplex"),
+    notes: Some(r#"Merkha duplex"#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Conjunctive),
     traditions: TRADITION_NAMES_MERKHA_KEFULA,
@@ -542,10 +540,10 @@ pub(crate) const MEAYLA_INFO: AccentMetaData = AccentMetaData {
     compound_type: None,
     notes: Some(
         r#"Name given to a Tiphcha, when in the same word as Atnach or Silluq.
-    This accent is historically the same glyph as Tipcha (U+0596) but functions as a secondary conjunctive 
-    in specific syntactic contexts.
-    Different traditions use different names: 
-        Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
+This accent is historically the same glyph as Tipcha (U+0596) but functions as
+a secondary conjunctive in specific syntactic contexts.
+Different traditions use different names: 
+Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
     ),
     kind: Some(InternalAccentKind::Secondary),
     category: Some(InternalAccentCategory::Conjunctive),
@@ -569,14 +567,17 @@ pub(crate) const METEG_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: None,
     notes: Some(
-        r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
-    an additional emphasis placed on a syllable beyond the primary word stress. 
-    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
-    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
-    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
-    It is possible to have both a Meteg and Silluq in one word,
-    where the Meteg comes before the Silluq.!"#,
+        r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to
+a secondary vocal stress, an additional emphasis placed on a syllable 
+beyond the primary word stress. 
+It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD)
+placed to the left of a vowel point.
+The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+that might otherwise be swallowed or de-emphasized. 
+It "makes the syllable cry out," so to speak.
+It is possible to have both a Meteg and Silluq in one word,
+where the Meteg comes before the Silluq!"#,
     ),
     kind: Some(InternalAccentKind::Secondary),
     category: Some(InternalAccentCategory::Conjunctive),
@@ -609,9 +610,9 @@ pub(crate) const OLEH_WEYORED_INFO: AccentMetaData = AccentMetaData {
     }),
     compound_type: Some(InternalCompoundType::CanSpanTwoWords),
     notes: Some(
-        r#"The primary_mark looks like a Mehuppakh, 
-but is located above the consonant in stead of below.
-It is then called OLE. When preceded by no place to attach, Yored remains alone.
+        r#"The primary_mark looks like a Mehuppakh, but is located above the 
+consonant in stead of below. It is then called OLE. 
+When preceded by no place to attach, Yored remains alone.
 The alternate BHS naming is fabricated"#,
     ),
     kind: Some(InternalAccentKind::Primary),
@@ -632,7 +633,7 @@ pub(crate) const REVIA_GADOL_INFO: AccentMetaData = AccentMetaData {
     },
     alternate_names: None,
     compound_type: None,
-    notes: Some(r#"Poetry Level 2 disjunctive; equivalent to Revia in prose."#),
+    notes: Some(r#"Equivalent to Revia in prose."#),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
     traditions: TRADITION_NAMES_REVIA,
@@ -748,13 +749,15 @@ pub(crate) const MEHUPPAKH_LEGARMEH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: Some(InternalCompoundType::ContainsPaseq),
     notes: Some(
-        r#"While the search results suggest that Mahpach Legarmeh as a complete compound term 
-        is most distinctly associated with the Ashkenazi tradition, 
-        all four traditions recognize the same grammatical function (a Mahpakh functioning disjunctively with a Paseq). 
-        The other traditions may use the base name Mahpakh, and determine the Legarmeh function from context, 
-        rather than using the full compound name systematically. 
-        This reflects a broader pattern where Ashkenazi terminology tends to be more explicit with compound names 
-        (e.g., Munach Legarmeh), while Sephardi and other traditions may use simpler designations."#,
+        r#"While the search results suggest that Mahpach Legarmeh as a complete compound 
+term is most distinctly associated with the Ashkenazi tradition, all four 
+traditions recognize the same grammatical function (a Mahpakh functioning 
+disjunctively with a Paseq). 
+The other traditions may use the base name Mahpakh, and determine the Legarmeh
+function from context, rather than using the full compound name systematically. 
+This reflects a broader pattern where Ashkenazi terminology tends to be more
+explicit with compound names (e.g., Munach Legarmeh), while Sephardi and 
+other traditions may use simpler designations."#,
     ),
     kind: Some(InternalAccentKind::Primary),
     category: Some(InternalAccentCategory::Disjunctive),
@@ -933,11 +936,11 @@ pub(crate) const SOPH_PASUQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "Function: Primarily denotes the end of a verse or sentence, analogous to a period, 
-        but not always.
-        However, its application is not absolute; certain scholarly traditions equate its 
-        disjunctive weight to that of Silluq, while other sholars treat them as as equal as the Silluq (a disjuntive).
-        It doesn't carry any theological or interpretive meaning beyond marking a boundary"
+        r#"Function: Primarily denotes the end of a verse or sentence, analogous to a
+period, but not always. However, its application is not absolute; certain
+scholarly traditions equate its disjunctive weight to that of Silluq, while
+other sholars treat them as as equal as the Silluq (a disjuntive). It doesn't 
+carry any theological or interpretive meaning beyond marking a boundary"#,
     ),
     kind: None,
     category: None,
@@ -956,11 +959,11 @@ pub(crate) const MAQQAPH_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "Function: Serves as a hyphenation or binding agent that connects words 
-        into a single phonetic or semantic unit, functioning equivalently to conjunctive accents.
-        It does have the function of binding words together, just like the conjunctives.
-        Can link two (or more) short words together after which they function as 
-        a single compound word bearing a single primary Hebrew accent.",
+        r#"Function: Serves as a hyphenation or binding agent that connects words into a
+single phonetic or semantic unit, functioning equivalently to conjunctive accents.
+It does have the function of binding words together, just like the conjunctives.
+Can link two (or more) short words together after which they function as 
+a single compound word bearing a single primary Hebrew accent."#,
     ),
     kind: None,
     category: None,
@@ -979,21 +982,20 @@ pub(crate) const PASEQ_INFO: AccentMetaData = AccentMetaData {
     alternate_names: None,
     compound_type: None,
     notes: Some(
-        "Function: Acts as a separator or divider. 
-        It may appear in conjunction with a Hebrew accent to modify its function but does 
-        not operate as an independent accent mark. 
-        It can be part of a Hebrew Accent, but not as an individual accent.
-        It's indicating that someone or something is stopping temporarily or creating a pause.
-         the paseq appears in the Tanakh as a standalone mark that is not part of a compound accent.
-        GEMMA
-        In Masoretic punctuation, the paseq serves as a \"minor pause\" or a separator, 
-        similar to a comma or a semicolon in English. 
-        While it often appears in conjunction with accents (such as the munah legarmeh, 
-        where it signals a specific melodic pause), it also occurs independently to 
-        separate phrases or words within a verse to clarify the reading and meaning.
-        In these instances, it acts as a structural divider rather than a musical modifier 
-        for a specific accent, indicating that the reader should make a brief pause 
-        before proceeding to the next word.",
+        r#"Function: Acts as a separator or divider. It may appear in conjunction with a 
+Hebrew accent to modify its function but does not operate as an independent
+accent mark. It can be part of a Hebrew Accent, but not as an individual
+accent. It's indicating that someone or something is stopping temporarily or 
+creating a pause.
+The paseq appears in the Tanakh as a standalone mark that is not part of a compound accent.
+In Masoretic punctuation, the paseq serves as a \"minor pause\" or a separator, 
+similar to a comma or a semicolon in English. While it often appears in 
+conjunction with accents (such as the munah legarmeh, where it signals a
+specific melodic pause), it also occurs independently to separate phrases or
+words within a verse to clarify the reading and meaning.
+In these instances, it acts as a structural divider rather than a musical
+modifier for a specific accent, indicating that the reader should make a 
+brief pause before proceeding to the next word."#,
     ),
     kind: None,
     category: None,

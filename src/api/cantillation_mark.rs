@@ -177,8 +177,6 @@ impl From<StressPosition> for Option<CantillationMarkStressPosition> {
 mod tests {
     use super::*;
 
- 
-
     // ===== CANTILLATION MARK PLACEMENT TESTS =====
 
     #[test]
@@ -459,8 +457,6 @@ mod additional_function_coverage_tests {
     // DISPLAY TRAIT - INDIVIDUAL VARIANT COVERAGE
     // ============================================================
 
-
-
     #[test]
     fn test_cantillation_mark_placement_display_all_variants_explicit() {
         assert_eq!(
@@ -569,11 +565,10 @@ mod additional_function_coverage_tests {
         assert_eq!(maqqaph.placement, CantillationMarkPlacement::Maqqaph);
     }
 
-     // ============================================================
+    // ============================================================
     // GROUP LEVEL - CONTEXT-AWARE METHODS
     // ============================================================
 
-    
     #[test]
     fn test_cantillation_mark_placement_hash_consistency() {
         use std::collections::hash_map::DefaultHasher;

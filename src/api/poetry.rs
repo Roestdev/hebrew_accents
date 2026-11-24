@@ -47,7 +47,7 @@ use strum_macros::{EnumCount, EnumIter};
 /// | Index Range | Category | Count |
 /// |-------------|----------|-------|
 /// | 0–11 | Disjunctive | 12 |
-/// | 12–22 | Conjunctive | 11 |
+/// | 12–23 | Conjunctive | 12 |
 ///
 /// # Representation
 ///
@@ -1114,19 +1114,17 @@ mod test_impl_accent_trait {
         assert_eq!(
             PoetryAccent::Silluq.notes(),
             Some(
-                r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-            It is possible to have both a Silluq and Meteg in one word,
-            where the Meteg comes before the Silluq.
-            The Silluq appears once per verse.
-"#
+                r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of 
+the verse. It is possible to have both a Silluq and Meteg in one word,
+where the Meteg comes before the Silluq. The Silluq appears once per verse."#,
             )
         );
         assert_eq!(
             PoetryAccent::OlehWeYored.notes(),
             Some(
-                r#"The primary_mark looks like a Mehuppakh, 
-but is located above the consonant in stead of below.
-It is then called OLE. When preceded by no place to attach, Yored remains alone.
+                r#"The primary_mark looks like a Mehuppakh, but is located above the 
+consonant in stead of below. It is then called OLE. 
+When preceded by no place to attach, Yored remains alone.
 The alternate BHS naming is fabricated"#,
             )
         );
@@ -1134,12 +1132,12 @@ The alternate BHS naming is fabricated"#,
             PoetryAccent::Atnach.notes(),
             Some(
                 r#"The major disjunctive accent dividing the verse in two halves.
-    It appears only once per verse"#
+It appears only once per verse"#
             )
         );
         assert_eq!(
             PoetryAccent::ReviaGadol.notes(),
-            Some(r#"Poetry Level 2 disjunctive; equivalent to Revia in prose."#)
+            Some(r#"Equivalent to Revia in prose."#)
         );
         assert_eq!(
             PoetryAccent::ReviaMugrash.notes(),
@@ -1170,13 +1168,15 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(
             PoetryAccent::MehuppakhLegarmeh.notes(),
             Some(
-                r#"While the search results suggest that Mahpach Legarmeh as a complete compound term 
-        is most distinctly associated with the Ashkenazi tradition, 
-        all four traditions recognize the same grammatical function (a Mahpakh functioning disjunctively with a Paseq). 
-        The other traditions may use the base name Mahpakh, and determine the Legarmeh function from context, 
-        rather than using the full compound name systematically. 
-        This reflects a broader pattern where Ashkenazi terminology tends to be more explicit with compound names 
-        (e.g., Munach Legarmeh), while Sephardi and other traditions may use simpler designations."#,
+                r#"While the search results suggest that Mahpach Legarmeh as a complete compound 
+term is most distinctly associated with the Ashkenazi tradition, all four 
+traditions recognize the same grammatical function (a Mahpakh functioning 
+disjunctively with a Paseq). 
+The other traditions may use the base name Mahpakh, and determine the Legarmeh
+function from context, rather than using the full compound name systematically. 
+This reflects a broader pattern where Ashkenazi terminology tends to be more
+explicit with compound names (e.g., Munach Legarmeh), while Sephardi and 
+other traditions may use simpler designations."#,
             )
         );
         assert_eq!(
@@ -1235,14 +1235,17 @@ The alternate BHS naming is fabricated"#,
         assert_eq!(
             PoetryAccent::Meteg.notes(),
             Some(
-                r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
-    an additional emphasis placed on a syllable beyond the primary word stress. 
-    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
-    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
-    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
-    It is possible to have both a Meteg and Silluq in one word,
-    where the Meteg comes before the Silluq.!"#,
+                r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to
+a secondary vocal stress, an additional emphasis placed on a syllable 
+beyond the primary word stress. 
+It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD)
+placed to the left of a vowel point.
+The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+that might otherwise be swallowed or de-emphasized. 
+It "makes the syllable cry out," so to speak.
+It is possible to have both a Meteg and Silluq in one word,
+where the Meteg comes before the Silluq!"#,
             )
         );
     }
@@ -1606,7 +1609,7 @@ mod derive_trait_tests {
         }
 
         assert_eq!(disjunctive_count, 12);
-        assert_eq!(conjunctive_count, 11);
+        assert_eq!(conjunctive_count, 12);
     }
 
     // --- Compound Type Method ---
@@ -1917,7 +1920,7 @@ mod derive_trait_tests {
         assert_eq!(all.first(), Some(&PoetryAccent::Silluq));
         assert_eq!(all.last(), Some(&PoetryAccent::Meteg));
         assert_eq!(all[0], PoetryAccent::Silluq);
-        assert_eq!(all[22], PoetryAccent::Meteg);
+        assert_eq!(all[23], PoetryAccent::Meteg);
     }
 
     #[test]
@@ -1965,7 +1968,7 @@ mod derive_trait_tests {
             count += 1;
         }
 
-        assert_eq!(count, 23);
+        assert_eq!(count, 24);
     }
     // Additional tests for PoetryAccent - Covering missing function paths
 
@@ -2298,7 +2301,7 @@ mod derive_trait_tests {
         let last = PoetryAccent::Meteg;
 
         assert_eq!(first.as_index(), 0);
-        assert_eq!(last.as_index(), 22);
+        assert_eq!(last.as_index(), 23);
 
         // Both should have valid table lookups
         let _first_name = first.hebrew_name();
@@ -2308,8 +2311,8 @@ mod derive_trait_tests {
     #[test]
     fn test_middle_variant_access() {
         // Test middle variant to ensure array bounds are correct
-        let middle_idx = PoetryAccent::LEN / 2; // 11
-        let middle = PoetryAccent::AzlaLegarmeh;
+        let middle_idx = PoetryAccent::LEN / 2; // 12
+        let middle = PoetryAccent::Munach;
 
         assert_eq!(middle.as_index(), middle_idx);
         let _ = middle.primary_cantillation_mark();
@@ -2336,7 +2339,7 @@ mod derive_trait_tests {
             .collect();
 
         assert_eq!(disjunctives.len(), 12);
-        assert_eq!(conjunctives.len(), 11);
+        assert_eq!(conjunctives.len(), 12);
     }
 
     #[test]
@@ -2420,7 +2423,7 @@ mod derive_trait_tests {
             let meteg_byte = std::mem::transmute::<PoetryAccent, u8>(PoetryAccent::Meteg);
 
             assert_eq!(silluq_byte, 0);
-            assert_eq!(meteg_byte, 22);
+            assert_eq!(meteg_byte, 23);
         }
     }
 

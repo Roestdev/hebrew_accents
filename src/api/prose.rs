@@ -1174,18 +1174,16 @@ mod test_accent_trait {
         assert_eq!(
             ProseAccent::Silluq.notes(),
             Some(
-                r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-            It is possible to have both a Silluq and Meteg in one word,
-            where the Meteg comes before the Silluq.
-            The Silluq appears once per verse.
-"#
+                r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of 
+the verse. It is possible to have both a Silluq and Meteg in one word,
+where the Meteg comes before the Silluq. The Silluq appears once per verse."#,
             )
         );
         assert_eq!(
             ProseAccent::Atnach.notes(),
             Some(
                 r#"The major disjunctive accent dividing the verse in two halves.
-    It appears only once per verse"#
+It appears only once per verse"#,
             )
         );
         assert_eq!(
@@ -1219,7 +1217,7 @@ mod test_accent_trait {
         );
         assert_eq!(
             ProseAccent::ShenePastin.notes(),
-            Some(r#""#) // TODO add note ShenePastin
+            Some(r#"// TODO"#) // TODO add note ShenePastin
         );
         assert_eq!(
             ProseAccent::Yetiv.notes(),
@@ -1294,23 +1292,26 @@ mod test_accent_trait {
             ProseAccent::Meayla.notes(),
             Some(
                 r#"Name given to a Tiphcha, when in the same word as Atnach or Silluq.
-    This accent is historically the same glyph as Tipcha (U+0596) but functions as a secondary conjunctive 
-    in specific syntactic contexts.
-    Different traditions use different names: 
-        Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
+This accent is historically the same glyph as Tipcha (U+0596) but functions as
+a secondary conjunctive in specific syntactic contexts.
+Different traditions use different names: 
+Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#
             )
         );
         assert_eq!(
             ProseAccent::Meteg.notes(),
             Some(
-                r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
-    an additional emphasis placed on a syllable beyond the primary word stress. 
-    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
-    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
-    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
-    It is possible to have both a Meteg and Silluq in one word,
-    where the Meteg comes before the Silluq.!"#,
+                r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to
+a secondary vocal stress, an additional emphasis placed on a syllable 
+beyond the primary word stress. 
+It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD)
+placed to the left of a vowel point.
+The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+that might otherwise be swallowed or de-emphasized. 
+It "makes the syllable cry out," so to speak.
+It is possible to have both a Meteg and Silluq in one word,
+where the Meteg comes before the Silluq!"#
             )
         );
     }

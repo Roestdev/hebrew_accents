@@ -295,9 +295,10 @@ mod derive_traits_tests {
     // TEMPLATE
     use super::*;
     use std::{
-        collections::{HashMap, HashSet}, hash::{DefaultHasher, Hash, Hasher},
+        collections::{HashMap, HashSet},
+        hash::{DefaultHasher, Hash, Hasher},
     };
-//#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    //#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 
     // DEFAULT
     #[test]
@@ -308,7 +309,9 @@ mod derive_traits_tests {
     #[test]
     fn default_trait_object_usage() {
         // Calls <Context as Default>::default through the trait, not just Context::default()
-        fn takes_default<T: Default>() -> T { T::default() }
+        fn takes_default<T: Default>() -> T {
+            T::default()
+        }
         assert_eq!(takes_default::<Context>(), Context::Prosaic);
     }
 
@@ -370,7 +373,7 @@ mod derive_traits_tests {
         assert_eq!(set.len(), 1);
         assert!(set.contains(&Context::Prosaic));
     }
-        #[test]
+    #[test]
     fn hashmap_key_roundtrip() {
         // Exercises Hash + Eq together in a real container
         let mut map = HashMap::new();
@@ -405,11 +408,10 @@ mod tests_impl_context {
         assert_eq!(prosaic.as_str(), "Prosaic");
         assert_eq!(poetic.as_str(), "Poetic");
     }
-     #[test]
+    #[test]
     fn as_str_exhaustive_and_consistent_with_debug() {
         for ctx in [Context::Prosaic, Context::Poetic] {
             assert_eq!(ctx.as_str(), format!("{ctx:?}"));
         }
     }
 }
-

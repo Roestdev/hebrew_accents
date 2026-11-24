@@ -2333,7 +2333,7 @@ mod test_accent_trait {
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).sbl_academic_name(),
-                ""
+                "ṣinnôrīt mahpak"
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Meteg).sbl_academic_name(),
@@ -3082,7 +3082,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Silluq).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5bd}',
+                    symbol: '\u{05bd}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3090,7 +3090,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Atnach).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{591}',
+                    symbol: '\u{0591}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3098,7 +3098,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Segolta).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{592}',
+                    symbol: '\u{0592}',
                     placement: CantillationMarkPlacement::AboveLeft,
                     stress_position: Some(CantillationMarkStressPosition::Postpositive)
                 }
@@ -3106,7 +3106,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Shalshelet).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{593}',
+                    symbol: '\u{0593}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3114,7 +3114,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephQaton).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{594}',
+                    symbol: '\u{0594}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3122,7 +3122,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::ZaqephGadol).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{595}',
+                    symbol: '\u{0595}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3130,7 +3130,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Revia).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{597}',
+                    symbol: '\u{0597}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3138,7 +3138,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Tiphcha).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{596}',
+                    symbol: '\u{0596}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3146,15 +3146,15 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Zarqa).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5ae}',
-                    placement: CantillationMarkPlacement::AboveCenter,
+                    symbol: '\u{05ae}',
+                    placement: CantillationMarkPlacement::AboveLeft,
                     stress_position: Some(CantillationMarkStressPosition::Postpositive)
                 }
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Pashta).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{599}',
+                    symbol: '\u{0599}',
                     placement: CantillationMarkPlacement::AboveLeft,
                     stress_position: Some(CantillationMarkStressPosition::Postpositive)
                 }
@@ -3162,7 +3162,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Yetiv).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59a}',
+                    symbol: '\u{059a}',
                     placement: CantillationMarkPlacement::BelowRight,
                     stress_position: Some(CantillationMarkStressPosition::Prepositive)
                 }
@@ -3170,7 +3170,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Tevir).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59b}',
+                    symbol: '\u{059b}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3178,7 +3178,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Geresh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59c}',
+                    symbol: '\u{059c}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3186,7 +3186,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Gershayim).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59e}',
+                    symbol: '\u{059e}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3194,7 +3194,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Pazer).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a1}',
+                    symbol: '\u{05a1}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3202,7 +3202,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::PazerGadol).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59f}',
+                    symbol: '\u{059f}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3210,7 +3210,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::TelishaGedolah).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a0}',
+                    symbol: '\u{05a0}',
                     placement: CantillationMarkPlacement::AboveRight,
                     stress_position: Some(CantillationMarkStressPosition::Prepositive)
                 }
@@ -3218,7 +3218,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Legarmeh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a3}',
+                    symbol: '\u{05a3}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3232,7 +3232,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Munach).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a3}',
+                    symbol: '\u{05a3}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3240,7 +3240,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Mahpakh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a4}',
+                    symbol: '\u{05a4}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3248,7 +3248,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Merkha).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a5}',
+                    symbol: '\u{05a5}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3256,7 +3256,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::MerkhaKephulah).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a6}',
+                    symbol: '\u{05a6}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3264,7 +3264,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Darga).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a7}',
+                    symbol: '\u{05a7}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3272,7 +3272,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Azla).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a8}',
+                    symbol: '\u{05a8}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3280,7 +3280,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::TelishaQetannah).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a9}',
+                    symbol: '\u{05a9}',
                     placement: CantillationMarkPlacement::AboveLeft,
                     stress_position: Some(CantillationMarkStressPosition::Postpositive)
                 }
@@ -3288,7 +3288,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Galgal).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5aa}',
+                    symbol: '\u{05aa}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3296,7 +3296,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Meayla).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{596}',
+                    symbol: '\u{0596}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3304,7 +3304,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Meteg).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5bd}',
+                    symbol: '\u{05bd}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3317,7 +3317,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Silluq).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5bd}',
+                    symbol: '\u{05bd}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3325,7 +3325,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5ab}',
+                    symbol: '\u{05ab}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3333,7 +3333,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Atnach).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{591}',
+                    symbol: '\u{0591}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3341,7 +3341,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaGadol).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{597}',
+                    symbol: '\u{0597}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3349,15 +3349,15 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{59c}',
-                    placement: CantillationMarkPlacement::AboveCenter,
-                    stress_position: Some(CantillationMarkStressPosition::Impositive)
+                    symbol: '\u{059D}',
+                    placement: CantillationMarkPlacement::AboveRight,
+                    stress_position: Some(CantillationMarkStressPosition::Prepositive)
                 }
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ShalsheletGadol).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{593}',
+                    symbol: '\u{0593}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3365,15 +3365,15 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Tsinnor).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5ae}',
-                    placement: CantillationMarkPlacement::AboveCenter,
+                    symbol: '\u{05ae}',
+                    placement: CantillationMarkPlacement::AboveLeft,
                     stress_position: Some(CantillationMarkStressPosition::Postpositive)
                 }
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaQaton).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{597}',
+                    symbol: '\u{0597}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3381,7 +3381,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Dechi).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5ad}',
+                    symbol: '\u{05ad}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3389,7 +3389,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Pazer).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a1}',
+                    symbol: '\u{05a1}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3397,7 +3397,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a4}',
+                    symbol: '\u{05a4}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3405,7 +3405,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::AzlaLegarmeh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a8}',
+                    symbol: '\u{05a8}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3419,7 +3419,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Munach).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a3}',
+                    symbol: '\u{05a3}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3427,7 +3427,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Merkha).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a5}',
+                    symbol: '\u{05a5}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3435,7 +3435,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Illuy).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5ac}',
+                    symbol: '\u{05ac}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3443,7 +3443,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Tarcha).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{596}',
+                    symbol: '\u{0596}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3451,7 +3451,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Galgal).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5aa}',
+                    symbol: '\u{05aa}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3459,7 +3459,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Mehuppakh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a4}',
+                    symbol: '\u{05a4}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3467,7 +3467,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Azla).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5a8}',
+                    symbol: '\u{05a8}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3475,7 +3475,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ShalsheletQetannah).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{593}',
+                    symbol: '\u{0593}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3483,23 +3483,23 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{598}',
-                    placement: CantillationMarkPlacement::AboveLeft,
+                    symbol: '\u{0598}',
+                    placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{598}',
-                    placement: CantillationMarkPlacement::AboveLeft,
+                    symbol: '\u{0598}',
+                    placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Meteg).primary_cantillation_mark(),
                 CantillationMark {
-                    symbol: '\u{5bd}',
+                    symbol: '\u{05bd}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 }
@@ -3682,7 +3682,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).secondary_cantillation_mark(),
                 Some(CantillationMark {
-                    symbol: '\u{5a5}',
+                    symbol: '\u{05a5}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 })
@@ -3698,7 +3698,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).secondary_cantillation_mark(),
                 Some(CantillationMark {
-                    symbol: '\u{597}',
+                    symbol: '\u{0597}',
                     placement: CantillationMarkPlacement::AboveCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 })
@@ -3785,7 +3785,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMerkha).secondary_cantillation_mark(),
                 Some(CantillationMark {
-                    symbol: '\u{5a5}',
+                    symbol: '\u{05a5}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 })
@@ -3793,7 +3793,7 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::TsinnoritMahpakh).secondary_cantillation_mark(),
                 Some(CantillationMark {
-                    symbol: '\u{5a4}',
+                    symbol: '\u{05a4}',
                     placement: CantillationMarkPlacement::BelowCenter,
                     stress_position: Some(CantillationMarkStressPosition::Impositive)
                 })
@@ -3829,18 +3829,16 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Silluq).notes(),
                 Some(
-                    r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-            It is possible to have both a Silluq and Meteg in one word,
-            where the Meteg comes before the Silluq.
-            The Silluq appears once per verse.
-"#
+                    r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of 
+the verse. It is possible to have both a Silluq and Meteg in one word,
+where the Meteg comes before the Silluq. The Silluq appears once per verse."#,
                 )
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Atnach).notes(),
                 Some(
                     r#"The major disjunctive accent dividing the verse in two halves.
-    It appears only once per verse"#
+It appears only once per verse"#
                 )
             );
             assert_eq!(
@@ -3951,23 +3949,26 @@ mod test_accent_trait {
                 HebrewAccent::Prose(ProseAccent::Meayla).notes(),
                 Some(
                     r#"Name given to a Tiphcha, when in the same word as Atnach or Silluq.
-    This accent is historically the same glyph as Tipcha (U+0596) but functions as a secondary conjunctive 
-    in specific syntactic contexts.
-    Different traditions use different names: 
-        Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
+This accent is historically the same glyph as Tipcha (U+0596) but functions as
+a secondary conjunctive in specific syntactic contexts.
+Different traditions use different names: 
+Tipcha (common), Tarḥa, or Me'ayla/Mayela (rare scholarly names)."#,
                 )
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Meteg).notes(),
                 Some(
-                    r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
-    an additional emphasis placed on a syllable beyond the primary word stress. 
-    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
-    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
-    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
-    It is possible to have both a Meteg and Silluq in one word,
-    where the Meteg comes before the Silluq.!"#,
+                    r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to
+a secondary vocal stress, an additional emphasis placed on a syllable 
+beyond the primary word stress. 
+It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD)
+placed to the left of a vowel point.
+The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+that might otherwise be swallowed or de-emphasized. 
+It "makes the syllable cry out," so to speak.
+It is possible to have both a Meteg and Silluq in one word,
+where the Meteg comes before the Silluq!"#,
                 )
             );
         }
@@ -3977,19 +3978,17 @@ mod test_accent_trait {
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Silluq).notes(),
                 Some(
-                    r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of the verse.
-            It is possible to have both a Silluq and Meteg in one word,
-            where the Meteg comes before the Silluq.
-            The Silluq appears once per verse.
-"#
+                    r#"The terms Silluq and Sof Pasuq are indifferently used for the final accent of 
+the verse. It is possible to have both a Silluq and Meteg in one word,
+where the Meteg comes before the Silluq. The Silluq appears once per verse."#,
                 )
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).notes(),
                 Some(
-                    r#"The primary_mark looks like a Mehuppakh, 
-but is located above the consonant in stead of below.
-It is then called OLE. When preceded by no place to attach, Yored remains alone.
+                    r#"The primary_mark looks like a Mehuppakh, but is located above the 
+consonant in stead of below. It is then called OLE. 
+When preceded by no place to attach, Yored remains alone.
 The alternate BHS naming is fabricated"#,
                 )
             );
@@ -3997,12 +3996,12 @@ The alternate BHS naming is fabricated"#,
                 HebrewAccent::Poetry(PoetryAccent::Atnach).notes(),
                 Some(
                     r#"The major disjunctive accent dividing the verse in two halves.
-    It appears only once per verse"#
+It appears only once per verse"#
                 )
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaGadol).notes(),
-                Some(r#"Poetry Level 2 disjunctive; equivalent to Revia in prose."#)
+                Some(r#"Equivalent to Revia in prose."#)
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::ReviaMugrash).notes(),
@@ -4033,13 +4032,15 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::MehuppakhLegarmeh).notes(),
                 Some(
-                    r#"While the search results suggest that Mahpach Legarmeh as a complete compound term 
-        is most distinctly associated with the Ashkenazi tradition, 
-        all four traditions recognize the same grammatical function (a Mahpakh functioning disjunctively with a Paseq). 
-        The other traditions may use the base name Mahpakh, and determine the Legarmeh function from context, 
-        rather than using the full compound name systematically. 
-        This reflects a broader pattern where Ashkenazi terminology tends to be more explicit with compound names 
-        (e.g., Munach Legarmeh), while Sephardi and other traditions may use simpler designations."#,
+                    r#"While the search results suggest that Mahpach Legarmeh as a complete compound 
+term is most distinctly associated with the Ashkenazi tradition, all four 
+traditions recognize the same grammatical function (a Mahpakh functioning 
+disjunctively with a Paseq). 
+The other traditions may use the base name Mahpakh, and determine the Legarmeh
+function from context, rather than using the full compound name systematically. 
+This reflects a broader pattern where Ashkenazi terminology tends to be more
+explicit with compound names (e.g., Munach Legarmeh), while Sephardi and 
+other traditions may use simpler designations."#,
                 )
             );
             assert_eq!(
@@ -4097,33 +4098,62 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Meteg).notes(),
                 Some(
-                    r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to a secondary vocal stress,
-    an additional emphasis placed on a syllable beyond the primary word stress. 
-    It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD) placed to the left of a vowel point.
-    The metaphor is vivid: just as an ox lows or bellows to draw attention, 
-    the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
-    that might otherwise be swallowed or de-emphasized. It "makes the syllable cry out," so to speak.
-    It is possible to have both a Meteg and Silluq in one word,
-    where the Meteg comes before the Silluq.!"#,
+                    r#"In Masoretic Hebrew grammar, גַּעְיָה (gaʿyah) is a technical term referring to
+a secondary vocal stress, an additional emphasis placed on a syllable 
+beyond the primary word stress. 
+It is physically marked by the מֶתֶג (meteg), a short vertical line (U+05BD)
+placed to the left of a vowel point.
+The metaphor is vivid: just as an ox lows or bellows to draw attention, 
+the gaʿyah mark draws the reader's attention to a secondary stressed syllable 
+that might otherwise be swallowed or de-emphasized. 
+It "makes the syllable cry out," so to speak.
+It is possible to have both a Meteg and Silluq in one word,
+where the Meteg comes before the Silluq!"#,
                 )
             );
         }
         #[test]
         fn test_pseudo_accent_notes() {
             // Pseudo accents never have strength hierarchy
-            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::SophPasuq).notes(), Some(
-        "it doesn't carry any theological or interpretive meaning beyond marking a boundary",
-    ));
+            assert_eq!(
+                HebrewAccent::Pseudo(PseudoAccent::SophPasuq).notes(),
+                Some(
+                    r#"Function: Primarily denotes the end of a verse or sentence, analogous to a
+period, but not always. However, its application is not absolute; certain
+scholarly traditions equate its disjunctive weight to that of Silluq, while
+other sholars treat them as as equal as the Silluq (a disjuntive). It doesn't 
+carry any theological or interpretive meaning beyond marking a boundary"#
+                )
+            );
             assert_eq!(
                 HebrewAccent::Pseudo(PseudoAccent::Maqqaph).notes(),
                 Some(
-                    "Can link two (or more) short words together after which 
-    they function as a single compound word bearing a single Hebrew accent.",
+                    r#"Function: Serves as a hyphenation or binding agent that connects words into a
+single phonetic or semantic unit, functioning equivalently to conjunctive accents.
+It does have the function of binding words together, just like the conjunctives.
+Can link two (or more) short words together after which they function as 
+a single compound word bearing a single primary Hebrew accent."#
                 )
             );
-            assert_eq!(HebrewAccent::Pseudo(PseudoAccent::Paseq).notes(), Some(
-        "It's indicating that someone or something is stopping temporarily or creating a pause.",
-    ));
+            assert_eq!(
+                HebrewAccent::Pseudo(PseudoAccent::Paseq).notes(),
+                Some(
+                    r#"Function: Acts as a separator or divider. It may appear in conjunction with a 
+Hebrew accent to modify its function but does not operate as an independent
+accent mark. It can be part of a Hebrew Accent, but not as an individual
+accent. It's indicating that someone or something is stopping temporarily or 
+creating a pause.
+The paseq appears in the Tanakh as a standalone mark that is not part of a compound accent.
+In Masoretic punctuation, the paseq serves as a \"minor pause\" or a separator, 
+similar to a comma or a semicolon in English. While it often appears in 
+conjunction with accents (such as the munah legarmeh, where it signals a
+specific melodic pause), it also occurs independently to separate phrases or
+words within a verse to clarify the reading and meaning.
+In these instances, it acts as a structural divider rather than a musical
+modifier for a specific accent, indicating that the reader should make a 
+brief pause before proceeding to the next word."#
+                )
+            );
         }
     }
 
@@ -4546,10 +4576,10 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Mahpakh).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Mehuppakh",
+                    hebrew_name: "מְהֻפָּ֤ךְ",
+                    hebrew_concept: "reversed",
+                    sbl_academic: "məhuppāk",
                 })
             );
             assert_eq!(
@@ -4566,7 +4596,12 @@ The alternate BHS naming is fabricated"#,
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Azla).alternate_names(),
-                None
+                Some(AlternateNames {
+                    english_name: "Qadma",
+                    hebrew_name: "קַדְמָ֨א",
+                    hebrew_concept: "antiquity or a former state",
+                    sbl_academic: "qadmāʾ",
+                })
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::TelishaQetannah).alternate_names(),
@@ -4575,19 +4610,29 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Galgal).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Yerach Ben Yomo",
+                    hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+                    hebrew_concept: "moon one day old",
+                    sbl_academic: "yēreḥ ben yômô",
                 })
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Meayla).alternate_names(),
-                None
+                Some(AlternateNames {
+                    english_name: "Mayla",
+                    hebrew_name: "מַיְלָא",
+                    hebrew_concept: "that which is above or elevated position",
+                    sbl_academic: "maylāʾ",
+                })
             );
             assert_eq!(
                 HebrewAccent::Prose(ProseAccent::Meteg).alternate_names(),
-                None
+                Some(AlternateNames {
+                    english_name: "Gayah",
+                    hebrew_name: "גַּעְיָה",
+                    hebrew_concept: "a lowing",
+                    sbl_academic: "gaʿyâ",
+                })
             );
         }
         #[test]
@@ -4600,10 +4645,10 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::OlehWeYored).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Mahpakh and Merkha",
+                    hebrew_name: "מַהְפַּךְ וּמֵרְכָא",
+                    hebrew_concept: "turning round and prolonging",
+                    sbl_academic: "mahpak ûmērəkāʾ",
                 })
             );
             assert_eq!(
@@ -4625,10 +4670,10 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Tsinnor).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Zarqa",
+                    hebrew_name: "זַרְקָא",
+                    hebrew_concept: "to sprinkle, scatter",
+                    sbl_academic: "zarqāʾ",
                 })
             );
             assert_eq!(
@@ -4638,10 +4683,10 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Dechi).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Tiphcha",
+                    hebrew_name: "טִפְחָא",
+                    hebrew_concept: "handbreadth or diagonal",
+                    sbl_academic: "ṭipḥāʾ",
                 })
             );
             assert_eq!(
@@ -4680,28 +4725,28 @@ The alternate BHS naming is fabricated"#,
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Galgal).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Yerach Ben Yomo",
+                    hebrew_name: "יֵרֶח בֶּן יוֹמוֹ",
+                    hebrew_concept: "moon one day old",
+                    sbl_academic: "yēreḥ ben yômô",
                 })
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Mehuppakh).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Mahpakh",
+                    hebrew_name: "מַהְפַּךְ",
+                    hebrew_concept: "turning round",
+                    sbl_academic: "mahpak",
                 })
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Azla).alternate_names(),
                 Some(AlternateNames {
-                    hebrew_name: "",
-                    hebrew_concept: "",
-                    sbl_academic: "",
-                    english_name: "",
+                    english_name: "Qadma",
+                    hebrew_name: "קַדְמָ֨א",
+                    hebrew_concept: "antiquity or a former state",
+                    sbl_academic: "qadmāʾ",
                 })
             );
             assert_eq!(
@@ -4718,7 +4763,12 @@ The alternate BHS naming is fabricated"#,
             );
             assert_eq!(
                 HebrewAccent::Poetry(PoetryAccent::Meteg).alternate_names(),
-                None
+                Some(AlternateNames {
+                    english_name: "Gayah",
+                    hebrew_name: "גַּעְיָה",
+                    hebrew_concept: "a lowing",
+                    sbl_academic: "gaʿyâ",
+                })
             );
         }
         #[test]
@@ -4740,42 +4790,59 @@ The alternate BHS naming is fabricated"#,
     }
 }
 
-
 #[cfg(test)]
 mod derive_traits_tests {
     // #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
     // TEMPLATE
     use super::*;
     use std::{
-        collections::{HashMap, HashSet}, hash::{DefaultHasher, Hash, Hasher},
+        collections::{HashMap, HashSet},
+        hash::{DefaultHasher, Hash, Hasher},
     };
 
     // DEFAULT
     #[test]
     fn default_is_active() {
-        assert_eq!(HebrewAccent::default(), HebrewAccent::Prose(ProseAccent::Silluq));
+        assert_eq!(
+            HebrewAccent::default(),
+            HebrewAccent::Prose(ProseAccent::Silluq)
+        );
     }
 
     #[test]
     fn default_trait_object_usage() {
         // Calls <HebrewAccent as Default>::default through the trait, not just HebrewAccent::default()
-        fn takes_default<T: Default>() -> T { T::default() }
-        assert_eq!(takes_default::<HebrewAccent>(), HebrewAccent::Prose(ProseAccent::Silluq));
+        fn takes_default<T: Default>() -> T {
+            T::default()
+        }
+        assert_eq!(
+            takes_default::<HebrewAccent>(),
+            HebrewAccent::Prose(ProseAccent::Silluq)
+        );
     }
 
     // Debug trait
     #[test]
     fn debug_output_contains_variant() {
         let dbg = format!("{:?}", HebrewAccent::Prose(ProseAccent::Segolta));
-        assert!(dbg.contains("Prosaic"), "unexpected Debug output: {dbg}");
+        assert!(
+            dbg.contains("Prose(Segolta)"),
+            "unexpected Debug output: {dbg}"
+        );
 
         let dbg = format!("{:?}", HebrewAccent::Poetry(PoetryAccent::OlehWeYored));
-        assert!(dbg.contains("Poetic"), "unexpected Debug output: {dbg}");
+        assert!(
+            dbg.contains("Poetry(OlehWeYored)"),
+            "unexpected Debug output: {dbg}"
+        );
     }
     #[test]
     fn debug_via_formatter() {
         // Exercises Debug::fmt through the trait, including with no explicit hit on both arms
-        for (ctx, expected) in [(HebrewAccent::Prose(ProseAccent::Segolta), "Prosaic"), (HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "Poetic")] {
+        for (ctx, expected) in [
+            (HebrewAccent::Prose(ProseAccent::Segolta), "Prose(Segolta)"),
+            (HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "Poetry(OlehWeYored)"),
+        ] {
             assert_eq!(format!("{ctx:?}"), expected);
         }
     }
@@ -4792,8 +4859,14 @@ mod derive_traits_tests {
     // PartialEq / Eq
     #[test]
     fn partial_eq_works() {
-        assert_eq!(HebrewAccent::Prose(ProseAccent::MerkhaKephulah), HebrewAccent::Prose(ProseAccent::MerkhaKephulah));
-        assert_ne!(HebrewAccent::Prose(ProseAccent::MerkhaKephulah), HebrewAccent::Prose(ProseAccent::Atnach));
+        assert_eq!(
+            HebrewAccent::Prose(ProseAccent::MerkhaKephulah),
+            HebrewAccent::Prose(ProseAccent::MerkhaKephulah)
+        );
+        assert_ne!(
+            HebrewAccent::Prose(ProseAccent::MerkhaKephulah),
+            HebrewAccent::Prose(ProseAccent::Atnach)
+        );
     }
     // Eq
     #[test]
@@ -4810,8 +4883,14 @@ mod derive_traits_tests {
             e.hash(&mut h);
             h.finish()
         };
-        assert_eq!(hash(HebrewAccent::Prose(ProseAccent::Segolta)), hash(HebrewAccent::Prose(ProseAccent::Segolta)));
-        assert_ne!(hash(HebrewAccent::Prose(ProseAccent::MerkhaKephulah)), hash(HebrewAccent::Prose(ProseAccent::Atnach)));
+        assert_eq!(
+            hash(HebrewAccent::Prose(ProseAccent::Segolta)),
+            hash(HebrewAccent::Prose(ProseAccent::Segolta))
+        );
+        assert_ne!(
+            hash(HebrewAccent::Prose(ProseAccent::MerkhaKephulah)),
+            hash(HebrewAccent::Prose(ProseAccent::Atnach))
+        );
     }
     #[test]
     fn usable_in_hashset() {
@@ -4821,17 +4900,21 @@ mod derive_traits_tests {
         assert_eq!(set.len(), 1);
         assert!(set.contains(&HebrewAccent::Prose(ProseAccent::Segolta)));
     }
-        #[test]
+    #[test]
     fn hashmap_key_roundtrip() {
         // Exercises Hash + Eq together in a real container
         let mut map = HashMap::new();
         map.insert(HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "poetic");
         map.insert(HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "poetic"); // duplicate ignored
         map.insert(HebrewAccent::Prose(ProseAccent::Segolta), "prosaic");
-        assert_eq!(map.get(&HebrewAccent::Poetry(PoetryAccent::OlehWeYored)), Some(&"poetic"));
-        assert_eq!(map.get(&HebrewAccent::Prose(ProseAccent::Segolta)), Some(&"prosaic"));
+        assert_eq!(
+            map.get(&HebrewAccent::Poetry(PoetryAccent::OlehWeYored)),
+            Some(&"poetic")
+        );
+        assert_eq!(
+            map.get(&HebrewAccent::Prose(ProseAccent::Segolta)),
+            Some(&"prosaic")
+        );
         assert_eq!(map.len(), 2);
     }
 }
-
-

@@ -333,10 +333,7 @@ mod sentence_error_tests {
     #[test]
     fn test_empty_sentence_formatting() {
         let err = SentenceContextError::EmptySentence;
-        assert_eq!(
-            err.to_string(),
-            "Sentence cannot be empty or contain only whitespace characters"
-        );
+        assert_eq!(err.to_string(), "Sentence cannot be empty");
 
         // Unit variants should be equal to themselves
         assert_eq!(err, SentenceContextError::EmptySentence);

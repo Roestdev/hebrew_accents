@@ -214,13 +214,13 @@ mod prose_accents {
     #[test]
     fn test_contains_prose_segolta() {
         let sc = SentenceContext::new(
-            " וַיַּ֣עַשׂ אֱלֹהִים֮ אֶת־הָרָקִיעַ֒ וַיַּבְדֵּ֗ל בֵּ֤ין הַמַּ֨יִם֙ אֲשֶׁר֙ מִתַּ֣חַת לָרָקִ֔יעַ וּבֵ֣ין הַמַּ֔יִם אֲשֶׁ֖ר מֵעַ֣ל לָרָקִ֑יעַ וַֽיְהִי־כֵֽן׃",
+            "וַיַּ֣עַשׂ אֱלֹהִים֮ אֶת־הָרָקִיעַ֒ וַיַּבְדֵּ֗ל בֵּ֤ין הַמַּ֨יִם֙ אֲשֶׁר֙ מִתַּ֣חַת לָרָקִ֔יעַ וּבֵ֣ין הַמַּ֔יִם אֲשֶׁ֖ר מֵעַ֣ל לָרָקִ֑יעַ וַֽיְהִי־כֵֽן׃",
             Context::Prosaic,
         );
         let binding = sc.unwrap();
         assert!(binding.contains_accent(ProseAccent::Segolta.into()));
         let sc = SentenceContext::new(
-            " וַיַּ֣עַשׂ אֱלֹהִים֮ אֶת־הָרָקִיעַ וַיַּבְדֵּ֗ל בֵּ֤ין הַמַּ֨יִם֙ אֲשֶׁר֙ מִתַּ֣חַת לָרָקִ֔יעַ וּבֵ֣ין הַמַּ֔יִם אֲשֶׁ֖ר מֵעַ֣ל לָרָקִ֑יעַ וַֽיְהִי־כֵֽן׃",
+            "וַיַּ֣עַשׂ אֱלֹהִים֮ אֶת־הָרָקִיעַ וַיַּבְדֵּ֗ל בֵּ֤ין הַמַּ֨יִם֙ אֲשֶׁר֙ מִתַּ֣חַת לָרָקִ֔יעַ וּבֵ֣ין הַמַּ֔יִם אֲשֶׁ֖ר מֵעַ֣ל לָרָקִ֑יעַ וַֽיְהִי־כֵֽן׃",
             Context::Prosaic,
         );
         let binding = sc.unwrap();
@@ -654,21 +654,21 @@ mod prose_accents {
     fn test_contains_poetry_revia_mugrash() {
         // Geresh Muqdam and Revia
         let sc = SentenceContext::new(
-            " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
             Context::Poetic,
         );
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
         // Only Revia
         let sc = SentenceContext::new(
-            " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃",
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מא֗ין יב֥א עזרֽי׃",
             Context::Poetic,
         );
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::ReviaMugrash.into()));
         // Only Geresh
         let sc = SentenceContext::new(
-            " שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝אין יב֥א עזרֽי׃",
+            "שׁ֗יר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝אין יב֥א עזרֽי׃",
             Context::Poetic,
         );
         let binding = sc.unwrap();
@@ -734,7 +734,7 @@ mod prose_accents {
         assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
         // Revia is part of Revia Mugrash
         let sc = SentenceContext::new(
-            " שׁיר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
+            "שׁיר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
             Context::Poetic,
         );
         let binding = sc.unwrap();
@@ -761,38 +761,38 @@ mod prose_accents {
     #[test]
     fn test_contains_poetry_mehuppakh_legarmeh() {
         // MehuppakhLegarmeh, with Paseq
-        let sc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
         // MehuppakhLegarmeh, with Vertical Bar
-        let sc = SentenceContext::new(" את־אברהם֤ | מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ | מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
         // Mehuppakh only
-        let sc = SentenceContext::new(" את־אברהם֤ מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
     }
     #[test]
     fn test_contains_poetry_azla_legarmeh() {
         // AzlaLegarmeh, with Paseq + no space
-        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Paseq + 1 space
-        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Vertical Bar + no space
-        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם| א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Vertical Bar + 1 space
-        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם | א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // Azla only
-        let sc = SentenceContext::new(" את־אברה֨ם  א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם  א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
     }
@@ -924,27 +924,27 @@ mod prose_accents {
     #[test]
     fn test_contains_poetry_azla() {
         // contains Azla
-        let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Azla.into()));
         // contains Azla and Azla Legarmeh
-        let sc = SentenceContext::new(" אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with space + Paseq
-        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with Paseq
-        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with space + Vertical Bar
-        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם | א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with Vertical Bar
-        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם| א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
     }
@@ -1230,7 +1230,7 @@ mod poetry_accents {
         assert!(!binding.contains_accent(PoetryAccent::ReviaQaton.into()));
         // Revia is part of Revia Mugrash
         let sc = SentenceContext::new(
-            " שׁיר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
+            "שׁיר לֽמּ֫על֥ות אשּׂ֣א ע֭יני אל־ההר֑ים מ֝א֗ין יב֥א עזרֽי׃",
             Context::Poetic,
         );
         let binding = sc.unwrap();
@@ -1257,38 +1257,38 @@ mod poetry_accents {
     #[test]
     fn test_contains_poetry_mehuppakh_legarmeh() {
         // MehuppakhLegarmeh, with Paseq
-        let sc = SentenceContext::new(" את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ ׀ מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
         // MehuppakhLegarmeh, with Vertical Bar
-        let sc = SentenceContext::new(" את־אברהם֤ | מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ | מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
         // Mehuppakh only
-        let sc = SentenceContext::new(" את־אברהם֤ מזמ֗ור", Context::Poetic);
+        let sc = SentenceContext::new("את־אברהם֤ מזמ֗ור", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::MehuppakhLegarmeh.into()));
     }
     #[test]
     fn test_contains_poetry_azla_legarmeh() {
         // AzlaLegarmeh, with Paseq + no space
-        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Paseq + 1 space
-        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Vertical Bar + no space
-        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם| א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // AzlaLegarmeh, with Vertical Bar + 1 space
-        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם | א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
         // Azla only
-        let sc = SentenceContext::new(" את־אברה֨ם  א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם  א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::AzlaLegarmeh.into()));
     }
@@ -1420,27 +1420,27 @@ mod poetry_accents {
     #[test]
     fn test_contains_poetry_azla() {
         // contains Azla
-        let sc = SentenceContext::new(" את־אברה֨ם א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Azla.into()));
         // contains Azla and Azla Legarmeh
-        let sc = SentenceContext::new(" אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("אה֨ת־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with space + Paseq
-        let sc = SentenceContext::new(" את־אברה֨ם ׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם ׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with Paseq
-        let sc = SentenceContext::new(" את־אברה֨ם׀ א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם׀ א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with space + Vertical Bar
-        let sc = SentenceContext::new(" את־אברה֨ם | א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם | א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
         // Azla Legarmeh, with Vertical Bar
-        let sc = SentenceContext::new(" את־אברה֨ם| א־אם", Context::Poetic);
+        let sc = SentenceContext::new("את־אברה֨ם| א־אם", Context::Poetic);
         let binding = sc.unwrap();
         assert!(!binding.contains_accent(PoetryAccent::Azla.into()));
     }

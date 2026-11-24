@@ -43,7 +43,7 @@ mod tests {
         assert_eq!(k1.clone(), k2);
     }
 
-        #[test]
+    #[test]
     fn test_accent_kind_display_exact_output() {
         assert_eq!(format!("{}", AccentKind::Primary), "primary");
         assert_eq!(format!("{}", AccentKind::Secondary), "secondary");
@@ -63,5 +63,4 @@ mod tests {
 
         assert_eq!(hash1, hash2);
     }
-
 }

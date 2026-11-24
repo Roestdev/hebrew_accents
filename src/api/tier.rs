@@ -103,7 +103,7 @@ impl TryFrom<u8> for Tier {
 mod tests {
     use super::*;
 
-   #[test]
+    #[test]
     fn test_tier_error_message() {
         let err = Tier::try_from(7u8).unwrap_err();
         assert_eq!(err.to_string(), "Invalid Tier value: 7 (valid range: 1-4)");
@@ -295,7 +295,7 @@ mod tests {
         assert_eq!(ALT4, "Officers");
     }
 
-#[test]
+    #[test]
     fn test_tier_poetry_vs_prose_distinction() {
         // Poetry stops at Tier3
         assert_eq!(Tier::max_poetry_tier(), Tier::Tier3);
@@ -334,7 +334,4 @@ mod tests {
 
         assert_eq!(hash1, hash2);
     }
-
-
-
 }

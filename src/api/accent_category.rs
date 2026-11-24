@@ -1,3 +1,5 @@
+
+
 use std::fmt;
 
 /// Hebrew Accent category — (absence is expressed via `Option<T>`)
@@ -57,12 +59,10 @@ mod tests {
         assert_eq!(c1, c2);
         assert_eq!(c1.clone(), c2);
     }
-    
+
     #[test]
     fn test_accent_category_display_exact_output() {
         assert_eq!(format!("{}", AccentCategory::Disjunctive), "disjunctive");
         assert_eq!(format!("{}", AccentCategory::Conjunctive), "conjunctive");
     }
-
-
 }
