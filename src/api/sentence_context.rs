@@ -1,3 +1,6 @@
+// TODO test_derived_traits
+// TODO test subject
+// TODO test_impl
 //! # Sentence Context Management
 //!
 //! This module provides the `SentenceContext` type for representing Hebrew
@@ -703,7 +706,7 @@ mod sentence_context_coverage_tests {
     //TODO problem with character order in compare
     // #[test]
     // fn test_with_valid_default_returns_genesis_1_1() {
-        
+
     //     let ctx = SentenceContext::with_valid_default().unwrap();
 
     //     assert!(ctx.sentence.contains("בְּרֵאשִׁ֖ית"));
@@ -1083,10 +1086,7 @@ mod sentence_context_coverage_tests {
         match empty_result {
             Ok(_) => panic!("Empty string should fail"),
             Err(err) => {
-                assert_eq!(
-                    err.to_string(),
-                    "Sentence cannot be empty"
-                );
+                assert_eq!(err.to_string(), "Sentence cannot be empty");
             }
         }
     }

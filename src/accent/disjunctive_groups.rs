@@ -1,3 +1,6 @@
+// TODO test_derived_traits
+// TODO test subject
+// TODO test_impl
 use crate::{HebrewAccent, PoetryAccent, ProseAccent, Tier};
 
 /// Full Futato hierarchy classification with prose/poetry distinction.

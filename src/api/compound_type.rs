@@ -1,3 +1,6 @@
+// TODO test_derived_traits
+// TODO test subject
+// TODO test_impl
 /// Indicates the compound type of a [`HebrewAccent`](crate::HebrewAccent)
 /// Absence of a compound is expressed via `Option<CompoundType>`.
 ///

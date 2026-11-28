@@ -1,3 +1,6 @@
+// TODO test_derived_traits
+// TODO test subject
+// TODO test_impl
 use crate::accent::resolve_disjunctive_group;
 use crate::api::CompoundType;
 use crate::{Accent, AlternateNames, PoetryAccent, ProseAccent, PseudoAccent};
@@ -13,6 +16,7 @@ pub enum HebrewAccent {
     /// Pseudo variant
     Pseudo(PseudoAccent),
 }
+
 impl HebrewAccent {
     /// Returns a reference to the inner [`ProseAccent`] if this is a Prose variant.
     ///
@@ -4841,7 +4845,10 @@ mod derive_traits_tests {
         // Exercises Debug::fmt through the trait, including with no explicit hit on both arms
         for (ctx, expected) in [
             (HebrewAccent::Prose(ProseAccent::Segolta), "Prose(Segolta)"),
-            (HebrewAccent::Poetry(PoetryAccent::OlehWeYored), "Poetry(OlehWeYored)"),
+            (
+                HebrewAccent::Poetry(PoetryAccent::OlehWeYored),
+                "Poetry(OlehWeYored)",
+            ),
         ] {
             assert_eq!(format!("{ctx:?}"), expected);
         }

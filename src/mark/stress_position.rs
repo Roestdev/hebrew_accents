@@ -1,5 +1,7 @@
-use crate::api::{CantillationMarkPlacement, CantillationMarkStressPosition};
-use crate::mark::MarkPlacement;
+// TODO test_derived_traits
+// TODO test subject
+// TODO test_impl
+use crate::api::CantillationMarkStressPosition;
 
 /// Tonic/stress relation — linguistic/metrical concept.
 ///
@@ -31,295 +33,178 @@ impl StressPosition {
     }
 }
 
-// Conversion from internal to public type
-impl From<MarkPlacement> for CantillationMarkPlacement {
-    fn from(pos: MarkPlacement) -> Self {
-        use CantillationMarkPlacement as Public;
-        use MarkPlacement as Internal;
-
-        match pos {
-            Internal::AboveLeft => Public::AboveLeft,
-            Internal::AboveCenter => Public::AboveCenter,
-            Internal::AboveRight => Public::AboveRight,
-            //Internal::BelowLeft => Public::BelowLeft,
-            Internal::BelowCenter => Public::BelowCenter,
-            Internal::BelowRight => Public::BelowRight,
-            Internal::SofPasuq => Public::SofPasuq,
-            Internal::Maqqaph => Public::Maqqaph,
-            Internal::Paseq => Public::Paseq,
-        }
-    }
-}
-
 #[cfg(test)]
-mod tests {
+mod test_for_derived_traits {
     use super::*;
-    use crate::CantillationMarkStressPosition;
-
-    // ===== BASIC VARIANT EXISTENCE TESTS =====
-
-    #[test]
-    fn test_all_variants_exist() {
-        let impositive = StressPosition::Impositive;
-        let prepositive = StressPosition::Prepositive;
-        let postpositive = StressPosition::Postpositive;
-        let not_applicable = StressPosition::NotApplicable;
-
-        assert_eq!(impositive, StressPosition::Impositive);
-        assert_eq!(prepositive, StressPosition::Prepositive);
-        assert_eq!(postpositive, StressPosition::Postpositive);
-        assert_eq!(not_applicable, StressPosition::NotApplicable);
-    }
-
-    // ===== DEFAULT TRAIT TESTS =====
+    const ALL: [StressPosition; 4] = [
+        StressPosition::Impositive,
+        StressPosition::Prepositive,
+        StressPosition::Postpositive,
+        StressPosition::NotApplicable,
+    ];
 
     #[test]
-    fn test_default_is_impositive() {
-        let default: StressPosition = Default::default();
-        assert_eq!(default, StressPosition::Impositive);
+    fn test_default_placement() {
+        let placement = StressPosition::default();
+        dbg!(&placement); // prints to stderr: [src/lib.rs:12:9] &placement = Prepositive
+        assert_eq!(placement, StressPosition::Impositive);
     }
 
     #[test]
     fn test_impositive_explicit_equals_default() {
         assert_eq!(StressPosition::Impositive, StressPosition::default());
     }
-
-    // #[test]
-    // fn test_default_macro_style() {
-    //     // Test different ways of invoking Default
-    //     let _d1 = Default::default();
-    //     let _d2: StressPosition = Default::default();
-
-    //     assert_eq!(_d1, StressPosition::Impositive);
-    //     assert_eq!(_d2, StressPosition::Impositive);
-    // }
-
-    // ===== TO_PUBLIC CONVERSION METHOD TESTS =====
-
     #[test]
-    fn test_to_public_for_impositive() {
-        let internal = StressPosition::Impositive;
-        let converted = internal.to_public();
-
-        assert_eq!(converted, Some(CantillationMarkStressPosition::Impositive));
+    fn test_discriminant_values() {
+        assert_eq!(dbg!(StressPosition::Impositive as u8), 0);
+        assert_eq!(dbg!(StressPosition::Prepositive as u8), 1);
+        assert_eq!(dbg!(StressPosition::Postpositive as u8), 2);
+        assert_eq!(dbg!(StressPosition::NotApplicable as u8), 3);
     }
-
     #[test]
-    fn test_to_public_for_prepositive() {
-        let internal = StressPosition::Prepositive;
-        let converted = internal.to_public();
-
-        assert_eq!(converted, Some(CantillationMarkStressPosition::Prepositive));
-    }
-
-    #[test]
-    fn test_to_public_for_postpositive() {
-        let internal = StressPosition::Postpositive;
-        let converted = internal.to_public();
-
-        assert_eq!(
-            converted,
-            Some(CantillationMarkStressPosition::Postpositive)
-        );
-    }
-
-    #[test]
-    fn test_to_public_for_not_applicable_returns_none() {
-        let internal = StressPosition::NotApplicable;
-        let converted = internal.to_public();
-
-        assert_eq!(converted, None);
-    }
-
-    #[test]
-    fn test_to_public_all_variants_covered() {
-        // Exhaustive test of all variants
-        let all = [
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
+    fn test_pretty_debug_all_variants() {
+        let cases = [
+            (StressPosition::Impositive, "Impositive"),
+            (StressPosition::Prepositive, "Prepositive"),
+            (StressPosition::Postpositive, "Postpositive"),
+            (StressPosition::NotApplicable, "NotApplicable"),
         ];
 
-        for pos in &all {
-            let result = pos.to_public();
-            match pos {
-                StressPosition::Impositive => {
-                    assert_eq!(result, Some(CantillationMarkStressPosition::Impositive));
-                }
-                StressPosition::Prepositive => {
-                    assert_eq!(result, Some(CantillationMarkStressPosition::Prepositive));
-                }
-                StressPosition::Postpositive => {
-                    assert_eq!(result, Some(CantillationMarkStressPosition::Postpositive));
-                }
-                StressPosition::NotApplicable => {
-                    assert_eq!(result, None);
+        for (variant, name) in cases {
+            let pretty = format!("{:#?}", variant);
+            dbg!(&pretty);
+            assert_eq!(
+                pretty, name,
+                "pretty Debug for discriminant {}",
+                variant as u8
+            );
+        }
+    }
+    #[test]
+    fn test_clone_produces_equal_value() {
+        let original = dbg!(StressPosition::Postpositive);
+        let cloned = original.clone();
+
+        assert_eq!(cloned, original);
+        assert_eq!(cloned as u8, original as u8);
+    }
+
+    #[test]
+    fn test_copy_preserves_original() {
+        // The defining trait of Copy: value copied AND original still usable
+        let original = StressPosition::Prepositive;
+        let copied = original;
+
+        assert_eq!(copied, StressPosition::Prepositive);
+        assert_eq!(original, StressPosition::Prepositive); // compiles only with Copy
+    }
+
+    #[test]
+    fn test_explicit_copy_trait_call() {
+        // Requires a Copy bound directly, proving the impl exists
+        fn duplicate<T: Copy>(value: T) -> (T, T) {
+            (value, value)
+        }
+
+        let (a, b) = duplicate(StressPosition::Postpositive);
+        assert_eq!(a, b);
+        assert_eq!(a, StressPosition::Postpositive);
+    }
+    #[test]
+    fn test_all_variants_roundtrip_clone_and_copy() {
+        for &variant in &ALL {
+            let cloned = variant.clone();
+            let moved = variant; // bitwise copy
+            assert_eq!(cloned, moved);
+            assert_eq!(dbg!(moved as u8), dbg!(variant as u8));
+        }
+    }
+
+    /// eq(a, a) — every value equals itself
+    #[test]
+    fn test_reflexivity() {
+        for v in ALL {
+            assert!(v == v, "{v:?} should equal itself");
+        }
+    }
+
+    /// eq(a, b) implies eq(b, a)
+    #[test]
+    fn test_symmetry() {
+        for a in ALL {
+            for b in ALL {
+                assert_eq!(a == b, b == a, "symmetry failed for {a:?} / {b:?}");
+            }
+        }
+    }
+
+    /// eq(a, b) and eq(b, c) imply eq(a, c)
+    #[test]
+    fn test_transitivity() {
+        for a in ALL {
+            for b in ALL {
+                for c in ALL {
+                    if a == b && b == c {
+                        assert!(a == c, "transitivity failed: {a:?}, {b:?}, {c:?}");
+                    }
                 }
             }
         }
     }
 
+    /// Distinct variants are never equal
     #[test]
-    fn test_to_public_consistency_across_calls() {
-        // Verify consistent behavior on repeated calls
-        let pos = StressPosition::Impositive;
-
-        assert_eq!(pos.to_public(), pos.to_public());
-        assert_eq!(pos.to_public(), pos.to_public());
-    }
-
-    #[test]
-    fn test_to_public_const_compatible() {
-        // Verify function can be used in const contexts
-        const POS: StressPosition = StressPosition::Impositive;
-        const RESULT: Option<CantillationMarkStressPosition> = POS.to_public();
-
-        assert_eq!(RESULT, Some(CantillationMarkStressPosition::Impositive));
-    }
-
-    // ===== DERIVED TRAIT TESTS =====
-
-    // --- Debug Trait ---
-
-    #[test]
-    fn test_debug_trait_impositive() {
-        let debug = format!("{:?}", StressPosition::Impositive);
-        assert!(debug.contains("Impositive"));
-    }
-
-    #[test]
-    fn test_debug_trait_prepositive() {
-        let debug = format!("{:?}", StressPosition::Prepositive);
-        assert!(debug.contains("Prepositive"));
-    }
-
-    #[test]
-    fn test_debug_trait_postpositive() {
-        let debug = format!("{:?}", StressPosition::Postpositive);
-        assert!(debug.contains("Postpositive"));
-    }
-
-    #[test]
-    fn test_debug_trait_not_applicable() {
-        let debug = format!("{:?}", StressPosition::NotApplicable);
-        assert!(debug.contains("NotApplicable"));
-    }
-
-    #[test]
-    fn test_display_via_debug() {
-        // Debug trait enables display
-        for variant in &[
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
-        ] {
-            let _ = format!("{:?}", variant);
+    fn test_inequality_of_distinct_variants() {
+        for a in ALL {
+            for b in ALL {
+                if a as u8 != b as u8 {
+                    assert_ne!(a, b, "{a:?} and {b:?} must not be equal");
+                }
+            }
         }
     }
 
-    // --- Copy Trait ---
-
+    /// Same variant constructed twice compares equal, across Copy boundaries
     #[test]
-    fn test_copy_trait_impositive() {
-        let original = StressPosition::Impositive;
-        let copied = original; // Copy occurs automatically
-
-        assert_eq!(original, StressPosition::Impositive);
-        assert_eq!(copied, StressPosition::Impositive);
-        // Original still usable
-        assert_eq!(
-            original.to_public(),
-            Some(CantillationMarkStressPosition::Impositive)
-        );
-    }
-
-    #[test]
-    fn test_copy_trait_all_variants() {
-        for variant in &[
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
-        ] {
-            let copied = *variant; // Explicit copy
-            assert_eq!(variant, &copied);
+    fn test_equality_of_same_variant() {
+        for v in ALL {
+            let copied = v; // Copy semantics
+            let recopied = copied;
+            assert_eq!(v, copied);
+            assert_eq!(copied, recopied);
         }
     }
 
-    // --- Clone Trait ---
-
+    /// default() is the #[default]-annotated variant
     #[test]
-    fn test_clone_trait_impositive() {
-        let original = StressPosition::Impositive;
-        let cloned = original.clone();
-
-        assert_eq!(original, cloned);
-        assert_eq!(cloned, StressPosition::Impositive);
+    fn test_default_equals_annotated_variant() {
+        assert_eq!(StressPosition::default(), StressPosition::Impositive);
+        assert_ne!(StressPosition::default(), StressPosition::NotApplicable);
     }
 
+    /// eq is consistent with the discriminant: equal if same discriminant
     #[test]
-    fn test_clone_trait_all_variants() {
-        for variant in &[
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
-        ] {
-            let cloned = variant.clone();
-            assert_eq!(variant, &cloned);
+    fn test_equality_matches_discriminant() {
+        for a in ALL {
+            for b in ALL {
+                assert_eq!(
+                    a == b,
+                    a as u8 == b as u8,
+                    "eq/divergence for {a:?} vs {b:?}"
+                );
+            }
         }
     }
 
-    // --- PartialEq/Eq Trait ---
-
+    /// Eq marker trait implies PartialEq must hold the same way (sanity)
     #[test]
-    fn test_partial_eq_same_variant() {
-        assert_eq!(StressPosition::Impositive, StressPosition::Impositive);
-        assert_eq!(StressPosition::Prepositive, StressPosition::Prepositive);
-        assert_eq!(StressPosition::Postpositive, StressPosition::Postpositive);
-        assert_eq!(StressPosition::NotApplicable, StressPosition::NotApplicable);
+    fn test_partial_eq_ne_consistency() {
+        for a in ALL {
+            for b in ALL {
+                assert_ne!(a == b, a != b, "== and != disagree for {a:?}/{b:?}");
+            }
+        }
     }
-
-    #[test]
-    fn test_partial_eq_different_variants() {
-        assert_ne!(StressPosition::Impositive, StressPosition::Prepositive);
-        assert_ne!(StressPosition::Impositive, StressPosition::Postpositive);
-        assert_ne!(StressPosition::Impositive, StressPosition::NotApplicable);
-        assert_ne!(StressPosition::Prepositive, StressPosition::Postpositive);
-        assert_ne!(StressPosition::Prepositive, StressPosition::NotApplicable);
-        assert_ne!(StressPosition::Postpositive, StressPosition::NotApplicable);
-    }
-
-    #[test]
-    fn test_eq_trait_reflexivity() {
-        let pos = StressPosition::Impositive;
-        assert!(pos.eq(&pos));
-    }
-
-    #[test]
-    fn test_eq_trait_symmetry() {
-        let p1 = StressPosition::Postpositive;
-        let p2 = StressPosition::Postpositive;
-
-        assert!(p1.eq(&p2));
-        assert!(p2.eq(&p1));
-    }
-
-    #[test]
-    fn test_eq_trait_transitivity() {
-        let p1 = StressPosition::Prepositive;
-        let p2 = StressPosition::Prepositive;
-        let p3 = StressPosition::Prepositive;
-
-        assert!(p1.eq(&p2));
-        assert!(p2.eq(&p3));
-        assert!(p1.eq(&p3));
-    }
-
-    // --- Hash Trait ---
-
     #[test]
     fn test_hash_trait_consistency() {
         use std::collections::hash_map::DefaultHasher;
@@ -371,35 +256,91 @@ mod tests {
         assert!(set.contains(&StressPosition::Postpositive));
         assert!(set.contains(&StressPosition::NotApplicable));
     }
+}
 
-    // ===== SEMANTIC MEANING TESTS =====
+#[cfg(test)]
+mod test_impl_to_public {
+    use super::*;
+    use crate::CantillationMarkStressPosition;
+    const ALL: [StressPosition; 4] = [
+        StressPosition::Impositive,
+        StressPosition::Prepositive,
+        StressPosition::Postpositive,
+        StressPosition::NotApplicable,
+    ];
 
     #[test]
-    fn test_impositive_sits_on_stressed_syllable() {
-        // Per docs: "Mark sits directly on the stressed syllable"
-        let impositive = StressPosition::Impositive;
+    fn test_to_public_for_impositive() {
+        let internal = StressPosition::Impositive;
+        let converted = internal.to_public();
 
-        // Verify it exists and can be converted
-        assert_eq!(impositive, StressPosition::Impositive);
-        assert!(impositive.to_public().is_some());
+        assert_eq!(converted, Some(CantillationMarkStressPosition::Impositive));
     }
 
     #[test]
-    fn test_prepositive_before_stressed_syllable() {
-        // Per docs: "Mark is on a syllable preceding the stressed one"
-        let prepositive = StressPosition::Prepositive;
+    fn test_to_public_for_prepositive() {
+        let internal = StressPosition::Prepositive;
+        let converted = internal.to_public();
 
-        assert_eq!(prepositive, StressPosition::Prepositive);
-        assert!(prepositive.to_public().is_some());
+        assert_eq!(converted, Some(CantillationMarkStressPosition::Prepositive));
     }
 
     #[test]
-    fn test_postpositive_after_stressed_syllable() {
-        // Per docs: "Mark is on a syllable following the stressed one"
-        let postpositive = StressPosition::Postpositive;
+    fn test_to_public_for_postpositive() {
+        let internal = StressPosition::Postpositive;
+        let converted = internal.to_public();
 
-        assert_eq!(postpositive, StressPosition::Postpositive);
-        assert!(postpositive.to_public().is_some());
+        assert_eq!(
+            converted,
+            Some(CantillationMarkStressPosition::Postpositive)
+        );
+    }
+
+    #[test]
+    fn test_to_public_for_not_applicable_returns_none() {
+        let internal = StressPosition::NotApplicable;
+        let converted = internal.to_public();
+
+        assert_eq!(converted, None);
+    }
+
+    #[test]
+    fn test_to_public_all_variants_covered() {
+        for pos in &ALL {
+            let result = pos.to_public();
+            match pos {
+                StressPosition::Impositive => {
+                    assert_eq!(result, Some(CantillationMarkStressPosition::Impositive));
+                }
+                StressPosition::Prepositive => {
+                    assert_eq!(result, Some(CantillationMarkStressPosition::Prepositive));
+                }
+                StressPosition::Postpositive => {
+                    assert_eq!(result, Some(CantillationMarkStressPosition::Postpositive));
+                }
+                StressPosition::NotApplicable => {
+                    assert_eq!(result, None);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_to_public_consistency_across_calls() {
+        // Verify consistent behavior on repeated calls
+        let pos = StressPosition::Impositive;
+
+        assert_eq!(pos.to_public(), pos.to_public());
+        assert_eq!(pos.to_public(), pos.to_public());
+    }
+
+    #[test]
+    fn test_to_public_const_compatible() {
+        // Verify function can be used in const contexts
+        const POS: StressPosition = StressPosition::Impositive;
+        const RESULT: Option<CantillationMarkStressPosition> = POS.to_public();
+
+        assert_eq!(RESULT, Some(CantillationMarkStressPosition::Impositive));
     }
 
     #[test]
@@ -410,8 +351,6 @@ mod tests {
         assert_eq!(not_applicable, StressPosition::NotApplicable);
         assert_eq!(not_applicable.to_public(), None);
     }
-
-    // ===== INTEGRATION WITH PUBLIC TYPE TESTS =====
 
     #[test]
     fn test_to_public_preserves_semantics() {
@@ -467,8 +406,6 @@ mod tests {
         assert!(StressPosition::Postpositive.to_public().is_some());
     }
 
-    // ===== EDGE CASE TESTS =====
-
     #[test]
     fn test_const_usage() {
         const IMPOSITIVE: StressPosition = StressPosition::Impositive;
@@ -497,26 +434,17 @@ mod tests {
         // Instead use equality checks
         assert_eq!(_p1, StressPosition::Impositive);
     }
+}
 
-    #[test]
-    fn test_all_variants_used_in_match() {
-        // Exhaustive match should compile without warnings
-        for pos in &[
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
-        ] {
-            match pos {
-                StressPosition::Impositive => assert!(true),
-                StressPosition::Prepositive => assert!(true),
-                StressPosition::Postpositive => assert!(true),
-                StressPosition::NotApplicable => assert!(true),
-            }
-        }
-    }
-
-    // ===== USAGE SCENARIO TESTS =====
+#[cfg(test)]
+mod test_usage {
+    use super::*;
+    const ALL: [StressPosition; 4] = [
+        StressPosition::Impositive,
+        StressPosition::Prepositive,
+        StressPosition::Postpositive,
+        StressPosition::NotApplicable,
+    ];
 
     #[test]
     fn test_usage_in_option_pattern() {
@@ -531,15 +459,7 @@ mod tests {
 
     #[test]
     fn test_usage_with_public_stress_position() {
-        // Demonstrate internal-to-public conversion workflow
-        let internal_positions = [
-            StressPosition::Impositive,
-            StressPosition::Prepositive,
-            StressPosition::Postpositive,
-            StressPosition::NotApplicable,
-        ];
-
-        for internal in &internal_positions {
+        for internal in &ALL {
             let public = internal.to_public();
 
             // Should always produce valid Option<CantillationMarkStressPosition>
@@ -559,18 +479,5 @@ mod tests {
                 }
             }
         }
-    }
-
-    #[test]
-    fn test_linguistic_metrical_concept_separation() {
-        // StressPosition is independent from visual placement
-        // This is a conceptual test documenting the design decision
-
-        // The enum represents linguistic stress relationships
-        // NOT visual mark placement on letters
-        assert_eq!(
-            StressPosition::Impositive.to_public(),
-            Some(CantillationMarkStressPosition::Impositive)
-        );
     }
 }
